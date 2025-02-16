@@ -8,7 +8,7 @@ import times from 'lodash/times'
 
 import catalogsFixtures from '_tests_/fixtures/catalogs'
 import warehouseFixtures from '_tests_/fixtures/warehouse'
-import { fakeId, fakeIdStr, fakeInteger, fakeWord } from '_tests_/utils'
+import { fakeId, fakeIdStr, fakeInteger, fakeWord } from '_tests_/helpers'
 
 export const inventorizationEquipmentListItem = (
   props?: Partial<
@@ -39,10 +39,10 @@ export const inventorizationEquipmentListItem = (
       }
     : props!.equipment,
   locationFact: isUndefined(props?.locationFact)
-    ? catalogsFixtures.locationCatalogListItem()
+    ? catalogsFixtures.locationCatalogItem()
     : props!.locationFact,
   locationPlan: isUndefined(props?.locationPlan)
-    ? catalogsFixtures.locationCatalogListItem()
+    ? catalogsFixtures.locationCatalogItem()
     : props!.locationPlan,
   isLocationFactUndefined: isUndefined(props?.isLocationFactUndefined)
     ? false

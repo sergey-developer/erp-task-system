@@ -1,7 +1,7 @@
 import { getEquipmentNomenclaturesErrorMessage } from 'features/equipments/api/constants'
 import { WarehousesRoutesEnum } from 'features/warehouses/routes/routes'
 
-import { equipmentNomenclatureTableTestUtils } from '_tests_/features/warehouse/components/EquipmentNomenclatureTable/testUtils'
+import { equipmentNomenclatureTableTestUtils } from '_tests_/features/warehouses/components/EquipmentNomenclatureTable/testUtils'
 import commonFixtures from '_tests_/fixtures/common'
 import warehouseFixtures from '_tests_/fixtures/warehouse'
 import {
@@ -15,7 +15,7 @@ import {
   renderWithRouter,
   setupApiTests,
   tableTestUtils,
-} from '_tests_/utils'
+} from '_tests_/helpers'
 
 import EquipmentNomenclaturesPage from './index'
 

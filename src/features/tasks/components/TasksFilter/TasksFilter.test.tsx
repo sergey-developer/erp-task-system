@@ -7,7 +7,7 @@ import moment from 'moment-timezone'
 import { props } from '_tests_/features/tasks/components/TasksFilter/constants'
 import { tasksFilterTestUtils } from '_tests_/features/tasks/components/TasksFilter/testUtils'
 import macroregionFixtures from '_tests_/fixtures/macroregions'
-import supportGroupFixtures from '_tests_/fixtures/supportGroups'
+import supportGroupsFixtures from '_tests_/fixtures/supportGroups'
 import userFixtures from '_tests_/fixtures/users'
 import warehouseFixtures from '_tests_/fixtures/warehouse'
 import workGroupFixtures from '_tests_/fixtures/workGroup'
@@ -18,7 +18,7 @@ import {
   render,
   selectTestUtils,
   setupApiTests,
-} from '_tests_/utils'
+} from '_tests_/helpers'
 
 import { searchFieldDict, taskAssignedDict, taskOverdueDict } from './constants'
 import TasksFilter from './index'
@@ -194,30 +194,30 @@ describe('Расширенный фильтр', () => {
       })
 
       test('Можно установить значение', async () => {
-        const macroregionListItem = macroregionFixtures.macroregionListItem()
+        const macroregion = macroregionFixtures.macroregion()
 
-        const { user } = render(<TasksFilter {...props} macroregions={[macroregionListItem]} />)
+        const { user } = render(<TasksFilter {...props} macroregions={[macroregion]} />)
 
         await tasksFilterTestUtils.openMacroregionsSelect(user)
-        await tasksFilterTestUtils.setMacroregion(user, macroregionListItem.title)
+        await tasksFilterTestUtils.setMacroregion(user, macroregion.title)
         const selectedOption = tasksFilterTestUtils.getSelectedMacroregion()
 
         expect(selectedOption).toBeInTheDocument()
-        expect(selectedOption).toHaveTextContent(macroregionListItem.title)
+        expect(selectedOption).toHaveTextContent(macroregion.title)
         expect(props.onChangeMacroregions).toBeCalledTimes(1)
-        expect(props.onChangeMacroregions).toBeCalledWith([macroregionListItem.id])
+        expect(props.onChangeMacroregions).toBeCalledWith([macroregion.id])
       })
 
       test('Переданное значение устанавливается', () => {
-        const macroregionListItem = macroregionFixtures.macroregionListItem()
+        const macroregion = macroregionFixtures.macroregion()
 
         render(
           <TasksFilter
             {...props}
-            macroregions={[macroregionListItem]}
+            macroregions={[macroregion]}
             formValues={{
               ...props.formValues,
-              macroregions: [macroregionListItem.id],
+              macroregions: [macroregion.id],
             }}
           />,
         )
@@ -225,46 +225,46 @@ describe('Расширенный фильтр', () => {
         const selectedOption = tasksFilterTestUtils.getSelectedMacroregion()
 
         expect(selectedOption).toBeInTheDocument()
-        expect(selectedOption).toHaveTextContent(macroregionListItem.title)
+        expect(selectedOption).toHaveTextContent(macroregion.title)
       })
 
       test.todo('Сбрасывает выбранные группы поддержки')
 
       test('Кнопка "Сбросить" сбрасывает значение', async () => {
-        const macroregionListItem = macroregionFixtures.macroregionListItem()
+        const macroregion = macroregionFixtures.macroregion()
 
-        const { user } = render(<TasksFilter {...props} macroregions={[macroregionListItem]} />)
+        const { user } = render(<TasksFilter {...props} macroregions={[macroregion]} />)
 
         await tasksFilterTestUtils.openMacroregionsSelect(user)
-        await tasksFilterTestUtils.setMacroregion(user, macroregionListItem.title)
+        await tasksFilterTestUtils.setMacroregion(user, macroregion.title)
         const block = tasksFilterTestUtils.getSupportGroupBlock()
         await tasksFilterTestUtils.clickResetButtonIn(user, block)
         const selectedOption = tasksFilterTestUtils.getSelectedMacroregion()
 
         expect(selectedOption).not.toBeInTheDocument()
         expect(props.onChangeMacroregions).toBeCalled()
-        expect(props.onChangeMacroregions).toBeCalledWith([macroregionListItem.id])
+        expect(props.onChangeMacroregions).toBeCalledWith([macroregion.id])
       })
 
       test('Кнопка "Сбросить всё" сбрасывает значение', async () => {
-        const macroregionListItem = macroregionFixtures.macroregionListItem()
+        const macroregion = macroregionFixtures.macroregion()
 
-        const { user } = render(<TasksFilter {...props} macroregions={[macroregionListItem]} />)
+        const { user } = render(<TasksFilter {...props} macroregions={[macroregion]} />)
 
         await tasksFilterTestUtils.openMacroregionsSelect(user)
-        await tasksFilterTestUtils.setMacroregion(user, macroregionListItem.title)
+        await tasksFilterTestUtils.setMacroregion(user, macroregion.title)
         await tasksFilterTestUtils.clickResetAllButton(user)
         const selectedOption = tasksFilterTestUtils.getSelectedMacroregion()
 
         expect(selectedOption).not.toBeInTheDocument()
         expect(props.onChangeMacroregions).toBeCalled()
-        expect(props.onChangeMacroregions).toBeCalledWith([macroregionListItem.id])
+        expect(props.onChangeMacroregions).toBeCalledWith([macroregion.id])
       })
     })
 
     describe('Группы поддержки', () => {
       test('Отображается корректно', async () => {
-        const supportGroups = supportGroupFixtures.supportGroups()
+        const supportGroups = supportGroupsFixtures.supportGroups()
         const { user } = render(<TasksFilter {...props} supportGroups={supportGroups} />)
 
         const field = tasksFilterTestUtils.getSupportGroupsSelect()
@@ -281,27 +281,27 @@ describe('Расширенный фильтр', () => {
       })
 
       test('Можно установить значение', async () => {
-        const supportGroupListItem = supportGroupFixtures.supportGroupListItem()
-        const { user } = render(<TasksFilter {...props} supportGroups={[supportGroupListItem]} />)
+        const supportGroup = supportGroupsFixtures.supportGroup()
+        const { user } = render(<TasksFilter {...props} supportGroups={[supportGroup]} />)
 
         await tasksFilterTestUtils.openSupportGroupsSelect(user)
-        await tasksFilterTestUtils.setSupportGroup(user, supportGroupListItem.name)
+        await tasksFilterTestUtils.setSupportGroup(user, supportGroup.name)
 
         const selectedOption = tasksFilterTestUtils.getSelectedSupportGroup()
         expect(selectedOption).toBeInTheDocument()
-        expect(selectedOption).toHaveTextContent(supportGroupListItem.name)
+        expect(selectedOption).toHaveTextContent(supportGroup.name)
       })
 
       test('Переданное значение устанавливается', () => {
-        const supportGroupListItem = supportGroupFixtures.supportGroupListItem()
+        const supportGroup = supportGroupsFixtures.supportGroup()
 
         render(
           <TasksFilter
             {...props}
-            supportGroups={[supportGroupListItem]}
+            supportGroups={[supportGroup]}
             formValues={{
               ...props.formValues,
-              supportGroups: [supportGroupListItem.id],
+              supportGroups: [supportGroup.id],
             }}
           />,
         )
@@ -309,16 +309,16 @@ describe('Расширенный фильтр', () => {
         const selectedOption = tasksFilterTestUtils.getSelectedSupportGroup()
 
         expect(selectedOption).toBeInTheDocument()
-        expect(selectedOption).toHaveTextContent(supportGroupListItem.name)
+        expect(selectedOption).toHaveTextContent(supportGroup.name)
       })
 
       test('Кнопка "Сбросить" сбрасывает значение', async () => {
-        const supportGroupListItem = supportGroupFixtures.supportGroupListItem()
+        const supportGroup = supportGroupsFixtures.supportGroup()
 
-        const { user } = render(<TasksFilter {...props} supportGroups={[supportGroupListItem]} />)
+        const { user } = render(<TasksFilter {...props} supportGroups={[supportGroup]} />)
 
         await tasksFilterTestUtils.openSupportGroupsSelect(user)
-        await tasksFilterTestUtils.setSupportGroup(user, supportGroupListItem.name)
+        await tasksFilterTestUtils.setSupportGroup(user, supportGroup.name)
         const block = tasksFilterTestUtils.getSupportGroupBlock()
         await tasksFilterTestUtils.clickResetButtonIn(user, block)
         const selectedOption = tasksFilterTestUtils.getSelectedSupportGroup()
@@ -327,12 +327,12 @@ describe('Расширенный фильтр', () => {
       })
 
       test('Кнопка "Сбросить всё" сбрасывает значение', async () => {
-        const supportGroupListItem = supportGroupFixtures.supportGroupListItem()
+        const supportGroup = supportGroupsFixtures.supportGroup()
 
-        const { user } = render(<TasksFilter {...props} supportGroups={[supportGroupListItem]} />)
+        const { user } = render(<TasksFilter {...props} supportGroups={[supportGroup]} />)
 
         await tasksFilterTestUtils.openSupportGroupsSelect(user)
-        await tasksFilterTestUtils.setSupportGroup(user, supportGroupListItem.name)
+        await tasksFilterTestUtils.setSupportGroup(user, supportGroup.name)
         await tasksFilterTestUtils.clickResetAllButton(user)
         const selectedOption = tasksFilterTestUtils.getSelectedSupportGroup()
 
@@ -1078,7 +1078,7 @@ describe('Расширенный фильтр', () => {
 
   describe('Руководитель', () => {
     test('Отображается корректно', async () => {
-      const userList = [userFixtures.userListItem()]
+      const userList = [userFixtures.user()]
       const { user } = render(<TasksFilter {...props} users={userList} />)
 
       const field = tasksFilterTestUtils.manager.getField()
@@ -1095,7 +1095,7 @@ describe('Расширенный фильтр', () => {
     })
 
     test('Можно установить значение', async () => {
-      const userListItem = userFixtures.userListItem()
+      const userListItem = userFixtures.user()
       const { user } = render(<TasksFilter {...props} users={[userListItem]} />)
 
       await tasksFilterTestUtils.manager.openField(user)
@@ -1107,7 +1107,7 @@ describe('Расширенный фильтр', () => {
     })
 
     test('Переданное значение устанавливается', () => {
-      const userListItem = userFixtures.userListItem()
+      const userListItem = userFixtures.user()
 
       render(
         <TasksFilter
@@ -1127,8 +1127,8 @@ describe('Расширенный фильтр', () => {
     })
 
     test('Поиск по списку работает', async () => {
-      const userListItem1 = userFixtures.userListItem()
-      const userListItem2 = userFixtures.userListItem()
+      const userListItem1 = userFixtures.user()
+      const userListItem2 = userFixtures.user()
 
       const { user } = render(<TasksFilter {...props} users={[userListItem1, userListItem2]} />)
 
@@ -1143,7 +1143,7 @@ describe('Расширенный фильтр', () => {
     })
 
     test('Кнопка "Сбросить" сбрасывает значение', async () => {
-      const userListItem = userFixtures.userListItem()
+      const userListItem = userFixtures.user()
 
       const { user } = render(<TasksFilter {...props} users={[userListItem]} />)
 
@@ -1157,7 +1157,7 @@ describe('Расширенный фильтр', () => {
     })
 
     test('Кнопка "Сбросить всё" сбрасывает значение', async () => {
-      const userListItem = userFixtures.userListItem()
+      const userListItem = userFixtures.user()
 
       const { user } = render(<TasksFilter {...props} users={[userListItem]} />)
 

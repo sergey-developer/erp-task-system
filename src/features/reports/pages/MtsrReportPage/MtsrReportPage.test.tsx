@@ -1,19 +1,18 @@
 import { screen } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
-
 import { testUtils as mtsrReportFormTestUtils } from 'features/reports/components/MtsrReportForm/MtsrReportForm.test'
 import { testUtils as mtsrReportTableTestUtils } from 'features/reports/components/MtsrReportTable/MtsrReportTable.test'
 
 import reportsFixtures from '_tests_/fixtures/reports'
 import warehouseFixtures from '_tests_/fixtures/warehouse'
 import {
-  mockGetCustomerListSuccess,
+  mockGetCustomersSuccess,
   mockGetMacroregionsMtsrReportSuccess,
   mockGetSupportGroupsMtsrReportSuccess,
   mockGetUsersMtsrReportSuccess,
   mockGetWorkGroupsMtsrReportSuccess,
 } from '_tests_/mocks/api'
-import { radioButtonTestUtils, render, setupApiTests } from '_tests_/utils'
+import { radioButtonTestUtils, render, setupApiTests } from '_tests_/helpers'
 
 import { mtsrReportLevelDict, MtsrReportLevelEnum } from './constants'
 import MtsrReportPage from './index'
@@ -43,7 +42,7 @@ describe('Страница отчета MTSR', () => {
     mockGetMacroregionsMtsrReportSuccess({ once: false, body: mtsrReport })
 
     const customerListItem = warehouseFixtures.customerListItem()
-    mockGetCustomerListSuccess({ body: [customerListItem] })
+    mockGetCustomersSuccess({ body: [customerListItem] })
 
     const { user } = render(<MtsrReportPage />)
 
@@ -60,7 +59,7 @@ describe('Страница отчета MTSR', () => {
 
   test('По умолчанию выбран нужный уровень', () => {
     mockGetMacroregionsMtsrReportSuccess()
-    mockGetCustomerListSuccess()
+    mockGetCustomersSuccess()
 
     render(<MtsrReportPage />)
 
@@ -77,7 +76,7 @@ describe('Страница отчета MTSR', () => {
     mockGetSupportGroupsMtsrReportSuccess({ body: mtsrReport2 })
     mockGetWorkGroupsMtsrReportSuccess({ body: mtsrReport3 })
     mockGetUsersMtsrReportSuccess({ body: mtsrReport4 })
-    mockGetCustomerListSuccess()
+    mockGetCustomersSuccess()
 
     const { user } = render(<MtsrReportPage />)
 

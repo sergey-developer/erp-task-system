@@ -4,7 +4,7 @@ import { validationMessages, validationSizes } from 'shared/constants/validation
 
 import { props } from '_tests_/features/tasks/components/TaskFirstLineModal/constants'
 import { taskFirstLineModalTestUtils } from '_tests_/features/tasks/components/TaskFirstLineModal/testUtils'
-import { buttonTestUtils, fakeWord, render } from '_tests_/utils'
+import { buttonTestUtils, fakeWord, render } from '_tests_/helpers'
 
 import TaskFirstLineModal from './index'
 

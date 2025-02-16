@@ -16,15 +16,15 @@ import * as reactRouterDom from 'react-router-dom'
 
 import { formatDate } from 'shared/utils/date'
 
-import { props } from '_tests_/features/warehouse/components/InventorizationDetails/constants'
-import { inventorizationDetailsTestUtils } from '_tests_/features/warehouse/components/InventorizationDetails/testUtils'
-import { executeInventorizationPageTestUtils } from '_tests_/features/warehouse/pages/ExecuteInventorizationPage/testUtils'
+import { props } from '_tests_/features/warehouses/components/InventorizationDetails/constants'
+import { inventorizationDetailsTestUtils } from '_tests_/features/warehouses/components/InventorizationDetails/testUtils'
+import { executeInventorizationPageTestUtils } from '_tests_/features/warehouses/pages/ExecuteInventorizationPage/testUtils'
 import { fakeUseLocationResult } from '_tests_/fixtures/useLocation'
 import userFixtures from '_tests_/fixtures/users'
 import warehouseFixtures from '_tests_/fixtures/warehouse'
+import { getStoreWithAuth, render, renderWithRouter, setupApiTests } from '_tests_/helpers'
 import { mockGetInventorizationSuccess } from '_tests_/mocks/api'
-import { getUserMeQueryMock } from '_tests_/mocks/state/user'
-import { getStoreWithAuth, render, renderWithRouter, setupApiTests } from '_tests_/utils'
+import { getUserMeQueryMock } from '_tests_/mocks/store/users'
 
 import InventorizationDetails from './index'
 
@@ -41,7 +41,7 @@ describe('Карточка инвентаризации', () => {
 
     render(<InventorizationDetails {...props} />, {
       store: getStoreWithAuth(undefined, undefined, undefined, {
-        queries: { ...getUserMeQueryMock({ ...userFixtures.user() }) },
+        queries: { ...getUserMeQueryMock({ ...userFixtures.userDetail() }) },
       }),
     })
 
@@ -60,7 +60,7 @@ describe('Карточка инвентаризации', () => {
 
     render(<InventorizationDetails {...props} />, {
       store: getStoreWithAuth(undefined, undefined, undefined, {
-        queries: { ...getUserMeQueryMock({ ...userFixtures.user() }) },
+        queries: { ...getUserMeQueryMock({ ...userFixtures.userDetail() }) },
       }),
     })
 
@@ -143,7 +143,7 @@ describe('Карточка инвентаризации', () => {
 
       render(<InventorizationDetails {...props} />, {
         store: getStoreWithAuth(undefined, undefined, undefined, {
-          queries: { ...getUserMeQueryMock({ ...userFixtures.user() }) },
+          queries: { ...getUserMeQueryMock({ ...userFixtures.userDetail() }) },
         }),
       })
 
@@ -234,7 +234,7 @@ describe('Карточка инвентаризации', () => {
 
         render(<InventorizationDetails {...props} />, {
           store: getStoreWithAuth(inventorization.executor, undefined, undefined, {
-            queries: { ...getUserMeQueryMock({ ...userFixtures.user() }) },
+            queries: { ...getUserMeQueryMock({ ...userFixtures.userDetail() }) },
           }),
         })
 

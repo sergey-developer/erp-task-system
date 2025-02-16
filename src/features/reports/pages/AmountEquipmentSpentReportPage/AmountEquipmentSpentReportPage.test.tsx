@@ -10,9 +10,9 @@ import { MimetypeEnum } from 'shared/constants/mimetype'
 import * as base64Utils from 'shared/utils/common/base64'
 import * as downloadFileUtils from 'shared/utils/file/downloadFile'
 
-import { equipmentDetailsTestUtils } from '_tests_/features/warehouse/components/EquipmentDetails/testUtils'
-import { relocationTaskDetailsTestUtils } from '_tests_/features/warehouse/components/RelocationTaskDetails/testUtils'
-import { amountEquipmentSpentReportPageTestUtils } from '_tests_/features/warehouse/pages/AmountEquipmentSpentReportPage/testUtils'
+import { equipmentDetailsTestUtils } from '_tests_/features/warehouses/components/EquipmentDetails/testUtils'
+import { relocationTaskDetailsTestUtils } from '_tests_/features/warehouses/components/RelocationTaskDetails/testUtils'
+import { amountEquipmentSpentReportPageTestUtils } from '_tests_/features/warehouses/pages/AmountEquipmentSpentReportPage/testUtils'
 import catalogsFixtures from '_tests_/fixtures/catalogs'
 import commonFixtures from '_tests_/fixtures/common'
 import reportsFixtures from '_tests_/fixtures/reports'
@@ -20,19 +20,19 @@ import taskFixtures from '_tests_/fixtures/tasks'
 import { fakeUseLocationResult } from '_tests_/fixtures/useLocation'
 import userFixtures from '_tests_/fixtures/users'
 import warehouseFixtures from '_tests_/fixtures/warehouse'
+import { fakeId, fakeWord, getStoreWithAuth, render, setupApiTests } from '_tests_/helpers'
 import {
   mockGetAmountEquipmentSpentReportSuccess,
   mockGetAmountEquipmentSpentReportXlsxSuccess,
-  mockGetEquipmentAttachmentListSuccess,
-  mockGetEquipmentCategoryListSuccess,
+  mockGetEquipmentAttachmentsSuccess,
+  mockGetEquipmentCategoriesSuccess,
   mockGetEquipmentNomenclaturesSuccess,
   mockGetEquipmentSuccess,
   mockGetLocationsCatalogSuccess,
-  mockGetRelocationEquipmentListSuccess,
+  mockGetRelocationEquipmentsSuccess,
   mockGetRelocationTaskSuccess,
 } from '_tests_/mocks/api'
-import { getUserMeQueryMock } from '_tests_/mocks/state/user'
-import { fakeId, fakeWord, getStoreWithAuth, render, setupApiTests } from '_tests_/utils'
+import { getUserMeQueryMock } from '_tests_/mocks/store/users'
 
 import AmountEquipmentSpentReportPage from './index'
 
@@ -59,7 +59,7 @@ describe('Страница отчета количества потраченн�
         .spyOn(reactRouterDom, 'useLocation')
         .mockReturnValue(fakeUseLocationResult({ state: locationState }))
 
-      const reportListItem = reportsFixtures.amountEquipmentSpentReportListItem()
+      const reportListItem = reportsFixtures.amountEquipmentSpentReportItem()
       mockGetAmountEquipmentSpentReportSuccess({
         body: commonFixtures.paginatedListResponse([reportListItem]),
       })
@@ -69,16 +69,16 @@ describe('Страница отчета количества потраченн�
         body: commonFixtures.paginatedListResponse([equipmentNomenclatureListItem]),
       })
 
-      const locationCatalogListItem = catalogsFixtures.locationCatalogListItem()
-      mockGetLocationsCatalogSuccess({ body: [locationCatalogListItem] })
+      const locationCatalogItem = catalogsFixtures.locationCatalogItem()
+      mockGetLocationsCatalogSuccess({ body: [locationCatalogItem] })
 
       const equipment = warehouseFixtures.equipment()
       mockGetEquipmentSuccess(reportListItem.equipment.id, { body: equipment })
-      mockGetEquipmentAttachmentListSuccess(reportListItem.equipment.id)
+      mockGetEquipmentAttachmentsSuccess(reportListItem.equipment.id)
 
       const { user } = render(<AmountEquipmentSpentReportPage />, {
         store: getStoreWithAuth(undefined, undefined, undefined, {
-          queries: { ...getUserMeQueryMock(userFixtures.user()) },
+          queries: { ...getUserMeQueryMock(userFixtures.userDetail()) },
         }),
       })
 
@@ -91,10 +91,7 @@ describe('Страница отчета количества потраченн�
         equipmentNomenclatureListItem.title,
       )
       await amountEquipmentSpentReportFormTestUtils.openRelocateFromSelect(user)
-      await amountEquipmentSpentReportFormTestUtils.setRelocateFrom(
-        user,
-        locationCatalogListItem.title,
-      )
+      await amountEquipmentSpentReportFormTestUtils.setRelocateFrom(user, locationCatalogItem.title)
       await amountEquipmentSpentReportFormTestUtils.clickSubmitButton(user)
       await amountEquipmentSpentReportTableTestUtils.expectLoadingFinished()
       await amountEquipmentSpentReportTableTestUtils.clickColValue(
@@ -115,7 +112,7 @@ describe('Страница отчета количества потраченн�
         .spyOn(reactRouterDom, 'useLocation')
         .mockReturnValue(fakeUseLocationResult({ state: locationState }))
 
-      const reportListItem = reportsFixtures.amountEquipmentSpentReportListItem()
+      const reportListItem = reportsFixtures.amountEquipmentSpentReportItem()
       mockGetAmountEquipmentSpentReportSuccess({
         body: commonFixtures.paginatedListResponse([reportListItem]),
       })
@@ -125,15 +122,15 @@ describe('Страница отчета количества потраченн�
         body: commonFixtures.paginatedListResponse([equipmentNomenclatureListItem]),
       })
 
-      const locationCatalogListItem = catalogsFixtures.locationCatalogListItem()
-      mockGetLocationsCatalogSuccess({ body: [locationCatalogListItem] })
+      const locationCatalogItem = catalogsFixtures.locationCatalogItem()
+      mockGetLocationsCatalogSuccess({ body: [locationCatalogItem] })
 
       mockGetRelocationTaskSuccess({ relocationTaskId: reportListItem.relocationTask.id })
-      mockGetRelocationEquipmentListSuccess({ relocationTaskId: reportListItem.relocationTask.id })
+      mockGetRelocationEquipmentsSuccess({ relocationTaskId: reportListItem.relocationTask.id })
 
       const { user } = render(<AmountEquipmentSpentReportPage />, {
         store: getStoreWithAuth(undefined, undefined, undefined, {
-          queries: { ...getUserMeQueryMock(userFixtures.user()) },
+          queries: { ...getUserMeQueryMock(userFixtures.userDetail()) },
         }),
       })
 
@@ -146,10 +143,7 @@ describe('Страница отчета количества потраченн�
         equipmentNomenclatureListItem.title,
       )
       await amountEquipmentSpentReportFormTestUtils.openRelocateFromSelect(user)
-      await amountEquipmentSpentReportFormTestUtils.setRelocateFrom(
-        user,
-        locationCatalogListItem.title,
-      )
+      await amountEquipmentSpentReportFormTestUtils.setRelocateFrom(user, locationCatalogItem.title)
       await amountEquipmentSpentReportFormTestUtils.clickSubmitButton(user)
       await amountEquipmentSpentReportTableTestUtils.expectLoadingFinished()
       await amountEquipmentSpentReportTableTestUtils.clickColValue(
@@ -165,7 +159,7 @@ describe('Страница отчета количества потраченн�
 
   describe('Фильтры', () => {
     test('После применения отображается отчет', async () => {
-      const reportListItem = reportsFixtures.amountEquipmentSpentReportListItem()
+      const reportListItem = reportsFixtures.amountEquipmentSpentReportItem()
       mockGetAmountEquipmentSpentReportSuccess({
         body: commonFixtures.paginatedListResponse([reportListItem]),
         once: false,
@@ -177,11 +171,11 @@ describe('Страница отчета количества потраченн�
         once: false,
       })
 
-      const locationCatalogListItem = catalogsFixtures.locationCatalogListItem()
-      mockGetLocationsCatalogSuccess({ body: [locationCatalogListItem] })
+      const locationCatalogItem = catalogsFixtures.locationCatalogItem()
+      mockGetLocationsCatalogSuccess({ body: [locationCatalogItem] })
 
       const equipmentCategoryListItem = warehouseFixtures.equipmentCategoryListItem()
-      mockGetEquipmentCategoryListSuccess({ body: [equipmentCategoryListItem] })
+      mockGetEquipmentCategoriesSuccess({ body: [equipmentCategoryListItem] })
 
       const { user } = render(<AmountEquipmentSpentReportPage />)
 
@@ -194,10 +188,7 @@ describe('Страница отчета количества потраченн�
         equipmentNomenclatureListItem.title,
       )
       await amountEquipmentSpentReportFormTestUtils.openRelocateFromSelect(user)
-      await amountEquipmentSpentReportFormTestUtils.setRelocateFrom(
-        user,
-        locationCatalogListItem.title,
-      )
+      await amountEquipmentSpentReportFormTestUtils.setRelocateFrom(user, locationCatalogItem.title)
       await amountEquipmentSpentReportFormTestUtils.clickSubmitButton(user)
       await amountEquipmentSpentReportTableTestUtils.expectLoadingFinished()
       await amountEquipmentSpentReportPageTestUtils.clickFilterButton(user)
@@ -222,7 +213,7 @@ describe('Страница отчета количества потраченн�
       const fakeArrayBuffer = new Uint8Array()
       base64ToBytesSpy.mockReturnValueOnce(fakeArrayBuffer)
 
-      const reportListItem = reportsFixtures.amountEquipmentSpentReportListItem()
+      const reportListItem = reportsFixtures.amountEquipmentSpentReportItem()
       mockGetAmountEquipmentSpentReportSuccess({
         body: commonFixtures.paginatedListResponse([reportListItem]),
       })
@@ -232,8 +223,8 @@ describe('Страница отчета количества потраченн�
         body: commonFixtures.paginatedListResponse([equipmentNomenclatureListItem]),
       })
 
-      const locationCatalogListItem = catalogsFixtures.locationCatalogListItem()
-      mockGetLocationsCatalogSuccess({ body: [locationCatalogListItem] })
+      const locationCatalogItem = catalogsFixtures.locationCatalogItem()
+      mockGetLocationsCatalogSuccess({ body: [locationCatalogItem] })
 
       const { user } = render(<AmountEquipmentSpentReportPage />)
 
@@ -246,10 +237,7 @@ describe('Страница отчета количества потраченн�
         equipmentNomenclatureListItem.title,
       )
       await amountEquipmentSpentReportFormTestUtils.openRelocateFromSelect(user)
-      await amountEquipmentSpentReportFormTestUtils.setRelocateFrom(
-        user,
-        locationCatalogListItem.title,
-      )
+      await amountEquipmentSpentReportFormTestUtils.setRelocateFrom(user, locationCatalogItem.title)
       await amountEquipmentSpentReportFormTestUtils.clickSubmitButton(user)
       await amountEquipmentSpentReportTableTestUtils.expectLoadingFinished()
 

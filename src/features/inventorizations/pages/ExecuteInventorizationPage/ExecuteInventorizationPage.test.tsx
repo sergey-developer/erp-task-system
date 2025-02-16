@@ -17,22 +17,28 @@ import * as base64Utils from 'shared/utils/common/base64'
 import { formatDate } from 'shared/utils/date'
 import * as downloadFileUtils from 'shared/utils/file/downloadFile'
 
-import { inventorizationDetailsTestUtils } from '_tests_/features/warehouse/components/InventorizationDetails/testUtils'
-import { executeInventorizationPageTestUtils } from '_tests_/features/warehouse/pages/ExecuteInventorizationPage/testUtils'
+import { inventorizationDetailsTestUtils } from '_tests_/features/warehouses/components/InventorizationDetails/testUtils'
+import { executeInventorizationPageTestUtils } from '_tests_/features/warehouses/pages/ExecuteInventorizationPage/testUtils'
 import { fakeUseLocationResult } from '_tests_/fixtures/useLocation'
 import userFixtures from '_tests_/fixtures/users'
 import warehouseFixtures from '_tests_/fixtures/warehouse'
 import {
+  fakeWord,
+  getStoreWithAuth,
+  render,
+  renderWithRouter,
+  setupApiTests,
+} from '_tests_/helpers'
+import {
   mockCompleteInventorizationSuccess,
-  mockGetCurrencyListSuccess,
+  mockGetCurrenciesSuccess,
   mockGetInventorizationEquipmentsSuccess,
   mockGetInventorizationReportSuccess,
   mockGetInventorizationsSuccess,
   mockGetInventorizationSuccess,
   mockGetLocationsCatalogSuccess,
 } from '_tests_/mocks/api'
-import { getUserMeQueryMock } from '_tests_/mocks/state/user'
-import { fakeWord, getStoreWithAuth, render, renderWithRouter, setupApiTests } from '_tests_/utils'
+import { getUserMeQueryMock } from '_tests_/mocks/store/users'
 
 import { ExecuteInventorizationPageTabsEnum } from './constants'
 import ExecuteInventorizationPage from './index'
@@ -57,8 +63,8 @@ describe('Страница проведения инвентаризации', (
 
     mockGetInventorizationEquipmentsSuccess({ inventorizationId: inventorization.id })
     mockGetLocationsCatalogSuccess()
-    mockGetCurrencyListSuccess()
-    const currentUser = userFixtures.user()
+    mockGetCurrenciesSuccess()
+    const currentUser = userFixtures.userDetail()
 
     render(<ExecuteInventorizationPage />, {
       store: getStoreWithAuth(currentUser, undefined, undefined, {
@@ -128,8 +134,8 @@ describe('Страница проведения инвентаризации', (
 
       mockGetInventorizationEquipmentsSuccess({ inventorizationId: inventorization.id })
       mockGetLocationsCatalogSuccess()
-      mockGetCurrencyListSuccess()
-      const currentUser = userFixtures.user()
+      mockGetCurrenciesSuccess()
+      const currentUser = userFixtures.userDetail()
 
       render(<ExecuteInventorizationPage />, {
         store: getStoreWithAuth(currentUser, undefined, undefined, {
@@ -157,7 +163,7 @@ describe('Страница проведения инвентаризации', (
       mockGetInventorizationEquipmentsSuccess({ inventorizationId: inventorization.id })
       mockGetLocationsCatalogSuccess({ body: [] })
       mockCompleteInventorizationSuccess({ inventorizationId: inventorization.id })
-      mockGetCurrencyListSuccess()
+      mockGetCurrenciesSuccess()
 
       const { user } = renderWithRouter(
         [
@@ -173,7 +179,7 @@ describe('Страница проведения инвентаризации', (
         { initialEntries: [WarehousesRoutesEnum.ExecuteInventorization], initialIndex: 0 },
         {
           store: getStoreWithAuth(undefined, undefined, undefined, {
-            queries: { ...getUserMeQueryMock(userFixtures.user()) },
+            queries: { ...getUserMeQueryMock(userFixtures.userDetail()) },
           }),
         },
       )
@@ -198,8 +204,8 @@ describe('Страница проведения инвентаризации', (
 
       mockGetInventorizationEquipmentsSuccess({ inventorizationId: inventorization.id })
       mockGetLocationsCatalogSuccess()
-      mockGetCurrencyListSuccess()
-      const currentUser = userFixtures.user()
+      mockGetCurrenciesSuccess()
+      const currentUser = userFixtures.userDetail()
 
       render(<ExecuteInventorizationPage />, {
         store: getStoreWithAuth(currentUser, undefined, undefined, {
@@ -226,7 +232,7 @@ describe('Страница проведения инвентаризации', (
       mockGetInventorizationsSuccess()
       mockGetInventorizationEquipmentsSuccess({ inventorizationId: inventorization.id })
       mockGetLocationsCatalogSuccess({ body: [] })
-      mockGetCurrencyListSuccess()
+      mockGetCurrenciesSuccess()
 
       const { user } = renderWithRouter(
         [
@@ -242,7 +248,7 @@ describe('Страница проведения инвентаризации', (
         { initialEntries: [WarehousesRoutesEnum.ExecuteInventorization], initialIndex: 0 },
         {
           store: getStoreWithAuth(undefined, undefined, undefined, {
-            queries: { ...getUserMeQueryMock(userFixtures.user()) },
+            queries: { ...getUserMeQueryMock(userFixtures.userDetail()) },
           }),
         },
       )
@@ -272,12 +278,12 @@ describe('Страница проведения инвентаризации', (
         .mockReturnValue(fakeUseLocationResult({ state: inventorizationState }))
 
       mockGetLocationsCatalogSuccess({ body: [] })
-      mockGetCurrencyListSuccess()
+      mockGetCurrenciesSuccess()
 
       mockGetInventorizationEquipmentsSuccess({ inventorizationId: inventorization.id })
       const file = fakeWord()
       mockGetInventorizationReportSuccess({ inventorizationId: inventorization.id }, { body: file })
-      const currentUser = userFixtures.user()
+      const currentUser = userFixtures.userDetail()
 
       const { user } = render(<ExecuteInventorizationPage />, {
         store: getStoreWithAuth(currentUser, undefined, undefined, {
@@ -308,8 +314,8 @@ describe('Страница проведения инвентаризации', (
 
     mockGetInventorizationEquipmentsSuccess({ inventorizationId: inventorization.id })
     mockGetLocationsCatalogSuccess()
-    mockGetCurrencyListSuccess()
-    const currentUser = userFixtures.user()
+    mockGetCurrenciesSuccess()
+    const currentUser = userFixtures.userDetail()
 
     render(<ExecuteInventorizationPage />, {
       store: getStoreWithAuth(currentUser, undefined, undefined, {
@@ -338,8 +344,8 @@ describe('Страница проведения инвентаризации', (
       { once: false },
     )
     mockGetLocationsCatalogSuccess()
-    mockGetCurrencyListSuccess()
-    const currentUser = userFixtures.user()
+    mockGetCurrenciesSuccess()
+    const currentUser = userFixtures.userDetail()
 
     const { user } = render(<ExecuteInventorizationPage />, {
       store: getStoreWithAuth(currentUser, undefined, undefined, {

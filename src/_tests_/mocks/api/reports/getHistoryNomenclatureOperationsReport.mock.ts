@@ -1,5 +1,5 @@
-import { GetHistoryNomenclatureOperationsReportResponse } from 'features/reports/api/dto'
-import { makeHistoryNomenclatureOperationsReportEndpoint } from 'features/reports/helpers'
+import { makeHistoryNomenclatureOperationsReportApiPath } from 'features/reports/api/helpers'
+import { GetHistoryNomenclatureOperationsReportResponse } from 'features/reports/api/schemas'
 
 import { ErrorData } from 'shared/api/baseApi'
 import { HttpMethodEnum } from 'shared/constants/http'

@@ -9,7 +9,7 @@ import { taskSecondLineModalTestUtils } from '_tests_/features/tasks/components/
 import warehouseFixtures from '_tests_/fixtures/warehouse'
 import workGroupFixtures from '_tests_/fixtures/workGroup'
 import { mockGetWorkGroupsSuccess, mockGetWorkTypesSuccess } from '_tests_/mocks/api'
-import { fakeWord, render, selectTestUtils, setupApiTests } from '_tests_/utils'
+import { fakeWord, render, selectTestUtils, setupApiTests } from '_tests_/helpers'
 
 import TaskSecondLineModal from './index'
 

@@ -1,5 +1,5 @@
 import { ReportsApiPathsEnum } from 'features/reports/api/constants'
-import { GetUsersMtsrReportResponse } from 'features/reports/api/dto'
+import { GetUsersMtsrReportResponse } from 'features/reports/api/schemas'
 
 import { ErrorData } from 'shared/api/baseApi'
 import { HttpMethodEnum } from 'shared/constants/http'

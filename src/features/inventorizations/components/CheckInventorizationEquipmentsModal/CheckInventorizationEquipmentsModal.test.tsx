@@ -1,10 +1,10 @@
 import { within } from '@testing-library/react'
 
-import { props } from '_tests_/features/inventorizationEquipments/components/CheckInventorizationEquipmentsModal/constants'
-import { checkInventorizationEquipmentsModalTestUtils as testUtils } from '_tests_/features/inventorizationEquipments/components/CheckInventorizationEquipmentsModal/testUtils'
-import { checkInventorizationEquipmentsTableTestUtils } from '_tests_/features/inventorizationEquipments/components/CheckInventorizationEquipmentsTable/testUtils'
+import { props } from '_tests_/features/inventorizations/components/CheckInventorizationEquipmentsModal/constants'
+import { checkInventorizationEquipmentsModalTestUtils as testUtils } from '_tests_/features/inventorizations/components/CheckInventorizationEquipmentsModal/testUtils'
+import { checkInventorizationEquipmentsTableTestUtils } from '_tests_/features/inventorizations/components/CheckInventorizationEquipmentsTable/testUtils'
 import warehouseFixtures from '_tests_/fixtures/warehouse'
-import { iconTestUtils, render } from '_tests_/utils'
+import { iconTestUtils, render } from '_tests_/helpers'
 
 import CheckInventorizationEquipmentsModal from './index'
 

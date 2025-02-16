@@ -1,8 +1,8 @@
 import { EquipmentConditionEnum } from 'features/equipments/api/constants'
 import {
+  CheckedInventorizationEquipmentsTemplateDTO,
   CheckedInventorizationEquipmentsTemplateItemDTO,
-  CheckedInventorizationEquipmentsTemplateModel,
-} from 'features/warehouses/api/dto'
+} from 'features/inventorizations/api/dto'
 import isBoolean from 'lodash/isBoolean'
 import isUndefined from 'lodash/isUndefined'
 import times from 'lodash/times'
@@ -11,7 +11,7 @@ import catalogsFixtures from '_tests_/fixtures/catalogs'
 import currencyFixtures from '_tests_/fixtures/currencies'
 import macroregionFixtures from '_tests_/fixtures/macroregions'
 import warehouseFixtures from '_tests_/fixtures/warehouse'
-import { fakeInteger, fakeWord } from '_tests_/utils'
+import { fakeInteger, fakeWord } from '_tests_/helpers'
 
 export const checkedInventorizationEquipmentsTemplateListItem = (
   props?: Partial<Pick<CheckedInventorizationEquipmentsTemplateItemDTO, 'isCredited' | 'category'>>,
@@ -23,13 +23,13 @@ export const checkedInventorizationEquipmentsTemplateListItem = (
   title: fakeWord(),
   comment: fakeWord(),
   condition: EquipmentConditionEnum.Working,
-  currency: currencyFixtures.currencyListItem(),
+  currency: currencyFixtures.currency(),
   inventoryNumber: fakeWord(),
-  locationFact: catalogsFixtures.locationCatalogListItem(),
+  locationFact: catalogsFixtures.locationCatalogItem(),
   isNew: false,
   isRepaired: false,
   isWarranty: false,
-  macroregion: macroregionFixtures.macroregionListItem(),
+  macroregion: macroregionFixtures.macroregion(),
   nomenclature: warehouseFixtures.nomenclature(),
   owner: warehouseFixtures.customerListItem(),
   price: fakeInteger(),
@@ -40,5 +40,5 @@ export const checkedInventorizationEquipmentsTemplateListItem = (
 
 export const checkedInventorizationEquipmentsTemplate = (
   length: number = 1,
-): CheckedInventorizationEquipmentsTemplateModel =>
+): CheckedInventorizationEquipmentsTemplateDTO =>
   times(length, () => checkedInventorizationEquipmentsTemplateListItem())

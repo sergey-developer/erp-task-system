@@ -1,14 +1,13 @@
 import { screen } from '@testing-library/react'
-
 import { EquipmentCategoryEnum } from 'features/equipments/api/constants'
 
 import {
   props,
   tableRow,
-} from '_tests_/features/inventorizationEquipments/components/CheckInventorizationEquipmentsTable/constants'
-import { checkInventorizationEquipmentsTableTestUtils as testUtils } from '_tests_/features/inventorizationEquipments/components/CheckInventorizationEquipmentsTable/testUtils'
+} from '_tests_/features/inventorizations/components/CheckInventorizationEquipmentsTable/constants'
+import { checkInventorizationEquipmentsTableTestUtils as testUtils } from '_tests_/features/inventorizations/components/CheckInventorizationEquipmentsTable/testUtils'
 import warehouseFixtures from '_tests_/fixtures/warehouse'
-import { render } from '_tests_/utils'
+import { render } from '_tests_/helpers'
 
 import CheckInventorizationEquipmentsTable from './index'
 import { CheckInventorizationEquipmentsTableRow } from './types'

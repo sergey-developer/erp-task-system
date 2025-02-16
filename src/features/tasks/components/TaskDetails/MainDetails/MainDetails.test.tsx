@@ -3,7 +3,6 @@ import { mainDetailsTestUtils } from '_tests_/features/tasks/components/TaskDeta
 import { taskStatusTestUtils } from '_tests_/features/tasks/components/TaskStatus/testUtils'
 import taskFixtures from '_tests_/fixtures/tasks'
 import userFixtures from '_tests_/fixtures/users'
-import { getUserMeQueryMock } from '_tests_/mocks/state/user'
 import {
   fakeAddress,
   fakeDateString,
@@ -11,7 +10,8 @@ import {
   fakeWord,
   getStoreWithAuth,
   render,
-} from '_tests_/utils'
+} from '_tests_/helpers'
+import { getUserMeQueryMock } from '_tests_/mocks/store/users'
 
 import MainDetails, { MainDetailsProps } from './index'
 import { parseResponseTime } from './utils'
@@ -20,7 +20,7 @@ describe('Блок детальной информации заявки', () => 
   test('Отображается', () => {
     render(<MainDetails {...props} />, {
       store: getStoreWithAuth(undefined, undefined, undefined, {
-        queries: { ...getUserMeQueryMock(userFixtures.user()) },
+        queries: { ...getUserMeQueryMock(userFixtures.userDetail()) },
       }),
     })
     expect(mainDetailsTestUtils.getContainer()).toBeInTheDocument()
@@ -29,7 +29,7 @@ describe('Блок детальной информации заявки', () => 
   test('Идентификатор записи отображается', () => {
     render(<MainDetails {...props} />, {
       store: getStoreWithAuth(undefined, undefined, undefined, {
-        queries: { ...getUserMeQueryMock(userFixtures.user()) },
+        queries: { ...getUserMeQueryMock(userFixtures.userDetail()) },
       }),
     })
     expect(mainDetailsTestUtils.getChildByText(props.recordId)).toBeInTheDocument()
@@ -38,7 +38,7 @@ describe('Блок детальной информации заявки', () => 
   test('Срок выполнения отображается', () => {
     render(<MainDetails {...props} olaNextBreachTime={fakeDateString()} />, {
       store: getStoreWithAuth(undefined, undefined, undefined, {
-        queries: { ...getUserMeQueryMock(userFixtures.user()) },
+        queries: { ...getUserMeQueryMock(userFixtures.userDetail()) },
       }),
     })
     expect(mainDetailsTestUtils.getChildByText(/до/)).toBeInTheDocument()
@@ -47,7 +47,7 @@ describe('Блок детальной информации заявки', () => 
   test('Статус заявки отображается', () => {
     render(<MainDetails {...props} />, {
       store: getStoreWithAuth(undefined, undefined, undefined, {
-        queries: { ...getUserMeQueryMock(userFixtures.user()) },
+        queries: { ...getUserMeQueryMock(userFixtures.userDetail()) },
       }),
     })
 
@@ -64,7 +64,7 @@ describe('Блок детальной информации заявки', () => 
         <MainDetails {...props} responseTime={fakeResponseTime} workGroup={null} assignee={null} />,
         {
           store: getStoreWithAuth(undefined, undefined, undefined, {
-            queries: { ...getUserMeQueryMock(userFixtures.user()) },
+            queries: { ...getUserMeQueryMock(userFixtures.userDetail()) },
           }),
         },
       )
@@ -79,7 +79,7 @@ describe('Блок детальной информации заявки', () => 
       test('Но срок реакции отсутствует', () => {
         render(<MainDetails {...props} workGroup={null} responseTime={null} />, {
           store: getStoreWithAuth(undefined, undefined, undefined, {
-            queries: { ...getUserMeQueryMock(userFixtures.user()) },
+            queries: { ...getUserMeQueryMock(userFixtures.userDetail()) },
           }),
         })
 
@@ -95,7 +95,7 @@ describe('Блок детальной информации заявки', () => 
           />,
           {
             store: getStoreWithAuth(undefined, undefined, undefined, {
-              queries: { ...getUserMeQueryMock(userFixtures.user()) },
+              queries: { ...getUserMeQueryMock(userFixtures.userDetail()) },
             }),
           },
         )
@@ -113,7 +113,7 @@ describe('Блок детальной информации заявки', () => 
           />,
           {
             store: getStoreWithAuth(undefined, undefined, undefined, {
-              queries: { ...getUserMeQueryMock(userFixtures.user()) },
+              queries: { ...getUserMeQueryMock(userFixtures.userDetail()) },
             }),
           },
         )
@@ -126,7 +126,7 @@ describe('Блок детальной информации заявки', () => 
   test('Заголовок отображается', () => {
     render(<MainDetails {...props} />, {
       store: getStoreWithAuth(undefined, undefined, undefined, {
-        queries: { ...getUserMeQueryMock(userFixtures.user()) },
+        queries: { ...getUserMeQueryMock(userFixtures.userDetail()) },
       }),
     })
     expect(mainDetailsTestUtils.getChildByText(props.title)).toBeInTheDocument()
@@ -135,7 +135,7 @@ describe('Блок детальной информации заявки', () => 
   test('Дата создания отображается', () => {
     render(<MainDetails {...props} />, {
       store: getStoreWithAuth(undefined, undefined, undefined, {
-        queries: { ...getUserMeQueryMock(userFixtures.user()) },
+        queries: { ...getUserMeQueryMock(userFixtures.userDetail()) },
       }),
     })
 
@@ -146,7 +146,7 @@ describe('Блок детальной информации заявки', () => 
     test('Заголовок отображается', () => {
       render(<MainDetails {...props} />, {
         store: getStoreWithAuth(undefined, undefined, undefined, {
-          queries: { ...getUserMeQueryMock(userFixtures.user()) },
+          queries: { ...getUserMeQueryMock(userFixtures.userDetail()) },
         }),
       })
       expect(mainDetailsTestUtils.getChildByText('Адрес')).toBeInTheDocument()
@@ -155,7 +155,7 @@ describe('Блок детальной информации заявки', () => 
     test('Название отображается', () => {
       render(<MainDetails {...props} />, {
         store: getStoreWithAuth(undefined, undefined, undefined, {
-          queries: { ...getUserMeQueryMock(userFixtures.user()) },
+          queries: { ...getUserMeQueryMock(userFixtures.userDetail()) },
         }),
       })
       expect(mainDetailsTestUtils.getChildByText(props.name!)).toBeInTheDocument()
@@ -165,7 +165,7 @@ describe('Блок детальной информации заявки', () => 
       const address = fakeAddress()
       render(<MainDetails {...props} address={address} />, {
         store: getStoreWithAuth(undefined, undefined, undefined, {
-          queries: { ...getUserMeQueryMock(userFixtures.user()) },
+          queries: { ...getUserMeQueryMock(userFixtures.userDetail()) },
         }),
       })
       expect(mainDetailsTestUtils.getChildByText(address)).toBeInTheDocument()
@@ -174,7 +174,7 @@ describe('Блок детальной информации заявки', () => 
     test('Если отсутствует отображается соответствующий текст', () => {
       render(<MainDetails {...props} />, {
         store: getStoreWithAuth(undefined, undefined, undefined, {
-          queries: { ...getUserMeQueryMock(userFixtures.user()) },
+          queries: { ...getUserMeQueryMock(userFixtures.userDetail()) },
         }),
       })
       expect(mainDetailsTestUtils.getChildByText('Не определено')).toBeInTheDocument()
@@ -185,7 +185,7 @@ describe('Блок детальной информации заявки', () => 
     test('Заголовок отображается', () => {
       render(<MainDetails {...props} />, {
         store: getStoreWithAuth(undefined, undefined, undefined, {
-          queries: { ...getUserMeQueryMock(userFixtures.user()) },
+          queries: { ...getUserMeQueryMock(userFixtures.userDetail()) },
         }),
       })
       expect(mainDetailsTestUtils.getChildByText('Заявитель')).toBeInTheDocument()
@@ -194,7 +194,7 @@ describe('Блок детальной информации заявки', () => 
     test('Заявитель отображается', () => {
       render(<MainDetails {...props} />, {
         store: getStoreWithAuth(undefined, undefined, undefined, {
-          queries: { ...getUserMeQueryMock(userFixtures.user()) },
+          queries: { ...getUserMeQueryMock(userFixtures.userDetail()) },
         }),
       })
 
@@ -203,13 +203,13 @@ describe('Блок детальной информации заявки', () => 
 
     test('Номер инициатора отображается если инициатор указан', () => {
       const createdBy: NonNullable<MainDetailsProps['createdBy']> = {
-        ...userFixtures.user(),
+        ...userFixtures.userDetail(),
         position: fakeWord(),
       }
 
       render(<MainDetails {...props} createdBy={createdBy} />, {
         store: getStoreWithAuth(undefined, undefined, undefined, {
-          queries: { ...getUserMeQueryMock(userFixtures.user()) },
+          queries: { ...getUserMeQueryMock(userFixtures.userDetail()) },
         }),
       })
       expect(mainDetailsTestUtils.getChildByText(createdBy!.phone)).toBeInTheDocument()
@@ -219,7 +219,7 @@ describe('Блок детальной информации заявки', () => 
       const contactPhone = fakePhone()
       render(<MainDetails {...props} contactPhone={contactPhone} createdBy={null} />, {
         store: getStoreWithAuth(undefined, undefined, undefined, {
-          queries: { ...getUserMeQueryMock(userFixtures.user()) },
+          queries: { ...getUserMeQueryMock(userFixtures.userDetail()) },
         }),
       })
       expect(mainDetailsTestUtils.getChildByText(contactPhone)).toBeInTheDocument()
@@ -229,7 +229,7 @@ describe('Блок детальной информации заявки', () => 
       const portablePhone = fakePhone()
       render(<MainDetails {...props} portablePhone={portablePhone} createdBy={null} />, {
         store: getStoreWithAuth(undefined, undefined, undefined, {
-          queries: { ...getUserMeQueryMock(userFixtures.user()) },
+          queries: { ...getUserMeQueryMock(userFixtures.userDetail()) },
         }),
       })
       expect(mainDetailsTestUtils.getChildByText(portablePhone)).toBeInTheDocument()

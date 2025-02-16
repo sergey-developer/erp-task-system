@@ -1,9 +1,9 @@
 import { AttachmentDTO } from 'features/attachments/api/dto'
 import times from 'lodash/times'
 
-import { fakeId, fakeUrl, fakeWord } from '_tests_/utils'
+import { fakeId, fakeUrl, fakeWord } from '_tests_/helpers'
 
-export const attachmentListItem = (): AttachmentDTO => ({
+export const attachment = (): AttachmentDTO => ({
   id: fakeId(),
   name: fakeWord(),
   url: fakeUrl(),
@@ -13,4 +13,4 @@ export const attachmentListItem = (): AttachmentDTO => ({
   },
 })
 
-export const attachments = (length: number = 1) => times(length, () => attachmentListItem())
+export const attachments = (length: number = 1) => times(length, () => attachment())

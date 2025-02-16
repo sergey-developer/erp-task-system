@@ -20,7 +20,7 @@ import {
   fakeLongitude,
   fakePhone,
   fakeWord,
-} from '_tests_/utils'
+} from '_tests_/helpers'
 
 export const taskResponseTime = (): TaskResponseTimeDTO => {
   return {

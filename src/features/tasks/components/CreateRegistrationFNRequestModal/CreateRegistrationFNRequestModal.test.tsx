@@ -5,7 +5,7 @@ import { validationMessages } from 'shared/constants/validation'
 import { props } from '_tests_/features/tasks/components/CreateRegistrationFNRequestModal/constants'
 import { createRegistrationFNRequestModalTestUtils } from '_tests_/features/tasks/components/CreateRegistrationFNRequestModal/testUtils'
 import catalogsFixtures from '_tests_/fixtures/catalogs'
-import { fakeEmail, render } from '_tests_/utils'
+import { fakeEmail, render } from '_tests_/helpers'
 
 import CreateRegistrationFNRequestModal from './index'
 
@@ -50,7 +50,7 @@ describe('Модалка создания запроса на регистрац
 
   describe('Тип замены ФН', () => {
     test('Можно выбрать значение', async () => {
-      const changeType = catalogsFixtures.faChangeTypeListItem()
+      const changeType = catalogsFixtures.faChangeType()
 
       const { user } = render(
         <CreateRegistrationFNRequestModal {...props} changeTypes={[changeType]} />,

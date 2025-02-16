@@ -9,7 +9,7 @@ import {
 } from '_tests_/features/tasks/components/ExecuteTaskModal/constants'
 import { executeTaskModalTestUtils } from '_tests_/features/tasks/components/ExecuteTaskModal/testUtils'
 import catalogsFixtures from '_tests_/fixtures/catalogs'
-import { fakeWord, render } from '_tests_/utils'
+import { fakeWord, render } from '_tests_/helpers'
 
 import ExecuteTaskModal from './index'
 
@@ -147,20 +147,21 @@ describe('Модалка выполнения заявки', () => {
 
   describe('Поле категории решения', () => {
     test('Отображается если у группы поддержки поле hasResolutionClassifiers=true', () => {
-      const resolutionClassificationListItem = catalogsFixtures.resolutionClassificationListItem()
+      const resolutionClassificationCatalogItem =
+        catalogsFixtures.resolutionClassificationCatalogItem()
 
       render(
         <ExecuteTaskModal
           {...props}
           {...showResolutionClassifierFieldProps}
-          resolutionClassifications={[resolutionClassificationListItem]}
+          resolutionClassifications={[resolutionClassificationCatalogItem]}
         />,
       )
 
       const label = executeTaskModalTestUtils.getResolutionClassificationLabel()
       const field = executeTaskModalTestUtils.getResolutionClassificationSelectInput()
       const selectedOption = executeTaskModalTestUtils.querySelectedResolutionClassification(
-        resolutionClassificationListItem.title,
+        resolutionClassificationCatalogItem.title,
       )
 
       expect(label).toBeInTheDocument()
@@ -176,23 +177,24 @@ describe('Модалка выполнения заявки', () => {
     })
 
     test('Можно установить значение', async () => {
-      const resolutionClassificationListItem = catalogsFixtures.resolutionClassificationListItem()
+      const resolutionClassificationCatalogItem =
+        catalogsFixtures.resolutionClassificationCatalogItem()
 
       const { user } = render(
         <ExecuteTaskModal
           {...props}
           {...showResolutionClassifierFieldProps}
-          resolutionClassifications={[resolutionClassificationListItem]}
+          resolutionClassifications={[resolutionClassificationCatalogItem]}
         />,
       )
 
       await executeTaskModalTestUtils.openResolutionClassificationSelect(user)
       await executeTaskModalTestUtils.setResolutionClassification(
         user,
-        resolutionClassificationListItem.title,
+        resolutionClassificationCatalogItem.title,
       )
       const selectedOption = executeTaskModalTestUtils.getSelectedResolutionClassification(
-        resolutionClassificationListItem.title,
+        resolutionClassificationCatalogItem.title,
       )
 
       expect(selectedOption).toBeInTheDocument()

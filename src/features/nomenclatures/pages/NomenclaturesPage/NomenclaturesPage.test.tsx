@@ -2,21 +2,12 @@ import { waitFor } from '@testing-library/react'
 import { createNomenclatureGroupErrorMessage } from 'features/nomenclatures/api/constants'
 import { UserPermissionsEnum } from 'features/users/api/constants'
 
-import { nomenclatureFormModalTestUtils } from '_tests_/features/warehouse/components/NomenclatureFormModal/testUtils'
-import { nomenclatureGroupFormModalTestUtils } from '_tests_/features/warehouse/components/NomenclatureGroupFormModal/testUtils'
-import { nomenclatureTableTestUtils } from '_tests_/features/warehouse/components/NomenclatureTable/testUtils'
-import { nomenclatureListPageTestUtils } from '_tests_/features/warehouse/pages/NomenclatureListPage/testUtils'
+import { nomenclatureFormModalTestUtils } from '_tests_/features/warehouses/components/NomenclatureFormModal/testUtils'
+import { nomenclatureGroupFormModalTestUtils } from '_tests_/features/warehouses/components/NomenclatureGroupFormModal/testUtils'
+import { nomenclatureTableTestUtils } from '_tests_/features/warehouses/components/NomenclatureTable/testUtils'
+import { nomenclatureListPageTestUtils } from '_tests_/features/warehouses/pages/NomenclatureListPage/testUtils'
 import userFixtures from '_tests_/fixtures/users'
 import warehouseFixtures from '_tests_/fixtures/warehouse'
-import {
-  mockCreateNomenclatureGroupBadRequestError,
-  mockCreateNomenclatureGroupForbiddenError,
-  mockCreateNomenclatureGroupServerError,
-  mockCreateNomenclatureGroupSuccess,
-  mockGetNomenclatureGroupListSuccess,
-  mockGetNomenclatureListSuccess,
-} from '_tests_/mocks/api'
-import { getUserMeQueryMock } from '_tests_/mocks/state/user'
 import {
   buttonTestUtils,
   fakeWord,
@@ -25,7 +16,16 @@ import {
   notificationTestUtils,
   render,
   setupApiTests,
-} from '_tests_/utils'
+} from '_tests_/helpers'
+import {
+  mockCreateNomenclatureGroupBadRequestError,
+  mockCreateNomenclatureGroupForbiddenError,
+  mockCreateNomenclatureGroupServerError,
+  mockCreateNomenclatureGroupSuccess,
+  mockGetNomenclatureGroupsSuccess,
+  mockGetNomenclaturesSuccess,
+} from '_tests_/mocks/api'
+import { getUserMeQueryMock } from '_tests_/mocks/store/users'
 
 import NomenclaturesPage from './index'
 
@@ -35,12 +35,12 @@ notificationTestUtils.setupNotifications()
 describe('Страница списка номенклатур', () => {
   describe('Поле поиска', () => {
     test('Отображается', async () => {
-      mockGetNomenclatureListSuccess()
-      mockGetNomenclatureGroupListSuccess({ body: [] })
+      mockGetNomenclaturesSuccess()
+      mockGetNomenclatureGroupsSuccess({ body: [] })
 
       render(<NomenclaturesPage />, {
         store: getStoreWithAuth(undefined, undefined, undefined, {
-          queries: { ...getUserMeQueryMock(userFixtures.user()) },
+          queries: { ...getUserMeQueryMock(userFixtures.userDetail()) },
         }),
       })
 
@@ -54,12 +54,12 @@ describe('Страница списка номенклатур', () => {
     })
 
     test('Можно установить значение', async () => {
-      mockGetNomenclatureListSuccess()
-      mockGetNomenclatureGroupListSuccess({ body: [] })
+      mockGetNomenclaturesSuccess()
+      mockGetNomenclatureGroupsSuccess({ body: [] })
 
       const { user } = render(<NomenclaturesPage />, {
         store: getStoreWithAuth(undefined, undefined, undefined, {
-          queries: { ...getUserMeQueryMock(userFixtures.user()) },
+          queries: { ...getUserMeQueryMock(userFixtures.userDetail()) },
         }),
       })
 
@@ -72,12 +72,12 @@ describe('Страница списка номенклатур', () => {
     })
 
     test('Не активно при загрузке групп', async () => {
-      mockGetNomenclatureListSuccess()
-      mockGetNomenclatureGroupListSuccess({ body: [] })
+      mockGetNomenclaturesSuccess()
+      mockGetNomenclatureGroupsSuccess({ body: [] })
 
       render(<NomenclaturesPage />, {
         store: getStoreWithAuth(undefined, undefined, undefined, {
-          queries: { ...getUserMeQueryMock(userFixtures.user()) },
+          queries: { ...getUserMeQueryMock(userFixtures.userDetail()) },
         }),
       })
 
@@ -90,13 +90,13 @@ describe('Страница списка номенклатур', () => {
     test('После поиска группы отображаются', async () => {
       const groupListItem = warehouseFixtures.nomenclatureGroupListItem()
       const groupList = [groupListItem]
-      mockGetNomenclatureGroupListSuccess({ body: groupList, once: false })
+      mockGetNomenclatureGroupsSuccess({ body: groupList, once: false })
 
-      mockGetNomenclatureListSuccess({ once: false })
+      mockGetNomenclaturesSuccess({ once: false })
 
       const { user } = render(<NomenclaturesPage />, {
         store: getStoreWithAuth(undefined, undefined, undefined, {
-          queries: { ...getUserMeQueryMock(userFixtures.user()) },
+          queries: { ...getUserMeQueryMock(userFixtures.userDetail()) },
         }),
       })
 
@@ -117,8 +117,8 @@ describe('Страница списка номенклатур', () => {
 
   describe('Кнопка добавления группы', () => {
     test('Отображается если есть права', () => {
-      mockGetNomenclatureListSuccess()
-      mockGetNomenclatureGroupListSuccess({ body: [] })
+      mockGetNomenclaturesSuccess()
+      mockGetNomenclatureGroupsSuccess({ body: [] })
 
       render(<NomenclaturesPage />, {
         store: getStoreWithAuth(undefined, undefined, undefined, {
@@ -135,12 +135,12 @@ describe('Страница списка номенклатур', () => {
     })
 
     test('Не отображается если нет прав', () => {
-      mockGetNomenclatureListSuccess()
-      mockGetNomenclatureGroupListSuccess({ body: [] })
+      mockGetNomenclaturesSuccess()
+      mockGetNomenclatureGroupsSuccess({ body: [] })
 
       render(<NomenclaturesPage />, {
         store: getStoreWithAuth(undefined, undefined, undefined, {
-          queries: { ...getUserMeQueryMock(userFixtures.user()) },
+          queries: { ...getUserMeQueryMock(userFixtures.userDetail()) },
         }),
       })
 
@@ -149,8 +149,8 @@ describe('Страница списка номенклатур', () => {
     })
 
     test('После клика отображается модалка', async () => {
-      mockGetNomenclatureListSuccess()
-      mockGetNomenclatureGroupListSuccess({ body: [] })
+      mockGetNomenclaturesSuccess()
+      mockGetNomenclatureGroupsSuccess({ body: [] })
 
       const { user } = render(<NomenclaturesPage />, {
         store: getStoreWithAuth(undefined, undefined, undefined, {
@@ -170,11 +170,11 @@ describe('Страница списка номенклатур', () => {
   describe('Добавление группы', () => {
     test('При успешном запросе закрывается модалка и в список добавляется новая группа', async () => {
       const groupList = [warehouseFixtures.nomenclatureGroupListItem()]
-      mockGetNomenclatureGroupListSuccess({ body: groupList })
+      mockGetNomenclatureGroupsSuccess({ body: groupList })
 
       const createdGroup = warehouseFixtures.nomenclatureGroupListItem()
       mockCreateNomenclatureGroupSuccess({ body: createdGroup })
-      mockGetNomenclatureListSuccess()
+      mockGetNomenclaturesSuccess()
 
       const { user } = render(<NomenclaturesPage />, {
         store: getStoreWithAuth(undefined, undefined, undefined, {
@@ -198,7 +198,7 @@ describe('Страница списка номенклатур', () => {
 
     describe('При не успешном запросе', () => {
       test('Обрабатывается ошибка 400', async () => {
-        mockGetNomenclatureGroupListSuccess({ body: [] })
+        mockGetNomenclatureGroupsSuccess({ body: [] })
 
         const detailErrorMessage = fakeWord()
         const titleErrorMessage = fakeWord()
@@ -206,7 +206,7 @@ describe('Страница списка номенклатур', () => {
           body: { detail: detailErrorMessage, title: [titleErrorMessage] },
         })
 
-        mockGetNomenclatureListSuccess()
+        mockGetNomenclaturesSuccess()
 
         const { user } = render(<NomenclaturesPage />, {
           store: getStoreWithAuth(undefined, undefined, undefined, {
@@ -234,14 +234,14 @@ describe('Страница списка номенклатур', () => {
       })
 
       test('Обрабатывается ошибка 403', async () => {
-        mockGetNomenclatureGroupListSuccess({ body: [] })
+        mockGetNomenclatureGroupsSuccess({ body: [] })
 
         const detailErrorMessage = fakeWord()
         mockCreateNomenclatureGroupForbiddenError({
           body: { detail: detailErrorMessage },
         })
 
-        mockGetNomenclatureListSuccess()
+        mockGetNomenclaturesSuccess()
 
         const { user } = render(<NomenclaturesPage />, {
           store: getStoreWithAuth(undefined, undefined, undefined, {
@@ -264,9 +264,9 @@ describe('Страница списка номенклатур', () => {
       })
 
       test('Обрабатывается ошибка 500', async () => {
-        mockGetNomenclatureGroupListSuccess({ body: [] })
+        mockGetNomenclatureGroupsSuccess({ body: [] })
         mockCreateNomenclatureGroupServerError()
-        mockGetNomenclatureListSuccess()
+        mockGetNomenclaturesSuccess()
 
         const { user } = render(<NomenclaturesPage />, {
           store: getStoreWithAuth(undefined, undefined, undefined, {
@@ -294,8 +294,8 @@ describe('Страница списка номенклатур', () => {
 
   describe('Кнопка добавления номенклатуры', () => {
     test('Отображается если есть права', () => {
-      mockGetNomenclatureListSuccess()
-      mockGetNomenclatureGroupListSuccess({ body: [] })
+      mockGetNomenclaturesSuccess()
+      mockGetNomenclatureGroupsSuccess({ body: [] })
 
       render(<NomenclaturesPage />, {
         store: getStoreWithAuth(undefined, undefined, undefined, {
@@ -312,12 +312,12 @@ describe('Страница списка номенклатур', () => {
     })
 
     test('Не отображается если нет прав', () => {
-      mockGetNomenclatureListSuccess()
-      mockGetNomenclatureGroupListSuccess({ body: [] })
+      mockGetNomenclaturesSuccess()
+      mockGetNomenclatureGroupsSuccess({ body: [] })
 
       render(<NomenclaturesPage />, {
         store: getStoreWithAuth(undefined, undefined, undefined, {
-          queries: { ...getUserMeQueryMock(userFixtures.user()) },
+          queries: { ...getUserMeQueryMock(userFixtures.userDetail()) },
         }),
       })
 
@@ -326,8 +326,8 @@ describe('Страница списка номенклатур', () => {
     })
 
     test('После клика отображается модалка', async () => {
-      mockGetNomenclatureListSuccess()
-      mockGetNomenclatureGroupListSuccess({ body: [] })
+      mockGetNomenclaturesSuccess()
+      mockGetNomenclatureGroupsSuccess({ body: [] })
 
       const { user } = render(<NomenclaturesPage />, {
         store: getStoreWithAuth(undefined, undefined, undefined, {
@@ -346,12 +346,12 @@ describe('Страница списка номенклатур', () => {
 
   describe('Кнопка всей номенклатуры', () => {
     test('Отображается', async () => {
-      mockGetNomenclatureListSuccess()
-      mockGetNomenclatureGroupListSuccess({ body: [] })
+      mockGetNomenclaturesSuccess()
+      mockGetNomenclatureGroupsSuccess({ body: [] })
 
       render(<NomenclaturesPage />, {
         store: getStoreWithAuth(undefined, undefined, undefined, {
-          queries: { ...getUserMeQueryMock(userFixtures.user()) },
+          queries: { ...getUserMeQueryMock(userFixtures.userDetail()) },
         }),
       })
 
@@ -364,13 +364,13 @@ describe('Страница списка номенклатур', () => {
     })
 
     test('При клике перезапрашивается номенклатура', async () => {
-      mockGetNomenclatureListSuccess({ once: false })
+      mockGetNomenclaturesSuccess({ once: false })
       const nomenclatureGroupListItem = warehouseFixtures.nomenclatureGroupListItem()
-      mockGetNomenclatureGroupListSuccess({ body: [nomenclatureGroupListItem] })
+      mockGetNomenclatureGroupsSuccess({ body: [nomenclatureGroupListItem] })
 
       const { user } = render(<NomenclaturesPage />, {
         store: getStoreWithAuth(undefined, undefined, undefined, {
-          queries: { ...getUserMeQueryMock(userFixtures.user()) },
+          queries: { ...getUserMeQueryMock(userFixtures.userDetail()) },
         }),
       })
 
@@ -388,12 +388,12 @@ describe('Страница списка номенклатур', () => {
   describe('Список групп', () => {
     test('Отображается', async () => {
       const groupList = [warehouseFixtures.nomenclatureGroupListItem()]
-      mockGetNomenclatureGroupListSuccess({ body: groupList })
-      mockGetNomenclatureListSuccess()
+      mockGetNomenclatureGroupsSuccess({ body: groupList })
+      mockGetNomenclaturesSuccess()
 
       render(<NomenclaturesPage />, {
         store: getStoreWithAuth(undefined, undefined, undefined, {
-          queries: { ...getUserMeQueryMock(userFixtures.user()) },
+          queries: { ...getUserMeQueryMock(userFixtures.userDetail()) },
         }),
       })
 
@@ -407,12 +407,12 @@ describe('Страница списка номенклатур', () => {
   })
 
   test('Таблица номенклатур отображается', () => {
-    mockGetNomenclatureListSuccess()
-    mockGetNomenclatureGroupListSuccess({ body: [] })
+    mockGetNomenclaturesSuccess()
+    mockGetNomenclatureGroupsSuccess({ body: [] })
 
     render(<NomenclaturesPage />, {
       store: getStoreWithAuth(undefined, undefined, undefined, {
-        queries: { ...getUserMeQueryMock(userFixtures.user()) },
+        queries: { ...getUserMeQueryMock(userFixtures.userDetail()) },
       }),
     })
 

@@ -9,19 +9,19 @@ import { DATE_PICKER_FORMAT, TIME_PICKER_FORMAT } from 'lib/antd/constants/dateT
 import { validationMessages } from 'shared/constants/validation'
 import { formatDate } from 'shared/utils/date'
 
-import { props } from '_tests_/features/warehouse/components/RelocationTaskForm/constants'
-import { relocationTaskFormTestUtils } from '_tests_/features/warehouse/components/RelocationTaskForm/testUtils'
-import { createRelocationTaskPageTestUtils } from '_tests_/features/warehouse/pages/CreateRelocationTaskPage/testUtils'
+import { props } from '_tests_/features/warehouses/components/RelocationTaskForm/constants'
+import { relocationTaskFormTestUtils } from '_tests_/features/warehouses/components/RelocationTaskForm/testUtils'
+import { createRelocationTaskPageTestUtils } from '_tests_/features/warehouses/pages/CreateRelocationTaskPage/testUtils'
 import catalogsFixtures from '_tests_/fixtures/catalogs'
 import userFixtures from '_tests_/fixtures/users'
+import { fakeWord, getStoreWithAuth, render, selectTestUtils, setupApiTests } from '_tests_/helpers'
 import {
-  mockGetCurrencyListSuccess,
-  mockGetEquipmentCatalogListSuccess,
+  mockGetCurrenciesSuccess,
+  mockGetEquipmentsCatalogSuccess,
   mockGetLocationsCatalogSuccess,
   mockGetUsersSuccess,
 } from '_tests_/mocks/api'
-import { getUserMeQueryMock } from '_tests_/mocks/state/user'
-import { fakeWord, getStoreWithAuth, render, selectTestUtils, setupApiTests } from '_tests_/utils'
+import { getUserMeQueryMock } from '_tests_/mocks/store/users'
 
 import RelocationTaskForm from './index'
 import { makeUserGroupOptions } from './utils'
@@ -64,12 +64,12 @@ describe('Форма создания заявки на перемещение �
         test('Если не заполнить поле и нажать кнопку отправки', async () => {
           mockGetUsersSuccess({ body: [] })
           mockGetLocationsCatalogSuccess({ body: [], once: false })
-          mockGetEquipmentCatalogListSuccess()
-          mockGetCurrencyListSuccess({ body: [] })
+          mockGetEquipmentsCatalogSuccess()
+          mockGetCurrenciesSuccess({ body: [] })
 
           const { user } = render(<CreateRelocationTaskPage />, {
             store: getStoreWithAuth(undefined, undefined, undefined, {
-              queries: { ...getUserMeQueryMock(userFixtures.user()) },
+              queries: { ...getUserMeQueryMock(userFixtures.userDetail()) },
             }),
           })
 
@@ -132,12 +132,12 @@ describe('Форма создания заявки на перемещение �
         test('Если не заполнить поле и нажать кнопку отправки', async () => {
           mockGetUsersSuccess({ body: [] })
           mockGetLocationsCatalogSuccess({ body: [], once: false })
-          mockGetEquipmentCatalogListSuccess()
-          mockGetCurrencyListSuccess({ body: [] })
+          mockGetEquipmentsCatalogSuccess()
+          mockGetCurrenciesSuccess({ body: [] })
 
           const { user } = render(<CreateRelocationTaskPage />, {
             store: getStoreWithAuth(undefined, undefined, undefined, {
-              queries: { ...getUserMeQueryMock(userFixtures.user()) },
+              queries: { ...getUserMeQueryMock(userFixtures.userDetail()) },
             }),
           })
 
@@ -217,8 +217,8 @@ describe('Форма создания заявки на перемещение �
 
   describe('Объект выбытия', () => {
     test('Отображается корректно', async () => {
-      const locationCatalogListItem = catalogsFixtures.locationCatalogListItem()
-      const locationList = [locationCatalogListItem]
+      const locationCatalogItem = catalogsFixtures.locationCatalogItem()
+      const locationList = [locationCatalogItem]
 
       const { user } = render(
         <Form>
@@ -229,7 +229,7 @@ describe('Форма создания заявки на перемещение �
       const input = relocationTaskFormTestUtils.getRelocateFromSelectInput()
       await relocationTaskFormTestUtils.openRelocateFromSelect(user)
       const selectedRelocateFrom = relocationTaskFormTestUtils.querySelectedRelocateFrom(
-        locationCatalogListItem.title,
+        locationCatalogItem.title,
       )
 
       expect(input).toBeInTheDocument()
@@ -242,18 +242,18 @@ describe('Форма создания заявки на перемещение �
     })
 
     test('Можно выбрать значение', async () => {
-      const locationCatalogListItem = catalogsFixtures.locationCatalogListItem()
+      const locationCatalogItem = catalogsFixtures.locationCatalogItem()
 
       const { user } = render(
         <Form>
-          <RelocationTaskForm {...props} relocateFromLocations={[locationCatalogListItem]} />
+          <RelocationTaskForm {...props} relocateFromLocations={[locationCatalogItem]} />
         </Form>,
       )
 
       await relocationTaskFormTestUtils.openRelocateFromSelect(user)
-      await relocationTaskFormTestUtils.setRelocateFrom(user, locationCatalogListItem.title)
+      await relocationTaskFormTestUtils.setRelocateFrom(user, locationCatalogItem.title)
       const selectedRelocateFrom = relocationTaskFormTestUtils.getSelectedRelocateFrom(
-        locationCatalogListItem.title,
+        locationCatalogItem.title,
       )
 
       expect(selectedRelocateFrom).toBeInTheDocument()
@@ -262,12 +262,12 @@ describe('Форма создания заявки на перемещение �
     test('Отображается ошибка если не заполнить поле и нажать кнопку отправки', async () => {
       mockGetUsersSuccess({ body: [] })
       mockGetLocationsCatalogSuccess({ body: catalogsFixtures.locationsCatalog(), once: false })
-      mockGetEquipmentCatalogListSuccess()
-      mockGetCurrencyListSuccess({ body: [] })
+      mockGetEquipmentsCatalogSuccess()
+      mockGetCurrenciesSuccess({ body: [] })
 
       const { user } = render(<CreateRelocationTaskPage />, {
         store: getStoreWithAuth(undefined, undefined, undefined, {
-          queries: { ...getUserMeQueryMock(userFixtures.user()) },
+          queries: { ...getUserMeQueryMock(userFixtures.userDetail()) },
         }),
       })
 
@@ -282,8 +282,8 @@ describe('Форма создания заявки на перемещение �
 
   describe('Объект прибытия', () => {
     test('Отображается корректно', async () => {
-      const locationCatalogListItem = catalogsFixtures.locationCatalogListItem()
-      const locationList = [locationCatalogListItem]
+      const locationCatalogItem = catalogsFixtures.locationCatalogItem()
+      const locationList = [locationCatalogItem]
 
       const { user } = render(
         <Form>
@@ -294,7 +294,7 @@ describe('Форма создания заявки на перемещение �
       const input = relocationTaskFormTestUtils.getRelocateToSelectInput()
       await relocationTaskFormTestUtils.openRelocateToSelect(user)
       const selectedRelocateTo = relocationTaskFormTestUtils.querySelectedRelocateTo(
-        locationCatalogListItem.title,
+        locationCatalogItem.title,
       )
 
       expect(input).toBeInTheDocument()
@@ -307,18 +307,18 @@ describe('Форма создания заявки на перемещение �
     })
 
     test('Можно выбрать значение', async () => {
-      const locationCatalogListItem = catalogsFixtures.locationCatalogListItem()
+      const locationCatalogItem = catalogsFixtures.locationCatalogItem()
 
       const { user } = render(
         <Form>
-          <RelocationTaskForm {...props} relocateToLocations={[locationCatalogListItem]} />
+          <RelocationTaskForm {...props} relocateToLocations={[locationCatalogItem]} />
         </Form>,
       )
 
       await relocationTaskFormTestUtils.openRelocateToSelect(user)
-      await relocationTaskFormTestUtils.setRelocateTo(user, locationCatalogListItem.title)
+      await relocationTaskFormTestUtils.setRelocateTo(user, locationCatalogItem.title)
       const selectedRelocateTo = relocationTaskFormTestUtils.getSelectedRelocateTo(
-        locationCatalogListItem.title,
+        locationCatalogItem.title,
       )
 
       expect(selectedRelocateTo).toBeInTheDocument()
@@ -327,7 +327,7 @@ describe('Форма создания заявки на перемещение �
 
   describe('Исполнитель', () => {
     test('Отображается корректно', async () => {
-      const userListItem = userFixtures.userListItem()
+      const userListItem = userFixtures.user()
       const users = [userListItem]
 
       const { user } = render(
@@ -352,7 +352,7 @@ describe('Форма создания заявки на перемещение �
     })
 
     test('Можно выбрать значение', async () => {
-      const userListItem = userFixtures.userListItem()
+      const userListItem = userFixtures.user()
 
       const { user } = render(
         <Form>
@@ -375,12 +375,12 @@ describe('Форма создания заявки на перемещение �
     test('Отображается ошибка если не заполнить поле и нажать кнопку отправки', async () => {
       mockGetUsersSuccess({ body: [] })
       mockGetLocationsCatalogSuccess({ body: [], once: false })
-      mockGetEquipmentCatalogListSuccess()
-      mockGetCurrencyListSuccess({ body: [] })
+      mockGetEquipmentsCatalogSuccess()
+      mockGetCurrenciesSuccess({ body: [] })
 
       const { user } = render(<CreateRelocationTaskPage />, {
         store: getStoreWithAuth(undefined, undefined, undefined, {
-          queries: { ...getUserMeQueryMock(userFixtures.user()) },
+          queries: { ...getUserMeQueryMock(userFixtures.userDetail()) },
         }),
       })
 
@@ -393,7 +393,7 @@ describe('Форма создания заявки на перемещение �
 
   describe('Контролер', () => {
     test('Отображается корректно', async () => {
-      const userListItem = userFixtures.userListItem()
+      const userListItem = userFixtures.user()
       const users = [userListItem]
 
       const { user } = render(
@@ -418,7 +418,7 @@ describe('Форма создания заявки на перемещение �
     })
 
     test('Можно выбрать значение', async () => {
-      const userListItem = userFixtures.userListItem()
+      const userListItem = userFixtures.user()
 
       const { user } = render(
         <Form>
@@ -442,8 +442,8 @@ describe('Форма создания заявки на перемещение �
     test.skip('Обязателен если перемещение не с основного склада на склад МСИ', async () => {
       mockGetUsersSuccess()
       mockGetLocationsCatalogSuccess({ body: [], once: false })
-      mockGetEquipmentCatalogListSuccess()
-      mockGetCurrencyListSuccess({ body: [] })
+      mockGetEquipmentsCatalogSuccess()
+      mockGetCurrenciesSuccess({ body: [] })
 
       const { user } = render(<CreateRelocationTaskPage />)
 
@@ -459,8 +459,8 @@ describe('Форма создания заявки на перемещение �
     test.skip('Не обязателен если перемещение с основного склада на склад МСИ', async () => {
       mockGetUsersSuccess()
       mockGetLocationsCatalogSuccess({ body: [], once: false })
-      mockGetEquipmentCatalogListSuccess()
-      mockGetCurrencyListSuccess({ body: [] })
+      mockGetEquipmentsCatalogSuccess()
+      mockGetCurrenciesSuccess({ body: [] })
 
       const { user } = render(<CreateRelocationTaskPage />)
 

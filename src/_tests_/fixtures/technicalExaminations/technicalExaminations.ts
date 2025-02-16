@@ -3,9 +3,9 @@ import isUndefined from 'lodash/isUndefined'
 import pick from 'lodash/pick'
 
 import userFixtures from '_tests_/fixtures/users'
-import { fakeDateString, fakeId, fakeInteger, fakeWord } from '_tests_/utils'
+import { fakeDateString, fakeId, fakeInteger, fakeWord } from '_tests_/helpers'
 
-export const technicalExaminationListItem = (
+export const technicalExamination = (
   props?: Partial<Pick<TechnicalExaminationDTO, 'hasMechanicalDamage'>>,
 ): TechnicalExaminationDTO => ({
   hasMechanicalDamage: isUndefined(props?.hasMechanicalDamage) ? false : props!.hasMechanicalDamage,
@@ -16,5 +16,5 @@ export const technicalExaminationListItem = (
   restorationCost: fakeInteger(),
   conclusion: fakeWord(),
   createdAt: fakeDateString(),
-  createdBy: pick(userFixtures.user(), 'id', 'firstName', 'lastName', 'middleName'),
+  createdBy: pick(userFixtures.userDetail(), 'id', 'firstName', 'lastName', 'middleName'),
 })

@@ -1,7 +1,7 @@
 import { FastFilterOptionType } from 'features/tasks/components/FastFilters/options'
 import { FastFiltersProps } from 'features/tasks/components/FastFilters/types'
 
-import { fakeWord } from '_tests_/utils'
+import { fakeWord } from '_tests_/helpers'
 
 export const option: FastFilterOptionType<string> = {
   label: fakeWord(),

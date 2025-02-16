@@ -1,9 +1,7 @@
-import * as countryList from './countries'
-import * as country from './country'
+import * as countries from './countries'
 
-const countryFixtures = {
-  ...country,
-  ...countryList,
+const countriesFixtures = {
+  ...countries,
 } as const
 
-export default countryFixtures
+export default countriesFixtures

@@ -1,4 +1,4 @@
-import { fakeLatitude, fakeLongitude } from '_tests_/utils'
+import { fakeLatitude, fakeLongitude } from '_tests_/helpers'
 
 import * as utils from './utils'
 

@@ -5,12 +5,12 @@ import {
   CurrencyCatalogItemDTO,
 } from 'shared/catalogs/currencies/api/dto/currenciesCatalog.dto'
 
-import { fakeInteger, fakeWord } from '_tests_/utils'
+import { fakeInteger, fakeWord } from '_tests_/helpers'
 
-export const currencyListItem = (): CurrencyCatalogItemDTO => ({
+export const currency = (): CurrencyCatalogItemDTO => ({
   id: fakeInteger(),
   title: fakeWord(),
 })
 
 export const currencies = (length: number = 1): CurrenciesCatalogDTO =>
-  times(length, () => currencyListItem())
+  times(length, () => currency())

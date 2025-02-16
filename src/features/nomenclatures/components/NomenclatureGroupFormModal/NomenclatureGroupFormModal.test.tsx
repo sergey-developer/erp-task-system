@@ -5,9 +5,9 @@ import { validationMessages } from 'shared/constants/validation'
 import {
   addModeProps,
   props,
-} from '_tests_/features/warehouse/components/NomenclatureGroupFormModal/constants'
-import { nomenclatureGroupFormModalTestUtils } from '_tests_/features/warehouse/components/NomenclatureGroupFormModal/testUtils'
-import { fakeWord, render } from '_tests_/utils'
+} from '_tests_/features/warehouses/components/NomenclatureGroupFormModal/constants'
+import { nomenclatureGroupFormModalTestUtils } from '_tests_/features/warehouses/components/NomenclatureGroupFormModal/testUtils'
+import { fakeWord, render } from '_tests_/helpers'
 
 import NomenclatureGroupFormModal from './index'
 

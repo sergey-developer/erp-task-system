@@ -4,13 +4,14 @@ import {
   TaskStatusEnum,
   TaskTypeEnum,
 } from 'features/tasks/api/constants'
-import { GetTasksResponse, TaskDTO } from 'features/tasks/api/dto'
+import { TaskDTO } from 'features/tasks/api/dto'
+import { GetTasksResponse } from 'features/tasks/api/schemas'
 import times from 'lodash/times'
 
 import commonFixtures from '_tests_/fixtures/common'
-import supportGroupFixtures from '_tests_/fixtures/supportGroups'
+import supportGroupsFixtures from '_tests_/fixtures/supportGroups'
 import taskFixtures from '_tests_/fixtures/tasks'
-import { fakeDateString, fakeId, fakeIdStr, fakeInteger, fakeWord } from '_tests_/utils'
+import { fakeDateString, fakeId, fakeIdStr, fakeInteger, fakeWord } from '_tests_/helpers'
 
 export const taskListItem = (
   props?: Partial<
@@ -30,7 +31,7 @@ export const taskListItem = (
   createdAt: fakeDateString(),
   recordId: fakeIdStr(),
   workGroup: taskFixtures.workGroup(),
-  supportGroup: supportGroupFixtures.supportGroup(),
+  supportGroup: supportGroupsFixtures.supportGroup(),
   title: fakeWord(),
   name: fakeWord(),
   subtasksCounter: { all: fakeInteger(), completed: fakeInteger() },

@@ -8,23 +8,23 @@ import { getSupportGroupsErrorMessage } from 'shared/supportGroups/api/constants
 import { onCancel, props } from '_tests_/features/tasks/components/CreateSubTaskModal/constants'
 import { createSubTaskModalTestUtils } from '_tests_/features/tasks/components/CreateSubTaskModal/testUtils'
 import catalogsFixtures from '_tests_/fixtures/catalogs'
-import supportGroupFixtures from '_tests_/fixtures/supportGroups'
-import {
-  mockCreateSubTaskBadRequestError,
-  mockCreateSubTaskServerError,
-  mockCreateSubTaskSuccess,
-  mockGetSubTaskTemplateListServerError,
-  mockGetSubTaskTemplateListSuccess,
-  mockGetSupportGroupListServerError,
-  mockGetSupportGroupListSuccess,
-} from '_tests_/mocks/api'
+import supportGroupsFixtures from '_tests_/fixtures/supportGroups'
 import {
   fakeWord,
   getStoreWithAuth,
   notificationTestUtils,
   render,
   setupApiTests,
-} from '_tests_/utils'
+} from '_tests_/helpers'
+import {
+  mockCreateSubTaskBadRequestError,
+  mockCreateSubTaskServerError,
+  mockCreateSubTaskSuccess,
+  mockGetSubTaskTemplatesServerError,
+  mockGetSubTaskTemplatesSuccess,
+  mockGetSupportGroupsServerError,
+  mockGetSupportGroupsSuccess,
+} from '_tests_/mocks/api'
 
 import CreateSubTaskModal from './index'
 import { CreateSubTaskFormErrors } from './types'
@@ -38,7 +38,7 @@ afterEach(() => {
 
 describe('Модалка создания задачи заявки', () => {
   test('Заголовок отображается', () => {
-    mockGetSupportGroupListSuccess()
+    mockGetSupportGroupsSuccess()
 
     render(<CreateSubTaskModal {...props} />)
 
@@ -49,7 +49,7 @@ describe('Модалка создания задачи заявки', () => {
   describe('Форма создания', () => {
     describe('Поле группы поддержки', () => {
       test('Отображается корректно', async () => {
-        mockGetSupportGroupListSuccess()
+        mockGetSupportGroupsSuccess()
 
         render(<CreateSubTaskModal {...props} />)
 
@@ -65,11 +65,11 @@ describe('Модалка создания задачи заявки', () => {
       })
 
       test.skip('Не активно во время создания задачи', async () => {
-        const fakeSupportGroupListItem = supportGroupFixtures.supportGroupListItem()
-        mockGetSupportGroupListSuccess({ body: [fakeSupportGroupListItem] })
+        const fakeSupportGroupListItem = supportGroupsFixtures.supportGroup()
+        mockGetSupportGroupsSuccess({ body: [fakeSupportGroupListItem] })
 
         const fakeTemplate = catalogsFixtures.subTaskTemplate()
-        mockGetSubTaskTemplateListSuccess({ body: [fakeTemplate] })
+        mockGetSubTaskTemplatesSuccess({ body: [fakeTemplate] })
 
         mockCreateSubTaskSuccess(props.task.id)
 
@@ -91,14 +91,14 @@ describe('Модалка создания задачи заявки', () => {
       })
 
       test('Отображает состояние загрузки во время загрузки групп поддержки', async () => {
-        mockGetSupportGroupListSuccess()
+        mockGetSupportGroupsSuccess()
         render(<CreateSubTaskModal {...props} />)
         await createSubTaskModalTestUtils.supportGroup.expectLoadingStarted()
       })
 
       test('Имеет верное количество вариантов', async () => {
-        const fakeSupportGroups = [supportGroupFixtures.supportGroupListItem()]
-        mockGetSupportGroupListSuccess({ body: fakeSupportGroups })
+        const fakeSupportGroups = [supportGroupsFixtures.supportGroup()]
+        mockGetSupportGroupsSuccess({ body: fakeSupportGroups })
 
         const { user } = render(<CreateSubTaskModal {...props} />)
 
@@ -112,8 +112,8 @@ describe('Модалка создания задачи заявки', () => {
       })
 
       test('Не имеет значения по умолчанию', async () => {
-        const fakeSupportGroups = [supportGroupFixtures.supportGroupListItem()]
-        mockGetSupportGroupListSuccess({ body: fakeSupportGroups })
+        const fakeSupportGroups = [supportGroupsFixtures.supportGroup()]
+        mockGetSupportGroupsSuccess({ body: fakeSupportGroups })
 
         const { user } = render(<CreateSubTaskModal {...props} />)
 
@@ -127,10 +127,10 @@ describe('Модалка создания задачи заявки', () => {
       })
 
       test('Можно выбрать значение', async () => {
-        const fakeSupportGroupListItem = supportGroupFixtures.supportGroupListItem()
-        mockGetSupportGroupListSuccess({ body: [fakeSupportGroupListItem] })
+        const fakeSupportGroupListItem = supportGroupsFixtures.supportGroup()
+        mockGetSupportGroupsSuccess({ body: [fakeSupportGroupListItem] })
 
-        mockGetSubTaskTemplateListSuccess()
+        mockGetSubTaskTemplatesSuccess()
 
         const { user } = render(<CreateSubTaskModal {...props} />)
 
@@ -146,7 +146,7 @@ describe('Модалка создания задачи заявки', () => {
 
       describe('Соответствующая ошибка отображается под полем', () => {
         test('Если не выбрать значение и нажать кнопку отправки', async () => {
-          mockGetSupportGroupListSuccess()
+          mockGetSupportGroupsSuccess()
 
           const { user } = render(<CreateSubTaskModal {...props} />)
 
@@ -162,7 +162,7 @@ describe('Модалка создания задачи заявки', () => {
 
     describe('Поле сервиса', () => {
       test('Отображается корректно', () => {
-        mockGetSupportGroupListSuccess()
+        mockGetSupportGroupsSuccess()
 
         render(<CreateSubTaskModal {...props} />)
 
@@ -177,7 +177,7 @@ describe('Модалка создания задачи заявки', () => {
       })
 
       test('Не активно если не выбрана группа поддержки', async () => {
-        mockGetSupportGroupListSuccess()
+        mockGetSupportGroupsSuccess()
 
         render(<CreateSubTaskModal {...props} />)
 
@@ -185,11 +185,11 @@ describe('Модалка создания задачи заявки', () => {
       })
 
       test('Не активно во время создания задачи', async () => {
-        const fakeSupportGroupListItem = supportGroupFixtures.supportGroupListItem()
-        mockGetSupportGroupListSuccess({ body: [fakeSupportGroupListItem] })
+        const fakeSupportGroupListItem = supportGroupsFixtures.supportGroup()
+        mockGetSupportGroupsSuccess({ body: [fakeSupportGroupListItem] })
 
         const fakeTemplate = catalogsFixtures.subTaskTemplate()
-        mockGetSubTaskTemplateListSuccess({ body: [fakeTemplate] })
+        mockGetSubTaskTemplatesSuccess({ body: [fakeTemplate] })
 
         mockCreateSubTaskSuccess(props.task.id)
 
@@ -211,10 +211,10 @@ describe('Модалка создания задачи заявки', () => {
       })
 
       test('Становится активным после выбора группы поддержки', async () => {
-        const fakeSupportGroupListItem = supportGroupFixtures.supportGroupListItem()
-        mockGetSupportGroupListSuccess({ body: [fakeSupportGroupListItem] })
+        const fakeSupportGroupListItem = supportGroupsFixtures.supportGroup()
+        mockGetSupportGroupsSuccess({ body: [fakeSupportGroupListItem] })
 
-        mockGetSubTaskTemplateListSuccess({
+        mockGetSubTaskTemplatesSuccess({
           body: [catalogsFixtures.subTaskTemplate()],
         })
 
@@ -231,10 +231,10 @@ describe('Модалка создания задачи заявки', () => {
       })
 
       test('Отображает состояние загрузки во время загрузки шаблонов', async () => {
-        const fakeSupportGroupListItem = supportGroupFixtures.supportGroupListItem()
-        mockGetSupportGroupListSuccess({ body: [fakeSupportGroupListItem] })
+        const fakeSupportGroupListItem = supportGroupsFixtures.supportGroup()
+        mockGetSupportGroupsSuccess({ body: [fakeSupportGroupListItem] })
 
-        mockGetSubTaskTemplateListSuccess()
+        mockGetSubTaskTemplatesSuccess()
 
         const { user } = render(<CreateSubTaskModal {...props} />)
 
@@ -245,11 +245,11 @@ describe('Модалка создания задачи заявки', () => {
       })
 
       test('Имеет верное количество вариантов', async () => {
-        const fakeSupportGroupListItem = supportGroupFixtures.supportGroupListItem()
-        mockGetSupportGroupListSuccess({ body: [fakeSupportGroupListItem] })
+        const fakeSupportGroupListItem = supportGroupsFixtures.supportGroup()
+        mockGetSupportGroupsSuccess({ body: [fakeSupportGroupListItem] })
 
         const fakeTemplateList = [catalogsFixtures.subTaskTemplate()]
-        mockGetSubTaskTemplateListSuccess({ body: fakeTemplateList })
+        mockGetSubTaskTemplatesSuccess({ body: fakeTemplateList })
 
         const { user } = render(<CreateSubTaskModal {...props} />)
 
@@ -266,11 +266,11 @@ describe('Модалка создания задачи заявки', () => {
       })
 
       test('Не имеет значения по умолчанию', async () => {
-        const fakeSupportGroupListItem = supportGroupFixtures.supportGroupListItem()
-        mockGetSupportGroupListSuccess({ body: [fakeSupportGroupListItem] })
+        const fakeSupportGroupListItem = supportGroupsFixtures.supportGroup()
+        mockGetSupportGroupsSuccess({ body: [fakeSupportGroupListItem] })
 
         const fakeTemplateList = [catalogsFixtures.subTaskTemplate()]
-        mockGetSubTaskTemplateListSuccess({ body: fakeTemplateList })
+        mockGetSubTaskTemplatesSuccess({ body: fakeTemplateList })
 
         const { user } = render(<CreateSubTaskModal {...props} />)
 
@@ -287,11 +287,11 @@ describe('Модалка создания задачи заявки', () => {
       })
 
       test('Можно выбрать значение', async () => {
-        const fakeSupportGroupListItem = supportGroupFixtures.supportGroupListItem()
-        mockGetSupportGroupListSuccess({ body: [fakeSupportGroupListItem] })
+        const fakeSupportGroupListItem = supportGroupsFixtures.supportGroup()
+        mockGetSupportGroupsSuccess({ body: [fakeSupportGroupListItem] })
 
         const fakeTemplate = catalogsFixtures.subTaskTemplate()
-        mockGetSubTaskTemplateListSuccess({ body: [fakeTemplate] })
+        mockGetSubTaskTemplatesSuccess({ body: [fakeTemplate] })
 
         const { user } = render(<CreateSubTaskModal {...props} />)
 
@@ -308,7 +308,7 @@ describe('Модалка создания задачи заявки', () => {
 
       describe('Соответствующая ошибка отображается под полем', () => {
         test('Если не выбрать значение и нажать кнопку отправки', async () => {
-          mockGetSupportGroupListSuccess()
+          mockGetSupportGroupsSuccess()
 
           const { user } = render(<CreateSubTaskModal {...props} />)
 
@@ -324,7 +324,7 @@ describe('Модалка создания задачи заявки', () => {
 
     describe('Поле заголовка', () => {
       test('Отображается корректно', () => {
-        mockGetSupportGroupListSuccess()
+        mockGetSupportGroupsSuccess()
 
         render(<CreateSubTaskModal {...props} />)
 
@@ -337,7 +337,7 @@ describe('Модалка создания задачи заявки', () => {
       })
 
       test('Можно ввести значение', async () => {
-        mockGetSupportGroupListSuccess()
+        mockGetSupportGroupsSuccess()
 
         const { user } = render(
           <CreateSubTaskModal
@@ -357,7 +357,7 @@ describe('Модалка создания задачи заявки', () => {
 
       describe('Соответствующая ошибка отображается под полем', () => {
         test('Если не ввести значение и нажать кнопку отправки', async () => {
-          mockGetSupportGroupListSuccess()
+          mockGetSupportGroupsSuccess()
 
           const { user } = render(
             <CreateSubTaskModal
@@ -378,7 +378,7 @@ describe('Модалка создания задачи заявки', () => {
         })
 
         test('Если ввести только пробелы', async () => {
-          mockGetSupportGroupListSuccess()
+          mockGetSupportGroupsSuccess()
 
           const { user } = render(
             <CreateSubTaskModal
@@ -401,7 +401,7 @@ describe('Модалка создания задачи заявки', () => {
 
     describe('Поле описания', () => {
       test('Отображается корректно', () => {
-        mockGetSupportGroupListSuccess()
+        mockGetSupportGroupsSuccess()
 
         render(<CreateSubTaskModal {...props} />)
 
@@ -414,7 +414,7 @@ describe('Модалка создания задачи заявки', () => {
       })
 
       test('Можно ввести значение', async () => {
-        mockGetSupportGroupListSuccess()
+        mockGetSupportGroupsSuccess()
 
         const { user } = render(
           <CreateSubTaskModal
@@ -434,7 +434,7 @@ describe('Модалка создания задачи заявки', () => {
 
       describe('Соответствующая ошибка отображается под полем', () => {
         test('Если не ввести значение и нажать кнопку отправки', async () => {
-          mockGetSupportGroupListSuccess()
+          mockGetSupportGroupsSuccess()
 
           const { user } = render(
             <CreateSubTaskModal
@@ -454,7 +454,7 @@ describe('Модалка создания задачи заявки', () => {
         })
 
         test('Если ввести только пробелы', async () => {
-          mockGetSupportGroupListSuccess()
+          mockGetSupportGroupsSuccess()
 
           const { user } = render(
             <CreateSubTaskModal
@@ -480,7 +480,7 @@ describe('Модалка создания задачи заявки', () => {
 
   describe('Кнопка отправки', () => {
     test('Отображается корректно', () => {
-      mockGetSupportGroupListSuccess()
+      mockGetSupportGroupsSuccess()
       render(<CreateSubTaskModal {...props} />)
 
       const button = createSubTaskModalTestUtils.getSubmitButton()
@@ -491,11 +491,11 @@ describe('Модалка создания задачи заявки', () => {
 
     // todo: не проходит на CI
     test.skip('Отображает состояние загрузки во время создания задачи', async () => {
-      const fakeSupportGroupListItem = supportGroupFixtures.supportGroupListItem()
-      mockGetSupportGroupListSuccess({ body: [fakeSupportGroupListItem] })
+      const fakeSupportGroupListItem = supportGroupsFixtures.supportGroup()
+      mockGetSupportGroupsSuccess({ body: [fakeSupportGroupListItem] })
 
       const fakeTemplate = catalogsFixtures.subTaskTemplate()
-      mockGetSubTaskTemplateListSuccess({ body: [fakeTemplate] })
+      mockGetSubTaskTemplatesSuccess({ body: [fakeTemplate] })
 
       mockCreateSubTaskSuccess(props.task.id)
 
@@ -517,7 +517,7 @@ describe('Модалка создания задачи заявки', () => {
 
   describe('Кнопка отмены', () => {
     test('Отображается корректно', () => {
-      mockGetSupportGroupListSuccess()
+      mockGetSupportGroupsSuccess()
 
       render(<CreateSubTaskModal {...props} />)
 
@@ -528,7 +528,7 @@ describe('Модалка создания задачи заявки', () => {
     })
 
     test('Обработчик вызывается корректно', async () => {
-      mockGetSupportGroupListSuccess()
+      mockGetSupportGroupsSuccess()
 
       const { user } = render(<CreateSubTaskModal {...props} />)
 
@@ -540,11 +540,11 @@ describe('Модалка создания задачи заявки', () => {
   describe('Создание задачи', () => {
     describe('При успешном создании', () => {
       test('Вызывается обработчик закрытия модалки', async () => {
-        const fakeSupportGroupListItem = supportGroupFixtures.supportGroupListItem()
-        mockGetSupportGroupListSuccess({ body: [fakeSupportGroupListItem] })
+        const fakeSupportGroupListItem = supportGroupsFixtures.supportGroup()
+        mockGetSupportGroupsSuccess({ body: [fakeSupportGroupListItem] })
 
         const fakeTemplate = catalogsFixtures.subTaskTemplate()
-        mockGetSubTaskTemplateListSuccess({ body: [fakeTemplate] })
+        mockGetSubTaskTemplatesSuccess({ body: [fakeTemplate] })
 
         mockCreateSubTaskSuccess(props.task.id)
 
@@ -570,11 +570,11 @@ describe('Модалка создания задачи заявки', () => {
 
     describe('При не успешном создании', () => {
       test('Обрабатывается ошибка 400', async () => {
-        const fakeSupportGroupListItem = supportGroupFixtures.supportGroupListItem()
-        mockGetSupportGroupListSuccess({ body: [fakeSupportGroupListItem] })
+        const fakeSupportGroupListItem = supportGroupsFixtures.supportGroup()
+        mockGetSupportGroupsSuccess({ body: [fakeSupportGroupListItem] })
 
         const fakeTemplate = catalogsFixtures.subTaskTemplate()
-        mockGetSubTaskTemplateListSuccess({ body: [fakeTemplate] })
+        mockGetSubTaskTemplatesSuccess({ body: [fakeTemplate] })
 
         const badRequestResponse: Required<CreateSubTaskFormErrors> = {
           title: [fakeWord()],
@@ -618,11 +618,11 @@ describe('Модалка создания задачи заявки', () => {
       })
 
       test.skip('Обрабатывается ошибка 500', async () => {
-        const fakeSupportGroupListItem = supportGroupFixtures.supportGroupListItem()
-        mockGetSupportGroupListSuccess({ body: [fakeSupportGroupListItem] })
+        const fakeSupportGroupListItem = supportGroupsFixtures.supportGroup()
+        mockGetSupportGroupsSuccess({ body: [fakeSupportGroupListItem] })
 
         const fakeTemplate = catalogsFixtures.subTaskTemplate()
-        mockGetSubTaskTemplateListSuccess({ body: [fakeTemplate] })
+        mockGetSubTaskTemplatesSuccess({ body: [fakeTemplate] })
 
         mockCreateSubTaskServerError(props.task.id)
 
@@ -648,10 +648,10 @@ describe('Модалка создания задачи заявки', () => {
   describe('Список шаблонов', () => {
     describe('При не успешном запросе', () => {
       test('Отображается соответствующее уведомление', async () => {
-        const fakeSupportGroupListItem = supportGroupFixtures.supportGroupListItem()
-        mockGetSupportGroupListSuccess({ body: [fakeSupportGroupListItem] })
+        const fakeSupportGroupListItem = supportGroupsFixtures.supportGroup()
+        mockGetSupportGroupsSuccess({ body: [fakeSupportGroupListItem] })
 
-        mockGetSubTaskTemplateListServerError()
+        mockGetSubTaskTemplatesServerError()
 
         const { user } = render(<CreateSubTaskModal {...props} />, {
           store: getStoreWithAuth(),
@@ -672,7 +672,7 @@ describe('Модалка создания задачи заявки', () => {
   describe('Список групп поддержки', () => {
     describe('При не успешном запросе', () => {
       test('Отображается соответствующее уведомление', async () => {
-        mockGetSupportGroupListServerError()
+        mockGetSupportGroupsServerError()
 
         render(<CreateSubTaskModal {...props} />, {
           store: getStoreWithAuth(),

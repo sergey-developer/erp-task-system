@@ -4,7 +4,7 @@ import { getFullUserName } from 'features/users/helpers'
 import { props } from '_tests_/features/tasks/components/TaskAssignee/constants'
 import { taskAssigneeTestUtils } from '_tests_/features/tasks/components/TaskAssignee/testUtils'
 import { userShortInfoTestUtils } from '_tests_/features/tasks/components/UserShortInfo/testUtils'
-import { render } from '_tests_/utils'
+import { render } from '_tests_/helpers'
 
 import TaskAssignee from './index'
 

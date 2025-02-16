@@ -7,29 +7,29 @@ import { MimetypeEnum } from 'shared/constants/mimetype'
 import * as base64Utils from 'shared/utils/common/base64'
 import * as downloadFileUtils from 'shared/utils/file/downloadFile'
 
-import { relocationEquipmentSimplifiedEditableTableTestUtils } from '_tests_/features/warehouse/components/RelocationEquipmentSimplifiedEditableTable/testUtils'
-import { createRelocationTaskSimplifiedPageTestUtils } from '_tests_/features/warehouse/pages/CreateRelocationTaskSimplifiedPage/testUtils'
+import { relocationEquipmentSimplifiedEditableTableTestUtils } from '_tests_/features/warehouses/components/RelocationEquipmentSimplifiedEditableTable/testUtils'
+import { createRelocationTaskSimplifiedPageTestUtils } from '_tests_/features/warehouses/pages/CreateRelocationTaskSimplifiedPage/testUtils'
 import taskFixtures from '_tests_/fixtures/tasks'
 import { fakeUseLocationResult } from '_tests_/fixtures/useLocation'
 import userFixtures from '_tests_/fixtures/users'
 import warehouseFixtures from '_tests_/fixtures/warehouse'
-import {
-  mockGetCurrencyListSuccess,
-  mockGetEquipmentCatalogListSuccess,
-  mockGetEquipmentListTemplateServerError,
-  mockGetEquipmentListTemplateSuccess,
-  mockGetLocationsCatalogSuccess,
-  mockGetUsersSuccess,
-  mockGetWarehouseMSISuccess,
-} from '_tests_/mocks/api'
-import { getUserMeQueryMock } from '_tests_/mocks/state/user'
 import {
   fakeWord,
   getStoreWithAuth,
   notificationTestUtils,
   render,
   setupApiTests,
-} from '_tests_/utils'
+} from '_tests_/helpers'
+import {
+  mockGetCurrenciesSuccess,
+  mockGetEquipmentsCatalogSuccess,
+  mockGetEquipmentsTemplateServerError,
+  mockGetEquipmentsTemplateSuccess,
+  mockGetLocationsCatalogSuccess,
+  mockGetUsersSuccess,
+  mockGetWarehouseMSISuccess,
+} from '_tests_/mocks/api'
+import { getUserMeQueryMock } from '_tests_/mocks/store/users'
 
 import CreateRelocationTaskSimplifiedPage from './index'
 
@@ -50,13 +50,13 @@ describe('Упрощенная страница создания заявки н
         .spyOn(reactRouterDom, 'useLocation')
         .mockReturnValue(fakeUseLocationResult({ state: { task: locationStateTask } }))
 
-      const taskAssigneeUser = userFixtures.userListItem({ id: locationStateTask.assignee!.id })
-      const currentUser = userFixtures.userListItem()
+      const taskAssigneeUser = userFixtures.user({ id: locationStateTask.assignee!.id })
+      const currentUser = userFixtures.userDetail()
       mockGetUsersSuccess({ body: [taskAssigneeUser, currentUser] })
       mockGetLocationsCatalogSuccess()
-      mockGetEquipmentCatalogListSuccess()
-      mockGetCurrencyListSuccess()
-      mockGetEquipmentCatalogListSuccess({
+      mockGetEquipmentsCatalogSuccess()
+      mockGetCurrenciesSuccess()
+      mockGetEquipmentsCatalogSuccess({
         body: warehouseFixtures.equipmentsCatalog(),
         once: false,
       })
@@ -66,7 +66,7 @@ describe('Упрощенная страница создания заявки н
 
       const { user } = render(<CreateRelocationTaskSimplifiedPage />, {
         store: getStoreWithAuth(currentUser, undefined, undefined, {
-          queries: { ...getUserMeQueryMock(userFixtures.user()) },
+          queries: { ...getUserMeQueryMock(userFixtures.userDetail()) },
         }),
       })
 
@@ -88,12 +88,12 @@ describe('Упрощенная страница создания заявки н
     test('Отображается корректно', () => {
       mockGetUsersSuccess()
       mockGetLocationsCatalogSuccess()
-      mockGetEquipmentCatalogListSuccess()
-      mockGetCurrencyListSuccess()
+      mockGetEquipmentsCatalogSuccess()
+      mockGetCurrenciesSuccess()
 
       render(<CreateRelocationTaskSimplifiedPage />, {
         store: getStoreWithAuth(undefined, undefined, undefined, {
-          queries: { ...getUserMeQueryMock(userFixtures.user()) },
+          queries: { ...getUserMeQueryMock(userFixtures.userDetail()) },
         }),
       })
 
@@ -114,8 +114,8 @@ describe('Упрощенная страница создания заявки н
     test('Отображается если есть права', () => {
       mockGetUsersSuccess()
       mockGetLocationsCatalogSuccess()
-      mockGetEquipmentCatalogListSuccess()
-      mockGetCurrencyListSuccess()
+      mockGetEquipmentsCatalogSuccess()
+      mockGetCurrenciesSuccess()
 
       render(<CreateRelocationTaskSimplifiedPage />, {
         store: getStoreWithAuth(undefined, undefined, undefined, {
@@ -134,12 +134,12 @@ describe('Упрощенная страница создания заявки н
     test('Не отображается если нет прав', () => {
       mockGetUsersSuccess()
       mockGetLocationsCatalogSuccess()
-      mockGetEquipmentCatalogListSuccess()
-      mockGetCurrencyListSuccess()
+      mockGetEquipmentsCatalogSuccess()
+      mockGetCurrenciesSuccess()
 
       render(<CreateRelocationTaskSimplifiedPage />, {
         store: getStoreWithAuth(undefined, undefined, undefined, {
-          queries: { ...getUserMeQueryMock(userFixtures.user()) },
+          queries: { ...getUserMeQueryMock(userFixtures.userDetail()) },
         }),
       })
 
@@ -150,11 +150,11 @@ describe('Упрощенная страница создания заявки н
     test('При успешном запросе отрабатывает функционал скачивания', async () => {
       mockGetUsersSuccess({ body: [] })
       mockGetLocationsCatalogSuccess({ body: [] })
-      mockGetEquipmentCatalogListSuccess()
-      mockGetCurrencyListSuccess({ body: [] })
+      mockGetEquipmentsCatalogSuccess()
+      mockGetCurrenciesSuccess({ body: [] })
 
       const file = fakeWord()
-      mockGetEquipmentListTemplateSuccess({ body: file })
+      mockGetEquipmentsTemplateSuccess({ body: file })
 
       const downloadFileSpy = jest.spyOn(downloadFileUtils, 'downloadFile')
 
@@ -186,9 +186,9 @@ describe('Упрощенная страница создания заявки н
     test('При не успешном запросе отображается сообщение об ошибке', async () => {
       mockGetUsersSuccess({ body: [] })
       mockGetLocationsCatalogSuccess({ body: [] })
-      mockGetEquipmentCatalogListSuccess()
-      mockGetCurrencyListSuccess({ body: [] })
-      mockGetEquipmentListTemplateServerError()
+      mockGetEquipmentsCatalogSuccess()
+      mockGetCurrenciesSuccess({ body: [] })
+      mockGetEquipmentsTemplateServerError()
 
       const { user } = render(<CreateRelocationTaskSimplifiedPage />, {
         store: getStoreWithAuth(undefined, undefined, undefined, {

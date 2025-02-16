@@ -8,7 +8,7 @@ import { UPDATE_TEXT } from 'shared/constants/common'
 import { validationMessages } from 'shared/constants/validation'
 
 import userFixtures from '_tests_/fixtures/users'
-import { buttonTestUtils, render, selectTestUtils } from '_tests_/utils'
+import { buttonTestUtils, render, selectTestUtils } from '_tests_/helpers'
 
 import EmployeesActionsReportForm from './index'
 import { EmployeesActionsReportFormProps } from './types'
@@ -93,7 +93,7 @@ export const testUtils = {
 describe('Форма отчета действий сотрудников', () => {
   describe('Поле сотрудника', () => {
     test('Можно установить значение', async () => {
-      const userListItem = userFixtures.userListItem()
+      const userListItem = userFixtures.user()
 
       const { user } = render(<EmployeesActionsReportForm {...props} users={[userListItem]} />)
 

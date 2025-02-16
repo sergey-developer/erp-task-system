@@ -1,7 +1,7 @@
 import { RequestTaskSuspendModalProps } from 'features/tasks/components/RequestTaskSuspendModal/types'
 
 import systemFixtures from '_tests_/fixtures/system/index'
-import { fakeIdStr } from '_tests_/utils'
+import { fakeIdStr } from '_tests_/helpers'
 
 export const props: Readonly<RequestTaskSuspendModalProps> = {
   open: true,

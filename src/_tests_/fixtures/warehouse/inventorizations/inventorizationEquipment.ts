@@ -4,7 +4,7 @@ import { InventorizationEquipmentDetailDTO } from 'features/inventorizations/api
 import catalogsFixtures from '_tests_/fixtures/catalogs'
 import currencyFixtures from '_tests_/fixtures/currencies'
 import warehouseFixtures from '_tests_/fixtures/warehouse'
-import { fakeId, fakeInteger, fakeWord } from '_tests_/utils'
+import { fakeId, fakeInteger, fakeWord } from '_tests_/helpers'
 
 export const inventorizationEquipment = (): InventorizationEquipmentDetailDTO => ({
   quantity: { plan: fakeInteger(), fact: fakeInteger(), diff: fakeInteger() },
@@ -13,9 +13,9 @@ export const inventorizationEquipment = (): InventorizationEquipmentDetailDTO =>
   inventoryNumber: fakeWord(),
   serialNumber: fakeWord(),
   condition: EquipmentConditionEnum.Working,
-  currency: currencyFixtures.currencyListItem(),
+  currency: currencyFixtures.currency(),
   price: fakeInteger(),
-  locationFact: catalogsFixtures.locationCatalogListItem(),
-  locationPlan: catalogsFixtures.locationCatalogListItem(),
+  locationFact: catalogsFixtures.locationCatalogItem(),
+  locationPlan: catalogsFixtures.locationCatalogItem(),
   id: fakeId(),
 })

@@ -3,17 +3,17 @@ import { UserPermissionsEnum } from 'features/users/api/constants'
 import { WarehousesRoutesEnum } from 'features/warehouses/routes/routes'
 import React from 'react'
 
-import { nomenclatureListPageTestUtils } from '_tests_/features/warehouse/pages/NomenclatureListPage/testUtils'
-import { warehouseCatalogListPageTestUtils } from '_tests_/features/warehouse/pages/WarehouseCatalogListPage/testUtils'
-import { warehouseListPageTestUtils } from '_tests_/features/warehouse/pages/WarehouseListPage/testUtils'
+import { nomenclatureListPageTestUtils } from '_tests_/features/warehouses/pages/NomenclatureListPage/testUtils'
+import { warehouseCatalogListPageTestUtils } from '_tests_/features/warehouses/pages/WarehouseCatalogListPage/testUtils'
+import { warehouseListPageTestUtils } from '_tests_/features/warehouses/pages/WarehouseListPage/testUtils'
 import userFixtures from '_tests_/fixtures/users'
+import { getStoreWithAuth, renderWithRouter } from '_tests_/helpers'
 import {
-  mockGetNomenclatureGroupListSuccess,
-  mockGetNomenclatureListSuccess,
-  mockGetWarehouseListSuccess,
+  mockGetNomenclatureGroupsSuccess,
+  mockGetNomenclaturesSuccess,
+  mockGetWarehousesSuccess,
 } from '_tests_/mocks/api'
-import { getUserMeQueryMock } from '_tests_/mocks/state/user'
-import { getStoreWithAuth, renderWithRouter } from '_tests_/utils'
+import { getUserMeQueryMock } from '_tests_/mocks/store/users'
 
 import WarehousesPage from '../WarehousesPage'
 import WarehousesCatalogPage from './index'
@@ -31,7 +31,7 @@ describe('Страница списка справочников складов'
         { initialEntries: [WarehousesRoutesEnum.WarehousesCatalog], initialIndex: 0 },
         {
           store: getStoreWithAuth(undefined, undefined, undefined, {
-            queries: { ...getUserMeQueryMock(userFixtures.user()) },
+            queries: { ...getUserMeQueryMock(userFixtures.userDetail()) },
           }),
         },
       )
@@ -43,7 +43,7 @@ describe('Страница списка справочников складов'
     })
 
     test('При клике переходит на страницу складов', async () => {
-      mockGetWarehouseListSuccess()
+      mockGetWarehousesSuccess()
 
       const { user } = renderWithRouter(
         [
@@ -59,7 +59,7 @@ describe('Страница списка справочников складов'
         { initialEntries: [WarehousesRoutesEnum.WarehousesCatalog], initialIndex: 0 },
         {
           store: getStoreWithAuth(undefined, undefined, undefined, {
-            queries: { ...getUserMeQueryMock(userFixtures.user()) },
+            queries: { ...getUserMeQueryMock(userFixtures.userDetail()) },
           }),
         },
       )
@@ -107,7 +107,7 @@ describe('Страница списка справочников складов'
         { initialEntries: [WarehousesRoutesEnum.WarehousesCatalog], initialIndex: 0 },
         {
           store: getStoreWithAuth(undefined, undefined, undefined, {
-            queries: { ...getUserMeQueryMock(userFixtures.user()) },
+            queries: { ...getUserMeQueryMock(userFixtures.userDetail()) },
           }),
         },
       )
@@ -117,8 +117,8 @@ describe('Страница списка справочников складов'
     })
 
     test('При клике переходит на страницу списка номенклатур', async () => {
-      mockGetNomenclatureListSuccess()
-      mockGetNomenclatureGroupListSuccess()
+      mockGetNomenclaturesSuccess()
+      mockGetNomenclatureGroupsSuccess()
 
       const { user } = renderWithRouter(
         [

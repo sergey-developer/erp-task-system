@@ -4,7 +4,7 @@ import { UserEvent } from '@testing-library/user-event/setup/setup'
 import { IdType } from 'shared/types/common'
 import { NumberOrString } from 'shared/types/utils'
 
-import { iconTestUtils, tableTestUtils } from '_tests_/utils/index'
+import { iconTestUtils, tableTestUtils } from '_tests_/helpers/index'
 
 const getContainer = () => screen.getByTestId('task-table')
 const getChildByText = (text: string) => within(getContainer()).getByText(text)

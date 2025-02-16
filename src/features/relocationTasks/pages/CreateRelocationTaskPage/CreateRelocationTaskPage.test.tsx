@@ -10,18 +10,25 @@ import { MimetypeEnum } from 'shared/constants/mimetype'
 import * as base64Utils from 'shared/utils/common/base64'
 import * as downloadFileUtils from 'shared/utils/file/downloadFile'
 
-import { createEquipmentsByFileModalTestUtils } from '_tests_/features/warehouse/components/CreateEquipmentsByFileModal/testUtils'
-import { relocationEquipmentEditableTableTestUtils } from '_tests_/features/warehouse/components/RelocationEquipmentEditableTable/testUtils'
-import { relocationTaskFormTestUtils } from '_tests_/features/warehouse/components/RelocationTaskForm/testUtils'
-import { createRelocationTaskPageTestUtils } from '_tests_/features/warehouse/pages/CreateRelocationTaskPage/testUtils'
+import { createEquipmentsByFileModalTestUtils } from '_tests_/features/warehouses/components/CreateEquipmentsByFileModal/testUtils'
+import { relocationEquipmentEditableTableTestUtils } from '_tests_/features/warehouses/components/RelocationEquipmentEditableTable/testUtils'
+import { relocationTaskFormTestUtils } from '_tests_/features/warehouses/components/RelocationTaskForm/testUtils'
+import { createRelocationTaskPageTestUtils } from '_tests_/features/warehouses/pages/CreateRelocationTaskPage/testUtils'
 import catalogsFixtures from '_tests_/fixtures/catalogs'
 import userFixtures from '_tests_/fixtures/users'
 import warehouseFixtures from '_tests_/fixtures/warehouse'
 import {
-  mockGetCurrencyListSuccess,
-  mockGetEquipmentCatalogListSuccess,
-  mockGetEquipmentListTemplateServerError,
-  mockGetEquipmentListTemplateSuccess,
+  fakeWord,
+  getStoreWithAuth,
+  notificationTestUtils,
+  render,
+  setupApiTests,
+} from '_tests_/helpers'
+import {
+  mockGetCurrenciesSuccess,
+  mockGetEquipmentsCatalogSuccess,
+  mockGetEquipmentsTemplateServerError,
+  mockGetEquipmentsTemplateSuccess,
   mockGetLocationsCatalogSuccess,
   mockGetUsersSuccess,
   mockGetWarehouseSuccess,
@@ -29,14 +36,7 @@ import {
   mockImportEquipmentsByFileServerError,
   mockImportEquipmentsByFileSuccess,
 } from '_tests_/mocks/api'
-import { getUserMeQueryMock } from '_tests_/mocks/state/user'
-import {
-  fakeWord,
-  getStoreWithAuth,
-  notificationTestUtils,
-  render,
-  setupApiTests,
-} from '_tests_/utils'
+import { getUserMeQueryMock } from '_tests_/mocks/store/users'
 
 import CreateRelocationTaskPage from './index'
 
@@ -48,12 +48,12 @@ describe('Страница создания заявки на перемещен
     test('Отображается', () => {
       mockGetUsersSuccess()
       mockGetLocationsCatalogSuccess({ once: false })
-      mockGetEquipmentCatalogListSuccess()
-      mockGetCurrencyListSuccess()
+      mockGetEquipmentsCatalogSuccess()
+      mockGetCurrenciesSuccess()
 
       render(<CreateRelocationTaskPage />, {
         store: getStoreWithAuth(undefined, undefined, undefined, {
-          queries: { ...getUserMeQueryMock(userFixtures.user()) },
+          queries: { ...getUserMeQueryMock(userFixtures.userDetail()) },
         }),
       })
 
@@ -62,20 +62,20 @@ describe('Страница создания заявки на перемещен
     })
 
     test('Контроллером нельзя выбрать исполнителя и текущего пользователя', async () => {
-      const executorUser = userFixtures.userListItem()
-      const currentUser = userFixtures.userListItem()
-      const otherUser = userFixtures.userListItem()
+      const executorUser = userFixtures.user()
+      const currentUser = userFixtures.userDetail()
+      const otherUser = userFixtures.user()
       mockGetUsersSuccess({ body: [executorUser, currentUser, otherUser] })
       mockGetLocationsCatalogSuccess({ body: [], once: false })
-      mockGetCurrencyListSuccess({ body: [] })
-      mockGetEquipmentCatalogListSuccess({
+      mockGetCurrenciesSuccess({ body: [] })
+      mockGetEquipmentsCatalogSuccess({
         body: warehouseFixtures.equipmentsCatalog(),
         once: false,
       })
 
       const { user } = render(<CreateRelocationTaskPage />, {
         store: getStoreWithAuth(currentUser, undefined, undefined, {
-          queries: { ...getUserMeQueryMock(userFixtures.user()) },
+          queries: { ...getUserMeQueryMock(userFixtures.userDetail()) },
         }),
       })
 
@@ -98,19 +98,19 @@ describe('Страница создания заявки на перемещен
     })
 
     test('Исполнителем нельзя выбрать контроллера', async () => {
-      const controllerUser = userFixtures.userListItem()
-      const currentUser = userFixtures.userListItem()
+      const controllerUser = userFixtures.user()
+      const currentUser = userFixtures.userDetail()
       mockGetUsersSuccess({ body: [controllerUser, currentUser] })
       mockGetLocationsCatalogSuccess({ body: [], once: false })
-      mockGetCurrencyListSuccess({ body: [] })
-      mockGetEquipmentCatalogListSuccess({
+      mockGetCurrenciesSuccess({ body: [] })
+      mockGetEquipmentsCatalogSuccess({
         body: warehouseFixtures.equipmentsCatalog(),
         once: false,
       })
 
       const { user } = render(<CreateRelocationTaskPage />, {
         store: getStoreWithAuth(currentUser, undefined, undefined, {
-          queries: { ...getUserMeQueryMock(userFixtures.user()) },
+          queries: { ...getUserMeQueryMock(userFixtures.userDetail()) },
         }),
       })
 
@@ -133,12 +133,12 @@ describe('Страница создания заявки на перемещен
     test('Отображается', () => {
       mockGetUsersSuccess()
       mockGetLocationsCatalogSuccess({ once: false })
-      mockGetEquipmentCatalogListSuccess()
-      mockGetCurrencyListSuccess()
+      mockGetEquipmentsCatalogSuccess()
+      mockGetCurrenciesSuccess()
 
       render(<CreateRelocationTaskPage />, {
         store: getStoreWithAuth(undefined, undefined, undefined, {
-          queries: { ...getUserMeQueryMock(userFixtures.user()) },
+          queries: { ...getUserMeQueryMock(userFixtures.userDetail()) },
         }),
       })
 
@@ -157,8 +157,8 @@ describe('Страница создания заявки на перемещен
     test('Отображается если есть права', () => {
       mockGetUsersSuccess()
       mockGetLocationsCatalogSuccess({ once: false })
-      mockGetEquipmentCatalogListSuccess()
-      mockGetCurrencyListSuccess()
+      mockGetEquipmentsCatalogSuccess()
+      mockGetCurrenciesSuccess()
 
       render(<CreateRelocationTaskPage />, {
         store: getStoreWithAuth(undefined, undefined, undefined, {
@@ -177,12 +177,12 @@ describe('Страница создания заявки на перемещен
     test('Не отображается если нет прав', () => {
       mockGetUsersSuccess()
       mockGetLocationsCatalogSuccess({ once: false })
-      mockGetEquipmentCatalogListSuccess()
-      mockGetCurrencyListSuccess()
+      mockGetEquipmentsCatalogSuccess()
+      mockGetCurrenciesSuccess()
 
       render(<CreateRelocationTaskPage />, {
         store: getStoreWithAuth(undefined, undefined, undefined, {
-          queries: { ...getUserMeQueryMock(userFixtures.user()) },
+          queries: { ...getUserMeQueryMock(userFixtures.userDetail()) },
         }),
       })
 
@@ -193,11 +193,11 @@ describe('Страница создания заявки на перемещен
     test('При успешном запросе отрабатывает функционал скачивания', async () => {
       mockGetUsersSuccess({ body: [] })
       mockGetLocationsCatalogSuccess({ body: [], once: false })
-      mockGetEquipmentCatalogListSuccess()
-      mockGetCurrencyListSuccess({ body: [] })
+      mockGetEquipmentsCatalogSuccess()
+      mockGetCurrenciesSuccess({ body: [] })
 
       const file = fakeWord()
-      mockGetEquipmentListTemplateSuccess({ body: file })
+      mockGetEquipmentsTemplateSuccess({ body: file })
 
       const downloadFileSpy = jest.spyOn(downloadFileUtils, 'downloadFile')
 
@@ -230,9 +230,9 @@ describe('Страница создания заявки на перемещен
     test.skip('При не успешном запросе отображается сообщение об ошибке', async () => {
       mockGetUsersSuccess({ body: [] })
       mockGetLocationsCatalogSuccess({ body: [], once: false })
-      mockGetEquipmentCatalogListSuccess()
-      mockGetCurrencyListSuccess({ body: [] })
-      mockGetEquipmentListTemplateServerError()
+      mockGetEquipmentsCatalogSuccess()
+      mockGetCurrenciesSuccess({ body: [] })
+      mockGetEquipmentsTemplateServerError()
 
       const { user } = render(<CreateRelocationTaskPage />, {
         store: getStoreWithAuth(undefined, undefined, undefined, {
@@ -255,8 +255,8 @@ describe('Страница создания заявки на перемещен
     test('Отображается если есть права', () => {
       mockGetUsersSuccess()
       mockGetLocationsCatalogSuccess({ once: false })
-      mockGetEquipmentCatalogListSuccess()
-      mockGetCurrencyListSuccess()
+      mockGetEquipmentsCatalogSuccess()
+      mockGetCurrenciesSuccess()
 
       render(<CreateRelocationTaskPage />, {
         store: getStoreWithAuth(undefined, undefined, undefined, {
@@ -273,12 +273,12 @@ describe('Страница создания заявки на перемещен
     test('Не отображается если нет прав', () => {
       mockGetUsersSuccess()
       mockGetLocationsCatalogSuccess({ once: false })
-      mockGetEquipmentCatalogListSuccess()
-      mockGetCurrencyListSuccess()
+      mockGetEquipmentsCatalogSuccess()
+      mockGetCurrenciesSuccess()
 
       render(<CreateRelocationTaskPage />, {
         store: getStoreWithAuth(undefined, undefined, undefined, {
-          queries: { ...getUserMeQueryMock(userFixtures.user()) },
+          queries: { ...getUserMeQueryMock(userFixtures.userDetail()) },
         }),
       })
 
@@ -289,14 +289,14 @@ describe('Страница создания заявки на перемещен
     test('Активна если условия соблюдены', async () => {
       mockGetUsersSuccess({ body: [] })
 
-      const locationTo = catalogsFixtures.locationCatalogListItem({
+      const locationTo = catalogsFixtures.locationCatalogItem({
         type: LocationTypeEnum.Warehouse,
       })
-      const locationFrom = catalogsFixtures.locationCatalogListItem()
+      const locationFrom = catalogsFixtures.locationCatalogItem()
       mockGetLocationsCatalogSuccess({ body: [locationTo, locationFrom], once: false })
 
-      mockGetEquipmentCatalogListSuccess({ body: [] })
-      mockGetCurrencyListSuccess({ body: [] })
+      mockGetEquipmentsCatalogSuccess({ body: [] })
+      mockGetCurrenciesSuccess({ body: [] })
 
       const { user } = render(<CreateRelocationTaskPage />, {
         store: getStoreWithAuth(undefined, undefined, undefined, {
@@ -322,14 +322,14 @@ describe('Страница создания заявки на перемещен
       test('Но не выбран объект выбытия и прибытия', async () => {
         mockGetUsersSuccess()
 
-        const locationTo = catalogsFixtures.locationCatalogListItem({
+        const locationTo = catalogsFixtures.locationCatalogItem({
           type: LocationTypeEnum.Warehouse,
         })
-        const locationFrom = catalogsFixtures.locationCatalogListItem()
+        const locationFrom = catalogsFixtures.locationCatalogItem()
         mockGetLocationsCatalogSuccess({ body: [locationTo, locationFrom], once: false })
 
-        mockGetEquipmentCatalogListSuccess({ body: [] })
-        mockGetCurrencyListSuccess({ body: [] })
+        mockGetEquipmentsCatalogSuccess({ body: [] })
+        mockGetCurrenciesSuccess({ body: [] })
 
         render(<CreateRelocationTaskPage />, {
           store: getStoreWithAuth(undefined, undefined, undefined, {
@@ -346,14 +346,14 @@ describe('Страница создания заявки на перемещен
       test('Но не выбран объект прибытия, а объект выбытия выбран', async () => {
         mockGetUsersSuccess({ body: [] })
 
-        const locationTo = catalogsFixtures.locationCatalogListItem({
+        const locationTo = catalogsFixtures.locationCatalogItem({
           type: LocationTypeEnum.Warehouse,
         })
-        const locationFrom = catalogsFixtures.locationCatalogListItem()
+        const locationFrom = catalogsFixtures.locationCatalogItem()
         mockGetLocationsCatalogSuccess({ body: [locationTo, locationFrom], once: false })
 
-        mockGetEquipmentCatalogListSuccess({ body: [] })
-        mockGetCurrencyListSuccess({ body: [] })
+        mockGetEquipmentsCatalogSuccess({ body: [] })
+        mockGetCurrenciesSuccess({ body: [] })
 
         const { user } = render(<CreateRelocationTaskPage />, {
           store: getStoreWithAuth(undefined, undefined, undefined, {
@@ -374,12 +374,12 @@ describe('Страница создания заявки на перемещен
       test('Но объект прибытия не склад', async () => {
         mockGetUsersSuccess({ body: [] })
 
-        const locationTo = catalogsFixtures.locationCatalogListItem()
-        const locationFrom = catalogsFixtures.locationCatalogListItem()
+        const locationTo = catalogsFixtures.locationCatalogItem()
+        const locationFrom = catalogsFixtures.locationCatalogItem()
         mockGetLocationsCatalogSuccess({ body: [locationTo, locationFrom], once: false })
 
-        mockGetEquipmentCatalogListSuccess({ body: [] })
-        mockGetCurrencyListSuccess({ body: [] })
+        mockGetEquipmentsCatalogSuccess({ body: [] })
+        mockGetCurrenciesSuccess({ body: [] })
 
         const { user } = render(<CreateRelocationTaskPage />, {
           store: getStoreWithAuth(undefined, undefined, undefined, {
@@ -405,14 +405,14 @@ describe('Страница создания заявки на перемещен
     test('При успешном запросе открывается модалка', async () => {
       mockGetUsersSuccess({ body: [] })
 
-      const locationTo = catalogsFixtures.locationCatalogListItem({
+      const locationTo = catalogsFixtures.locationCatalogItem({
         type: LocationTypeEnum.Warehouse,
       })
-      const locationFrom = catalogsFixtures.locationCatalogListItem()
+      const locationFrom = catalogsFixtures.locationCatalogItem()
       mockGetLocationsCatalogSuccess({ body: [locationTo, locationFrom], once: false })
 
-      mockGetEquipmentCatalogListSuccess({ body: [] })
-      mockGetCurrencyListSuccess({ body: [] })
+      mockGetEquipmentsCatalogSuccess({ body: [] })
+      mockGetCurrenciesSuccess({ body: [] })
       mockImportEquipmentsByFileSuccess({ body: [warehouseFixtures.importedEquipmentByFile()] })
 
       const { user } = render(<CreateRelocationTaskPage />, {
@@ -444,14 +444,14 @@ describe('Страница создания заявки на перемещен
       test('Обрабатывается ошибка 400', async () => {
         mockGetUsersSuccess({ body: [] })
 
-        const locationTo = catalogsFixtures.locationCatalogListItem({
+        const locationTo = catalogsFixtures.locationCatalogItem({
           type: LocationTypeEnum.Warehouse,
         })
-        const locationFrom = catalogsFixtures.locationCatalogListItem()
+        const locationFrom = catalogsFixtures.locationCatalogItem()
         mockGetLocationsCatalogSuccess({ body: [locationTo, locationFrom], once: false })
 
-        mockGetEquipmentCatalogListSuccess({ body: [] })
-        mockGetCurrencyListSuccess({ body: [] })
+        mockGetEquipmentsCatalogSuccess({ body: [] })
+        mockGetCurrenciesSuccess({ body: [] })
 
         const errorMsg = fakeWord()
         mockImportEquipmentsByFileBadRequestError({ body: { detail: errorMsg } })
@@ -484,14 +484,14 @@ describe('Страница создания заявки на перемещен
       test.skip('Обрабатывается ошибка 500', async () => {
         mockGetUsersSuccess({ body: [] })
 
-        const locationTo = catalogsFixtures.locationCatalogListItem({
+        const locationTo = catalogsFixtures.locationCatalogItem({
           type: LocationTypeEnum.Warehouse,
         })
-        const locationFrom = catalogsFixtures.locationCatalogListItem()
+        const locationFrom = catalogsFixtures.locationCatalogItem()
         mockGetLocationsCatalogSuccess({ body: [locationTo, locationFrom], once: false })
 
-        mockGetEquipmentCatalogListSuccess({ body: [] })
-        mockGetCurrencyListSuccess({ body: [] })
+        mockGetEquipmentsCatalogSuccess({ body: [] })
+        mockGetCurrenciesSuccess({ body: [] })
         mockImportEquipmentsByFileServerError()
 
         const { user } = render(<CreateRelocationTaskPage />, {

@@ -1,7 +1,7 @@
 import { screen, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 
-import { buttonTestUtils, iconTestUtils } from '_tests_/utils'
+import { buttonTestUtils, iconTestUtils } from '_tests_/helpers'
 
 import { TestIdsEnum } from './constants'
 

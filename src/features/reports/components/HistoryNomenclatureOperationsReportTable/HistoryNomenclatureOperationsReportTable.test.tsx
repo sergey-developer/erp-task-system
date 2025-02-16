@@ -10,12 +10,12 @@ import { getYesNoWord } from 'shared/utils/common'
 import { formatDate } from 'shared/utils/date'
 
 import reportsFixtures from '_tests_/fixtures/reports'
-import { render, tableTestUtils } from '_tests_/utils'
+import { render, tableTestUtils } from '_tests_/helpers'
 
 import HistoryNomenclatureOperationsReportTable from './index'
 import { HistoryNomenclatureOperationsReportTableProps } from './types'
 
-const reportListItem = reportsFixtures.historyNomenclatureOperationsReportListItem()
+const reportListItem = reportsFixtures.historyNomenclatureOperationsReportItem()
 
 const props: Readonly<HistoryNomenclatureOperationsReportTableProps> = {
   dataSource: [reportListItem],
@@ -154,7 +154,7 @@ describe('Таблица отчета истории операций по но�
   })
 
   test('Колонка новое', () => {
-    const reportListItem = reportsFixtures.historyNomenclatureOperationsReportListItem({
+    const reportListItem = reportsFixtures.historyNomenclatureOperationsReportItem({
       isNew: true,
     })
     render(<HistoryNomenclatureOperationsReportTable {...props} dataSource={[reportListItem]} />)
@@ -167,7 +167,7 @@ describe('Таблица отчета истории операций по но�
   })
 
   test('Колонка на гарантии', () => {
-    const reportListItem = reportsFixtures.historyNomenclatureOperationsReportListItem({
+    const reportListItem = reportsFixtures.historyNomenclatureOperationsReportItem({
       isWarranty: true,
     })
     render(<HistoryNomenclatureOperationsReportTable {...props} dataSource={[reportListItem]} />)
@@ -180,7 +180,7 @@ describe('Таблица отчета истории операций по но�
   })
 
   test('Колонка отремонтированное', () => {
-    const reportListItem = reportsFixtures.historyNomenclatureOperationsReportListItem({
+    const reportListItem = reportsFixtures.historyNomenclatureOperationsReportItem({
       isRepaired: true,
     })
     render(<HistoryNomenclatureOperationsReportTable {...props} dataSource={[reportListItem]} />)

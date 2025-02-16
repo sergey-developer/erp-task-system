@@ -10,7 +10,7 @@ import { formatDate } from 'shared/utils/date'
 
 import { props } from '_tests_/features/tasks/components/RequestTaskSuspendModal/constants'
 import { requestTaskSuspendModalTestUtils } from '_tests_/features/tasks/components/RequestTaskSuspendModal/testUtils'
-import { fakeInteger, fakeUrl, fakeWord, render } from '_tests_/utils'
+import { fakeInteger, fakeUrl, fakeWord, render } from '_tests_/helpers'
 
 import RequestTaskSuspendModal from './index'
 import { getDateLimitExceedError } from './utils'

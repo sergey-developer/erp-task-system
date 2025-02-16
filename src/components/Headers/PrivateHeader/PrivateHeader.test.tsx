@@ -16,24 +16,6 @@ import authFixtures from '_tests_/fixtures/auth'
 import catalogsFixtures from '_tests_/fixtures/catalogs'
 import userFixtures from '_tests_/fixtures/users'
 import {
-  mockGetSystemInfoSuccess,
-  mockGetSystemSettingsSuccess,
-  mockGetTaskCountersSuccess,
-  mockGetTasksSuccess,
-  mockGetTimeZoneListSuccess,
-  mockGetUserMeCodeSuccess,
-  mockGetUserMeSuccess,
-  mockGetUserStatusListSuccess,
-  mockLoginSuccess,
-  mockLogoutSuccess,
-  mockUpdateUserStatusBadRequestError,
-  mockUpdateUserStatusNotFoundError,
-  mockUpdateUserStatusServerError,
-  mockUpdateUserStatusSuccess,
-  mockUpdateUserStatusUnauthorizedError,
-} from '_tests_/mocks/api'
-import { getUserMeQueryMock } from '_tests_/mocks/state/user'
-import {
   fakeEmail,
   fakeId,
   fakeWord,
@@ -42,7 +24,25 @@ import {
   render,
   selectTestUtils,
   setupApiTests,
-} from '_tests_/utils'
+} from '_tests_/helpers'
+import {
+  mockGetSystemInfoSuccess,
+  mockGetSystemSettingsSuccess,
+  mockGetTaskCountersSuccess,
+  mockGetTasksSuccess,
+  mockGetTimeZonesSuccess,
+  mockGetUserMeCodeSuccess,
+  mockGetUserMeSuccess,
+  mockGetUserStatusesSuccess,
+  mockLoginSuccess,
+  mockLogoutSuccess,
+  mockUpdateUserStatusBadRequestError,
+  mockUpdateUserStatusNotFoundError,
+  mockUpdateUserStatusServerError,
+  mockUpdateUserStatusSuccess,
+  mockUpdateUserStatusUnauthorizedError,
+} from '_tests_/mocks/api'
+import { getUserMeQueryMock } from '_tests_/mocks/store/users'
 
 const getContainer = () => screen.getByTestId('private-header')
 
@@ -139,13 +139,13 @@ describe('Хэдер авторизованного пользователя', (
     describe('Рабочий стол', () => {
       // todo: не проходит на CI
       test.skip('Отображается', async () => {
-        const currentUser = userFixtures.user()
+        const currentUser = userFixtures.userDetail()
         mockGetUserMeSuccess({ body: currentUser })
-        mockGetTimeZoneListSuccess()
+        mockGetTimeZonesSuccess()
         mockGetUserMeCodeSuccess()
         mockGetSystemInfoSuccess()
         mockGetSystemSettingsSuccess()
-        mockGetUserStatusListSuccess()
+        mockGetUserStatusesSuccess()
 
         render(<App />, { useBrowserRouter: false, store: getStoreWithAuth(currentUser) })
 
@@ -155,13 +155,13 @@ describe('Хэдер авторизованного пользователя', (
 
       // todo: не проходит на CI
       test.skip('При клике переходит на страницу реестра заявок', async () => {
-        const currentUser = userFixtures.user()
+        const currentUser = userFixtures.userDetail()
         mockGetUserMeSuccess({ body: currentUser })
-        mockGetTimeZoneListSuccess()
+        mockGetTimeZonesSuccess()
         mockGetUserMeCodeSuccess()
         mockGetSystemInfoSuccess()
         mockGetSystemSettingsSuccess()
-        mockGetUserStatusListSuccess()
+        mockGetUserStatusesSuccess()
         mockGetTasksSuccess()
         mockGetTaskCountersSuccess()
 
@@ -181,15 +181,15 @@ describe('Хэдер авторизованного пользователя', (
     describe('Отчёты', () => {
       // todo: не проходит на CI
       test.skip(`Отображается если есть права ${UserPermissionsEnum.FiscalAccumulatorTasksRead} и нет ${UserPermissionsEnum.ReportMainIndicatorsRead}`, async () => {
-        const currentUser = userFixtures.user({
+        const currentUser = userFixtures.userDetail({
           permissions: [UserPermissionsEnum.FiscalAccumulatorTasksRead],
         })
         mockGetUserMeSuccess({ body: currentUser })
-        mockGetTimeZoneListSuccess()
+        mockGetTimeZonesSuccess()
         mockGetUserMeCodeSuccess()
         mockGetSystemInfoSuccess()
         mockGetSystemSettingsSuccess()
-        mockGetUserStatusListSuccess()
+        mockGetUserStatusesSuccess()
         mockGetTasksSuccess({ once: false })
         mockGetTaskCountersSuccess({ once: false })
 
@@ -206,15 +206,15 @@ describe('Хэдер авторизованного пользователя', (
 
       // todo: не проходит на CI
       test.skip(`Отображается если есть права ${UserPermissionsEnum.ReportMainIndicatorsRead} и нет ${UserPermissionsEnum.FiscalAccumulatorTasksRead}`, async () => {
-        const currentUser = userFixtures.user({
+        const currentUser = userFixtures.userDetail({
           permissions: [UserPermissionsEnum.ReportMainIndicatorsRead],
         })
         mockGetUserMeSuccess({ body: currentUser })
-        mockGetTimeZoneListSuccess()
+        mockGetTimeZonesSuccess()
         mockGetUserMeCodeSuccess()
         mockGetSystemInfoSuccess()
         mockGetSystemSettingsSuccess()
-        mockGetUserStatusListSuccess()
+        mockGetUserStatusesSuccess()
         mockGetTasksSuccess({ once: false })
         mockGetTaskCountersSuccess({ once: false })
 
@@ -231,18 +231,18 @@ describe('Хэдер авторизованного пользователя', (
 
       // todo: не проходит на CI
       test.skip(`Отображается если есть права ${UserPermissionsEnum.ReportMainIndicatorsRead} и ${UserPermissionsEnum.FiscalAccumulatorTasksRead}`, async () => {
-        const currentUser = userFixtures.user({
+        const currentUser = userFixtures.userDetail({
           permissions: [
             UserPermissionsEnum.ReportMainIndicatorsRead,
             UserPermissionsEnum.FiscalAccumulatorTasksRead,
           ],
         })
         mockGetUserMeSuccess({ body: currentUser })
-        mockGetTimeZoneListSuccess()
+        mockGetTimeZonesSuccess()
         mockGetUserMeCodeSuccess()
         mockGetSystemInfoSuccess()
         mockGetSystemSettingsSuccess()
-        mockGetUserStatusListSuccess()
+        mockGetUserStatusesSuccess()
         mockGetTasksSuccess({ once: false })
         mockGetTaskCountersSuccess({ once: false })
 
@@ -259,13 +259,13 @@ describe('Хэдер авторизованного пользователя', (
 
       // todo: не проходит на CI
       test.skip(`Не отображается если нет прав ${UserPermissionsEnum.ReportMainIndicatorsRead} или ${UserPermissionsEnum.FiscalAccumulatorTasksRead}`, async () => {
-        const currentUser = userFixtures.user({ permissions: [] })
+        const currentUser = userFixtures.userDetail({ permissions: [] })
         mockGetUserMeSuccess({ body: currentUser })
-        mockGetTimeZoneListSuccess()
+        mockGetTimeZonesSuccess()
         mockGetUserMeCodeSuccess()
         mockGetSystemInfoSuccess()
         mockGetSystemSettingsSuccess()
-        mockGetUserStatusListSuccess()
+        mockGetUserStatusesSuccess()
         mockGetTasksSuccess({ once: false })
         mockGetTaskCountersSuccess({ once: false })
 
@@ -286,10 +286,10 @@ describe('Хэдер авторизованного пользователя', (
     describe('Управление складами', () => {
       // todo: не проходит на CI
       test.skip('Отображается корректно', async () => {
-        const fakeUser = userFixtures.user({})
+        const fakeUser = userFixtures.userDetail({})
         mockGetUserMeSuccess({ body: fakeUser })
 
-        mockGetTimeZoneListSuccess()
+        mockGetTimeZonesSuccess()
         mockGetUserMeCodeSuccess()
         mockGetSystemInfoSuccess()
 
@@ -311,9 +311,9 @@ describe('Хэдер авторизованного пользователя', (
       mockGetUserMeCodeSuccess()
       mockGetSystemInfoSuccess()
       mockGetSystemSettingsSuccess()
-      mockGetTimeZoneListSuccess()
-      mockGetUserStatusListSuccess()
-      mockGetUserMeSuccess({ body: userFixtures.user() })
+      mockGetTimeZonesSuccess()
+      mockGetUserStatusesSuccess()
+      mockGetUserMeSuccess({ body: userFixtures.userDetail() })
 
       render(<App />, { useBrowserRouter: false, store: getStoreWithAuth() })
 
@@ -331,9 +331,9 @@ describe('Хэдер авторизованного пользователя', (
       mockGetUserMeCodeSuccess()
       mockGetSystemInfoSuccess()
       mockGetSystemSettingsSuccess()
-      mockGetTimeZoneListSuccess()
-      mockGetUserStatusListSuccess()
-      mockGetUserMeSuccess({ body: userFixtures.user() })
+      mockGetTimeZonesSuccess()
+      mockGetUserStatusesSuccess()
+      mockGetUserMeSuccess({ body: userFixtures.userDetail() })
 
       render(<App />, { useBrowserRouter: false, store: getStoreWithAuth() })
 
@@ -348,13 +348,13 @@ describe('Хэдер авторизованного пользователя', (
       mockGetUserMeCodeSuccess()
       mockGetSystemInfoSuccess()
       mockGetSystemSettingsSuccess()
-      mockGetTimeZoneListSuccess()
+      mockGetTimeZonesSuccess()
 
-      const fakeUserStatus = catalogsFixtures.userStatusListItem()
-      mockGetUserStatusListSuccess({ body: [fakeUserStatus] })
+      const fakeUserStatus = catalogsFixtures.userStatus()
+      mockGetUserStatusesSuccess({ body: [fakeUserStatus] })
 
       mockGetUserMeSuccess({
-        body: userFixtures.user({ status: fakeUserStatus }),
+        body: userFixtures.userDetail({ status: fakeUserStatus }),
       })
 
       render(<App />, { useBrowserRouter: false, store: getStoreWithAuth() })
@@ -373,15 +373,15 @@ describe('Хэдер авторизованного пользователя', (
           mockGetUserMeCodeSuccess()
           mockGetSystemInfoSuccess()
           mockGetSystemSettingsSuccess()
-          mockGetTimeZoneListSuccess()
+          mockGetTimeZonesSuccess()
 
-          const fakeUserStatus1 = catalogsFixtures.userStatusListItem()
-          const fakeUserStatus2 = catalogsFixtures.userStatusListItem()
-          mockGetUserStatusListSuccess({
+          const fakeUserStatus1 = catalogsFixtures.userStatus()
+          const fakeUserStatus2 = catalogsFixtures.userStatus()
+          mockGetUserStatusesSuccess({
             body: [fakeUserStatus1, fakeUserStatus2],
           })
 
-          const fakeUser = userFixtures.user({ status: fakeUserStatus2 })
+          const fakeUser = userFixtures.userDetail({ status: fakeUserStatus2 })
           mockGetUserMeSuccess({ body: fakeUser })
 
           mockUpdateUserStatusSuccess(fakeUser.id)
@@ -407,14 +407,14 @@ describe('Хэдер авторизованного пользователя', (
           mockGetUserMeCodeSuccess()
           mockGetSystemInfoSuccess()
           mockGetSystemSettingsSuccess()
-          mockGetTimeZoneListSuccess()
+          mockGetTimeZonesSuccess()
 
-          const userStatus = catalogsFixtures.userStatusListItem({
+          const userStatus = catalogsFixtures.userStatus({
             code: UserStatusCodeEnum.Offline,
           })
-          mockGetUserStatusListSuccess({ body: [userStatus] })
+          mockGetUserStatusesSuccess({ body: [userStatus] })
 
-          const fakeUser = userFixtures.user({ status: userStatus })
+          const fakeUser = userFixtures.userDetail({ status: userStatus })
           mockGetUserMeSuccess({ body: fakeUser })
 
           mockUpdateUserStatusSuccess(fakeUser.id)
@@ -442,15 +442,15 @@ describe('Хэдер авторизованного пользователя', (
           mockGetUserMeCodeSuccess()
           mockGetSystemInfoSuccess()
           mockGetSystemSettingsSuccess()
-          mockGetTimeZoneListSuccess()
+          mockGetTimeZonesSuccess()
 
-          const fakeUserStatus1 = catalogsFixtures.userStatusListItem()
-          const fakeUserStatus2 = catalogsFixtures.userStatusListItem()
-          mockGetUserStatusListSuccess({
+          const fakeUserStatus1 = catalogsFixtures.userStatus()
+          const fakeUserStatus2 = catalogsFixtures.userStatus()
+          mockGetUserStatusesSuccess({
             body: [fakeUserStatus1, fakeUserStatus2],
           })
 
-          const fakeUser = userFixtures.user({ status: fakeUserStatus2 })
+          const fakeUser = userFixtures.userDetail({ status: fakeUserStatus2 })
           mockGetUserMeSuccess({ body: fakeUser })
 
           const badRequestErrorMessage = fakeWord()
@@ -480,15 +480,15 @@ describe('Хэдер авторизованного пользователя', (
           mockGetUserMeCodeSuccess()
           mockGetSystemInfoSuccess()
           mockGetSystemSettingsSuccess()
-          mockGetTimeZoneListSuccess()
+          mockGetTimeZonesSuccess()
 
-          const fakeUserStatus1 = catalogsFixtures.userStatusListItem()
-          const fakeUserStatus2 = catalogsFixtures.userStatusListItem()
-          mockGetUserStatusListSuccess({
+          const fakeUserStatus1 = catalogsFixtures.userStatus()
+          const fakeUserStatus2 = catalogsFixtures.userStatus()
+          mockGetUserStatusesSuccess({
             body: [fakeUserStatus1, fakeUserStatus2],
           })
 
-          const fakeUser = userFixtures.user({ status: fakeUserStatus2 })
+          const fakeUser = userFixtures.userDetail({ status: fakeUserStatus2 })
           mockGetUserMeSuccess({ body: fakeUser })
 
           const unauthorizedErrorMessage = fakeWord()
@@ -520,15 +520,15 @@ describe('Хэдер авторизованного пользователя', (
           mockGetUserMeCodeSuccess()
           mockGetSystemInfoSuccess()
           mockGetSystemSettingsSuccess()
-          mockGetTimeZoneListSuccess()
+          mockGetTimeZonesSuccess()
 
-          const fakeUserStatus1 = catalogsFixtures.userStatusListItem()
-          const fakeUserStatus2 = catalogsFixtures.userStatusListItem()
-          mockGetUserStatusListSuccess({
+          const fakeUserStatus1 = catalogsFixtures.userStatus()
+          const fakeUserStatus2 = catalogsFixtures.userStatus()
+          mockGetUserStatusesSuccess({
             body: [fakeUserStatus1, fakeUserStatus2],
           })
 
-          const fakeUser = userFixtures.user({ status: fakeUserStatus2 })
+          const fakeUser = userFixtures.userDetail({ status: fakeUserStatus2 })
           mockGetUserMeSuccess({ body: fakeUser })
 
           const errorMessage = fakeWord()
@@ -558,15 +558,15 @@ describe('Хэдер авторизованного пользователя', (
           mockGetUserMeCodeSuccess()
           mockGetSystemInfoSuccess()
           mockGetSystemSettingsSuccess()
-          mockGetTimeZoneListSuccess()
+          mockGetTimeZonesSuccess()
 
-          const fakeUserStatus1 = catalogsFixtures.userStatusListItem()
-          const fakeUserStatus2 = catalogsFixtures.userStatusListItem()
-          mockGetUserStatusListSuccess({
+          const fakeUserStatus1 = catalogsFixtures.userStatus()
+          const fakeUserStatus2 = catalogsFixtures.userStatus()
+          mockGetUserStatusesSuccess({
             body: [fakeUserStatus1, fakeUserStatus2],
           })
 
-          const fakeUser = userFixtures.user({ status: fakeUserStatus2 })
+          const fakeUser = userFixtures.userDetail({ status: fakeUserStatus2 })
           mockGetUserMeSuccess({ body: fakeUser })
 
           mockUpdateUserStatusServerError(fakeUser.id)
@@ -600,8 +600,8 @@ describe('Хэдер авторизованного пользователя', (
       mockGetUserMeCodeSuccess()
       mockGetSystemInfoSuccess()
       mockGetSystemSettingsSuccess()
-      mockGetTimeZoneListSuccess()
-      mockGetUserStatusListSuccess()
+      mockGetTimeZonesSuccess()
+      mockGetUserStatusesSuccess()
       mockGetTasksSuccess()
       mockGetTaskCountersSuccess()
       mockLoginSuccess({ body: authFixtures.loginResponse })

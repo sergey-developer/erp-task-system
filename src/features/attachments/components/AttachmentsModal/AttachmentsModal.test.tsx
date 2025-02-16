@@ -1,15 +1,15 @@
 import { screen, within } from '@testing-library/react'
 import { testUtils as attachmentImagesTestUtils } from 'features/attachments/components/AttachmentImages/AttachmentImages.test'
 
-import attachmentFixtures from '_tests_/fixtures/attachments'
-import { fakeWord, render, spinnerTestUtils } from '_tests_/utils'
+import attachmentsFixtures from '_tests_/fixtures/attachments'
+import { fakeWord, render, spinnerTestUtils } from '_tests_/helpers'
 
 import AttachmentsModal, { AttachmentsModalProps } from './index'
 
 const props: AttachmentsModalProps = {
   open: true,
   title: fakeWord(),
-  data: attachmentFixtures.attachments(),
+  data: attachmentsFixtures.attachments(),
   onCancel: jest.fn(),
 }
 

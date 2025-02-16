@@ -6,9 +6,9 @@ import { formatDate } from 'shared/utils/date'
 import {
   equipmentRelocationHistoryItem,
   props,
-} from '_tests_/features/warehouse/components/EquipmentRelocationHistoryModal/constants'
-import { equipmentRelocationHistoryModalTestUtils } from '_tests_/features/warehouse/components/EquipmentRelocationHistoryModal/testUtils'
-import { render, tableTestUtils } from '_tests_/utils'
+} from '_tests_/features/warehouses/components/EquipmentRelocationHistoryModal/constants'
+import { equipmentRelocationHistoryModalTestUtils } from '_tests_/features/warehouses/components/EquipmentRelocationHistoryModal/testUtils'
+import { render, tableTestUtils } from '_tests_/helpers'
 
 import EquipmentRelocationHistoryModal from './index'
 

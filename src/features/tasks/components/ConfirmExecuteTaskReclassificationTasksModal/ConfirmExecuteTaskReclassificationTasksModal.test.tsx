@@ -2,7 +2,7 @@ import { within } from '@testing-library/react'
 
 import { props } from '_tests_/features/tasks/components/ConfirmExecuteTaskReclassificationTasksModal/constants'
 import { confirmExecuteTaskReclassificationTasksModalTestUtils } from '_tests_/features/tasks/components/ConfirmExecuteTaskReclassificationTasksModal/testUtils'
-import { render } from '_tests_/utils'
+import { render } from '_tests_/helpers'
 
 import ConfirmExecuteTaskReclassificationTasksModal from './index'
 

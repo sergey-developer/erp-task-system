@@ -26,7 +26,7 @@ import {
 import { getFormErrorsFromBadRequestError } from 'features/tasks/components/RequestTaskSuspendModal/utils'
 import AdditionalInfo from 'features/tasks/components/TaskDetails/AdditionalInfo'
 import MainDetails from 'features/tasks/components/TaskDetails/MainDetails'
-import Tabs from 'features/tasks/components/TaskDetails/Tabs'
+import TaskDetailTabs from 'features/tasks/components/TaskDetails/TaskDetailsTabs'
 import TaskDetailsTitle from 'features/tasks/components/TaskDetails/TaskDetailsTitle'
 import { TaskFirstLineFormFields } from 'features/tasks/components/TaskFirstLineModal/types'
 import { TaskSecondLineFormFields } from 'features/tasks/components/TaskSecondLineModal/types'
@@ -1075,7 +1075,7 @@ const TaskDetails: FC<TaskDetailsProps> = ({
                     </Row>
                   )}
 
-                  <Tabs task={task} activeTab={activeTab} userActions={userActions} />
+                  <TaskDetailTabs task={task} activeTab={activeTab} userActions={userActions} />
                 </Space>
               )}
             </Space>

@@ -8,12 +8,12 @@ import { validationMessages } from 'shared/constants/validation'
 import {
   addModeProps,
   props,
-} from '_tests_/features/warehouse/components/EquipmentFormModal/constants'
-import { equipmentFormModalTestUtils } from '_tests_/features/warehouse/components/EquipmentFormModal/testUtils'
+} from '_tests_/features/warehouses/components/EquipmentFormModal/constants'
+import { equipmentFormModalTestUtils } from '_tests_/features/warehouses/components/EquipmentFormModal/testUtils'
 import currencyFixtures from '_tests_/fixtures/currencies'
 import macroregionFixtures from '_tests_/fixtures/macroregions'
 import warehouseFixtures from '_tests_/fixtures/warehouse'
-import { fakeInteger, fakeWord, render } from '_tests_/utils'
+import { fakeInteger, fakeWord, render } from '_tests_/helpers'
 
 import EquipmentFormModal from './index'
 
@@ -390,7 +390,7 @@ describe('Модалка оборудования', () => {
     })
 
     test('Можно установить значение', async () => {
-      const currency = currencyFixtures.currencyListItem()
+      const currency = currencyFixtures.currency()
 
       const { user } = render(<EquipmentFormModal {...props} currencies={[currency]} />)
 
@@ -691,20 +691,18 @@ describe('Модалка оборудования', () => {
 
     test('Можно установить значение', async () => {
       const owner = warehouseFixtures.customerListItem()
-      const macroregionListItem = macroregionFixtures.macroregionListItem()
+      const macroregion = macroregionFixtures.macroregion()
 
       const { user } = render(
-        <EquipmentFormModal {...props} macroregions={[macroregionListItem]} owners={[owner]} />,
+        <EquipmentFormModal {...props} macroregions={[macroregion]} owners={[owner]} />,
       )
 
       await equipmentFormModalTestUtils.openOwnerSelect(user)
       await equipmentFormModalTestUtils.setOwner(user, owner.title)
 
       await equipmentFormModalTestUtils.openMacroregionSelect(user)
-      await equipmentFormModalTestUtils.setMacroregion(user, macroregionListItem.title)
-      const selectedOption = equipmentFormModalTestUtils.getSelectedMacroregion(
-        macroregionListItem.title,
-      )
+      await equipmentFormModalTestUtils.setMacroregion(user, macroregion.title)
+      const selectedOption = equipmentFormModalTestUtils.getSelectedMacroregion(macroregion.title)
 
       expect(selectedOption).toBeInTheDocument()
     })

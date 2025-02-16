@@ -4,7 +4,7 @@ import { formatDate } from 'shared/utils/date'
 
 import { props } from '_tests_/features/tasks/components/TaskReclassificationRequest/constants'
 import { taskReclassificationRequestTestUtils } from '_tests_/features/tasks/components/TaskReclassificationRequest/testUtils'
-import { render } from '_tests_/utils'
+import { render } from '_tests_/helpers'
 
 import TaskReclassificationRequest from './index'
 

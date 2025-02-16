@@ -2,7 +2,7 @@ import { within } from '@testing-library/react'
 
 import { props } from '_tests_/features/infrastructures/components/ConfirmDeleteInfrastructureWorkTypeModal/constants'
 import { confirmDeleteInfrastructureWorkTypeModalTestUtils } from '_tests_/features/infrastructures/components/ConfirmDeleteInfrastructureWorkTypeModal/testUtils'
-import { render } from '_tests_/utils'
+import { render } from '_tests_/helpers'
 
 import ConfirmDeleteInfrastructureWorkTypeModal from './index'
 

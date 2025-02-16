@@ -1,7 +1,7 @@
 import { TaskActionsPermissionsEnum } from 'features/tasks/api/constants'
 import { UserActionsDTO } from 'features/users/api/dto'
 
-import { fakeId } from '_tests_/utils'
+import { fakeId } from '_tests_/helpers'
 
 export const taskActionsPermissions: UserActionsDTO['tasks'] = {
   [TaskActionsPermissionsEnum.CanExecute]: [fakeId()],

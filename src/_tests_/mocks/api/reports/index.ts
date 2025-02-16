@@ -13,3 +13,5 @@ export * from './getWorkGroupsMtsrReport.mock'
 export * from './getUsersMtsrReport.mock'
 
 export * from './getInventorizationReport.mock'
+
+export * from './getFiscalAccumulatorTasks.mock'

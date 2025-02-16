@@ -1,7 +1,7 @@
+import { TaskOlaStatusEnum, TaskStatusEnum } from 'features/tasks/api/constants'
 import { MainDetailsProps } from 'features/tasks/components/TaskDetails/MainDetails/index'
-import { TaskOlaStatusEnum, TaskStatusEnum } from 'features/tasks/constants/task/index'
 
-import { fakeDateString, fakeIdStr, fakeWord } from '_tests_/utils'
+import { fakeDateString, fakeIdStr, fakeWord } from '_tests_/helpers'
 
 export const props: Readonly<MainDetailsProps> = {
   name: fakeWord(),

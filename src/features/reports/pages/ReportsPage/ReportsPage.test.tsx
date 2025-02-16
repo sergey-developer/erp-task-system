@@ -9,13 +9,13 @@ import { UserPermissionsEnum } from 'features/users/api/constants'
 import React from 'react'
 
 import userFixtures from '_tests_/fixtures/users'
+import { getStoreWithAuth, linkTestUtils, render, renderWithRouter } from '_tests_/helpers'
 import {
-  mockGetCustomerListSuccess,
+  mockGetCustomersSuccess,
   mockGetFiscalAccumulatorTasksSuccess,
   mockGetMacroregionsMtsrReportSuccess,
 } from '_tests_/mocks/api'
-import { getUserMeQueryMock } from '_tests_/mocks/state/user'
-import { getStoreWithAuth, linkTestUtils, render, renderWithRouter } from '_tests_/utils'
+import { getUserMeQueryMock } from '_tests_/mocks/store/users'
 
 import ReportsPage from './index'
 
@@ -62,7 +62,7 @@ describe('Страница отчётов', () => {
       render(<ReportsPage />, {
         store: getStoreWithAuth(undefined, undefined, undefined, {
           queries: {
-            ...getUserMeQueryMock(userFixtures.user({ permissions: [] })),
+            ...getUserMeQueryMock(userFixtures.userDetail({ permissions: [] })),
           },
         }),
       })
@@ -76,7 +76,9 @@ describe('Страница отчётов', () => {
         store: getStoreWithAuth(undefined, undefined, undefined, {
           queries: {
             ...getUserMeQueryMock(
-              userFixtures.user({ permissions: [UserPermissionsEnum.FiscalAccumulatorTasksRead] }),
+              userFixtures.userDetail({
+                permissions: [UserPermissionsEnum.FiscalAccumulatorTasksRead],
+              }),
             ),
           },
         }),
@@ -107,7 +109,7 @@ describe('Страница отчётов', () => {
           store: getStoreWithAuth(undefined, undefined, undefined, {
             queries: {
               ...getUserMeQueryMock(
-                userFixtures.user({
+                userFixtures.userDetail({
                   permissions: [UserPermissionsEnum.FiscalAccumulatorTasksRead],
                 }),
               ),
@@ -154,7 +156,7 @@ describe('Страница отчётов', () => {
 
     test('При клике переходит на страницу отчёта основных показателей', async () => {
       mockGetMacroregionsMtsrReportSuccess()
-      mockGetCustomerListSuccess()
+      mockGetCustomersSuccess()
 
       const { user } = renderWithRouter(
         [

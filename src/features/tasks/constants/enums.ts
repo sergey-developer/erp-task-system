@@ -5,7 +5,7 @@ export enum TasksFilterTypeEnum {
 }
 
 export enum TaskDetailsTabsEnum {
-  SubTaskList = 'SubTaskList',
+  SubTasks = 'SubTasks',
   Comments = 'Comments',
   Resolution = 'Resolution',
   Description = 'Description',

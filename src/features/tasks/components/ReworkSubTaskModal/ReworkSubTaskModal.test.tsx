@@ -2,7 +2,7 @@ import { validationMessages, validationSizes } from 'shared/constants/validation
 
 import { props } from '_tests_/features/tasks/components/ReworkSubTaskModal/constants'
 import { reworkSubTaskModalTestUtils } from '_tests_/features/tasks/components/ReworkSubTaskModal/testUtils'
-import { buttonTestUtils, fakeIdStr, fakeWord, render } from '_tests_/utils'
+import { buttonTestUtils, fakeIdStr, fakeWord, render } from '_tests_/helpers'
 
 import ReworkSubTaskModal from './index'
 

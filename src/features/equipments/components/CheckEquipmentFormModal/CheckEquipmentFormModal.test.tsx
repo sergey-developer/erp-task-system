@@ -4,12 +4,12 @@ import { EquipmentCategoryEnum, EquipmentConditionEnum } from 'features/equipmen
 import { yesNoOptions } from 'shared/constants/selectField'
 import { validationMessages } from 'shared/constants/validation'
 
-import { props } from '_tests_/features/equipment/components/CheckEquipmentFormModal/constants'
-import { checkEquipmentFormModalTestUtils as testUtils } from '_tests_/features/equipment/components/CheckEquipmentFormModal/utils'
+import { props } from '_tests_/features/equipments/components/CheckEquipmentFormModal/constants'
+import { checkEquipmentFormModalTestUtils as testUtils } from '_tests_/features/equipments/components/CheckEquipmentFormModal/utils'
 import currencyFixtures from '_tests_/fixtures/currencies'
 import macroregionFixtures from '_tests_/fixtures/macroregions'
 import warehouseFixtures from '_tests_/fixtures/warehouse'
-import { fakeInteger, fakeWord, render } from '_tests_/utils'
+import { fakeInteger, fakeWord, render } from '_tests_/helpers'
 
 import { equipmentConditionDict } from '../../constants'
 import CheckEquipmentFormModal from './index'
@@ -345,7 +345,7 @@ describe('Модалка проверки оборудования', () => {
     })
 
     test('Можно установить значение', async () => {
-      const currency = currencyFixtures.currencyListItem()
+      const currency = currencyFixtures.currency()
 
       const { user } = render(<CheckEquipmentFormModal {...props} currencies={[currency]} />)
 
@@ -581,22 +581,18 @@ describe('Модалка проверки оборудования', () => {
 
     test('Можно установить значение', async () => {
       const owner = warehouseFixtures.customerListItem()
-      const macroregionListItem = macroregionFixtures.macroregionListItem()
+      const macroregion = macroregionFixtures.macroregion()
 
       const { user } = render(
-        <CheckEquipmentFormModal
-          {...props}
-          macroregions={[macroregionListItem]}
-          owners={[owner]}
-        />,
+        <CheckEquipmentFormModal {...props} macroregions={[macroregion]} owners={[owner]} />,
       )
 
       await testUtils.openOwnerSelect(user)
       await testUtils.setOwner(user, owner.title)
 
       await testUtils.openMacroregionSelect(user)
-      await testUtils.setMacroregion(user, macroregionListItem.title)
-      const selectedOption = testUtils.getSelectedMacroregion(macroregionListItem.title)
+      await testUtils.setMacroregion(user, macroregion.title)
+      const selectedOption = testUtils.getSelectedMacroregion(macroregion.title)
 
       expect(selectedOption).toBeInTheDocument()
     })

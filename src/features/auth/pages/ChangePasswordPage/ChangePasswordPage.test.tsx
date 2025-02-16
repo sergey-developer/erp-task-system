@@ -25,7 +25,7 @@ import {
   render,
   renderInRoute,
   setupApiTests,
-} from '_tests_/utils'
+} from '_tests_/helpers'
 
 import ChangePasswordPage from './index'
 

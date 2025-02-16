@@ -16,7 +16,7 @@ import {
   columnWithSortingClass,
 } from '_tests_/constants/components'
 import warehouseFixtures from '_tests_/fixtures/warehouse'
-import { render, tableTestUtils } from '_tests_/utils'
+import { render, tableTestUtils } from '_tests_/helpers'
 
 import ExecuteInventorizationRelocationTaskTable from './index'
 import { ExecuteInventorizationRelocationTaskTableProps } from './types'

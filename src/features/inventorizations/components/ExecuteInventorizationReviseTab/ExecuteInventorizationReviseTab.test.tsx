@@ -11,18 +11,19 @@ import * as base64Utils from 'shared/utils/common/base64'
 import * as downloadFileUtils from 'shared/utils/file/downloadFile'
 import { makeString } from 'shared/utils/string'
 
-import { checkEquipmentFormModalTestUtils } from '_tests_/features/equipment/components/CheckEquipmentFormModal/utils'
-import { props } from '_tests_/features/inventorization/components/ExecuteInventorizationReviseTab/constants'
-import { executeInventorizationReviseTabTestUtils as testUtils } from '_tests_/features/inventorization/components/ExecuteInventorizationReviseTab/testUtils'
-import { checkInventorizationEquipmentsModalTestUtils } from '_tests_/features/inventorizationEquipments/components/CheckInventorizationEquipmentsModal/testUtils'
-import { checkInventorizationEquipmentsTableTestUtils } from '_tests_/features/inventorizationEquipments/components/CheckInventorizationEquipmentsTable/testUtils'
-import { createInventorizationEquipmentModalTestUtils } from '_tests_/features/warehouse/components/CreateInventorizationEquipmentModal/testUtils'
-import { equipmentFormModalTestUtils } from '_tests_/features/warehouse/components/EquipmentFormModal/testUtils'
-import { reviseEquipmentTableTestUtils } from '_tests_/features/warehouse/components/ReviseInventorizationEquipmentTable/testUtils'
+import { checkEquipmentFormModalTestUtils } from '_tests_/features/equipments/components/CheckEquipmentFormModal/utils'
+import { checkInventorizationEquipmentsModalTestUtils } from '_tests_/features/inventorizations/components/CheckInventorizationEquipmentsModal/testUtils'
+import { checkInventorizationEquipmentsTableTestUtils } from '_tests_/features/inventorizations/components/CheckInventorizationEquipmentsTable/testUtils'
+import { props } from '_tests_/features/inventorizations/components/ExecuteInventorizationReviseTab/constants'
+import { executeInventorizationReviseTabTestUtils as testUtils } from '_tests_/features/inventorizations/components/ExecuteInventorizationReviseTab/testUtils'
+import { createInventorizationEquipmentModalTestUtils } from '_tests_/features/warehouses/components/CreateInventorizationEquipmentModal/testUtils'
+import { equipmentFormModalTestUtils } from '_tests_/features/warehouses/components/EquipmentFormModal/testUtils'
+import { reviseEquipmentTableTestUtils } from '_tests_/features/warehouses/components/ReviseInventorizationEquipmentTable/testUtils'
 import catalogsFixtures from '_tests_/fixtures/catalogs'
 import commonFixtures from '_tests_/fixtures/common'
 import userFixtures from '_tests_/fixtures/users'
 import warehouseFixtures from '_tests_/fixtures/warehouse'
+import { fakeInteger, fakeWord, getStoreWithAuth, render, setupApiTests } from '_tests_/helpers'
 import {
   mockCheckInventorizationEquipmentsBadRequestError,
   mockCheckInventorizationEquipmentsSuccess,
@@ -30,21 +31,20 @@ import {
   mockCheckInventorizationEquipmentsTemplateSuccess,
   mockCreateEquipmentSuccess,
   mockCreateInventorizationEquipmentSuccess,
-  mockGetCurrencyListSuccess,
-  mockGetCustomerListSuccess,
-  mockGetEquipmentCatalogListSuccess,
-  mockGetEquipmentCategoryListSuccess,
+  mockGetCurrenciesSuccess,
+  mockGetCustomersSuccess,
+  mockGetEquipmentCategoriesSuccess,
+  mockGetEquipmentsCatalogSuccess,
   mockGetEquipmentSuccess,
   mockGetInventorizationEquipmentsSuccess,
   mockGetInventorizationEquipmentsTemplateSuccess,
   mockGetLocationsCatalogSuccess,
   mockGetMacroregionsSuccess,
-  mockGetNomenclatureListSuccess,
+  mockGetNomenclaturesSuccess,
   mockGetNomenclatureSuccess,
   mockGetWorkTypesSuccess,
 } from '_tests_/mocks/api'
-import { getUserMeQueryMock } from '_tests_/mocks/state/user'
-import { fakeInteger, fakeWord, getStoreWithAuth, render, setupApiTests } from '_tests_/utils'
+import { getUserMeQueryMock } from '_tests_/mocks/store/users'
 
 import ExecuteInventorizationReviseTab from './index'
 
@@ -54,7 +54,7 @@ describe('Вкладка списка оборудования с расхожд
   test('Отображает заголовок и таблицу', () => {
     mockGetInventorizationEquipmentsSuccess({ inventorizationId: props.inventorization.id })
     mockGetLocationsCatalogSuccess()
-    const currentUser = userFixtures.user()
+    const currentUser = userFixtures.userDetail()
 
     render(<ExecuteInventorizationReviseTab {...props} />, {
       store: getStoreWithAuth(currentUser, undefined, undefined, {
@@ -75,7 +75,7 @@ describe('Вкладка списка оборудования с расхожд
       test('Отображается и активна', () => {
         mockGetInventorizationEquipmentsSuccess({ inventorizationId: props.inventorization.id })
         mockGetLocationsCatalogSuccess()
-        const currentUser = userFixtures.user()
+        const currentUser = userFixtures.userDetail()
 
         render(<ExecuteInventorizationReviseTab {...props} />, {
           store: getStoreWithAuth(currentUser, undefined, undefined, {
@@ -92,9 +92,9 @@ describe('Вкладка списка оборудования с расхожд
       test('При клике открывается модалка добавления оборудования', async () => {
         mockGetInventorizationEquipmentsSuccess({ inventorizationId: props.inventorization.id })
         mockGetLocationsCatalogSuccess({ body: [] })
-        mockGetEquipmentCategoryListSuccess({ body: [] })
-        mockGetEquipmentCatalogListSuccess()
-        const currentUser = userFixtures.user()
+        mockGetEquipmentCategoriesSuccess({ body: [] })
+        mockGetEquipmentsCatalogSuccess()
+        const currentUser = userFixtures.userDetail()
 
         const { user } = render(<ExecuteInventorizationReviseTab {...props} />, {
           store: getStoreWithAuth(currentUser, undefined, undefined, {
@@ -115,15 +115,15 @@ describe('Вкладка списка оборудования с расхожд
         { once: false },
       )
       mockGetLocationsCatalogSuccess({ body: [] })
-      mockGetEquipmentCategoryListSuccess({ body: [] })
+      mockGetEquipmentCategoriesSuccess({ body: [] })
 
       const equipmentCatalogListItem = warehouseFixtures.equipmentCatalogListItem()
-      mockGetEquipmentCatalogListSuccess({ body: [equipmentCatalogListItem] })
+      mockGetEquipmentsCatalogSuccess({ body: [equipmentCatalogListItem] })
 
       mockGetEquipmentSuccess(equipmentCatalogListItem.id)
       mockCreateInventorizationEquipmentSuccess({ inventorizationId: props.inventorization.id })
       const warehouseListItem = props.inventorization.warehouses[0]
-      const currentUser = userFixtures.user()
+      const currentUser = userFixtures.userDetail()
 
       const { user } = render(<ExecuteInventorizationReviseTab {...props} />, {
         store: getStoreWithAuth(currentUser, undefined, undefined, {
@@ -166,11 +166,11 @@ describe('Вкладка списка оборудования с расхожд
       const equipmentCategoryListItem = warehouseFixtures.equipmentCategoryListItem({
         code: EquipmentCategoryEnum.Consumable,
       })
-      mockGetEquipmentCategoryListSuccess({ body: [equipmentCategoryListItem] })
-      mockGetCurrencyListSuccess()
+      mockGetEquipmentCategoriesSuccess({ body: [equipmentCategoryListItem] })
+      mockGetCurrenciesSuccess()
 
       const nomenclatureListItem = warehouseFixtures.nomenclatureListItem()
-      mockGetNomenclatureListSuccess({
+      mockGetNomenclaturesSuccess({
         body: commonFixtures.paginatedListResponse([nomenclatureListItem]),
       })
       mockGetNomenclatureSuccess(nomenclatureListItem.id, {
@@ -179,11 +179,11 @@ describe('Вкладка списка оборудования с расхожд
 
       const workTypeListItem = warehouseFixtures.workTypeListItem()
       mockGetWorkTypesSuccess({ body: [workTypeListItem] })
-      mockGetEquipmentCatalogListSuccess({ body: [], once: false })
+      mockGetEquipmentsCatalogSuccess({ body: [], once: false })
       mockCreateEquipmentSuccess()
       mockCreateInventorizationEquipmentSuccess({ inventorizationId: props.inventorization.id })
       const warehouseListItem = props.inventorization.warehouses[0]
-      const currentUser = userFixtures.user()
+      const currentUser = userFixtures.userDetail()
 
       const { user } = render(<ExecuteInventorizationReviseTab {...props} />, {
         store: getStoreWithAuth(currentUser, undefined, undefined, {
@@ -235,7 +235,7 @@ describe('Вкладка списка оборудования с расхожд
       mockGetInventorizationEquipmentsSuccess({ inventorizationId: inventorization.id })
       mockGetLocationsCatalogSuccess({ body: [] })
 
-      const currentUser = userFixtures.user({
+      const currentUser = userFixtures.userDetail({
         id: inventorization.executor.id,
         permissions: [UserPermissionsEnum.InventorizationUpdate],
       })
@@ -258,7 +258,7 @@ describe('Вкладка списка оборудования с расхожд
       mockGetInventorizationEquipmentsSuccess({ inventorizationId: inventorization.id })
       mockGetLocationsCatalogSuccess({ body: [] })
 
-      const currentUser = userFixtures.user({
+      const currentUser = userFixtures.userDetail({
         id: inventorization.executor.id,
         permissions: [UserPermissionsEnum.InventorizationUpdate],
       })
@@ -282,7 +282,7 @@ describe('Вкладка списка оборудования с расхожд
         mockGetInventorizationEquipmentsSuccess({ inventorizationId: inventorization.id })
         mockGetLocationsCatalogSuccess({ body: [] })
 
-        const currentUser = userFixtures.user({
+        const currentUser = userFixtures.userDetail({
           permissions: [UserPermissionsEnum.InventorizationUpdate],
         })
 
@@ -303,7 +303,7 @@ describe('Вкладка списка оборудования с расхожд
         mockGetInventorizationEquipmentsSuccess({ inventorizationId: inventorization.id })
         mockGetLocationsCatalogSuccess({ body: [] })
 
-        const currentUser = userFixtures.user({
+        const currentUser = userFixtures.userDetail({
           id: inventorization.executor.id,
           permissions: [UserPermissionsEnum.InventorizationUpdate],
         })
@@ -325,7 +325,10 @@ describe('Вкладка списка оборудования с расхожд
         mockGetInventorizationEquipmentsSuccess({ inventorizationId: inventorization.id })
         mockGetLocationsCatalogSuccess({ body: [] })
 
-        const currentUser = userFixtures.user({ id: inventorization.executor.id, permissions: [] })
+        const currentUser = userFixtures.userDetail({
+          id: inventorization.executor.id,
+          permissions: [],
+        })
 
         render(<ExecuteInventorizationReviseTab {...props} inventorization={inventorization} />, {
           store: getStoreWithAuth(currentUser, undefined, undefined, {
@@ -343,7 +346,7 @@ describe('Вкладка списка оборудования с расхожд
         status: InventorizationStatusEnum.New,
       })
 
-      const currentUser = userFixtures.user({
+      const currentUser = userFixtures.userDetail({
         id: inventorization.executor.id,
         permissions: [UserPermissionsEnum.InventorizationUpdate],
       })
@@ -387,7 +390,7 @@ describe('Вкладка списка оборудования с расхожд
       mockGetInventorizationEquipmentsSuccess({ inventorizationId: inventorization.id })
       mockGetLocationsCatalogSuccess({ body: [] })
 
-      const currentUser = userFixtures.user({
+      const currentUser = userFixtures.userDetail({
         id: inventorization.executor.id,
         permissions: [UserPermissionsEnum.InventorizationUpdate],
       })
@@ -410,7 +413,7 @@ describe('Вкладка списка оборудования с расхожд
       mockGetInventorizationEquipmentsSuccess({ inventorizationId: inventorization.id })
       mockGetLocationsCatalogSuccess({ body: [] })
 
-      const currentUser = userFixtures.user({
+      const currentUser = userFixtures.userDetail({
         id: inventorization.executor.id,
         permissions: [UserPermissionsEnum.InventorizationUpdate],
       })
@@ -434,7 +437,7 @@ describe('Вкладка списка оборудования с расхожд
         mockGetInventorizationEquipmentsSuccess({ inventorizationId: inventorization.id })
         mockGetLocationsCatalogSuccess({ body: [] })
 
-        const currentUser = userFixtures.user({
+        const currentUser = userFixtures.userDetail({
           permissions: [UserPermissionsEnum.InventorizationUpdate],
         })
 
@@ -455,7 +458,7 @@ describe('Вкладка списка оборудования с расхожд
         mockGetInventorizationEquipmentsSuccess({ inventorizationId: inventorization.id })
         mockGetLocationsCatalogSuccess({ body: [] })
 
-        const currentUser = userFixtures.user({
+        const currentUser = userFixtures.userDetail({
           id: inventorization.executor.id,
           permissions: [UserPermissionsEnum.InventorizationUpdate],
         })
@@ -477,7 +480,10 @@ describe('Вкладка списка оборудования с расхожд
         mockGetInventorizationEquipmentsSuccess({ inventorizationId: inventorization.id })
         mockGetLocationsCatalogSuccess({ body: [] })
 
-        const currentUser = userFixtures.user({ id: inventorization.executor.id, permissions: [] })
+        const currentUser = userFixtures.userDetail({
+          id: inventorization.executor.id,
+          permissions: [],
+        })
 
         render(<ExecuteInventorizationReviseTab {...props} inventorization={inventorization} />, {
           store: getStoreWithAuth(currentUser, undefined, undefined, {
@@ -495,7 +501,7 @@ describe('Вкладка списка оборудования с расхожд
         status: InventorizationStatusEnum.New,
       })
 
-      const currentUser = userFixtures.user({
+      const currentUser = userFixtures.userDetail({
         id: inventorization.executor.id,
         permissions: [UserPermissionsEnum.InventorizationUpdate],
       })
@@ -523,7 +529,7 @@ describe('Вкладка списка оборудования с расхожд
         status: InventorizationStatusEnum.New,
       })
 
-      const currentUser = userFixtures.user({
+      const currentUser = userFixtures.userDetail({
         id: inventorization.executor.id,
         permissions: [UserPermissionsEnum.InventorizationUpdate],
       })
@@ -562,7 +568,7 @@ describe('Вкладка списка оборудования с расхожд
         status: InventorizationStatusEnum.New,
       })
 
-      const currentUser = userFixtures.user({
+      const currentUser = userFixtures.userDetail({
         id: inventorization.executor.id,
         permissions: [UserPermissionsEnum.InventorizationUpdate],
       })
@@ -576,13 +582,13 @@ describe('Вкладка списка оборудования с расхожд
       mockGetInventorizationEquipmentsSuccess({ inventorizationId: inventorization.id })
       mockGetLocationsCatalogSuccess({ body: [] })
 
-      mockGetNomenclatureListSuccess()
+      mockGetNomenclaturesSuccess()
       mockGetNomenclatureSuccess(checkedInventorizationEquipmentsTemplateListItem.nomenclature!.id)
       mockGetWorkTypesSuccess()
-      mockGetCurrencyListSuccess()
-      mockGetCustomerListSuccess()
+      mockGetCurrenciesSuccess()
+      mockGetCustomersSuccess()
       mockGetMacroregionsSuccess()
-      mockGetEquipmentCategoryListSuccess()
+      mockGetEquipmentCategoriesSuccess()
 
       const { user } = render(
         <ExecuteInventorizationReviseTab {...props} inventorization={inventorization} />,
@@ -616,7 +622,7 @@ describe('Вкладка списка оборудования с расхожд
         status: InventorizationStatusEnum.New,
       })
 
-      const currentUser = userFixtures.user({
+      const currentUser = userFixtures.userDetail({
         id: inventorization.executor.id,
         permissions: [UserPermissionsEnum.InventorizationUpdate],
       })
@@ -640,13 +646,13 @@ describe('Вкладка списка оборудования с расхожд
 
       mockGetInventorizationEquipmentsSuccess({ inventorizationId: inventorization.id })
 
-      const locationCatalogListItem = catalogsFixtures.locationCatalogListItem({
+      const locationCatalogItem = catalogsFixtures.locationCatalogItem({
         id: checkedInventorizationEquipmentsTemplateListItem.locationFact!.id as IdType,
         title: checkedInventorizationEquipmentsTemplateListItem.locationFact!.title,
       })
-      mockGetLocationsCatalogSuccess({ body: [locationCatalogListItem] })
+      mockGetLocationsCatalogSuccess({ body: [locationCatalogItem] })
 
-      mockGetNomenclatureListSuccess({
+      mockGetNomenclaturesSuccess({
         body: commonFixtures.paginatedListResponse([
           checkedInventorizationEquipmentsTemplateListItem.nomenclature!,
         ]),
@@ -658,10 +664,10 @@ describe('Вкладка списка оборудования с расхожд
       mockGetNomenclatureSuccess(nomenclature.id, { body: nomenclature })
 
       mockGetWorkTypesSuccess()
-      mockGetCurrencyListSuccess()
-      mockGetCustomerListSuccess()
+      mockGetCurrenciesSuccess()
+      mockGetCustomersSuccess()
       mockGetMacroregionsSuccess()
-      mockGetEquipmentCategoryListSuccess({ body: [equipmentCategoryListItem] })
+      mockGetEquipmentCategoriesSuccess({ body: [equipmentCategoryListItem] })
 
       const { user } = render(
         <ExecuteInventorizationReviseTab {...props} inventorization={inventorization} />,
@@ -704,7 +710,7 @@ describe('Вкладка списка оборудования с расхожд
       await checkEquipmentFormModalTestUtils.expectNomenclaturesLoadingFinished()
       await checkEquipmentFormModalTestUtils.expectLocationLoadingFinished()
       await checkEquipmentFormModalTestUtils.openLocationSelect(user)
-      await checkEquipmentFormModalTestUtils.setLocation(user, locationCatalogListItem.title, true)
+      await checkEquipmentFormModalTestUtils.setLocation(user, locationCatalogItem.title, true)
       await checkEquipmentFormModalTestUtils.setQuantity(
         user,
         checkedInventorizationEquipmentsTemplateListItem.quantityFact! + 1,
@@ -721,7 +727,7 @@ describe('Вкладка списка оборудования с расхожд
         status: InventorizationStatusEnum.New,
       })
 
-      const currentUser = userFixtures.user({
+      const currentUser = userFixtures.userDetail({
         id: inventorization.executor.id,
         permissions: [UserPermissionsEnum.InventorizationUpdate],
       })
@@ -741,13 +747,13 @@ describe('Вкладка списка оборудования с расхожд
       )
       mockGetLocationsCatalogSuccess({ body: [] })
 
-      mockGetNomenclatureListSuccess()
+      mockGetNomenclaturesSuccess()
       mockGetNomenclatureSuccess(checkedInventorizationEquipmentsTemplateListItem.nomenclature!.id)
       mockGetWorkTypesSuccess()
-      mockGetCurrencyListSuccess()
-      mockGetCustomerListSuccess()
+      mockGetCurrenciesSuccess()
+      mockGetCustomersSuccess()
       mockGetMacroregionsSuccess()
-      mockGetEquipmentCategoryListSuccess()
+      mockGetEquipmentCategoriesSuccess()
 
       const { user } = render(
         <ExecuteInventorizationReviseTab {...props} inventorization={inventorization} />,
@@ -773,7 +779,7 @@ describe('Вкладка списка оборудования с расхожд
         status: InventorizationStatusEnum.New,
       })
 
-      const currentUser = userFixtures.user({
+      const currentUser = userFixtures.userDetail({
         id: inventorization.executor.id,
         permissions: [UserPermissionsEnum.InventorizationUpdate],
       })
@@ -792,13 +798,13 @@ describe('Вкладка списка оборудования с расхожд
       mockGetInventorizationEquipmentsSuccess({ inventorizationId: inventorization.id })
       mockGetLocationsCatalogSuccess({ body: [] })
 
-      mockGetNomenclatureListSuccess()
+      mockGetNomenclaturesSuccess()
       mockGetNomenclatureSuccess(checkedInventorizationEquipmentsTemplateListItem.nomenclature!.id)
       mockGetWorkTypesSuccess()
-      mockGetCurrencyListSuccess()
-      mockGetCustomerListSuccess()
+      mockGetCurrenciesSuccess()
+      mockGetCustomersSuccess()
       mockGetMacroregionsSuccess()
-      mockGetEquipmentCategoryListSuccess()
+      mockGetEquipmentCategoriesSuccess()
 
       const { user } = render(
         <ExecuteInventorizationReviseTab {...props} inventorization={inventorization} />,

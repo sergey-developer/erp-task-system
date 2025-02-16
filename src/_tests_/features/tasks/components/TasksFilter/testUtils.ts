@@ -1,22 +1,20 @@
 import { screen, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
-
 import {
   searchFieldDict,
   taskAssignedDict,
   taskOverdueDict,
 } from 'features/tasks/components/TasksFilter/constants'
-import { taskExtendedStatusDict } from 'features/tasks/constants/task/index'
+import { taskExtendedStatusDict } from 'features/tasks/constants'
 
+import { TestIdsEnum } from '_tests_/features/tasks/components/TasksFilter/constants'
 import {
   buttonTestUtils,
   checkboxTestUtils,
   fakeWord,
   radioButtonTestUtils,
   selectTestUtils,
-} from '_tests_/utils/index'
-
-import { TestIdsEnum } from '_tests_/features/tasks/components/TasksFilter/constants'
+} from '_tests_/helpers/index'
 
 const getContainer = () => screen.getByTestId(TestIdsEnum.ExtendedFilter)
 const findContainer = () => screen.findByTestId(TestIdsEnum.ExtendedFilter)

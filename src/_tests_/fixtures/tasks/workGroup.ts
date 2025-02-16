@@ -1,6 +1,6 @@
 import { TaskWorkGroupDTO } from 'features/tasks/api/dto'
 
-import { fakeEmail, fakeId, fakePhone, fakeWord } from '_tests_/utils'
+import { fakeEmail, fakeId, fakePhone, fakeWord } from '_tests_/helpers'
 
 export const workGroup = (props?: Partial<Pick<TaskWorkGroupDTO, 'id'>>): TaskWorkGroupDTO => ({
   id: props?.id || fakeId(),

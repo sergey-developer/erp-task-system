@@ -2,7 +2,7 @@ import { TaskCommentDTO } from 'features/tasks/api/dto'
 import times from 'lodash/times'
 
 import taskFixtures from '_tests_/fixtures/tasks'
-import { fakeDateString, fakeId, fakeWord } from '_tests_/utils'
+import { fakeDateString, fakeId, fakeWord } from '_tests_/helpers'
 
 export const comment = (): TaskCommentDTO => ({
   id: fakeId(),

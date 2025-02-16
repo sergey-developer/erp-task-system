@@ -1,11 +1,10 @@
 import { Form } from 'antd'
-
 import ChangeInfrastructureOrderFormTable from 'features/infrastructures/components/ChangeInfrastructureOrderFormTable'
 
 import { props } from '_tests_/features/infrastructures/components/ChangeInfrastructureOrderFormTable/constants'
 import { changeInfrastructureOrderFormTableTestUtils } from '_tests_/features/infrastructures/components/ChangeInfrastructureOrderFormTable/testUtils'
 import catalogsFixtures from '_tests_/fixtures/catalogs'
-import { buttonTestUtils, fakeInteger, render, tableTestUtils } from '_tests_/utils'
+import { buttonTestUtils, fakeInteger, render, tableTestUtils } from '_tests_/helpers'
 
 describe('Таблица добавления работ к бланк-заказу', () => {
   test('Все колонки отображаются', async () => {
@@ -92,13 +91,13 @@ describe('Таблица добавления работ к бланк-зака�
     })
 
     test('При установлении значения вызывается обработчик', async () => {
-      const infrastructureWorkTypeListItem = catalogsFixtures.infrastructureWorkTypeListItem()
+      const infrastructureWorkType = catalogsFixtures.infrastructureWorkType()
 
       const { user } = render(
         <Form>
           <ChangeInfrastructureOrderFormTable
             {...props}
-            infrastructureWorkTypes={[infrastructureWorkTypeListItem]}
+            infrastructureWorkTypes={[infrastructureWorkType]}
           />
         </Form>,
       )
@@ -109,15 +108,13 @@ describe('Таблица добавления работ к бланк-зака�
       await changeInfrastructureOrderFormTableTestUtils.openWorkTypeSelect(user, row)
       await changeInfrastructureOrderFormTableTestUtils.setWorkType(
         user,
-        infrastructureWorkTypeListItem.title,
+        infrastructureWorkType.title,
       )
 
       expect(props.onChangeWorkType).toBeCalledTimes(1)
-      expect(props.onChangeWorkType).toBeCalledWith(
-        expect.anything(),
-        infrastructureWorkTypeListItem.id,
-        { rowIndex: 0 },
-      )
+      expect(props.onChangeWorkType).toBeCalledWith(expect.anything(), infrastructureWorkType.id, {
+        rowIndex: 0,
+      })
     })
   })
 
@@ -171,13 +168,13 @@ describe('Таблица добавления работ к бланк-зака�
     })
 
     test('Активно, если выбрано наименование работ', async () => {
-      const infrastructureWorkTypeListItem = catalogsFixtures.infrastructureWorkTypeListItem()
+      const infrastructureWorkType = catalogsFixtures.infrastructureWorkType()
 
       const { user } = render(
         <Form>
           <ChangeInfrastructureOrderFormTable
             {...props}
-            infrastructureWorkTypes={[infrastructureWorkTypeListItem]}
+            infrastructureWorkTypes={[infrastructureWorkType]}
           />
           ,
         </Form>,
@@ -190,7 +187,7 @@ describe('Таблица добавления работ к бланк-зака�
       await changeInfrastructureOrderFormTableTestUtils.openWorkTypeSelect(user, row)
       await changeInfrastructureOrderFormTableTestUtils.setWorkType(
         user,
-        infrastructureWorkTypeListItem.title,
+        infrastructureWorkType.title,
       )
 
       const input = changeInfrastructureOrderFormTableTestUtils.getAmountInput(row)
@@ -199,13 +196,13 @@ describe('Таблица добавления работ к бланк-зака�
     })
 
     test('При установлении значения вызывается обработчик', async () => {
-      const infrastructureWorkTypeListItem = catalogsFixtures.infrastructureWorkTypeListItem()
+      const infrastructureWorkType = catalogsFixtures.infrastructureWorkType()
 
       const { user } = render(
         <Form>
           <ChangeInfrastructureOrderFormTable
             {...props}
-            infrastructureWorkTypes={[infrastructureWorkTypeListItem]}
+            infrastructureWorkTypes={[infrastructureWorkType]}
           />
           ,
         </Form>,
@@ -218,7 +215,7 @@ describe('Таблица добавления работ к бланк-зака�
       await changeInfrastructureOrderFormTableTestUtils.openWorkTypeSelect(user, row)
       await changeInfrastructureOrderFormTableTestUtils.setWorkType(
         user,
-        infrastructureWorkTypeListItem.title,
+        infrastructureWorkType.title,
       )
 
       const input = changeInfrastructureOrderFormTableTestUtils.getAmountInput(row)

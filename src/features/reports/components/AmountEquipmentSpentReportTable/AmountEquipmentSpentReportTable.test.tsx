@@ -6,12 +6,12 @@ import { IdType } from 'shared/types/common'
 import { MaybeNull, NumberOrString } from 'shared/types/utils'
 
 import reportsFixtures from '_tests_/fixtures/reports'
-import { render, tableTestUtils } from '_tests_/utils'
+import { render, tableTestUtils } from '_tests_/helpers'
 
 import AmountEquipmentSpentReportTable from './index'
 import { AmountEquipmentSpentReportTableProps } from './types'
 
-const reportListItem = reportsFixtures.amountEquipmentSpentReportListItem()
+const reportListItem = reportsFixtures.amountEquipmentSpentReportItem()
 
 const props: Readonly<AmountEquipmentSpentReportTableProps> = {
   dataSource: [reportListItem],

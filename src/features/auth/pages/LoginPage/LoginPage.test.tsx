@@ -1,6 +1,9 @@
 import { screen, waitFor, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
-import { loginBadRequestErrorMessage, loginWrongDataErrorMessage } from 'features/auth/api/constants'
+import {
+  loginBadRequestErrorMessage,
+  loginWrongDataErrorMessage,
+} from 'features/auth/api/constants'
 import ProtectedRoute from 'features/auth/components/ProtectedRoute'
 import LoginPage from 'features/auth/pages/LoginPage'
 import { AuthRoutesEnum } from 'features/auth/routes/routes'
@@ -19,16 +22,6 @@ import { tasksPageTestUtils } from '_tests_/features/tasks/pages/TasksPage/testU
 import authFixtures from '_tests_/fixtures/auth'
 import userFixtures from '_tests_/fixtures/users'
 import {
-  mockGetTaskCountersSuccess,
-  mockGetTasksSuccess,
-  mockLoginBadRequestError,
-  mockLoginServerError,
-  mockLoginSuccess,
-  mockLoginUnauthorizedError,
-  mockRefreshTokenSuccess,
-} from '_tests_/mocks/api'
-import { getUserMeQueryMock } from '_tests_/mocks/state/user'
-import {
   buttonTestUtils,
   fakeEmail,
   fakeWord,
@@ -37,7 +30,17 @@ import {
   renderInRoute,
   renderWithRouter,
   setupApiTests,
-} from '_tests_/utils'
+} from '_tests_/helpers'
+import {
+  mockGetTaskCountersSuccess,
+  mockGetTasksSuccess,
+  mockLoginBadRequestError,
+  mockLoginServerError,
+  mockLoginSuccess,
+  mockLoginUnauthorizedError,
+  mockRefreshTokenSuccess,
+} from '_tests_/mocks/api'
+import { getUserMeQueryMock } from '_tests_/mocks/store/users'
 
 const getContainer = () => screen.getByTestId('login-card')
 const queryContainer = () => screen.queryByTestId('login-card')
@@ -240,7 +243,7 @@ describe('Страница авторизации', () => {
         { initialEntries: [AuthRoutesEnum.Login], initialIndex: 0 },
         {
           store: getStoreWithAuth(undefined, null, null, {
-            queries: { ...getUserMeQueryMock(userFixtures.user()) },
+            queries: { ...getUserMeQueryMock(userFixtures.userDetail()) },
           }),
         },
       )
@@ -264,13 +267,9 @@ describe('Страница авторизации', () => {
       await testUtils.expectLoadingStarted()
       await testUtils.expectLoadingFinished()
 
-      expect(authLocalStorageService.getAccessToken()).toBe(
-        authFixtures.loginResponse.access,
-      )
+      expect(authLocalStorageService.getAccessToken()).toBe(authFixtures.loginResponse.access)
 
-      expect(authLocalStorageService.getRefreshToken()).toBe(
-        authFixtures.loginResponse.refresh,
-      )
+      expect(authLocalStorageService.getRefreshToken()).toBe(authFixtures.loginResponse.refresh)
     })
 
     test('Данные сохраняются в store', async () => {

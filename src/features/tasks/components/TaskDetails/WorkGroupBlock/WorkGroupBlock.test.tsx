@@ -15,9 +15,9 @@ import { taskSecondLineModalTestUtils } from '_tests_/features/tasks/components/
 import taskFixtures from '_tests_/fixtures/tasks'
 import userFixtures from '_tests_/fixtures/users'
 import workGroupFixtures from '_tests_/fixtures/workGroup'
+import { fakeWord, getStoreWithAuth, render, setupApiTests } from '_tests_/helpers'
 import { mockGetWorkGroupsSuccess } from '_tests_/mocks/api'
-import { getUserMeQueryMock } from '_tests_/mocks/state/user'
-import { fakeWord, getStoreWithAuth, render, setupApiTests } from '_tests_/utils'
+import { getUserMeQueryMock } from '_tests_/mocks/store/users'
 
 import WorkGroupBlock from './index'
 
@@ -155,7 +155,7 @@ describe('Блок рабочей группы', () => {
         />,
         {
           store: getStoreWithAuth(undefined, undefined, undefined, {
-            queries: { ...getUserMeQueryMock(userFixtures.user()) },
+            queries: { ...getUserMeQueryMock(userFixtures.userDetail()) },
           }),
         },
       )
@@ -177,7 +177,7 @@ describe('Блок рабочей группы', () => {
         />,
         {
           store: getStoreWithAuth(undefined, undefined, undefined, {
-            queries: { ...getUserMeQueryMock(userFixtures.user()) },
+            queries: { ...getUserMeQueryMock(userFixtures.userDetail()) },
           }),
         },
       )
@@ -196,7 +196,7 @@ describe('Блок рабочей группы', () => {
         />,
         {
           store: getStoreWithAuth(undefined, undefined, undefined, {
-            queries: { ...getUserMeQueryMock(userFixtures.user()) },
+            queries: { ...getUserMeQueryMock(userFixtures.userDetail()) },
           }),
         },
       )
@@ -221,7 +221,7 @@ describe('Блок рабочей группы', () => {
         />,
         {
           store: getStoreWithAuth(undefined, undefined, undefined, {
-            queries: { ...getUserMeQueryMock(userFixtures.user()) },
+            queries: { ...getUserMeQueryMock(userFixtures.userDetail()) },
           }),
         },
       )
@@ -248,7 +248,7 @@ describe('Блок рабочей группы', () => {
         <WorkGroupBlock {...props} {...showFirstLineButtonProps} {...activeFirstLineButtonProps} />,
         {
           store: getStoreWithAuth(undefined, undefined, undefined, {
-            queries: { ...getUserMeQueryMock(userFixtures.user()) },
+            queries: { ...getUserMeQueryMock(userFixtures.userDetail()) },
           }),
         },
       )
@@ -273,7 +273,7 @@ describe('Блок рабочей группы', () => {
         />,
         {
           store: getStoreWithAuth(undefined, undefined, undefined, {
-            queries: { ...getUserMeQueryMock(userFixtures.user()) },
+            queries: { ...getUserMeQueryMock(userFixtures.userDetail()) },
           }),
         },
       )
@@ -286,7 +286,7 @@ describe('Блок рабочей группы', () => {
         <WorkGroupBlock {...props} {...showFirstLineButtonProps} {...activeFirstLineButtonProps} />,
         {
           store: getStoreWithAuth(undefined, undefined, undefined, {
-            queries: { ...getUserMeQueryMock(userFixtures.user()) },
+            queries: { ...getUserMeQueryMock(userFixtures.userDetail()) },
           }),
         },
       )
@@ -299,7 +299,7 @@ describe('Блок рабочей группы', () => {
       test('Но нет рабочей группы', () => {
         render(<WorkGroupBlock {...props} {...showFirstLineButtonProps} workGroup={undefined} />, {
           store: getStoreWithAuth(undefined, undefined, undefined, {
-            queries: { ...getUserMeQueryMock(userFixtures.user()) },
+            queries: { ...getUserMeQueryMock(userFixtures.userDetail()) },
           }),
         })
 
@@ -315,7 +315,7 @@ describe('Блок рабочей группы', () => {
           />,
           {
             store: getStoreWithAuth(undefined, undefined, undefined, {
-              queries: { ...getUserMeQueryMock(userFixtures.user()) },
+              queries: { ...getUserMeQueryMock(userFixtures.userDetail()) },
             }),
           },
         )
@@ -332,7 +332,7 @@ describe('Блок рабочей группы', () => {
           />,
           {
             store: getStoreWithAuth(undefined, undefined, undefined, {
-              queries: { ...getUserMeQueryMock(userFixtures.user()) },
+              queries: { ...getUserMeQueryMock(userFixtures.userDetail()) },
             }),
           },
         )
@@ -348,7 +348,7 @@ describe('Блок рабочей группы', () => {
         <WorkGroupBlock {...props} {...showFirstLineButtonProps} {...activeFirstLineButtonProps} />,
         {
           store: getStoreWithAuth(undefined, undefined, undefined, {
-            queries: { ...getUserMeQueryMock(userFixtures.user()) },
+            queries: { ...getUserMeQueryMock(userFixtures.userDetail()) },
           }),
         },
       )

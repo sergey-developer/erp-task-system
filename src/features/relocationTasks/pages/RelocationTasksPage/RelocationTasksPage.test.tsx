@@ -12,25 +12,14 @@ import { UserPermissionsEnum } from 'features/users/api/constants'
 import { WarehousesRoutesEnum } from 'features/warehouses/routes/routes'
 
 import { ariaSortAttrAscValue, ariaSortAttrName } from '_tests_/constants/components'
-import { relocationTaskDetailsTestUtils } from '_tests_/features/warehouse/components/RelocationTaskDetails/testUtils'
-import { relocationTaskTableTestUtils } from '_tests_/features/warehouse/components/RelocationTaskTable/testUtils'
-import { relocationTasksFilterTestUtils } from '_tests_/features/warehouse/components/RelocationTasksFilter/testUtils'
-import { createRelocationTaskPageTestUtils } from '_tests_/features/warehouse/pages/CreateRelocationTaskPage/testUtils'
-import { relocationTasksPageTestUtils } from '_tests_/features/warehouse/pages/RelocationTasksPage/testUtils'
+import { relocationTaskDetailsTestUtils } from '_tests_/features/warehouses/components/RelocationTaskDetails/testUtils'
+import { relocationTaskTableTestUtils } from '_tests_/features/warehouses/components/RelocationTaskTable/testUtils'
+import { relocationTasksFilterTestUtils } from '_tests_/features/warehouses/components/RelocationTasksFilter/testUtils'
+import { createRelocationTaskPageTestUtils } from '_tests_/features/warehouses/pages/CreateRelocationTaskPage/testUtils'
+import { relocationTasksPageTestUtils } from '_tests_/features/warehouses/pages/RelocationTasksPage/testUtils'
 import commonFixtures from '_tests_/fixtures/common'
 import userFixtures from '_tests_/fixtures/users'
 import warehouseFixtures from '_tests_/fixtures/warehouse'
-import {
-  mockGetCurrencyListSuccess,
-  mockGetLocationsCatalogSuccess,
-  mockGetRelocationEquipmentListSuccess,
-  mockGetRelocationTasksForbiddenError,
-  mockGetRelocationTasksServerError,
-  mockGetRelocationTasksSuccess,
-  mockGetRelocationTaskSuccess,
-  mockGetUsersSuccess,
-} from '_tests_/mocks/api'
-import { getUserMeQueryMock } from '_tests_/mocks/state/user'
 import {
   fakeWord,
   getStoreWithAuth,
@@ -40,7 +29,18 @@ import {
   selectTestUtils,
   setupApiTests,
   tableTestUtils,
-} from '_tests_/utils'
+} from '_tests_/helpers'
+import {
+  mockGetCurrenciesSuccess,
+  mockGetLocationsCatalogSuccess,
+  mockGetRelocationEquipmentsSuccess,
+  mockGetRelocationTasksForbiddenError,
+  mockGetRelocationTasksServerError,
+  mockGetRelocationTasksSuccess,
+  mockGetRelocationTaskSuccess,
+  mockGetUsersSuccess,
+} from '_tests_/mocks/api'
+import { getUserMeQueryMock } from '_tests_/mocks/store/users'
 
 import CreateRelocationTaskPage from '../CreateRelocationTaskPage'
 import RelocationTasksPage from './index'
@@ -58,7 +58,7 @@ describe('Страница списка заявок на перемещение
 
       render(<RelocationTasksPage />, {
         store: getStoreWithAuth(undefined, undefined, undefined, {
-          queries: { ...getUserMeQueryMock(userFixtures.user()) },
+          queries: { ...getUserMeQueryMock(userFixtures.userDetail()) },
         }),
       })
 
@@ -77,7 +77,7 @@ describe('Страница списка заявок на перемещение
 
         render(<RelocationTasksPage />, {
           store: getStoreWithAuth(undefined, undefined, undefined, {
-            queries: { ...getUserMeQueryMock(userFixtures.user()) },
+            queries: { ...getUserMeQueryMock(userFixtures.userDetail()) },
           }),
         })
 
@@ -92,7 +92,7 @@ describe('Страница списка заявок на перемещение
 
         render(<RelocationTasksPage />, {
           store: getStoreWithAuth(undefined, undefined, undefined, {
-            queries: { ...getUserMeQueryMock(userFixtures.user()) },
+            queries: { ...getUserMeQueryMock(userFixtures.userDetail()) },
           }),
         })
 
@@ -114,7 +114,7 @@ describe('Страница списка заявок на перемещение
 
       const { user } = render(<RelocationTasksPage />, {
         store: getStoreWithAuth(undefined, undefined, undefined, {
-          queries: { ...getUserMeQueryMock(userFixtures.user()) },
+          queries: { ...getUserMeQueryMock(userFixtures.userDetail()) },
         }),
       })
 
@@ -137,7 +137,7 @@ describe('Страница списка заявок на перемещение
 
       render(<RelocationTasksPage />, {
         store: getStoreWithAuth(undefined, undefined, undefined, {
-          queries: { ...getUserMeQueryMock(userFixtures.user()) },
+          queries: { ...getUserMeQueryMock(userFixtures.userDetail()) },
         }),
       })
 
@@ -156,7 +156,7 @@ describe('Страница списка заявок на перемещение
 
       const { user } = render(<RelocationTasksPage />, {
         store: getStoreWithAuth(undefined, undefined, undefined, {
-          queries: { ...getUserMeQueryMock(userFixtures.user()) },
+          queries: { ...getUserMeQueryMock(userFixtures.userDetail()) },
         }),
       })
 
@@ -181,7 +181,7 @@ describe('Страница списка заявок на перемещение
 
         render(<RelocationTasksPage />, {
           store: getStoreWithAuth(undefined, undefined, undefined, {
-            queries: { ...getUserMeQueryMock(userFixtures.user()) },
+            queries: { ...getUserMeQueryMock(userFixtures.userDetail()) },
           }),
         })
 
@@ -200,7 +200,7 @@ describe('Страница списка заявок на перемещение
 
         const { user } = render(<RelocationTasksPage />, {
           store: getStoreWithAuth(undefined, undefined, undefined, {
-            queries: { ...getUserMeQueryMock(userFixtures.user()) },
+            queries: { ...getUserMeQueryMock(userFixtures.userDetail()) },
           }),
         })
 
@@ -221,7 +221,7 @@ describe('Страница списка заявок на перемещение
 
       const { user } = render(<RelocationTasksPage />, {
         store: getStoreWithAuth(undefined, undefined, undefined, {
-          queries: { ...getUserMeQueryMock(userFixtures.user()) },
+          queries: { ...getUserMeQueryMock(userFixtures.userDetail()) },
         }),
       })
 
@@ -259,7 +259,7 @@ describe('Страница списка заявок на перемещение
 
       const { user } = render(<RelocationTasksPage />, {
         store: getStoreWithAuth(undefined, undefined, undefined, {
-          queries: { ...getUserMeQueryMock(userFixtures.user()) },
+          queries: { ...getUserMeQueryMock(userFixtures.userDetail()) },
         }),
       })
 
@@ -299,11 +299,11 @@ describe('Страница списка заявок на перемещение
         body: commonFixtures.paginatedListResponse([relocationTaskListItem]),
       })
       mockGetRelocationTaskSuccess({ relocationTaskId: relocationTaskListItem.id })
-      mockGetRelocationEquipmentListSuccess({ relocationTaskId: relocationTaskListItem.id })
+      mockGetRelocationEquipmentsSuccess({ relocationTaskId: relocationTaskListItem.id })
 
       const { user } = render(<RelocationTasksPage />, {
         store: getStoreWithAuth(undefined, undefined, undefined, {
-          queries: { ...getUserMeQueryMock(userFixtures.user()) },
+          queries: { ...getUserMeQueryMock(userFixtures.userDetail()) },
         }),
       })
 
@@ -320,11 +320,11 @@ describe('Страница списка заявок на перемещение
         body: commonFixtures.paginatedListResponse([relocationTaskListItem]),
       })
       mockGetRelocationTaskSuccess({ relocationTaskId: relocationTaskListItem.id })
-      mockGetRelocationEquipmentListSuccess({ relocationTaskId: relocationTaskListItem.id })
+      mockGetRelocationEquipmentsSuccess({ relocationTaskId: relocationTaskListItem.id })
 
       const { user } = render(<RelocationTasksPage />, {
         store: getStoreWithAuth(undefined, undefined, undefined, {
-          queries: { ...getUserMeQueryMock(userFixtures.user()) },
+          queries: { ...getUserMeQueryMock(userFixtures.userDetail()) },
         }),
       })
 
@@ -363,7 +363,7 @@ describe('Страница списка заявок на перемещение
 
         render(<RelocationTasksPage />, {
           store: getStoreWithAuth(undefined, undefined, undefined, {
-            queries: { ...getUserMeQueryMock(userFixtures.user()) },
+            queries: { ...getUserMeQueryMock(userFixtures.userDetail()) },
           }),
         })
 
@@ -374,7 +374,7 @@ describe('Страница списка заявок на перемещение
       test('При клике переходит на страницу создания заявки', async () => {
         mockGetRelocationTasksSuccess()
         mockGetUsersSuccess()
-        mockGetCurrencyListSuccess()
+        mockGetCurrenciesSuccess()
         mockGetLocationsCatalogSuccess({ once: false })
 
         const { user } = renderWithRouter(

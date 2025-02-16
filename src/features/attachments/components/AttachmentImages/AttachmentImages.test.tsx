@@ -1,13 +1,13 @@
 import { screen, within } from '@testing-library/react'
 
-import attachmentFixtures from '_tests_/fixtures/attachments'
-import { render } from '_tests_/utils'
+import attachmentsFixtures from '_tests_/fixtures/attachments'
+import { render } from '_tests_/helpers'
 
 import AttachmentImages from './index'
 import { AttachmentImagesProps } from './types'
 
 const props: AttachmentImagesProps = {
-  data: attachmentFixtures.attachments(),
+  data: attachmentsFixtures.attachments(),
 }
 
 const getImageIn = (container: HTMLElement, name: string) =>

@@ -5,20 +5,20 @@ import { WarehousesRoutesEnum } from 'features/warehouses/routes/routes'
 
 import { CommonRoutesEnum } from 'configs/routes'
 
-import { props } from '_tests_/features/warehouse/components/ExecuteInventorizationRelocationsTab/constants'
-import { executeInventorizationRelocationsTabTestUtils } from '_tests_/features/warehouse/components/ExecuteInventorizationRelocationsTab/testUtils'
-import { relocationTaskDetailsTestUtils } from '_tests_/features/warehouse/components/RelocationTaskDetails/testUtils'
-import { createRelocationTaskDraftPageTestUtils } from '_tests_/features/warehouse/pages/CreateRelocationTaskDraftPage/testUtils'
+import { props } from '_tests_/features/warehouses/components/ExecuteInventorizationRelocationsTab/constants'
+import { executeInventorizationRelocationsTabTestUtils } from '_tests_/features/warehouses/components/ExecuteInventorizationRelocationsTab/testUtils'
+import { relocationTaskDetailsTestUtils } from '_tests_/features/warehouses/components/RelocationTaskDetails/testUtils'
+import { createRelocationTaskDraftPageTestUtils } from '_tests_/features/warehouses/pages/CreateRelocationTaskDraftPage/testUtils'
 import commonFixtures from '_tests_/fixtures/common'
 import userFixtures from '_tests_/fixtures/users'
 import warehouseFixtures from '_tests_/fixtures/warehouse'
+import { getStoreWithAuth, render, renderWithRouter, tableTestUtils } from '_tests_/helpers'
 import {
-  mockGetRelocationEquipmentListSuccess,
+  mockGetRelocationEquipmentsSuccess,
   mockGetRelocationTasksSuccess,
   mockGetRelocationTaskSuccess,
 } from '_tests_/mocks/api'
-import { getUserMeQueryMock } from '_tests_/mocks/state/user'
-import { getStoreWithAuth, render, renderWithRouter, tableTestUtils } from '_tests_/utils'
+import { getUserMeQueryMock } from '_tests_/mocks/store/users'
 
 import ExecuteInventorizationRelocationsTab from './index'
 
@@ -46,8 +46,8 @@ describe('Вкладка списка заявок на перемещение �
       body: commonFixtures.paginatedListResponse([relocationTaskListItem]),
     })
     mockGetRelocationTaskSuccess({ relocationTaskId: relocationTaskListItem.id })
-    mockGetRelocationEquipmentListSuccess({ relocationTaskId: relocationTaskListItem.id })
-    const currentUser = userFixtures.user()
+    mockGetRelocationEquipmentsSuccess({ relocationTaskId: relocationTaskListItem.id })
+    const currentUser = userFixtures.userDetail()
 
     const { user } = render(<ExecuteInventorizationRelocationsTab {...props} />, {
       store: getStoreWithAuth(currentUser, undefined, undefined, {
@@ -84,7 +84,7 @@ describe('Вкладка списка заявок на перемещение �
         { initialIndex: 0, initialEntries: [CommonRoutesEnum.Root] },
         {
           store: getStoreWithAuth(undefined, undefined, undefined, {
-            queries: { ...getUserMeQueryMock(userFixtures.user()) },
+            queries: { ...getUserMeQueryMock(userFixtures.userDetail()) },
           }),
         },
       )

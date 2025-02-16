@@ -1,6 +1,6 @@
 import { ChangeInfrastructureOrderFormTableProps } from 'features/infrastructures/components/ChangeInfrastructureOrderFormTable/types'
 
-import { fakeWord } from '_tests_/utils'
+import { fakeWord } from '_tests_/helpers'
 
 export const props: ChangeInfrastructureOrderFormTableProps = {
   name: fakeWord(),

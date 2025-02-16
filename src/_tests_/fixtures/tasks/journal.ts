@@ -1,10 +1,10 @@
+import { TaskJournalSourceEnum, TaskJournalTypeEnum } from 'features/tasks/api/constants'
 import { TaskJournalItemDTO, TaskJournalDTO } from 'features/tasks/api/dto'
-import { TaskJournalSourceEnum, TaskJournalTypeEnum } from 'features/tasks/constants/taskJournal'
 import times from 'lodash/times'
 
 import taskFixtures from '_tests_/fixtures/tasks'
 import userFixtures from '_tests_/fixtures/users'
-import { fakeDateString, fakeId, fakeWord } from '_tests_/utils'
+import { fakeDateString, fakeId, fakeWord } from '_tests_/helpers'
 
 export const journalEntry = (
   props?: Partial<Pick<TaskJournalItemDTO, 'type' | 'sourceSystem' | 'attachments'>>,

@@ -12,7 +12,7 @@ import {
   columnWithSortingClass,
 } from '_tests_/constants/components'
 import reportsFixtures from '_tests_/fixtures/reports'
-import { render, tableTestUtils } from '_tests_/utils'
+import { render, tableTestUtils } from '_tests_/helpers'
 
 import MtsrReportTable from './index'
 import { MtsrReportTableItem, MtsrReportTableProps } from './types'

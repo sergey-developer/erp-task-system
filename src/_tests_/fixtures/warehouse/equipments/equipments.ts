@@ -5,7 +5,7 @@ import times from 'lodash/times'
 
 import catalogsFixtures from '_tests_/fixtures/catalogs'
 import warehouseFixtures from '_tests_/fixtures/warehouse'
-import { fakeId, fakeInteger, fakeWord } from '_tests_/utils'
+import { fakeId, fakeInteger, fakeWord } from '_tests_/helpers'
 
 export const equipmentListItem = (): EquipmentDTO => ({
   id: fakeId(),
@@ -14,7 +14,7 @@ export const equipmentListItem = (): EquipmentDTO => ({
   inventoryNumber: fakeWord(),
   condition: EquipmentConditionEnum.Working,
   quantity: fakeInteger(),
-  location: pick(catalogsFixtures.locationCatalogListItem(), 'id', 'title'),
+  location: pick(catalogsFixtures.locationCatalogItem(), 'id', 'title'),
   isCredited: false,
   category: pick(warehouseFixtures.equipmentCategory(), 'id', 'title'),
   purpose: pick(warehouseFixtures.workType(), 'id', 'title'),

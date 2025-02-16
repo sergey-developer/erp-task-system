@@ -10,27 +10,27 @@ import { MimetypeEnum } from 'shared/constants/mimetype'
 import * as base64Utils from 'shared/utils/common/base64'
 import * as downloadFileUtils from 'shared/utils/file/downloadFile'
 
-import { equipmentDetailsTestUtils } from '_tests_/features/warehouse/components/EquipmentDetails/testUtils'
-import { relocationTaskDetailsTestUtils } from '_tests_/features/warehouse/components/RelocationTaskDetails/testUtils'
-import { historyNomenclatureOperationsReportPageTestUtils } from '_tests_/features/warehouse/pages/HistoryNomenclatureOperationsReportPage/testUtils'
+import { equipmentDetailsTestUtils } from '_tests_/features/warehouses/components/EquipmentDetails/testUtils'
+import { relocationTaskDetailsTestUtils } from '_tests_/features/warehouses/components/RelocationTaskDetails/testUtils'
+import { historyNomenclatureOperationsReportPageTestUtils } from '_tests_/features/warehouses/pages/HistoryNomenclatureOperationsReportPage/testUtils'
 import catalogsFixtures from '_tests_/fixtures/catalogs'
 import commonFixtures from '_tests_/fixtures/common'
 import reportsFixtures from '_tests_/fixtures/reports'
 import userFixtures from '_tests_/fixtures/users'
 import warehouseFixtures from '_tests_/fixtures/warehouse'
+import { fakeWord, getStoreWithAuth, render, setupApiTests } from '_tests_/helpers'
 import {
-  mockGetCustomerListSuccess,
-  mockGetEquipmentAttachmentListSuccess,
+  mockGetCustomersSuccess,
+  mockGetEquipmentAttachmentsSuccess,
   mockGetEquipmentNomenclaturesSuccess,
   mockGetEquipmentSuccess,
   mockGetHistoryNomenclatureOperationsReportSuccess,
   mockGetHistoryNomenclatureOperationsReportXlsxSuccess,
   mockGetLocationsCatalogSuccess,
-  mockGetRelocationEquipmentListSuccess,
+  mockGetRelocationEquipmentsSuccess,
   mockGetRelocationTaskSuccess,
 } from '_tests_/mocks/api'
-import { getUserMeQueryMock } from '_tests_/mocks/state/user'
-import { fakeWord, getStoreWithAuth, render, setupApiTests } from '_tests_/utils'
+import { getUserMeQueryMock } from '_tests_/mocks/store/users'
 
 import HistoryNomenclatureOperationsReportPage from './index'
 
@@ -44,20 +44,20 @@ describe('Страница отчета истории операций по н�
         body: commonFixtures.paginatedListResponse([equipmentNomenclatureListItem]),
       })
 
-      const reportListItem = reportsFixtures.historyNomenclatureOperationsReportListItem()
+      const reportListItem = reportsFixtures.historyNomenclatureOperationsReportItem()
       mockGetHistoryNomenclatureOperationsReportSuccess(equipmentNomenclatureListItem.id, {
         body: commonFixtures.paginatedListResponse([reportListItem]),
       })
 
-      const locationCatalogListItem = catalogsFixtures.locationCatalogListItem()
-      mockGetLocationsCatalogSuccess({ body: [locationCatalogListItem] })
+      const locationCatalogItem = catalogsFixtures.locationCatalogItem()
+      mockGetLocationsCatalogSuccess({ body: [locationCatalogItem] })
 
       mockGetEquipmentSuccess(reportListItem.id)
-      mockGetEquipmentAttachmentListSuccess(reportListItem.id)
+      mockGetEquipmentAttachmentsSuccess(reportListItem.id)
 
       const { user } = render(<HistoryNomenclatureOperationsReportPage />, {
         store: getStoreWithAuth(undefined, undefined, undefined, {
-          queries: { ...getUserMeQueryMock(userFixtures.user()) },
+          queries: { ...getUserMeQueryMock(userFixtures.userDetail()) },
         }),
       })
 
@@ -85,22 +85,22 @@ describe('Страница отчета истории операций по н�
         body: commonFixtures.paginatedListResponse([equipmentNomenclatureListItem]),
       })
 
-      const reportListItem = reportsFixtures.historyNomenclatureOperationsReportListItem()
+      const reportListItem = reportsFixtures.historyNomenclatureOperationsReportItem()
       mockGetHistoryNomenclatureOperationsReportSuccess(equipmentNomenclatureListItem.id, {
         body: commonFixtures.paginatedListResponse([reportListItem]),
       })
 
-      const locationCatalogListItem = catalogsFixtures.locationCatalogListItem()
-      mockGetLocationsCatalogSuccess({ body: [locationCatalogListItem] })
+      const locationCatalogItem = catalogsFixtures.locationCatalogItem()
+      mockGetLocationsCatalogSuccess({ body: [locationCatalogItem] })
 
       mockGetRelocationTaskSuccess({ relocationTaskId: reportListItem.lastRelocationTask.id })
-      mockGetRelocationEquipmentListSuccess({
+      mockGetRelocationEquipmentsSuccess({
         relocationTaskId: reportListItem.lastRelocationTask.id,
       })
 
       const { user } = render(<HistoryNomenclatureOperationsReportPage />, {
         store: getStoreWithAuth(undefined, undefined, undefined, {
-          queries: { ...getUserMeQueryMock(userFixtures.user()) },
+          queries: { ...getUserMeQueryMock(userFixtures.userDetail()) },
         }),
       })
 
@@ -130,18 +130,18 @@ describe('Страница отчета истории операций по н�
         body: commonFixtures.paginatedListResponse([equipmentNomenclatureListItem]),
       })
 
-      const reportListItem = reportsFixtures.historyNomenclatureOperationsReportListItem()
+      const reportListItem = reportsFixtures.historyNomenclatureOperationsReportItem()
       mockGetHistoryNomenclatureOperationsReportSuccess(equipmentNomenclatureListItem.id, {
         body: commonFixtures.paginatedListResponse([reportListItem]),
         once: false,
       })
 
       mockGetLocationsCatalogSuccess()
-      mockGetCustomerListSuccess()
+      mockGetCustomersSuccess()
 
       const { user } = render(<HistoryNomenclatureOperationsReportPage />, {
         store: getStoreWithAuth(undefined, undefined, undefined, {
-          queries: { ...getUserMeQueryMock(userFixtures.user()) },
+          queries: { ...getUserMeQueryMock(userFixtures.userDetail()) },
         }),
       })
 
@@ -179,14 +179,14 @@ describe('Страница отчета истории операций по н�
         body: commonFixtures.paginatedListResponse([equipmentNomenclatureListItem]),
       })
 
-      const reportListItem = reportsFixtures.historyNomenclatureOperationsReportListItem()
+      const reportListItem = reportsFixtures.historyNomenclatureOperationsReportItem()
       mockGetHistoryNomenclatureOperationsReportSuccess(equipmentNomenclatureListItem.id, {
         body: commonFixtures.paginatedListResponse([reportListItem]),
       })
 
       const { user } = render(<HistoryNomenclatureOperationsReportPage />, {
         store: getStoreWithAuth(undefined, undefined, undefined, {
-          queries: { ...getUserMeQueryMock(userFixtures.user()) },
+          queries: { ...getUserMeQueryMock(userFixtures.userDetail()) },
         }),
       })
 

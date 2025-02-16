@@ -11,7 +11,7 @@ import {
   fakeUrl,
   fakeWord,
   render,
-} from '_tests_/utils'
+} from '_tests_/helpers'
 
 import AttachmentList from './index'
 import { AttachmentsProps } from './types'

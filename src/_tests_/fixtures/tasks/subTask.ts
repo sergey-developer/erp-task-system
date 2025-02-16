@@ -4,8 +4,8 @@ import times from 'lodash/times'
 
 import { SetNonNullable } from 'shared/types/utils'
 
-import supportGroupFixtures from '_tests_/fixtures/supportGroups'
-import { fakeDateString, fakeId, fakeIdStr, fakePhone, fakeWord } from '_tests_/utils'
+import supportGroupsFixtures from '_tests_/fixtures/supportGroups'
+import { fakeDateString, fakeId, fakeIdStr, fakePhone, fakeWord } from '_tests_/helpers'
 
 export const subTask = (
   props?: Partial<Pick<SubTaskDTO, 'status'>>,
@@ -15,7 +15,7 @@ export const subTask = (
   id: fakeId(),
   recordId: fakeIdStr(),
   title: fakeWord(),
-  supportGroup: supportGroupFixtures.supportGroup(),
+  supportGroup: supportGroupsFixtures.supportGroup(),
   createdAt: fakeDateString(),
   description: fakeWord(),
   externalAssigneeName: fakeWord(),

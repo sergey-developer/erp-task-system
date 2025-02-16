@@ -2,7 +2,7 @@ import { screen, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 
 import { TestIdsEnum } from '_tests_/features/tasks/components/CancelSubTaskModal/constants'
-import { buttonTestUtils } from '_tests_/utils'
+import { buttonTestUtils } from '_tests_/helpers'
 
 const getContainer = () => screen.getByTestId(TestIdsEnum.CancelSubTaskModal)
 

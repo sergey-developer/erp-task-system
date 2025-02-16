@@ -1,5 +1,5 @@
-import { GetInfrastructureStatusHistoryResponse } from 'features/infrastructures/api/dto'
-import { InfrastructuresApiPathsEnum } from 'features/infrastructures/constants'
+import { InfrastructuresApiPathsEnum } from 'features/infrastructures/api/constants'
+import { GetInfrastructureStatusHistoryResponse } from 'features/infrastructures/api/schemas'
 
 import { HttpMethodEnum } from 'shared/constants/http'
 

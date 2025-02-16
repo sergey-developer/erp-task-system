@@ -7,9 +7,9 @@ import {
   inventorizationTypeDict,
 } from 'features/inventorizations/constants'
 
-import { props } from '_tests_/features/warehouse/components/InventorizationsFilter/constants'
-import { inventorizationsFilterTestUtils } from '_tests_/features/warehouse/components/InventorizationsFilter/testUtils'
-import { render } from '_tests_/utils'
+import { props } from '_tests_/features/warehouses/components/InventorizationsFilter/constants'
+import { inventorizationsFilterTestUtils } from '_tests_/features/warehouses/components/InventorizationsFilter/testUtils'
+import { render } from '_tests_/helpers'
 
 import InventorizationsFilter from './index'
 

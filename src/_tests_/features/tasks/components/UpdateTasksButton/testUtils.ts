@@ -1,7 +1,7 @@
 import { screen } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 
-import { buttonTestUtils, menuTestUtils } from '_tests_/utils'
+import { buttonTestUtils, menuTestUtils } from '_tests_/helpers'
 
 const getUpdateTasksButton = (container?: HTMLElement) =>
   container

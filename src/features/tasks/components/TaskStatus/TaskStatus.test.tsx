@@ -4,7 +4,7 @@ import React from 'react'
 import { TaskExtendedStatusEnum, TaskStatusEnum } from 'features/tasks/api/constants'
 
 import { taskStatusTestUtils } from '_tests_/features/tasks/components/TaskStatus/testUtils'
-import { iconTestUtils, render } from '_tests_/utils'
+import { iconTestUtils, render } from '_tests_/helpers'
 
 import {
   badgeByTaskExtendedStatus,

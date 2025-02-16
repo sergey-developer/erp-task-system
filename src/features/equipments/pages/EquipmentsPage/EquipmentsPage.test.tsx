@@ -2,18 +2,11 @@ import { waitFor } from '@testing-library/react'
 import { getEquipmentsErrorMessage } from 'features/equipments/api/constants'
 
 import { ariaSortAttrAscValue, ariaSortAttrName } from '_tests_/constants/components'
-import { equipmentDetailsTestUtils } from '_tests_/features/warehouse/components/EquipmentDetails/testUtils'
-import { equipmentTableTestUtils } from '_tests_/features/warehouse/components/EquipmentTable/testUtils'
+import { equipmentDetailsTestUtils } from '_tests_/features/warehouses/components/EquipmentDetails/testUtils'
+import { equipmentTableTestUtils } from '_tests_/features/warehouses/components/EquipmentTable/testUtils'
 import commonFixtures from '_tests_/fixtures/common'
 import userFixtures from '_tests_/fixtures/users'
 import warehouseFixtures from '_tests_/fixtures/warehouse'
-import {
-  mockGetEquipmentListForbiddenError,
-  mockGetEquipmentListServerError,
-  mockGetEquipmentListSuccess,
-  mockGetEquipmentSuccess,
-} from '_tests_/mocks/api'
-import { getUserMeQueryMock } from '_tests_/mocks/state/user'
 import {
   fakeWord,
   getStoreWithAuth,
@@ -21,7 +14,14 @@ import {
   render,
   setupApiTests,
   tableTestUtils,
-} from '_tests_/utils'
+} from '_tests_/helpers'
+import {
+  mockGetEquipmentsForbiddenError,
+  mockGetEquipmentsServerError,
+  mockGetEquipmentsSuccess,
+  mockGetEquipmentSuccess,
+} from '_tests_/mocks/api'
+import { getUserMeQueryMock } from '_tests_/mocks/store/users'
 
 import EquipmentsPage from './index'
 
@@ -32,7 +32,7 @@ describe.skip('Страница списка оборудования', () => {
   describe('Список оборудования', () => {
     test('При успешном запросе отображается корректно', async () => {
       const equipments = [warehouseFixtures.equipmentListItem()]
-      mockGetEquipmentListSuccess({
+      mockGetEquipmentsSuccess({
         body: commonFixtures.paginatedListResponse(equipments),
       })
 
@@ -49,7 +49,7 @@ describe.skip('Страница списка оборудования', () => {
     describe('При не успешном запросе', () => {
       test('Обрабатывается ошибка 403', async () => {
         const errorMessage = fakeWord()
-        mockGetEquipmentListForbiddenError({ body: { detail: errorMessage } })
+        mockGetEquipmentsForbiddenError({ body: { detail: errorMessage } })
 
         render(<EquipmentsPage />)
 
@@ -60,7 +60,7 @@ describe.skip('Страница списка оборудования', () => {
       })
 
       test('Обрабатывается ошибка 500', async () => {
-        mockGetEquipmentListServerError()
+        mockGetEquipmentsServerError()
         render(<EquipmentsPage />)
 
         await equipmentTableTestUtils.expectLoadingFinished()
@@ -72,7 +72,7 @@ describe.skip('Страница списка оборудования', () => {
 
     test('Пагинация работает', async () => {
       const equipments = warehouseFixtures.equipments(11)
-      mockGetEquipmentListSuccess({
+      mockGetEquipmentsSuccess({
         body: commonFixtures.paginatedListResponse(equipments),
         once: false,
       })
@@ -91,7 +91,7 @@ describe.skip('Страница списка оборудования', () => {
     })
 
     test('Установлена сортировка по умолчанию', async () => {
-      mockGetEquipmentListSuccess({
+      mockGetEquipmentsSuccess({
         body: commonFixtures.paginatedListResponse(warehouseFixtures.equipments()),
         once: false,
       })
@@ -106,7 +106,7 @@ describe.skip('Страница списка оборудования', () => {
 
     test('Сортировка работает корректно', async () => {
       const equipments = warehouseFixtures.equipments()
-      mockGetEquipmentListSuccess({
+      mockGetEquipmentsSuccess({
         body: commonFixtures.paginatedListResponse(equipments),
         once: false,
       })
@@ -130,7 +130,7 @@ describe.skip('Страница списка оборудования', () => {
   describe('Карточка просмотра оборудования', () => {
     test('Открывается по клику на строку таблицы', async () => {
       const equipmentListItem = warehouseFixtures.equipmentListItem()
-      mockGetEquipmentListSuccess({
+      mockGetEquipmentsSuccess({
         body: commonFixtures.paginatedListResponse([equipmentListItem]),
       })
 
@@ -140,7 +140,7 @@ describe.skip('Страница списка оборудования', () => {
 
       const { user } = render(<EquipmentsPage />, {
         store: getStoreWithAuth(undefined, undefined, undefined, {
-          queries: { ...getUserMeQueryMock(userFixtures.user()) },
+          queries: { ...getUserMeQueryMock(userFixtures.userDetail()) },
         }),
       })
 
@@ -155,12 +155,12 @@ describe.skip('Страница списка оборудования', () => {
       const fakeEquipmentId = 1
       jest.spyOn(URLSearchParams.prototype, 'get').mockImplementation(() => String(fakeEquipmentId))
 
-      mockGetEquipmentListSuccess()
+      mockGetEquipmentsSuccess()
       mockGetEquipmentSuccess(fakeEquipmentId)
 
       render(<EquipmentsPage />, {
         store: getStoreWithAuth(undefined, undefined, undefined, {
-          queries: { ...getUserMeQueryMock(userFixtures.user()) },
+          queries: { ...getUserMeQueryMock(userFixtures.userDetail()) },
         }),
       })
 
@@ -170,7 +170,7 @@ describe.skip('Страница списка оборудования', () => {
 
     test('Закрывается', async () => {
       const equipmentListItem = warehouseFixtures.equipmentListItem()
-      mockGetEquipmentListSuccess({
+      mockGetEquipmentsSuccess({
         body: commonFixtures.paginatedListResponse([equipmentListItem]),
       })
 
@@ -180,7 +180,7 @@ describe.skip('Страница списка оборудования', () => {
 
       const { user } = render(<EquipmentsPage />, {
         store: getStoreWithAuth(undefined, undefined, undefined, {
-          queries: { ...getUserMeQueryMock(userFixtures.user()) },
+          queries: { ...getUserMeQueryMock(userFixtures.userDetail()) },
         }),
       })
 

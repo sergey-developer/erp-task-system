@@ -1,15 +1,15 @@
 import { WarehousesRoutesEnum } from 'features/warehouses/routes/routes'
 import React from 'react'
 
-import { amountEquipmentSpentReportPageTestUtils } from '_tests_/features/warehouse/pages/AmountEquipmentSpentReportPage/testUtils'
-import { employeesActionsReportPageTestUtils } from '_tests_/features/warehouse/pages/EmployeesActionsReportPage/testUtils'
-import { historyNomenclatureOperationsReportPageTestUtils } from '_tests_/features/warehouse/pages/HistoryNomenclatureOperationsReportPage/testUtils'
-import { reportsCatalogPageTestUtils } from '_tests_/features/warehouse/pages/ReportsCatalogPage/testUtils'
+import { amountEquipmentSpentReportPageTestUtils } from '_tests_/features/warehouses/pages/AmountEquipmentSpentReportPage/testUtils'
+import { employeesActionsReportPageTestUtils } from '_tests_/features/warehouses/pages/EmployeesActionsReportPage/testUtils'
+import { historyNomenclatureOperationsReportPageTestUtils } from '_tests_/features/warehouses/pages/HistoryNomenclatureOperationsReportPage/testUtils'
+import { reportsCatalogPageTestUtils } from '_tests_/features/warehouses/pages/ReportsCatalogPage/testUtils'
 import {
   mockGetEquipmentNomenclaturesSuccess,
   mockGetLocationsCatalogSuccess,
 } from '_tests_/mocks/api'
-import { renderWithRouter } from '_tests_/utils'
+import { renderWithRouter } from '_tests_/helpers'
 
 import AmountEquipmentSpentReportPage from '../AmountEquipmentSpentReportPage'
 import EmployeesActionsReportPage from '../EmployeesActionsReportPage'

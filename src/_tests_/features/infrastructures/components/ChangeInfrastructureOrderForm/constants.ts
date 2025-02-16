@@ -2,8 +2,7 @@ import { ChangeInfrastructureOrderFormProps } from 'features/infrastructures/com
 
 import infrastructuresFixtures from '_tests_/fixtures/infrastructures'
 
-export const infrastructureOrderFormListItem =
-  infrastructuresFixtures.infrastructureOrderFormListItemModel()
+export const infrastructureOrderFormListItem = infrastructuresFixtures.infrastructureOrderForm()
 
 export const props: ChangeInfrastructureOrderFormProps = {
   data: infrastructureOrderFormListItem,

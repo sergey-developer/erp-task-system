@@ -1,5 +1,5 @@
 import { ReportsApiPathsEnum } from 'features/reports/api/constants'
-import { GetAmountEquipmentSpentReportXlsxResponse } from 'features/reports/api/dto'
+import { GetAmountEquipmentSpentReportXlsxResponse } from 'features/reports/api/schemas'
 
 import { HttpMethodEnum } from 'shared/constants/http'
 

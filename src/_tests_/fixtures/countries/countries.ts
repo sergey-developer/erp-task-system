@@ -1,8 +1,8 @@
 import { CountryCatalogItemDTO } from 'shared/catalogs/countries/api/dto/countriesCatalog.dto'
 
-import { fakeId, fakeWord } from '_tests_/utils'
+import { fakeId, fakeWord } from '_tests_/helpers'
 
-export const countryListItem = (): CountryCatalogItemDTO => ({
+export const country = (): CountryCatalogItemDTO => ({
   id: fakeId(),
   title: fakeWord(),
 })

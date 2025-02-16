@@ -7,7 +7,7 @@ import {
   reasonValues,
 } from '_tests_/features/tasks/components/RequestTaskReclassificationModal/constants'
 import { requestTaskReclassificationModalTestUtils } from '_tests_/features/tasks/components/RequestTaskReclassificationModal/testUtils'
-import { fakeWord, render } from '_tests_/utils'
+import { fakeWord, render } from '_tests_/helpers'
 
 import RequestTaskReclassificationModal from './index'
 

@@ -1,7 +1,6 @@
 import { within } from '@testing-library/react'
-import pick from 'lodash/pick'
-
 import { EquipmentCategoryEnum } from 'features/equipments/api/constants'
+import pick from 'lodash/pick'
 
 import { undefinedSelectOption } from 'shared/constants/selectField'
 
@@ -10,8 +9,8 @@ import theme from 'styles/theme'
 import {
   inventorizationEquipmentListItem,
   props,
-} from '_tests_/features/warehouse/components/ReviseInventorizationEquipmentTable/constants'
-import { reviseEquipmentTableTestUtils as testUtils } from '_tests_/features/warehouse/components/ReviseInventorizationEquipmentTable/testUtils'
+} from '_tests_/features/warehouses/components/ReviseInventorizationEquipmentTable/constants'
+import { reviseEquipmentTableTestUtils as testUtils } from '_tests_/features/warehouses/components/ReviseInventorizationEquipmentTable/testUtils'
 import catalogsFixtures from '_tests_/fixtures/catalogs'
 import warehouseFixtures from '_tests_/fixtures/warehouse'
 import {
@@ -22,7 +21,7 @@ import {
   iconTestUtils,
   render,
   tableTestUtils,
-} from '_tests_/utils'
+} from '_tests_/helpers'
 
 import ReviseInventorizationEquipmentTable from './index'
 
@@ -288,15 +287,15 @@ describe('Таблица сверки оборудования', () => {
     })
 
     test('Устанавливается значение по умолчанию если оно есть', async () => {
-      const locationCatalogListItem = catalogsFixtures.locationCatalogListItem()
+      const locationCatalogItem = catalogsFixtures.locationCatalogItem()
       const inventorizationEquipmentListItem = warehouseFixtures.inventorizationEquipmentListItem({
-        locationFact: locationCatalogListItem,
+        locationFact: locationCatalogItem,
       })
 
       const { user } = render(
         <ReviseInventorizationEquipmentTable
           {...props}
-          locations={[locationCatalogListItem]}
+          locations={[locationCatalogItem]}
           dataSource={[inventorizationEquipmentListItem]}
         />,
       )
@@ -305,11 +304,11 @@ describe('Таблица сверки оборудования', () => {
       const selectedOption = testUtils.getSelectedLocationFact(inventorizationEquipmentListItem.id)
 
       expect(selectedOption).toBeInTheDocument()
-      expect(selectedOption).toHaveTextContent(locationCatalogListItem.title)
+      expect(selectedOption).toHaveTextContent(locationCatalogItem.title)
     })
 
     test(`Устанавливается значение по умолчанию "${undefinedSelectOption.label}" если isLocationFactUndefined=true`, async () => {
-      const locationCatalogListItem = catalogsFixtures.locationCatalogListItem()
+      const locationCatalogItem = catalogsFixtures.locationCatalogItem()
       const inventorizationEquipmentListItem = warehouseFixtures.inventorizationEquipmentListItem({
         isLocationFactUndefined: true,
       })
@@ -317,7 +316,7 @@ describe('Таблица сверки оборудования', () => {
       const { user } = render(
         <ReviseInventorizationEquipmentTable
           {...props}
-          locations={[locationCatalogListItem]}
+          locations={[locationCatalogItem]}
           dataSource={[inventorizationEquipmentListItem]}
         />,
       )
@@ -330,37 +329,37 @@ describe('Таблица сверки оборудования', () => {
     })
 
     test('Можно установить значение', async () => {
-      const locationCatalogListItem = catalogsFixtures.locationCatalogListItem()
+      const locationCatalogItem = catalogsFixtures.locationCatalogItem()
 
       const { user } = render(
-        <ReviseInventorizationEquipmentTable {...props} locations={[locationCatalogListItem]} />,
+        <ReviseInventorizationEquipmentTable {...props} locations={[locationCatalogItem]} />,
       )
 
       await testUtils.openLocationFactSelect(user, inventorizationEquipmentListItem.id)
-      await testUtils.setLocationFact(user, locationCatalogListItem.title)
+      await testUtils.setLocationFact(user, locationCatalogItem.title)
       const selectedOption = testUtils.getSelectedLocationFact(inventorizationEquipmentListItem.id)
 
       expect(selectedOption).toBeInTheDocument()
-      expect(selectedOption).toHaveTextContent(locationCatalogListItem.title)
+      expect(selectedOption).toHaveTextContent(locationCatalogItem.title)
       expect(props.onChangeLocationFact).toBeCalledTimes(1)
       expect(props.onChangeLocationFact).toBeCalledWith(
         inventorizationEquipmentListItem,
-        locationCatalogListItem.id,
+        locationCatalogItem.id,
         inventorizationEquipmentListItem.quantity.fact,
       )
     })
 
     test('Подсвечивается зелёным если значение равно плановому местонахождению', async () => {
-      const locationCatalogListItem = catalogsFixtures.locationCatalogListItem()
+      const locationCatalogItem = catalogsFixtures.locationCatalogItem()
       const inventorizationEquipmentListItem = warehouseFixtures.inventorizationEquipmentListItem({
-        locationFact: locationCatalogListItem,
-        locationPlan: locationCatalogListItem,
+        locationFact: locationCatalogItem,
+        locationPlan: locationCatalogItem,
       })
 
       render(
         <ReviseInventorizationEquipmentTable
           {...props}
-          locations={[locationCatalogListItem]}
+          locations={[locationCatalogItem]}
           dataSource={[inventorizationEquipmentListItem]}
         />,
       )
@@ -373,8 +372,8 @@ describe('Таблица сверки оборудования', () => {
     })
 
     test('Подсвечивается красным если значение не равно плановому местонахождению', () => {
-      const locationListItem1 = catalogsFixtures.locationCatalogListItem()
-      const locationListItem2 = catalogsFixtures.locationCatalogListItem()
+      const locationListItem1 = catalogsFixtures.locationCatalogItem()
+      const locationListItem2 = catalogsFixtures.locationCatalogItem()
       const inventorizationEquipmentListItem = warehouseFixtures.inventorizationEquipmentListItem({
         locationFact: locationListItem1,
         locationPlan: locationListItem2,

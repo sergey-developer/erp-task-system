@@ -5,13 +5,13 @@ import {
   TimeZonesCatalogDTO,
 } from 'shared/catalogs/timeZones/api/dto/timeZonesCatalog.dto'
 
-import { fakeWord } from '_tests_/utils'
+import { fakeWord } from '_tests_/helpers'
 
-export const timeZoneListItem = (): TimeZoneCatalogItemDTO => ({
+export const timeZone = (): TimeZoneCatalogItemDTO => ({
   name: fakeWord(),
   label: fakeWord(),
   value: fakeWord(),
 })
 
 export const timeZones = (length: number = 1): TimeZonesCatalogDTO =>
-  times(length, () => timeZoneListItem())
+  times(length, () => timeZone())

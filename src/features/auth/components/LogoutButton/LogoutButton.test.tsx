@@ -1,7 +1,7 @@
 import { screen } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 
-import { render } from '_tests_/utils'
+import { render } from '_tests_/helpers'
 
 import LogoutButton from './index'
 

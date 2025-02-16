@@ -2,7 +2,7 @@ import { SuspendReasonEnum } from 'features/tasks/api/constants'
 
 import { SystemSettingsDTO } from 'shared/system/api/dto'
 
-import { fakeInteger } from '_tests_/utils'
+import { fakeInteger } from '_tests_/helpers'
 
 export const settings = (): SystemSettingsDTO => ({
   suspendReasons: {

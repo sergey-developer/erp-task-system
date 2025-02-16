@@ -1,6 +1,6 @@
 import { screen } from '@testing-library/react'
 
-import { fakeWord, render } from '_tests_/utils'
+import { fakeWord, render } from '_tests_/helpers'
 
 import FilterBlock, { FilterBlockProps } from './index'
 

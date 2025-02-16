@@ -9,17 +9,17 @@ import pick from 'lodash/pick'
 import { CommonRoutesEnum } from 'configs/routes'
 
 import userFixtures from '_tests_/fixtures/users'
+import { linkTestUtils, render, renderWithRouter, setupApiTests } from '_tests_/helpers'
 import {
-  mockGetTimeZoneListSuccess,
+  mockGetTimeZonesSuccess,
   mockGetUserMeCodeSuccess,
   mockGetUserMeSuccess,
 } from '_tests_/mocks/api'
-import { linkTestUtils, render, renderWithRouter, setupApiTests } from '_tests_/utils'
 
 import DetailedUserAvatar, { DetailedUserAvatarProps } from './index'
 
 const props: Readonly<Pick<DetailedUserAvatarProps, 'profile'>> = {
-  profile: userFixtures.user(),
+  profile: userFixtures.userDetail(),
 }
 
 const getUserAvatarContainer = () => screen.getByTestId('detailed-user-avatar')
@@ -99,8 +99,8 @@ describe('Детальный аватар пользователя', () => {
 
     test('При нажатии переходит на страницу смены пароля', async () => {
       mockGetUserMeCodeSuccess()
-      mockGetTimeZoneListSuccess()
-      mockGetUserMeSuccess({ body: userFixtures.user() })
+      mockGetTimeZonesSuccess()
+      mockGetUserMeSuccess({ body: userFixtures.userDetail() })
 
       const { user } = renderWithRouter(
         [

@@ -1,10 +1,10 @@
 import { within } from '@testing-library/react'
 
-import { discrepanciesEquipmentTableTestUtils } from '_tests_/features/warehouse/components/DiscrepanciesEquipmentTable/testUtils'
-import { props } from '_tests_/features/warehouse/components/ExecuteInventorizationDiscrepanciesTab/constants'
-import { executeInventorizationDiscrepanciesTabTestUtils } from '_tests_/features/warehouse/components/ExecuteInventorizationDiscrepanciesTab/testUtils'
+import { discrepanciesEquipmentTableTestUtils } from '_tests_/features/warehouses/components/DiscrepanciesEquipmentTable/testUtils'
+import { props } from '_tests_/features/warehouses/components/ExecuteInventorizationDiscrepanciesTab/constants'
+import { executeInventorizationDiscrepanciesTabTestUtils } from '_tests_/features/warehouses/components/ExecuteInventorizationDiscrepanciesTab/testUtils'
 import { mockGetInventorizationEquipmentsSuccess } from '_tests_/mocks/api'
-import { render } from '_tests_/utils'
+import { render } from '_tests_/helpers'
 
 import ExecuteInventorizationDiscrepanciesTab from './index'
 

@@ -3,15 +3,13 @@ import ChangeInfrastructurePage from 'features/infrastructures/pages/ChangeInfra
 import { getChangeInfrastructurePageLocationState } from 'features/infrastructures/pages/ChangeInfrastructurePage/utils'
 import { InfrastructuresRoutesEnum } from 'features/infrastructures/routes/routes'
 import {
-  takeTaskErrorMessage,
-  TaskActionsPermissionsEnum,
-  TaskExtendedStatusEnum,
-} from 'features/tasks/api/constants'
-import {
   createTaskSuspendRequestErrorMessage,
   deleteTaskSuspendRequestErrorMessage,
   SuspendReasonEnum,
   SuspendRequestStatusEnum,
+  takeTaskErrorMessage,
+  TaskActionsPermissionsEnum,
+  TaskExtendedStatusEnum,
 } from 'features/tasks/api/constants'
 import { CreateTaskSuspendRequestBadRequestResponse } from 'features/tasks/api/schemas'
 import { TasksRoutesEnum } from 'features/tasks/routes/routes'
@@ -22,7 +20,7 @@ import * as reactRouterDom from 'react-router-dom'
 import { WorkTypeActionsEnum } from 'shared/catalogs/workTypes/api/constants'
 import { NO_ASSIGNEE_TEXT } from 'shared/constants/common'
 
-import { changeInfrastructurePageTestUtils } from '_tests_/features/infrastructure/pages/ChangeInfrastructurePage/testUtils'
+import { changeInfrastructurePageTestUtils } from '_tests_/features/infrastructures/pages/ChangeInfrastructurePage/testUtils'
 import { confirmCancelReclassificationRequestModalTestUtils } from '_tests_/features/tasks/components/ConfirmCancelReclassificationRequestModal/testUtils'
 import { confirmExecuteTaskReclassificationTasksModalTestUtils } from '_tests_/features/tasks/components/ConfirmExecuteTaskReclassificationTasksModal/testUtils'
 import { confirmExecuteTaskRegistrationFNModalTestUtils } from '_tests_/features/tasks/components/ConfirmExecuteTaskRegistrationFNModal/testUtils'
@@ -53,6 +51,16 @@ import { fakeUseLocationResult } from '_tests_/fixtures/useLocation'
 import userFixtures from '_tests_/fixtures/users'
 import warehouseFixtures from '_tests_/fixtures/warehouse'
 import {
+  fakeId,
+  fakeWord,
+  getStoreWithAuth,
+  menuTestUtils,
+  notificationTestUtils,
+  render,
+  renderWithRouter,
+  setupApiTests,
+} from '_tests_/helpers'
+import {
   mockCancelReclassificationRequestSuccess,
   mockCreateTaskAttachmentSuccess,
   mockCreateTaskRegistrationFNRequestSuccess,
@@ -75,18 +83,8 @@ import {
   mockTakeTaskSuccess,
   mockUpdateInfrastructureSuccess,
 } from '_tests_/mocks/api'
-import { getSystemSettingsQueryMock } from '_tests_/mocks/state/system'
-import { getUserMeQueryMock } from '_tests_/mocks/state/user'
-import {
-  fakeId,
-  fakeWord,
-  getStoreWithAuth,
-  menuTestUtils,
-  notificationTestUtils,
-  render,
-  renderWithRouter,
-  setupApiTests,
-} from '_tests_/utils'
+import { getSystemSettingsQueryMock } from '_tests_/mocks/store/system'
+import { getUserMeQueryMock } from '_tests_/mocks/store/users'
 
 import TaskDetails from './index'
 
@@ -142,7 +140,7 @@ describe('Карточка заявки', () => {
       const task = taskFixtures.task({ id: props.taskId })
       mockGetTaskSuccess(props.taskId, { body: task })
 
-      const currentUser = userFixtures.user()
+      const currentUser = userFixtures.userDetail()
       mockGetUserActionsSuccess(currentUser.id, {
         body: userFixtures.userActions({
           tasks: {
@@ -170,7 +168,7 @@ describe('Карточка заявки', () => {
       const task = taskFixtures.task({ id: props.taskId })
       mockGetTaskSuccess(task.id, { body: task })
 
-      const currentUser = userFixtures.user()
+      const currentUser = userFixtures.userDetail()
       mockGetUserActionsSuccess(currentUser.id, {
         body: userFixtures.userActions({
           tasks: {
@@ -204,7 +202,7 @@ describe('Карточка заявки', () => {
       })
       mockGetTaskSuccess(props.taskId, { body: task })
 
-      const currentUser = userFixtures.user()
+      const currentUser = userFixtures.userDetail()
       mockGetUserActionsSuccess(currentUser.id, {
         body: userFixtures.userActions({
           tasks: {
@@ -246,7 +244,7 @@ describe('Карточка заявки', () => {
       mockGetTaskSuccess(props.taskId, { body: task })
       mockResolveTaskSuccess(props.taskId)
 
-      const currentUser = userFixtures.user()
+      const currentUser = userFixtures.userDetail()
       mockGetUserActionsSuccess(currentUser.id, {
         body: userFixtures.userActions({
           tasks: {
@@ -279,7 +277,7 @@ describe('Карточка заявки', () => {
       const task = taskFixtures.task({ id: props.taskId, ...canRegisterFNItemProps })
       mockGetTaskSuccess(props.taskId, { body: task, once: false })
 
-      const faChangeTypeListItem = catalogsFixtures.faChangeTypeListItem()
+      const faChangeTypeListItem = catalogsFixtures.faChangeType()
       mockGetFaChangeTypesSuccess({ body: [faChangeTypeListItem] })
 
       mockGetTaskRegistrationRequestRecipientsFNSuccess(props.taskId, {
@@ -329,7 +327,7 @@ describe('Карточка заявки', () => {
         const reclassificationRequest = taskFixtures.reclassificationRequest()
         mockGetTaskReclassificationRequestSuccess(props.taskId, { body: reclassificationRequest })
 
-        const currentUser = userFixtures.user()
+        const currentUser = userFixtures.userDetail()
         mockGetUserActionsSuccess(currentUser.id, {
           body: {
             tasks: {
@@ -374,7 +372,7 @@ describe('Карточка заявки', () => {
 
           mockCreateTaskSuspendRequestSuccess(props.taskId, { body: taskFixtures.suspendRequest() })
 
-          const currentUser = userFixtures.user({ id: task.assignee!.id })
+          const currentUser = userFixtures.userDetail({ id: task.assignee!.id })
           mockGetUserActionsSuccess(currentUser.id, {
             body: userFixtures.userActions({
               tasks: {
@@ -419,7 +417,7 @@ describe('Карточка заявки', () => {
           })
           mockGetTaskSuccess(task.id, { body: task })
 
-          const currentUser = userFixtures.user()
+          const currentUser = userFixtures.userDetail()
           mockGetUserActionsSuccess(currentUser.id, {
             body: userFixtures.userActions({
               tasks: {
@@ -468,7 +466,7 @@ describe('Карточка заявки', () => {
           })
           mockGetTaskSuccess(task.id, { body: task })
 
-          const currentUser = userFixtures.user()
+          const currentUser = userFixtures.userDetail()
           mockGetUserActionsSuccess(currentUser.id, {
             body: userFixtures.userActions({
               tasks: {
@@ -545,7 +543,7 @@ describe('Карточка заявки', () => {
           })
           mockGetTaskSuccess(task.id, { body: task })
 
-          const currentUser = userFixtures.user()
+          const currentUser = userFixtures.userDetail()
           mockGetUserActionsSuccess(currentUser.id, {
             body: userFixtures.userActions({
               tasks: {
@@ -600,7 +598,7 @@ describe('Карточка заявки', () => {
             once: false,
           })
 
-          const currentUser = userFixtures.user()
+          const currentUser = userFixtures.userDetail()
           mockGetUserActionsSuccess(currentUser.id, {
             body: userFixtures.userActions({
               tasks: {
@@ -640,7 +638,7 @@ describe('Карточка заявки', () => {
             once: false,
           })
 
-          const currentUser = userFixtures.user()
+          const currentUser = userFixtures.userDetail()
           mockGetUserActionsSuccess(currentUser.id, {
             body: userFixtures.userActions({
               tasks: {
@@ -684,7 +682,7 @@ describe('Карточка заявки', () => {
             once: false,
           })
 
-          const currentUser = userFixtures.user()
+          const currentUser = userFixtures.userDetail()
           mockGetUserActionsSuccess(currentUser.id, {
             body: userFixtures.userActions({
               tasks: {
@@ -726,7 +724,7 @@ describe('Карточка заявки', () => {
             once: false,
           })
 
-          const currentUser = userFixtures.user()
+          const currentUser = userFixtures.userDetail()
           mockGetUserActionsSuccess(currentUser.id, {
             body: userFixtures.userActions({
               tasks: {
@@ -771,7 +769,7 @@ describe('Карточка заявки', () => {
             once: false,
           })
 
-          const currentUser = userFixtures.user()
+          const currentUser = userFixtures.userDetail()
           mockGetUserActionsSuccess(currentUser.id, {
             body: userFixtures.userActions({
               tasks: {
@@ -811,7 +809,7 @@ describe('Карточка заявки', () => {
             }),
           })
 
-          const currentUser = userFixtures.user()
+          const currentUser = userFixtures.userDetail()
           mockGetUserActionsSuccess(currentUser.id, {
             body: userFixtures.userActions({
               tasks: {
@@ -851,7 +849,7 @@ describe('Карточка заявки', () => {
 
       mockGetTaskSuccess(props.taskId, { body: task })
 
-      const currentUser = userFixtures.user()
+      const currentUser = userFixtures.userDetail()
       mockGetUserActionsSuccess(currentUser.id, { body: userFixtures.userActions() })
 
       render(<TaskDetails {...props} />, {
@@ -875,7 +873,7 @@ describe('Карточка заявки', () => {
 
       mockGetTaskSuccess(props.taskId, { body: task })
 
-      const currentUser = userFixtures.user()
+      const currentUser = userFixtures.userDetail()
       mockGetUserActionsSuccess(currentUser.id, { body: userFixtures.userActions() })
 
       render(<TaskDetails {...props} />, {
@@ -899,7 +897,7 @@ describe('Карточка заявки', () => {
 
       mockGetTaskSuccess(props.taskId, { body: task })
 
-      const currentUser = userFixtures.user()
+      const currentUser = userFixtures.userDetail()
       mockGetUserActionsSuccess(currentUser.id, { body: userFixtures.userActions() })
 
       render(<TaskDetails {...props} />, {
@@ -922,7 +920,7 @@ describe('Карточка заявки', () => {
 
       mockGetTaskSuccess(props.taskId, { body: task })
 
-      const currentUser = userFixtures.user({
+      const currentUser = userFixtures.userDetail({
         permissions: [UserPermissionsEnum.InfrastructureProjectRead],
       })
       mockGetUserActionsSuccess(currentUser.id, { body: userFixtures.userActions() })
@@ -947,7 +945,7 @@ describe('Карточка заявки', () => {
 
       mockGetTaskSuccess(props.taskId, { body: task })
 
-      const currentUser = userFixtures.user({
+      const currentUser = userFixtures.userDetail({
         permissions: [UserPermissionsEnum.AnyStatusInfrastructureProjectRead],
       })
       mockGetUserActionsSuccess(currentUser.id, { body: userFixtures.userActions() })
@@ -972,7 +970,7 @@ describe('Карточка заявки', () => {
 
       mockGetTaskSuccess(props.taskId, { body: task })
 
-      const currentUser = userFixtures.user({ permissions: [] })
+      const currentUser = userFixtures.userDetail({ permissions: [] })
       mockGetUserActionsSuccess(currentUser.id, { body: userFixtures.userActions() })
 
       render(<TaskDetails {...props} />, {
@@ -1002,7 +1000,7 @@ describe('Карточка заявки', () => {
 
       mockGetTaskSuccess(props.taskId, { body: task })
 
-      const currentUser = userFixtures.user({
+      const currentUser = userFixtures.userDetail({
         permissions: activeChangeInfrastructureButton.permissions,
       })
       mockGetUserActionsSuccess(currentUser.id, { body: userFixtures.userActions() })
@@ -1043,7 +1041,7 @@ describe('Карточка заявки', () => {
 
       mockGetTaskSuccess(props.taskId, { body: task })
 
-      const currentUser = userFixtures.user()
+      const currentUser = userFixtures.userDetail()
       mockGetUserActionsSuccess(currentUser.id, { body: userFixtures.userActions() })
 
       render(<TaskDetails {...props} />, {
@@ -1072,7 +1070,7 @@ describe('Карточка заявки', () => {
 
       mockGetTaskSuccess(props.taskId, { body: task })
 
-      const currentUser = userFixtures.user()
+      const currentUser = userFixtures.userDetail()
       mockGetUserActionsSuccess(currentUser.id, { body: userFixtures.userActions() })
 
       render(<TaskDetails {...props} />, {
@@ -1098,7 +1096,7 @@ describe('Карточка заявки', () => {
 
         mockGetTaskSuccess(props.taskId, { body: task })
 
-        const currentUser = userFixtures.user({
+        const currentUser = userFixtures.userDetail({
           permissions: [UserPermissionsEnum.InfrastructureProjectLeading],
         })
         mockGetUserActionsSuccess(currentUser.id, { body: userFixtures.userActions() })
@@ -1123,7 +1121,7 @@ describe('Карточка заявки', () => {
 
         mockGetTaskSuccess(props.taskId, { body: task })
 
-        const currentUser = userFixtures.user()
+        const currentUser = userFixtures.userDetail()
         mockGetUserActionsSuccess(currentUser.id, { body: userFixtures.userActions() })
 
         render(<TaskDetails {...props} />, {
@@ -1144,7 +1142,7 @@ describe('Карточка заявки', () => {
 
         mockGetTaskSuccess(props.taskId, { body: task })
 
-        const currentUser = userFixtures.user({
+        const currentUser = userFixtures.userDetail({
           permissions: [UserPermissionsEnum.InfrastructureProjectLeading],
         })
         mockGetUserActionsSuccess(currentUser.id, { body: userFixtures.userActions() })

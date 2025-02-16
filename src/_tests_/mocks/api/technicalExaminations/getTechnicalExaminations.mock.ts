@@ -1,5 +1,5 @@
 import { TechnicalExaminationsApiPathsEnum } from 'features/technicalExaminations/api/constants'
-import { GetTechnicalExaminationsResponse } from 'features/technicalExaminations/api/dto'
+import { GetTechnicalExaminationsResponse } from 'features/technicalExaminations/api/schemas'
 
 import { HttpMethodEnum } from 'shared/constants/http'
 

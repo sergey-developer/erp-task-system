@@ -6,9 +6,9 @@ import {
 import { TaskTableItem } from 'features/tasks/components/TaskTable/types'
 import times from 'lodash/times'
 
-import supportGroupFixtures from '_tests_/fixtures/supportGroups'
+import supportGroupsFixtures from '_tests_/fixtures/supportGroups'
 import taskFixtures from '_tests_/fixtures/tasks'
-import { fakeDateString, fakeId, fakeIdStr, fakeInteger, fakeName, fakeWord } from '_tests_/utils'
+import { fakeDateString, fakeId, fakeIdStr, fakeInteger, fakeName, fakeWord } from '_tests_/helpers'
 
 export const taskTableItem = (
   props?: Partial<
@@ -24,7 +24,7 @@ export const taskTableItem = (
   name: fakeName(),
   title: fakeWord(),
   workGroup: taskFixtures.workGroup(),
-  supportGroup: supportGroupFixtures.supportGroup(),
+  supportGroup: supportGroupsFixtures.supportGroup(),
   createdAt: fakeDateString(),
   recordId: fakeIdStr(),
   lastComment: fakeWord(),

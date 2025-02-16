@@ -8,7 +8,7 @@ import {
   returnInWorkAction,
   taskSuspendRequestTestUtils,
 } from '_tests_/features/tasks/components/TaskSuspendRequest/testUtils'
-import { render } from '_tests_/utils'
+import { render } from '_tests_/helpers'
 
 import TaskSuspendRequest from './index'
 

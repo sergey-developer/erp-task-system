@@ -1,12 +1,12 @@
+import { TaskActionsPermissionsEnum } from 'features/tasks/api/constants'
 import { AssigneeBlockProps } from 'features/tasks/components/TaskDetails/AssigneeBlock/index'
-import { TaskActionsPermissionsEnum } from 'features/tasks/constants/task/index'
 import { UserPermissionsEnum } from 'features/users/api/constants/index'
 
 import { SetNonNullable } from 'shared/types/utils'
 
 import taskFixtures from '_tests_/fixtures/tasks/index'
 import userFixtures from '_tests_/fixtures/users/index'
-import { fakeId } from '_tests_/utils'
+import { fakeId } from '_tests_/helpers'
 
 export const props: Readonly<SetNonNullable<AssigneeBlockProps>> = {
   id: fakeId(),

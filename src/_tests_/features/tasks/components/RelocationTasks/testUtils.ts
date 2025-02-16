@@ -3,7 +3,7 @@ import { UserEvent } from '@testing-library/user-event/setup/setup'
 
 import { IdType } from 'shared/types/common'
 
-import { buttonTestUtils, fakeWord } from '_tests_/utils/index'
+import { buttonTestUtils, fakeWord } from '_tests_/helpers/index'
 
 import { TestIdsEnum } from '_tests_/features/tasks/components/RelocationTasks/constants'
 

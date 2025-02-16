@@ -1,7 +1,7 @@
 import { screen, within } from '@testing-library/react'
 import { BadgeProps } from 'antd'
 
-import { iconTestUtils } from '_tests_/utils/index'
+import { iconTestUtils } from '_tests_/helpers/index'
 
 const getContainer = (status: string) => screen.getByTestId(`task-status-${status}`)
 

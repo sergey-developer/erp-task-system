@@ -1,0 +1,42 @@
+import {
+  TaskExtendedStatusEnum,
+  TaskOlaStatusEnum,
+  TaskStatusEnum,
+  TaskTypeEnum,
+} from 'features/tasks/api/constants'
+import { TaskDetailTabsProps } from 'features/tasks/components/TaskDetails/TaskDetailsTabs'
+
+import taskFixtures from '_tests_/fixtures/tasks/index'
+import userFixtures from '_tests_/fixtures/users/index'
+import { fakeDateString, fakeId, fakeIdStr, fakeWord } from '_tests_/helpers'
+
+export const props: Readonly<TaskDetailTabsProps> = {
+  task: {
+    id: fakeId(),
+    type: TaskTypeEnum.Request,
+    title: fakeWord(),
+    description: fakeWord(),
+    userResolution: fakeWord(),
+    techResolution: fakeWord(),
+    attachments: [taskFixtures.attachment()],
+    resolution: {
+      attachments: [],
+    },
+    status: TaskStatusEnum.New,
+    extendedStatus: TaskExtendedStatusEnum.New,
+    recordId: fakeIdStr(),
+    suspendRequest: taskFixtures.suspendRequest(),
+    assignee: null,
+    olaNextBreachTime: fakeDateString(),
+    olaEstimatedTime: Date.now(),
+    olaStatus: TaskOlaStatusEnum.NotExpired,
+    shop: taskFixtures.task().shop,
+    isDescriptionChanged: false,
+    previousDescription: fakeWord(),
+  },
+  userActions: userFixtures.userActions(),
+}
+
+export enum TestIdsEnum {
+  TaskDetailsTabs = 'task-details-tabs',
+}

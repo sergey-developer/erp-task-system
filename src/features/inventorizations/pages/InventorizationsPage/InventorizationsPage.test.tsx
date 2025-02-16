@@ -9,20 +9,13 @@ import {
 } from 'features/inventorizations/constants'
 
 import { ariaSortAttrAscValue, ariaSortAttrName } from '_tests_/constants/components'
-import { inventorizationDetailsTestUtils } from '_tests_/features/warehouse/components/InventorizationDetails/testUtils'
-import { inventorizationTableTestUtils } from '_tests_/features/warehouse/components/InventorizationTable/testUtils'
-import { inventorizationsFilterTestUtils } from '_tests_/features/warehouse/components/InventorizationsFilter/testUtils'
-import { inventorizationsPageTestUtils } from '_tests_/features/warehouse/pages/InventorizationsPage/testUtils'
+import { inventorizationDetailsTestUtils } from '_tests_/features/warehouses/components/InventorizationDetails/testUtils'
+import { inventorizationTableTestUtils } from '_tests_/features/warehouses/components/InventorizationTable/testUtils'
+import { inventorizationsFilterTestUtils } from '_tests_/features/warehouses/components/InventorizationsFilter/testUtils'
+import { inventorizationsPageTestUtils } from '_tests_/features/warehouses/pages/InventorizationsPage/testUtils'
 import commonFixtures from '_tests_/fixtures/common'
 import userFixtures from '_tests_/fixtures/users'
 import warehouseFixtures from '_tests_/fixtures/warehouse'
-import {
-  mockGetInventorizationsForbiddenError,
-  mockGetInventorizationsServerError,
-  mockGetInventorizationsSuccess,
-  mockGetInventorizationSuccess,
-} from '_tests_/mocks/api'
-import { getUserMeQueryMock } from '_tests_/mocks/state/user'
 import {
   fakeWord,
   getStoreWithAuth,
@@ -30,7 +23,14 @@ import {
   render,
   setupApiTests,
   tableTestUtils,
-} from '_tests_/utils'
+} from '_tests_/helpers'
+import {
+  mockGetInventorizationsForbiddenError,
+  mockGetInventorizationsServerError,
+  mockGetInventorizationsSuccess,
+  mockGetInventorizationSuccess,
+} from '_tests_/mocks/api'
+import { getUserMeQueryMock } from '_tests_/mocks/store/users'
 
 import InventorizationsPage from './index'
 
@@ -47,7 +47,7 @@ describe('Страница списка инвентаризаций', () => {
 
       render(<InventorizationsPage />, {
         store: getStoreWithAuth(undefined, undefined, undefined, {
-          queries: { ...getUserMeQueryMock(userFixtures.user()) },
+          queries: { ...getUserMeQueryMock(userFixtures.userDetail()) },
         }),
       })
 
@@ -66,7 +66,7 @@ describe('Страница списка инвентаризаций', () => {
 
         render(<InventorizationsPage />, {
           store: getStoreWithAuth(undefined, undefined, undefined, {
-            queries: { ...getUserMeQueryMock(userFixtures.user()) },
+            queries: { ...getUserMeQueryMock(userFixtures.userDetail()) },
           }),
         })
 
@@ -81,7 +81,7 @@ describe('Страница списка инвентаризаций', () => {
 
         render(<InventorizationsPage />, {
           store: getStoreWithAuth(undefined, undefined, undefined, {
-            queries: { ...getUserMeQueryMock(userFixtures.user()) },
+            queries: { ...getUserMeQueryMock(userFixtures.userDetail()) },
           }),
         })
 
@@ -103,7 +103,7 @@ describe('Страница списка инвентаризаций', () => {
 
       const { user } = render(<InventorizationsPage />, {
         store: getStoreWithAuth(undefined, undefined, undefined, {
-          queries: { ...getUserMeQueryMock(userFixtures.user()) },
+          queries: { ...getUserMeQueryMock(userFixtures.userDetail()) },
         }),
       })
 
@@ -126,7 +126,7 @@ describe('Страница списка инвентаризаций', () => {
 
       render(<InventorizationsPage />, {
         store: getStoreWithAuth(undefined, undefined, undefined, {
-          queries: { ...getUserMeQueryMock(userFixtures.user()) },
+          queries: { ...getUserMeQueryMock(userFixtures.userDetail()) },
         }),
       })
 
@@ -145,7 +145,7 @@ describe('Страница списка инвентаризаций', () => {
 
       const { user } = render(<InventorizationsPage />, {
         store: getStoreWithAuth(undefined, undefined, undefined, {
-          queries: { ...getUserMeQueryMock(userFixtures.user()) },
+          queries: { ...getUserMeQueryMock(userFixtures.userDetail()) },
         }),
       })
 
@@ -169,7 +169,7 @@ describe('Страница списка инвентаризаций', () => {
 
       const { user } = render(<InventorizationsPage />, {
         store: getStoreWithAuth(undefined, undefined, undefined, {
-          queries: { ...getUserMeQueryMock(userFixtures.user()) },
+          queries: { ...getUserMeQueryMock(userFixtures.userDetail()) },
         }),
       })
 
@@ -185,7 +185,7 @@ describe('Страница списка инвентаризаций', () => {
 
       const { user } = render(<InventorizationsPage />, {
         store: getStoreWithAuth(undefined, undefined, undefined, {
-          queries: { ...getUserMeQueryMock(userFixtures.user()) },
+          queries: { ...getUserMeQueryMock(userFixtures.userDetail()) },
         }),
       })
 
@@ -231,7 +231,7 @@ describe('Страница списка инвентаризаций', () => {
 
       const { user } = render(<InventorizationsPage />, {
         store: getStoreWithAuth(undefined, undefined, undefined, {
-          queries: { ...getUserMeQueryMock(userFixtures.user()) },
+          queries: { ...getUserMeQueryMock(userFixtures.userDetail()) },
         }),
       })
 
@@ -268,7 +268,7 @@ describe('Страница списка инвентаризаций', () => {
 
       const { user } = render(<InventorizationsPage />, {
         store: getStoreWithAuth(undefined, undefined, undefined, {
-          queries: { ...getUserMeQueryMock(userFixtures.user()) },
+          queries: { ...getUserMeQueryMock(userFixtures.userDetail()) },
         }),
       })
 

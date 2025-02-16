@@ -5,18 +5,18 @@ import { UserPermissionsEnum } from 'features/users/api/constants'
 import { WarehousesRoutesEnum } from 'features/warehouses/routes/routes'
 import React from 'react'
 
-import { equipmentNomenclatureListPageTestUtils } from '_tests_/features/warehouse/pages/EquipmentNomenclatureListPage/testUtils'
-import { inventorizationsPageTestUtils } from '_tests_/features/warehouse/pages/InventorizationsPage/testUtils'
-import { relocationTasksPageTestUtils } from '_tests_/features/warehouse/pages/RelocationTasksPage/testUtils'
-import { reserveCatalogListPageTestUtils } from '_tests_/features/warehouse/pages/ReserveCatalogListPage/testUtils'
+import { equipmentNomenclatureListPageTestUtils } from '_tests_/features/warehouses/pages/EquipmentNomenclatureListPage/testUtils'
+import { inventorizationsPageTestUtils } from '_tests_/features/warehouses/pages/InventorizationsPage/testUtils'
+import { relocationTasksPageTestUtils } from '_tests_/features/warehouses/pages/RelocationTasksPage/testUtils'
+import { reserveCatalogListPageTestUtils } from '_tests_/features/warehouses/pages/ReserveCatalogListPage/testUtils'
 import userFixtures from '_tests_/fixtures/users'
+import { getStoreWithAuth, renderWithRouter } from '_tests_/helpers'
 import {
   mockGetEquipmentNomenclaturesSuccess,
   mockGetInventorizationsSuccess,
   mockGetRelocationTasksSuccess,
 } from '_tests_/mocks/api'
-import { getUserMeQueryMock } from '_tests_/mocks/state/user'
-import { getStoreWithAuth, renderWithRouter } from '_tests_/utils'
+import { getUserMeQueryMock } from '_tests_/mocks/store/users'
 
 import ReservesCatalogPage from './index'
 
@@ -57,7 +57,7 @@ describe('Страница списка справочников запасов'
         { initialEntries: [WarehousesRoutesEnum.Reserves], initialIndex: 0 },
         {
           store: getStoreWithAuth(undefined, undefined, undefined, {
-            queries: { ...getUserMeQueryMock(userFixtures.user()) },
+            queries: { ...getUserMeQueryMock(userFixtures.userDetail()) },
           }),
         },
       )
@@ -133,7 +133,7 @@ describe('Страница списка справочников запасов'
         { initialEntries: [WarehousesRoutesEnum.Reserves], initialIndex: 0 },
         {
           store: getStoreWithAuth(undefined, undefined, undefined, {
-            queries: { ...getUserMeQueryMock(userFixtures.user()) },
+            queries: { ...getUserMeQueryMock(userFixtures.userDetail()) },
           }),
         },
       )
@@ -209,7 +209,7 @@ describe('Страница списка справочников запасов'
         { initialEntries: [WarehousesRoutesEnum.Reserves], initialIndex: 0 },
         {
           store: getStoreWithAuth(undefined, undefined, undefined, {
-            queries: { ...getUserMeQueryMock(userFixtures.user()) },
+            queries: { ...getUserMeQueryMock(userFixtures.userDetail()) },
           }),
         },
       )

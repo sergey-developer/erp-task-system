@@ -1,18 +1,18 @@
-import {
-  HistoryNomenclatureOperationsReportItemDTO,
-  HistoryNomenclatureOperationsReportDTO,
-} from 'features/reports/api/dto'
 import { EquipmentConditionEnum } from 'features/equipments/api/constants'
+import {
+  HistoryNomenclatureOperationsReportDTO,
+  HistoryNomenclatureOperationsReportItemDTO,
+} from 'features/reports/api/dto'
 import isBoolean from 'lodash/isBoolean'
 import pick from 'lodash/pick'
 import times from 'lodash/times'
 
-import { fakeDateString, fakeId, fakeIdStr, fakeWord } from '_tests_/utils'
+import { fakeDateString, fakeId, fakeIdStr, fakeWord } from '_tests_/helpers'
 
 import catalogsFixtures from '../catalogs'
 import warehouseFixtures from '../warehouse'
 
-export const historyNomenclatureOperationsReportListItem = (
+export const historyNomenclatureOperationsReportItem = (
   props?: Partial<
     Pick<HistoryNomenclatureOperationsReportItemDTO, 'isNew' | 'isWarranty' | 'isRepaired'>
   >,
@@ -28,10 +28,10 @@ export const historyNomenclatureOperationsReportListItem = (
   creditedAt: fakeDateString(),
   serialNumber: fakeIdStr(),
   inventoryNumber: fakeIdStr(),
-  location: pick(catalogsFixtures.locationCatalogListItem(), 'id', 'title'),
+  location: pick(catalogsFixtures.locationCatalogItem(), 'id', 'title'),
 })
 
 export const historyNomenclatureOperationsReport = (
   length: number = 1,
 ): HistoryNomenclatureOperationsReportDTO =>
-  times(length, () => historyNomenclatureOperationsReportListItem())
+  times(length, () => historyNomenclatureOperationsReportItem())

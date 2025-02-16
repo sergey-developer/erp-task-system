@@ -3,9 +3,9 @@ import times from 'lodash/times'
 import { LocationTypeEnum } from 'shared/catalogs/locations/api/constants'
 import { LocationCatalogItemDTO, LocationsCatalogDTO } from 'shared/catalogs/locations/api/dto'
 
-import { fakeId, fakeWord } from '_tests_/utils'
+import { fakeId, fakeWord } from '_tests_/helpers'
 
-export const locationCatalogListItem = (
+export const locationCatalogItem = (
   props?: Partial<Pick<LocationCatalogItemDTO, 'type' | 'id' | 'title'>>,
 ): LocationCatalogItemDTO => ({
   type: props?.type || LocationTypeEnum.Shop,
@@ -14,4 +14,4 @@ export const locationCatalogListItem = (
 })
 
 export const locationsCatalog = (length: number = 1): LocationsCatalogDTO =>
-  times(length, () => locationCatalogListItem())
+  times(length, () => locationCatalogItem())

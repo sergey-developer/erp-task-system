@@ -1,6 +1,6 @@
 import { Col, Form, Input, InputNumber, Radio, Row, Select } from 'antd'
 import { checkEquipmentCategoryIsConsumable } from 'features/equipments/helpers'
-import { NomenclatureDTO } from 'features/warehouses/api/dto'
+import { NomenclatureDTO } from 'features/nomenclatures/api/dto'
 import isArray from 'lodash/isArray'
 import { DefaultOptionType } from 'rc-select/lib/Select'
 import React, { FC, useEffect, useMemo } from 'react'

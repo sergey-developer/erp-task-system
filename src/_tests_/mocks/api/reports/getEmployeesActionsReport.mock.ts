@@ -1,4 +1,4 @@
-import { makeGetEmployeesActionsReportEndpoint } from 'features/reports/api/helpers'
+import { makeGetEmployeesActionsReportApiPath } from 'features/reports/api/helpers'
 import { GetEmployeesActionsReportResponse } from 'features/reports/api/schemas'
 
 import { ErrorData } from 'shared/api/baseApi'

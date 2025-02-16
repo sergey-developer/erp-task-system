@@ -8,12 +8,12 @@ import {
   fakeIdStr,
   fakeInteger,
   fakeWord,
-} from '_tests_/utils'
+} from '_tests_/helpers'
 
 import taskFixtures from '../tasks'
 import userFixtures from '../users'
 
-export const fiscalAccumulatorTaskListItem = (
+export const fiscalAccumulatorTask = (
   props?: Partial<Pick<FiscalAccumulatorTaskDTO, 'faFormat'>>,
 ): FiscalAccumulatorTaskDTO => ({
   faFormat: props?.faFormat || null,
@@ -34,6 +34,6 @@ export const fiscalAccumulatorTaskListItem = (
     name: fakeWord(),
     macroregion: { id: fakeId(), title: fakeWord() },
   },
-  assignee: pick(userFixtures.user(), 'id', 'firstName', 'lastName', 'middleName'),
+  assignee: pick(userFixtures.userDetail(), 'id', 'firstName', 'lastName', 'middleName'),
   comment: pick(taskFixtures.comment(), 'id', 'text'),
 })

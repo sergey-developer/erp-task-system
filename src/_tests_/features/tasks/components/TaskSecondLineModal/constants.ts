@@ -1,7 +1,7 @@
+import { TaskTypeEnum } from 'features/tasks/api/constants'
 import { TaskSecondLineModalProps } from 'features/tasks/components/TaskSecondLineModal/types'
-import { TaskTypeEnum } from 'features/tasks/constants/task/index'
 
-import { fakeId, fakeIdStr } from '_tests_/utils'
+import { fakeId, fakeIdStr } from '_tests_/helpers'
 
 export const props: Readonly<TaskSecondLineModalProps> = {
   permissions: {},

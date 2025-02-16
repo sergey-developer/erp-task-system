@@ -6,9 +6,9 @@ import { formatDate } from 'shared/utils/date'
 import {
   props,
   tableRow,
-} from '_tests_/features/infrastructure/components/InfrastructureStatusHistoryTable/constants'
-import { infrastructureStatusHistoryTableTestUtils } from '_tests_/features/infrastructure/components/InfrastructureStatusHistoryTable/testUtils'
-import { render, tableTestUtils } from '_tests_/utils'
+} from '_tests_/features/infrastructures/components/InfrastructureStatusHistoryTable/constants'
+import { infrastructureStatusHistoryTableTestUtils } from '_tests_/features/infrastructures/components/InfrastructureStatusHistoryTable/testUtils'
+import { render, tableTestUtils } from '_tests_/helpers'
 
 import InfrastructureStatusHistoryTable from './index'
 

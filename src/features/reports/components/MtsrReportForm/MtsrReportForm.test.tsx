@@ -8,7 +8,7 @@ import { UPDATE_TEXT } from 'shared/constants/common'
 import { validationMessages } from 'shared/constants/validation'
 
 import warehouseFixtures from '_tests_/fixtures/warehouse'
-import { buttonTestUtils, render, selectTestUtils } from '_tests_/utils'
+import { buttonTestUtils, render, selectTestUtils } from '_tests_/helpers'
 
 import MtsrReportForm from './index'
 import { MtsrReportFormProps } from './types'

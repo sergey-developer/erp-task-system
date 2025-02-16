@@ -1,21 +1,18 @@
 import { waitFor } from '@testing-library/react'
 import { Form } from 'antd'
-
 import ChangeInfrastructureOrderForm from 'features/infrastructures/components/ChangeInfrastructureOrderForm/index'
 
 import { props } from '_tests_/features/infrastructures/components/ChangeInfrastructureOrderForm/constants'
 import { changeInfrastructureOrderFormTestUtils } from '_tests_/features/infrastructures/components/ChangeInfrastructureOrderForm/testUtils'
 import { changeInfrastructureOrderFormTableTestUtils } from '_tests_/features/infrastructures/components/ChangeInfrastructureOrderFormTable/testUtils'
+import { confirmDeleteInfrastructureWorkTypeModalTestUtils } from '_tests_/features/infrastructures/components/ConfirmDeleteInfrastructureWorkTypeModal/testUtils'
 import catalogsFixtures from '_tests_/fixtures/catalogs'
 import infrastructuresFixtures from '_tests_/fixtures/infrastructures'
+import { fakeInteger, render } from '_tests_/helpers'
 import {
   mockCreateInfrastructureOrderFormWorkSuccess,
   mockGetInfrastructureOrderFormWorkTypeCostSuccess,
 } from '_tests_/mocks/api/infrastructures'
-import { fakeInteger, render } from '_tests_/utils'
-import {
-  confirmDeleteInfrastructureWorkTypeModalTestUtils
-} from '_tests_/features/infrastructures/components/ConfirmDeleteInfrastructureWorkTypeModal/testUtils'
 
 describe('Форма добавления работ к бланк-заказу', () => {
   describe('Поле тариф', () => {
@@ -44,8 +41,8 @@ describe('Форма добавления работ к бланк-заказу'
 
   describe('Таблица добавления работ к бланк-заказу', () => {
     describe.skip('Изменение работ', () => {
-      test('При выборе наименования работ устаналиваются значения для зависимых полей', async () => {
-        const infrastructureWorkTypeListItem = catalogsFixtures.infrastructureWorkTypeListItem()
+      test('При выборе наименования работ устанавливаются значения для зависимых полей', async () => {
+        const infrastructureWorkType = catalogsFixtures.infrastructureWorkType()
 
         const infrastructureWorkTypeCost = infrastructuresFixtures.infrastructureWorkTypeCost()
         mockGetInfrastructureOrderFormWorkTypeCostSuccess({ body: infrastructureWorkTypeCost })
@@ -54,7 +51,7 @@ describe('Форма добавления работ к бланк-заказу'
           <Form>
             <ChangeInfrastructureOrderForm
               {...props}
-              infrastructureWorkTypes={[infrastructureWorkTypeListItem]}
+              infrastructureWorkTypes={[infrastructureWorkType]}
             />
           </Form>,
         )
@@ -67,7 +64,7 @@ describe('Форма добавления работ к бланк-заказу'
         await changeInfrastructureOrderFormTableTestUtils.openWorkTypeSelect(user, row)
         await changeInfrastructureOrderFormTableTestUtils.setWorkType(
           user,
-          infrastructureWorkTypeListItem.title,
+          infrastructureWorkType.title,
         )
 
         const amountInput = changeInfrastructureOrderFormTableTestUtils.getAmountInput(row)
@@ -96,7 +93,7 @@ describe('Форма добавления работ к бланк-заказу'
       })
 
       test('При выборе наименования работ и указании количества единиц, устаналиваются значения для зависимых полей', async () => {
-        const infrastructureWorkTypeListItem = catalogsFixtures.infrastructureWorkTypeListItem()
+        const infrastructureWorkType = catalogsFixtures.infrastructureWorkType()
 
         const infrastructureWorkTypeCost = infrastructuresFixtures.infrastructureWorkTypeCost()
         mockGetInfrastructureOrderFormWorkTypeCostSuccess({ body: infrastructureWorkTypeCost })
@@ -107,7 +104,7 @@ describe('Форма добавления работ к бланк-заказу'
           <Form>
             <ChangeInfrastructureOrderForm
               {...props}
-              infrastructureWorkTypes={[infrastructureWorkTypeListItem]}
+              infrastructureWorkTypes={[infrastructureWorkType]}
             />
           </Form>,
         )
@@ -120,7 +117,7 @@ describe('Форма добавления работ к бланк-заказу'
         await changeInfrastructureOrderFormTableTestUtils.openWorkTypeSelect(user, row)
         await changeInfrastructureOrderFormTableTestUtils.setWorkType(
           user,
-          infrastructureWorkTypeListItem.title,
+          infrastructureWorkType.title,
         )
 
         const amountInput = changeInfrastructureOrderFormTableTestUtils.getAmountInput(row)

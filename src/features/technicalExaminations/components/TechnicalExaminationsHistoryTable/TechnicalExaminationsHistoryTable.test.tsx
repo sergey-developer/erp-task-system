@@ -7,15 +7,15 @@ import { MaybeNull, NumberOrString } from 'shared/types/utils'
 import { formatDate } from 'shared/utils/date'
 
 import technicalExaminationsFixtures from '_tests_/fixtures/technicalExaminations'
-import { render, tableTestUtils } from '_tests_/utils'
+import { render, tableTestUtils } from '_tests_/helpers'
 
 import TechnicalExaminationsHistoryTable from './index'
 import { TechnicalExaminationsHistoryTableProps } from './types'
 
-const technicalExaminationListItem = technicalExaminationsFixtures.technicalExaminationListItem()
+const technicalExamination = technicalExaminationsFixtures.technicalExamination()
 
 const props: Readonly<TechnicalExaminationsHistoryTableProps> = {
-  dataSource: [technicalExaminationListItem],
+  dataSource: [technicalExamination],
   loading: false,
 }
 
@@ -67,8 +67,8 @@ describe('Таблица истории технической эксперти�
 
       const title = testUtils.getColTitle('Исполнитель')
       const value = testUtils.getColValue(
-        technicalExaminationListItem.id,
-        getFullUserName(technicalExaminationListItem.createdBy!),
+        technicalExamination.id,
+        getFullUserName(technicalExamination.createdBy!),
       )
 
       expect(title).toBeInTheDocument()
@@ -82,8 +82,8 @@ describe('Таблица истории технической эксперти�
 
       const title = testUtils.getColTitle('Сформировано')
       const value = testUtils.getColValue(
-        technicalExaminationListItem.id,
-        formatDate(technicalExaminationListItem.createdAt),
+        technicalExamination.id,
+        formatDate(technicalExamination.createdAt),
       )
 
       expect(title).toBeInTheDocument()
@@ -96,10 +96,7 @@ describe('Таблица истории технической эксперти�
       render(<TechnicalExaminationsHistoryTable {...props} />)
 
       const title = testUtils.getColTitle('Причина неисправности')
-      const value = testUtils.getColValue(
-        technicalExaminationListItem.id,
-        technicalExaminationListItem.malfunction,
-      )
+      const value = testUtils.getColValue(technicalExamination.id, technicalExamination.malfunction)
 
       expect(title).toBeInTheDocument()
       expect(value).toBeInTheDocument()
@@ -108,36 +105,28 @@ describe('Таблица истории технической эксперти�
 
   describe('Имеются следы мех. повреждения', () => {
     test('Отображается - Да', () => {
-      const technicalExaminationListItem =
-        technicalExaminationsFixtures.technicalExaminationListItem({ hasMechanicalDamage: true })
+      const technicalExamination = technicalExaminationsFixtures.technicalExamination({
+        hasMechanicalDamage: true,
+      })
 
-      render(
-        <TechnicalExaminationsHistoryTable
-          {...props}
-          dataSource={[technicalExaminationListItem]}
-        />,
-      )
+      render(<TechnicalExaminationsHistoryTable {...props} dataSource={[technicalExamination]} />)
 
       const title = testUtils.getColTitle('Имеются следы мех. повреждения')
-      const value = testUtils.getColValue(technicalExaminationListItem.id, 'Да')
+      const value = testUtils.getColValue(technicalExamination.id, 'Да')
 
       expect(title).toBeInTheDocument()
       expect(value).toBeInTheDocument()
     })
 
     test('Отображается - Нет', () => {
-      const technicalExaminationListItem =
-        technicalExaminationsFixtures.technicalExaminationListItem({ hasMechanicalDamage: false })
+      const technicalExamination = technicalExaminationsFixtures.technicalExamination({
+        hasMechanicalDamage: false,
+      })
 
-      render(
-        <TechnicalExaminationsHistoryTable
-          {...props}
-          dataSource={[technicalExaminationListItem]}
-        />,
-      )
+      render(<TechnicalExaminationsHistoryTable {...props} dataSource={[technicalExamination]} />)
 
       const title = testUtils.getColTitle('Имеются следы мех. повреждения')
-      const value = testUtils.getColValue(technicalExaminationListItem.id, 'Нет')
+      const value = testUtils.getColValue(technicalExamination.id, 'Нет')
 
       expect(title).toBeInTheDocument()
       expect(value).toBeInTheDocument()
@@ -150,8 +139,8 @@ describe('Таблица истории технической эксперти�
 
       const title = testUtils.getColTitle('Для устранения неисправности необходимо')
       const value = testUtils.getColValue(
-        technicalExaminationListItem.id,
-        technicalExaminationListItem.restorationAction,
+        technicalExamination.id,
+        technicalExamination.restorationAction,
       )
 
       expect(title).toBeInTheDocument()
@@ -165,8 +154,8 @@ describe('Таблица истории технической эксперти�
 
       const title = testUtils.getColTitle('Стоимость восстановления')
       const value = testUtils.getColValue(
-        technicalExaminationListItem.id,
-        technicalExaminationListItem.restorationCost,
+        technicalExamination.id,
+        technicalExamination.restorationCost,
       )
 
       expect(title).toBeInTheDocument()
@@ -179,10 +168,7 @@ describe('Таблица истории технической эксперти�
       render(<TechnicalExaminationsHistoryTable {...props} />)
 
       const title = testUtils.getColTitle('Заключение комиссии')
-      const value = testUtils.getColValue(
-        technicalExaminationListItem.id,
-        technicalExaminationListItem.conclusion!,
-      )
+      const value = testUtils.getColValue(technicalExamination.id, technicalExamination.conclusion!)
 
       expect(title).toBeInTheDocument()
       expect(value).toBeInTheDocument()

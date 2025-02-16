@@ -1,6 +1,6 @@
 import { fastFilterOptionTestUtils } from '_tests_/features/tasks/components/FastFilters/FastFilterOption/testUtils'
 import { option, props } from '_tests_/features/tasks/components/FastFilters/constants'
-import { render } from '_tests_/utils'
+import { render } from '_tests_/helpers'
 
 import FastFilters from './index'
 

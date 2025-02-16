@@ -1,7 +1,7 @@
 import { EquipmentsCatalogDTO, EquipmentsCatalogItemDTO } from 'features/equipments/api/dto'
 import times from 'lodash/times'
 
-import { fakeId, fakeWord } from '_tests_/utils'
+import { fakeId, fakeWord } from '_tests_/helpers'
 
 export const equipmentCatalogListItem = (): EquipmentsCatalogItemDTO => ({
   id: fakeId(),

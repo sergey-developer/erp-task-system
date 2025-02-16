@@ -1,9 +1,9 @@
 import { within } from '@testing-library/react'
 
-import { props } from '_tests_/features/infrastructure/components/InfrastructureStatusHistoryModal/constants'
-import { infrastructureStatusHistoryModalTestUtils } from '_tests_/features/infrastructure/components/InfrastructureStatusHistoryModal/testUtils'
-import { infrastructureStatusHistoryTableTestUtils } from '_tests_/features/infrastructure/components/InfrastructureStatusHistoryTable/testUtils'
-import { buttonTestUtils, render } from '_tests_/utils'
+import { props } from '_tests_/features/infrastructures/components/InfrastructureStatusHistoryModal/constants'
+import { infrastructureStatusHistoryModalTestUtils } from '_tests_/features/infrastructures/components/InfrastructureStatusHistoryModal/testUtils'
+import { infrastructureStatusHistoryTableTestUtils } from '_tests_/features/infrastructures/components/InfrastructureStatusHistoryTable/testUtils'
+import { buttonTestUtils, render } from '_tests_/helpers'
 
 import InfrastructureStatusHistoryModal from './index'
 

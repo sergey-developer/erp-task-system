@@ -1,6 +1,6 @@
 import { TaskCountersDTO } from 'features/tasks/api/dto'
 
-import { fakeInteger } from '_tests_/utils'
+import { fakeInteger } from '_tests_/helpers'
 
 export const taskCounters = (): TaskCountersDTO => ({
   allLines: fakeInteger({ min: 1, max: 100 }),

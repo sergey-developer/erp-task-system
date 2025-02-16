@@ -1,6 +1,6 @@
 import { Location } from '@remix-run/router/history'
 
-import { fakeWord } from '../utils'
+import { fakeWord } from '../helpers'
 
 export const fakeUseLocationResult = (props?: Pick<Partial<Location>, 'state'>): Location => ({
   state: props?.state || null,

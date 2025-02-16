@@ -2,7 +2,7 @@ import { getShortUserName } from 'features/users/helpers'
 
 import { action, props } from '_tests_/features/tasks/components/TaskRequest/constants'
 import { taskRequestTestUtils } from '_tests_/features/tasks/components/TaskRequest/testUtils'
-import { fakeWord, render } from '_tests_/utils'
+import { fakeWord, render } from '_tests_/helpers'
 
 import TaskRequest from './index'
 

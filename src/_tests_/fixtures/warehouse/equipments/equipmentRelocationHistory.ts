@@ -7,7 +7,7 @@ import pick from 'lodash/pick'
 import times from 'lodash/times'
 
 import warehouseFixtures from '_tests_/fixtures/warehouse'
-import { fakeDateString, fakeId, fakeWord } from '_tests_/utils'
+import { fakeDateString, fakeId, fakeWord } from '_tests_/helpers'
 
 export const equipmentRelocationHistoryItem = (): EquipmentRelocationHistoryItemDTO => ({
   id: fakeId(),

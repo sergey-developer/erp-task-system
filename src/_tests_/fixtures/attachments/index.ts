@@ -1,7 +1,7 @@
-import * as attachmentList from './attachments'
+import * as attachments from './attachments'
 
-const attachmentFixtures = {
-  ...attachmentList,
+const attachmentsFixtures = {
+  ...attachments,
 } as const
 
-export default attachmentFixtures
+export default attachmentsFixtures

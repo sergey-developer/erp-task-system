@@ -1,7 +1,7 @@
 import { screen, within } from '@testing-library/react'
 
 import technicalExaminationsFixtures from '_tests_/fixtures/technicalExaminations'
-import { render } from '_tests_/utils'
+import { render } from '_tests_/helpers'
 
 import { testUtils as technicalExaminationsHistoryTableTestUtils } from '../TechnicalExaminationsHistoryTable/TechnicalExaminationsHistoryTable.test'
 import TechnicalExaminationsHistoryModal, { TechnicalExaminationsHistoryModalProps } from './index'
@@ -9,7 +9,7 @@ import TechnicalExaminationsHistoryModal, { TechnicalExaminationsHistoryModalPro
 const props: TechnicalExaminationsHistoryModalProps = {
   open: true,
   loading: false,
-  dataSource: [technicalExaminationsFixtures.technicalExaminationListItem()],
+  dataSource: [technicalExaminationsFixtures.technicalExamination()],
   onCancel: jest.fn(),
 }
 

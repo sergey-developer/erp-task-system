@@ -9,10 +9,10 @@ import {
 import {
   inventorizationEquipmentListItem,
   props,
-} from '_tests_/features/warehouse/components/DiscrepanciesEquipmentTable/constants'
-import { discrepanciesEquipmentTableTestUtils } from '_tests_/features/warehouse/components/DiscrepanciesEquipmentTable/testUtils'
+} from '_tests_/features/warehouses/components/DiscrepanciesEquipmentTable/constants'
+import { discrepanciesEquipmentTableTestUtils } from '_tests_/features/warehouses/components/DiscrepanciesEquipmentTable/testUtils'
 import warehouseFixtures from '_tests_/fixtures/warehouse'
-import { render, tableTestUtils } from '_tests_/utils'
+import { render, tableTestUtils } from '_tests_/helpers'
 
 import DiscrepanciesEquipmentTable from './index'
 

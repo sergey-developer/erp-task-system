@@ -3,7 +3,7 @@ import { UserEvent } from '@testing-library/user-event/setup/setup'
 
 import { updateTasksButtonTestUtils } from '_tests_/features/tasks/components/UpdateTasksButton/testUtils'
 import { TestIdsEnum } from '_tests_/features/tasks/pages/TasksPage/constants'
-import { buttonTestUtils } from '_tests_/utils/index'
+import { buttonTestUtils } from '_tests_/helpers/index'
 
 const getContainer = () => screen.getByTestId(TestIdsEnum.TasksPage)
 const findContainer = () => screen.findByTestId(TestIdsEnum.TasksPage)

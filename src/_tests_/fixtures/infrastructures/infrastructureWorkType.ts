@@ -1,7 +1,7 @@
+import { BudgetTypeEnum } from 'features/infrastructures/api/constants'
 import { InfrastructureWorkTypeDTO } from 'features/infrastructures/api/dto'
-import { BudgetTypeEnum } from 'features/infrastructures/constants'
 
-import { fakeId, fakeInteger, fakeWord } from '_tests_/utils'
+import { fakeId, fakeInteger, fakeWord } from '_tests_/helpers'
 
 export const infrastructureWorkType = (): InfrastructureWorkTypeDTO => ({
   id: fakeId(),

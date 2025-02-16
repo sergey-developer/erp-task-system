@@ -1,5 +1,5 @@
-import { GetAmountEquipmentSpentReportXlsxResponse } from 'features/reports/api/dto'
-import { makeHistoryNomenclatureOperationsReportEndpoint } from 'features/reports/helpers'
+import { makeHistoryNomenclatureOperationsReportApiPath } from 'features/reports/api/helpers'
+import { GetAmountEquipmentSpentReportXlsxResponse } from 'features/reports/api/schemas'
 
 import { HttpMethodEnum } from 'shared/constants/http'
 import { IdType } from 'shared/types/common'

@@ -17,41 +17,16 @@ import { getYesNoWord } from 'shared/utils/common'
 import { formatDate } from 'shared/utils/date'
 import { makeString } from 'shared/utils/string'
 
-import { createEquipmentTechnicalExaminationModalTestUtils } from '_tests_/features/warehouse/components/CreateEquipmentTechnicalExaminationModal/testUtils'
-import { props } from '_tests_/features/warehouse/components/EquipmentDetails/constants'
-import { equipmentDetailsTestUtils } from '_tests_/features/warehouse/components/EquipmentDetails/testUtils'
-import { equipmentFormModalTestUtils } from '_tests_/features/warehouse/components/EquipmentFormModal/testUtils'
-import { equipmentRelocationHistoryModalTestUtils } from '_tests_/features/warehouse/components/EquipmentRelocationHistoryModal/testUtils'
-import { relocationTaskDetailsTestUtils } from '_tests_/features/warehouse/components/RelocationTaskDetails/testUtils'
-import attachmentFixtures from '_tests_/fixtures/attachments'
+import { createEquipmentTechnicalExaminationModalTestUtils } from '_tests_/features/warehouses/components/CreateEquipmentTechnicalExaminationModal/testUtils'
+import { props } from '_tests_/features/warehouses/components/EquipmentDetails/constants'
+import { equipmentDetailsTestUtils } from '_tests_/features/warehouses/components/EquipmentDetails/testUtils'
+import { equipmentFormModalTestUtils } from '_tests_/features/warehouses/components/EquipmentFormModal/testUtils'
+import { equipmentRelocationHistoryModalTestUtils } from '_tests_/features/warehouses/components/EquipmentRelocationHistoryModal/testUtils'
+import { relocationTaskDetailsTestUtils } from '_tests_/features/warehouses/components/RelocationTaskDetails/testUtils'
+import attachmentsFixtures from '_tests_/fixtures/attachments'
 import commonFixtures from '_tests_/fixtures/common'
 import userFixtures from '_tests_/fixtures/users'
 import warehouseFixtures from '_tests_/fixtures/warehouse'
-import {
-  mockGetCurrencyListSuccess,
-  mockGetCustomerListSuccess,
-  mockGetEquipmentAttachmentListForbiddenError,
-  mockGetEquipmentAttachmentListNotFoundError,
-  mockGetEquipmentAttachmentListServerError,
-  mockGetEquipmentAttachmentListSuccess,
-  mockGetEquipmentCategoryListSuccess,
-  mockGetEquipmentForbiddenError,
-  mockGetEquipmentNotFoundError,
-  mockGetEquipmentRelocationHistoryForbiddenError,
-  mockGetEquipmentRelocationHistoryNotFoundError,
-  mockGetEquipmentRelocationHistoryServerError,
-  mockGetEquipmentRelocationHistorySuccess,
-  mockGetEquipmentServerError,
-  mockGetEquipmentSuccess,
-  mockGetNomenclatureListSuccess,
-  mockGetNomenclatureSuccess,
-  mockGetRelocationEquipmentListSuccess,
-  mockGetRelocationTaskSuccess,
-  mockGetTechnicalExaminationsSuccess,
-  mockGetWarehouseListSuccess,
-  mockGetWorkTypesSuccess,
-} from '_tests_/mocks/api'
-import { getUserMeQueryMock } from '_tests_/mocks/state/user'
 import {
   buttonTestUtils,
   fakeWord,
@@ -60,7 +35,32 @@ import {
   notificationTestUtils,
   render,
   setupApiTests,
-} from '_tests_/utils'
+} from '_tests_/helpers'
+import {
+  mockGetCurrenciesSuccess,
+  mockGetCustomersSuccess,
+  mockGetEquipmentAttachmentsForbiddenError,
+  mockGetEquipmentAttachmentsNotFoundError,
+  mockGetEquipmentAttachmentsServerError,
+  mockGetEquipmentAttachmentsSuccess,
+  mockGetEquipmentCategoriesSuccess,
+  mockGetEquipmentForbiddenError,
+  mockGetEquipmentNotFoundError,
+  mockGetEquipmentRelocationHistoryForbiddenError,
+  mockGetEquipmentRelocationHistoryNotFoundError,
+  mockGetEquipmentRelocationHistoryServerError,
+  mockGetEquipmentRelocationHistorySuccess,
+  mockGetEquipmentServerError,
+  mockGetEquipmentSuccess,
+  mockGetNomenclaturesSuccess,
+  mockGetNomenclatureSuccess,
+  mockGetRelocationEquipmentsSuccess,
+  mockGetRelocationTaskSuccess,
+  mockGetTechnicalExaminationsSuccess,
+  mockGetWarehousesSuccess,
+  mockGetWorkTypesSuccess,
+} from '_tests_/mocks/api'
+import { getUserMeQueryMock } from '_tests_/mocks/store/users'
 
 import { equipmentConditionDict } from '../../constants'
 import EquipmentDetails from './index'
@@ -77,11 +77,11 @@ notificationTestUtils.setupNotifications()
 describe('Информация об оборудовании', () => {
   test('При клике на кнопку закрытия вызывается обработчик', async () => {
     mockGetEquipmentSuccess(props.equipmentId)
-    mockGetEquipmentAttachmentListSuccess(props.equipmentId)
+    mockGetEquipmentAttachmentsSuccess(props.equipmentId)
 
     const { user } = render(<EquipmentDetails {...props} />, {
       store: getStoreWithAuth(undefined, undefined, undefined, {
-        queries: { ...getUserMeQueryMock(userFixtures.user()) },
+        queries: { ...getUserMeQueryMock(userFixtures.userDetail()) },
       }),
     })
 
@@ -93,11 +93,11 @@ describe('Информация об оборудовании', () => {
     test('Наименование отображается', async () => {
       const equipment = warehouseFixtures.equipment()
       mockGetEquipmentSuccess(props.equipmentId, { body: equipment })
-      mockGetEquipmentAttachmentListSuccess(props.equipmentId)
+      mockGetEquipmentAttachmentsSuccess(props.equipmentId)
 
       render(<EquipmentDetails {...props} />, {
         store: getStoreWithAuth(undefined, undefined, undefined, {
-          queries: { ...getUserMeQueryMock(userFixtures.user()) },
+          queries: { ...getUserMeQueryMock(userFixtures.userDetail()) },
         }),
       })
 
@@ -113,11 +113,11 @@ describe('Информация об оборудовании', () => {
     test('Категория отображается', async () => {
       const equipment = warehouseFixtures.equipment()
       mockGetEquipmentSuccess(props.equipmentId, { body: equipment })
-      mockGetEquipmentAttachmentListSuccess(props.equipmentId)
+      mockGetEquipmentAttachmentsSuccess(props.equipmentId)
 
       render(<EquipmentDetails {...props} />, {
         store: getStoreWithAuth(undefined, undefined, undefined, {
-          queries: { ...getUserMeQueryMock(userFixtures.user()) },
+          queries: { ...getUserMeQueryMock(userFixtures.userDetail()) },
         }),
       })
 
@@ -133,11 +133,11 @@ describe('Информация об оборудовании', () => {
     test('Номенклатура отображается', async () => {
       const equipment = warehouseFixtures.equipment()
       mockGetEquipmentSuccess(props.equipmentId, { body: equipment })
-      mockGetEquipmentAttachmentListSuccess(props.equipmentId)
+      mockGetEquipmentAttachmentsSuccess(props.equipmentId)
 
       render(<EquipmentDetails {...props} />, {
         store: getStoreWithAuth(undefined, undefined, undefined, {
-          queries: { ...getUserMeQueryMock(userFixtures.user()) },
+          queries: { ...getUserMeQueryMock(userFixtures.userDetail()) },
         }),
       })
 
@@ -154,11 +154,11 @@ describe('Информация об оборудовании', () => {
       test('Отображается если нет в списке скрытых', async () => {
         const equipment = warehouseFixtures.equipment()
         mockGetEquipmentSuccess(props.equipmentId, { body: equipment })
-        mockGetEquipmentAttachmentListSuccess(props.equipmentId)
+        mockGetEquipmentAttachmentsSuccess(props.equipmentId)
 
         render(<EquipmentDetails {...props} />, {
           store: getStoreWithAuth(undefined, undefined, undefined, {
-            queries: { ...getUserMeQueryMock(userFixtures.user()) },
+            queries: { ...getUserMeQueryMock(userFixtures.userDetail()) },
           }),
         })
 
@@ -176,11 +176,11 @@ describe('Информация об оборудовании', () => {
           category: warehouseFixtures.equipmentCategory({ code: EquipmentCategoryEnum.Consumable }),
         })
         mockGetEquipmentSuccess(props.equipmentId, { body: equipment })
-        mockGetEquipmentAttachmentListSuccess(props.equipmentId)
+        mockGetEquipmentAttachmentsSuccess(props.equipmentId)
 
         render(<EquipmentDetails {...props} />, {
           store: getStoreWithAuth(undefined, undefined, undefined, {
-            queries: { ...getUserMeQueryMock(userFixtures.user()) },
+            queries: { ...getUserMeQueryMock(userFixtures.userDetail()) },
           }),
         })
 
@@ -197,11 +197,11 @@ describe('Информация об оборудовании', () => {
           category: warehouseFixtures.equipmentCategory({ code: EquipmentCategoryEnum.Consumable }),
         })
         mockGetEquipmentSuccess(props.equipmentId, { body: equipment })
-        mockGetEquipmentAttachmentListSuccess(props.equipmentId)
+        mockGetEquipmentAttachmentsSuccess(props.equipmentId)
 
         render(<EquipmentDetails {...props} />, {
           store: getStoreWithAuth(undefined, undefined, undefined, {
-            queries: { ...getUserMeQueryMock(userFixtures.user()) },
+            queries: { ...getUserMeQueryMock(userFixtures.userDetail()) },
           }),
         })
 
@@ -220,11 +220,11 @@ describe('Информация об оборудовании', () => {
           category: warehouseFixtures.equipmentCategory({ code: EquipmentCategoryEnum.Consumable }),
         })
         mockGetEquipmentSuccess(props.equipmentId, { body: equipment })
-        mockGetEquipmentAttachmentListSuccess(props.equipmentId)
+        mockGetEquipmentAttachmentsSuccess(props.equipmentId)
 
         render(<EquipmentDetails {...props} />, {
           store: getStoreWithAuth(undefined, undefined, undefined, {
-            queries: { ...getUserMeQueryMock(userFixtures.user()) },
+            queries: { ...getUserMeQueryMock(userFixtures.userDetail()) },
           }),
         })
 
@@ -238,11 +238,11 @@ describe('Информация об оборудовании', () => {
     test('Местонахождение отображается', async () => {
       const equipment = warehouseFixtures.equipment()
       mockGetEquipmentSuccess(props.equipmentId, { body: equipment })
-      mockGetEquipmentAttachmentListSuccess(props.equipmentId)
+      mockGetEquipmentAttachmentsSuccess(props.equipmentId)
 
       render(<EquipmentDetails {...props} />, {
         store: getStoreWithAuth(undefined, undefined, undefined, {
-          queries: { ...getUserMeQueryMock(userFixtures.user()) },
+          queries: { ...getUserMeQueryMock(userFixtures.userDetail()) },
         }),
       })
 
@@ -258,11 +258,11 @@ describe('Информация об оборудовании', () => {
     test('Оприходовано отображается', async () => {
       const equipment = warehouseFixtures.equipment()
       mockGetEquipmentSuccess(props.equipmentId, { body: equipment })
-      mockGetEquipmentAttachmentListSuccess(props.equipmentId)
+      mockGetEquipmentAttachmentsSuccess(props.equipmentId)
 
       render(<EquipmentDetails {...props} />, {
         store: getStoreWithAuth(undefined, undefined, undefined, {
-          queries: { ...getUserMeQueryMock(userFixtures.user()) },
+          queries: { ...getUserMeQueryMock(userFixtures.userDetail()) },
         }),
       })
 
@@ -281,11 +281,11 @@ describe('Информация об оборудовании', () => {
     test('Состояние отображается', async () => {
       const equipment = warehouseFixtures.equipment()
       mockGetEquipmentSuccess(props.equipmentId, { body: equipment })
-      mockGetEquipmentAttachmentListSuccess(props.equipmentId)
+      mockGetEquipmentAttachmentsSuccess(props.equipmentId)
 
       render(<EquipmentDetails {...props} />, {
         store: getStoreWithAuth(undefined, undefined, undefined, {
-          queries: { ...getUserMeQueryMock(userFixtures.user()) },
+          queries: { ...getUserMeQueryMock(userFixtures.userDetail()) },
         }),
       })
 
@@ -304,11 +304,11 @@ describe('Информация об оборудовании', () => {
     test('Дата оприходования отображается', async () => {
       const equipment = warehouseFixtures.equipment()
       mockGetEquipmentSuccess(props.equipmentId, { body: equipment })
-      mockGetEquipmentAttachmentListSuccess(props.equipmentId)
+      mockGetEquipmentAttachmentsSuccess(props.equipmentId)
 
       render(<EquipmentDetails {...props} />, {
         store: getStoreWithAuth(undefined, undefined, undefined, {
-          queries: { ...getUserMeQueryMock(userFixtures.user()) },
+          queries: { ...getUserMeQueryMock(userFixtures.userDetail()) },
         }),
       })
 
@@ -327,11 +327,11 @@ describe('Информация об оборудовании', () => {
     test('Кем оприходовано отображается', async () => {
       const equipment = warehouseFixtures.equipment()
       mockGetEquipmentSuccess(props.equipmentId, { body: equipment })
-      mockGetEquipmentAttachmentListSuccess(props.equipmentId)
+      mockGetEquipmentAttachmentsSuccess(props.equipmentId)
 
       render(<EquipmentDetails {...props} />, {
         store: getStoreWithAuth(undefined, undefined, undefined, {
-          queries: { ...getUserMeQueryMock(userFixtures.user()) },
+          queries: { ...getUserMeQueryMock(userFixtures.userDetail()) },
         }),
       })
 
@@ -347,11 +347,11 @@ describe('Информация об оборудовании', () => {
     test('Количество отображается', async () => {
       const equipment = warehouseFixtures.equipment()
       mockGetEquipmentSuccess(props.equipmentId, { body: equipment })
-      mockGetEquipmentAttachmentListSuccess(props.equipmentId)
+      mockGetEquipmentAttachmentsSuccess(props.equipmentId)
 
       render(<EquipmentDetails {...props} />, {
         store: getStoreWithAuth(undefined, undefined, undefined, {
-          queries: { ...getUserMeQueryMock(userFixtures.user()) },
+          queries: { ...getUserMeQueryMock(userFixtures.userDetail()) },
         }),
       })
 
@@ -374,11 +374,11 @@ describe('Информация об оборудовании', () => {
     test('Стоимость отображается', async () => {
       const equipment = warehouseFixtures.equipment()
       mockGetEquipmentSuccess(props.equipmentId, { body: equipment })
-      mockGetEquipmentAttachmentListSuccess(props.equipmentId)
+      mockGetEquipmentAttachmentsSuccess(props.equipmentId)
 
       render(<EquipmentDetails {...props} />, {
         store: getStoreWithAuth(undefined, undefined, undefined, {
-          queries: { ...getUserMeQueryMock(userFixtures.user()) },
+          queries: { ...getUserMeQueryMock(userFixtures.userDetail()) },
         }),
       })
 
@@ -402,11 +402,11 @@ describe('Информация об оборудовании', () => {
       test('Отображается если нет в списке скрытых', async () => {
         const equipment = warehouseFixtures.equipment()
         mockGetEquipmentSuccess(props.equipmentId, { body: equipment })
-        mockGetEquipmentAttachmentListSuccess(props.equipmentId)
+        mockGetEquipmentAttachmentsSuccess(props.equipmentId)
 
         render(<EquipmentDetails {...props} />, {
           store: getStoreWithAuth(undefined, undefined, undefined, {
-            queries: { ...getUserMeQueryMock(userFixtures.user()) },
+            queries: { ...getUserMeQueryMock(userFixtures.userDetail()) },
           }),
         })
 
@@ -424,11 +424,11 @@ describe('Информация об оборудовании', () => {
           category: warehouseFixtures.equipmentCategory({ code: EquipmentCategoryEnum.Consumable }),
         })
         mockGetEquipmentSuccess(props.equipmentId, { body: equipment })
-        mockGetEquipmentAttachmentListSuccess(props.equipmentId)
+        mockGetEquipmentAttachmentsSuccess(props.equipmentId)
 
         render(<EquipmentDetails {...props} />, {
           store: getStoreWithAuth(undefined, undefined, undefined, {
-            queries: { ...getUserMeQueryMock(userFixtures.user()) },
+            queries: { ...getUserMeQueryMock(userFixtures.userDetail()) },
           }),
         })
 
@@ -442,11 +442,11 @@ describe('Информация об оборудовании', () => {
       test('Отображается если нет в списке скрытых', async () => {
         const equipment = warehouseFixtures.equipment()
         mockGetEquipmentSuccess(props.equipmentId, { body: equipment })
-        mockGetEquipmentAttachmentListSuccess(props.equipmentId)
+        mockGetEquipmentAttachmentsSuccess(props.equipmentId)
 
         render(<EquipmentDetails {...props} />, {
           store: getStoreWithAuth(undefined, undefined, undefined, {
-            queries: { ...getUserMeQueryMock(userFixtures.user()) },
+            queries: { ...getUserMeQueryMock(userFixtures.userDetail()) },
           }),
         })
 
@@ -467,11 +467,11 @@ describe('Информация об оборудовании', () => {
           category: warehouseFixtures.equipmentCategory({ code: EquipmentCategoryEnum.Consumable }),
         })
         mockGetEquipmentSuccess(props.equipmentId, { body: equipment })
-        mockGetEquipmentAttachmentListSuccess(props.equipmentId)
+        mockGetEquipmentAttachmentsSuccess(props.equipmentId)
 
         render(<EquipmentDetails {...props} />, {
           store: getStoreWithAuth(undefined, undefined, undefined, {
-            queries: { ...getUserMeQueryMock(userFixtures.user()) },
+            queries: { ...getUserMeQueryMock(userFixtures.userDetail()) },
           }),
         })
 
@@ -485,11 +485,11 @@ describe('Информация об оборудовании', () => {
       test('Отображается если нет в списке скрытых', async () => {
         const equipment = warehouseFixtures.equipment()
         mockGetEquipmentSuccess(props.equipmentId, { body: equipment })
-        mockGetEquipmentAttachmentListSuccess(props.equipmentId)
+        mockGetEquipmentAttachmentsSuccess(props.equipmentId)
 
         render(<EquipmentDetails {...props} />, {
           store: getStoreWithAuth(undefined, undefined, undefined, {
-            queries: { ...getUserMeQueryMock(userFixtures.user()) },
+            queries: { ...getUserMeQueryMock(userFixtures.userDetail()) },
           }),
         })
 
@@ -510,11 +510,11 @@ describe('Информация об оборудовании', () => {
           category: warehouseFixtures.equipmentCategory({ code: EquipmentCategoryEnum.Consumable }),
         })
         mockGetEquipmentSuccess(props.equipmentId, { body: equipment })
-        mockGetEquipmentAttachmentListSuccess(props.equipmentId)
+        mockGetEquipmentAttachmentsSuccess(props.equipmentId)
 
         render(<EquipmentDetails {...props} />, {
           store: getStoreWithAuth(undefined, undefined, undefined, {
-            queries: { ...getUserMeQueryMock(userFixtures.user()) },
+            queries: { ...getUserMeQueryMock(userFixtures.userDetail()) },
           }),
         })
 
@@ -528,11 +528,11 @@ describe('Информация об оборудовании', () => {
       test('Отображается если нет в списке скрытых', async () => {
         const equipment = warehouseFixtures.equipment()
         mockGetEquipmentSuccess(props.equipmentId, { body: equipment })
-        mockGetEquipmentAttachmentListSuccess(props.equipmentId)
+        mockGetEquipmentAttachmentsSuccess(props.equipmentId)
 
         render(<EquipmentDetails {...props} />, {
           store: getStoreWithAuth(undefined, undefined, undefined, {
-            queries: { ...getUserMeQueryMock(userFixtures.user()) },
+            queries: { ...getUserMeQueryMock(userFixtures.userDetail()) },
           }),
         })
 
@@ -550,11 +550,11 @@ describe('Информация об оборудовании', () => {
           category: warehouseFixtures.equipmentCategory({ code: EquipmentCategoryEnum.Consumable }),
         })
         mockGetEquipmentSuccess(props.equipmentId, { body: equipment })
-        mockGetEquipmentAttachmentListSuccess(props.equipmentId)
+        mockGetEquipmentAttachmentsSuccess(props.equipmentId)
 
         render(<EquipmentDetails {...props} />, {
           store: getStoreWithAuth(undefined, undefined, undefined, {
-            queries: { ...getUserMeQueryMock(userFixtures.user()) },
+            queries: { ...getUserMeQueryMock(userFixtures.userDetail()) },
           }),
         })
 
@@ -568,11 +568,11 @@ describe('Информация об оборудовании', () => {
       test('Отображается вместе с макрорегионом если нет в списке скрытых', async () => {
         const equipment = warehouseFixtures.equipment()
         mockGetEquipmentSuccess(props.equipmentId, { body: equipment })
-        mockGetEquipmentAttachmentListSuccess(props.equipmentId)
+        mockGetEquipmentAttachmentsSuccess(props.equipmentId)
 
         render(<EquipmentDetails {...props} />, {
           store: getStoreWithAuth(undefined, undefined, undefined, {
-            queries: { ...getUserMeQueryMock(userFixtures.user()) },
+            queries: { ...getUserMeQueryMock(userFixtures.userDetail()) },
           }),
         })
 
@@ -591,11 +591,11 @@ describe('Информация об оборудовании', () => {
       test('Отображается значение по умолчанию', async () => {
         const equipment = warehouseFixtures.equipment({ owner: null })
         mockGetEquipmentSuccess(props.equipmentId, { body: equipment })
-        mockGetEquipmentAttachmentListSuccess(props.equipmentId)
+        mockGetEquipmentAttachmentsSuccess(props.equipmentId)
 
         render(<EquipmentDetails {...props} equipmentId={props.equipmentId} />, {
           store: getStoreWithAuth(undefined, undefined, undefined, {
-            queries: { ...getUserMeQueryMock(userFixtures.user()) },
+            queries: { ...getUserMeQueryMock(userFixtures.userDetail()) },
           }),
         })
 
@@ -613,11 +613,11 @@ describe('Информация об оборудовании', () => {
           category: warehouseFixtures.equipmentCategory({ code: EquipmentCategoryEnum.Consumable }),
         })
         mockGetEquipmentSuccess(props.equipmentId, { body: equipment })
-        mockGetEquipmentAttachmentListSuccess(props.equipmentId)
+        mockGetEquipmentAttachmentsSuccess(props.equipmentId)
 
         render(<EquipmentDetails {...props} />, {
           store: getStoreWithAuth(undefined, undefined, undefined, {
-            queries: { ...getUserMeQueryMock(userFixtures.user()) },
+            queries: { ...getUserMeQueryMock(userFixtures.userDetail()) },
           }),
         })
 
@@ -630,11 +630,11 @@ describe('Информация об оборудовании', () => {
     test('Назначение оборудования отображается', async () => {
       const equipment = warehouseFixtures.equipment()
       mockGetEquipmentSuccess(props.equipmentId, { body: equipment })
-      mockGetEquipmentAttachmentListSuccess(props.equipmentId)
+      mockGetEquipmentAttachmentsSuccess(props.equipmentId)
 
       render(<EquipmentDetails {...props} />, {
         store: getStoreWithAuth(undefined, undefined, undefined, {
-          queries: { ...getUserMeQueryMock(userFixtures.user()) },
+          queries: { ...getUserMeQueryMock(userFixtures.userDetail()) },
         }),
       })
 
@@ -650,11 +650,11 @@ describe('Информация об оборудовании', () => {
     test('Комментарий отображается', async () => {
       const equipment = warehouseFixtures.equipment()
       mockGetEquipmentSuccess(props.equipmentId, { body: equipment })
-      mockGetEquipmentAttachmentListSuccess(props.equipmentId)
+      mockGetEquipmentAttachmentsSuccess(props.equipmentId)
 
       render(<EquipmentDetails {...props} />, {
         store: getStoreWithAuth(undefined, undefined, undefined, {
-          queries: { ...getUserMeQueryMock(userFixtures.user()) },
+          queries: { ...getUserMeQueryMock(userFixtures.userDetail()) },
         }),
       })
 
@@ -671,14 +671,14 @@ describe('Информация об оборудовании', () => {
       test('При успешном запросе отображаются корректно', async () => {
         mockGetEquipmentSuccess(props.equipmentId, { body: warehouseFixtures.equipment() })
 
-        const attachmentList = attachmentFixtures.attachments()
-        mockGetEquipmentAttachmentListSuccess(props.equipmentId, {
+        const attachmentList = attachmentsFixtures.attachments()
+        mockGetEquipmentAttachmentsSuccess(props.equipmentId, {
           body: commonFixtures.paginatedListResponse(attachmentList),
         })
 
         render(<EquipmentDetails {...props} />, {
           store: getStoreWithAuth(undefined, undefined, undefined, {
-            queries: { ...getUserMeQueryMock(userFixtures.user()) },
+            queries: { ...getUserMeQueryMock(userFixtures.userDetail()) },
           }),
         })
 
@@ -701,13 +701,13 @@ describe('Информация об оборудовании', () => {
           mockGetEquipmentSuccess(props.equipmentId, { body: warehouseFixtures.equipment() })
 
           const errorMsg = fakeWord()
-          mockGetEquipmentAttachmentListForbiddenError(props.equipmentId, {
+          mockGetEquipmentAttachmentsForbiddenError(props.equipmentId, {
             body: { detail: errorMsg },
           })
 
           render(<EquipmentDetails {...props} />, {
             store: getStoreWithAuth(undefined, undefined, undefined, {
-              queries: { ...getUserMeQueryMock(userFixtures.user()) },
+              queries: { ...getUserMeQueryMock(userFixtures.userDetail()) },
             }),
           })
 
@@ -722,13 +722,13 @@ describe('Информация об оборудовании', () => {
           mockGetEquipmentSuccess(props.equipmentId, { body: warehouseFixtures.equipment() })
 
           const errorMsg = fakeWord()
-          mockGetEquipmentAttachmentListNotFoundError(props.equipmentId, {
+          mockGetEquipmentAttachmentsNotFoundError(props.equipmentId, {
             body: { detail: errorMsg },
           })
 
           render(<EquipmentDetails {...props} />, {
             store: getStoreWithAuth(undefined, undefined, undefined, {
-              queries: { ...getUserMeQueryMock(userFixtures.user()) },
+              queries: { ...getUserMeQueryMock(userFixtures.userDetail()) },
             }),
           })
 
@@ -741,11 +741,11 @@ describe('Информация об оборудовании', () => {
 
         test('Обрабатывается ошибка 500', async () => {
           mockGetEquipmentSuccess(props.equipmentId, { body: warehouseFixtures.equipment() })
-          mockGetEquipmentAttachmentListServerError(props.equipmentId)
+          mockGetEquipmentAttachmentsServerError(props.equipmentId)
 
           render(<EquipmentDetails {...props} />, {
             store: getStoreWithAuth(undefined, undefined, undefined, {
-              queries: { ...getUserMeQueryMock(userFixtures.user()) },
+              queries: { ...getUserMeQueryMock(userFixtures.userDetail()) },
             }),
           })
 
@@ -764,15 +764,15 @@ describe('Информация об оборудовании', () => {
           mockGetEquipmentSuccess(props.equipmentId, { body: warehouseFixtures.equipment() })
 
           const attachmentListResponse = commonFixtures.paginatedListResponse(
-            attachmentFixtures.attachments(),
+            attachmentsFixtures.attachments(),
           )
-          mockGetEquipmentAttachmentListSuccess(props.equipmentId, {
+          mockGetEquipmentAttachmentsSuccess(props.equipmentId, {
             body: attachmentListResponse,
           })
 
           render(<EquipmentDetails {...props} />, {
             store: getStoreWithAuth(undefined, undefined, undefined, {
-              queries: { ...getUserMeQueryMock(userFixtures.user()) },
+              queries: { ...getUserMeQueryMock(userFixtures.userDetail()) },
             }),
           })
 
@@ -789,15 +789,15 @@ describe('Информация об оборудовании', () => {
         test('Модалка отображается корректно', async () => {
           mockGetEquipmentSuccess(props.equipmentId, { body: warehouseFixtures.equipment() })
 
-          const attachmentList = attachmentFixtures.attachments()
-          mockGetEquipmentAttachmentListSuccess(props.equipmentId, {
+          const attachmentList = attachmentsFixtures.attachments()
+          mockGetEquipmentAttachmentsSuccess(props.equipmentId, {
             body: commonFixtures.paginatedListResponse(attachmentList),
             once: false,
           })
 
           const { user } = render(<EquipmentDetails {...props} />, {
             store: getStoreWithAuth(undefined, undefined, undefined, {
-              queries: { ...getUserMeQueryMock(userFixtures.user()) },
+              queries: { ...getUserMeQueryMock(userFixtures.userDetail()) },
             }),
           })
 
@@ -821,11 +821,11 @@ describe('Информация об оборудовании', () => {
       test('Отображается корректно', async () => {
         const equipment = warehouseFixtures.equipment()
         mockGetEquipmentSuccess(props.equipmentId, { body: equipment })
-        mockGetEquipmentAttachmentListSuccess(props.equipmentId)
+        mockGetEquipmentAttachmentsSuccess(props.equipmentId)
 
         render(<EquipmentDetails {...props} />, {
           store: getStoreWithAuth(undefined, undefined, undefined, {
-            queries: { ...getUserMeQueryMock(userFixtures.user()) },
+            queries: { ...getUserMeQueryMock(userFixtures.userDetail()) },
           }),
         })
 
@@ -844,11 +844,11 @@ describe('Информация об оборудовании', () => {
         test('Отображается корректно', async () => {
           const equipment = warehouseFixtures.equipment()
           mockGetEquipmentSuccess(props.equipmentId, { body: equipment })
-          mockGetEquipmentAttachmentListSuccess(props.equipmentId)
+          mockGetEquipmentAttachmentsSuccess(props.equipmentId)
 
           render(<EquipmentDetails {...props} />, {
             store: getStoreWithAuth(undefined, undefined, undefined, {
-              queries: { ...getUserMeQueryMock(userFixtures.user()) },
+              queries: { ...getUserMeQueryMock(userFixtures.userDetail()) },
             }),
           })
 
@@ -865,11 +865,11 @@ describe('Информация об оборудовании', () => {
 
           const equipment = warehouseFixtures.equipment()
           mockGetEquipmentSuccess(props.equipmentId, { body: equipment })
-          mockGetEquipmentAttachmentListSuccess(props.equipmentId)
+          mockGetEquipmentAttachmentsSuccess(props.equipmentId)
 
           const { user } = render(<EquipmentDetails {...props} />, {
             store: getStoreWithAuth(undefined, undefined, undefined, {
-              queries: { ...getUserMeQueryMock(userFixtures.user()) },
+              queries: { ...getUserMeQueryMock(userFixtures.userDetail()) },
             }),
           })
 
@@ -889,11 +889,11 @@ describe('Информация об оборудовании', () => {
     test('Обрабатывается ошибка 403', async () => {
       const errorMessage = fakeWord()
       mockGetEquipmentForbiddenError(props.equipmentId, { body: { detail: errorMessage } })
-      mockGetEquipmentAttachmentListSuccess(props.equipmentId)
+      mockGetEquipmentAttachmentsSuccess(props.equipmentId)
 
       render(<EquipmentDetails {...props} />, {
         store: getStoreWithAuth(undefined, undefined, undefined, {
-          queries: { ...getUserMeQueryMock(userFixtures.user()) },
+          queries: { ...getUserMeQueryMock(userFixtures.userDetail()) },
         }),
       })
 
@@ -906,11 +906,11 @@ describe('Информация об оборудовании', () => {
     test('Обрабатывается ошибка 404', async () => {
       const errorMessage = fakeWord()
       mockGetEquipmentNotFoundError(props.equipmentId, { body: { detail: errorMessage } })
-      mockGetEquipmentAttachmentListSuccess(props.equipmentId)
+      mockGetEquipmentAttachmentsSuccess(props.equipmentId)
 
       render(<EquipmentDetails {...props} />, {
         store: getStoreWithAuth(undefined, undefined, undefined, {
-          queries: { ...getUserMeQueryMock(userFixtures.user()) },
+          queries: { ...getUserMeQueryMock(userFixtures.userDetail()) },
         }),
       })
 
@@ -922,11 +922,11 @@ describe('Информация об оборудовании', () => {
 
     test('Обрабатывается ошибка 500', async () => {
       mockGetEquipmentServerError(props.equipmentId)
-      mockGetEquipmentAttachmentListSuccess(props.equipmentId)
+      mockGetEquipmentAttachmentsSuccess(props.equipmentId)
 
       render(<EquipmentDetails {...props} />, {
         store: getStoreWithAuth(undefined, undefined, undefined, {
-          queries: { ...getUserMeQueryMock(userFixtures.user()) },
+          queries: { ...getUserMeQueryMock(userFixtures.userDetail()) },
         }),
       })
 
@@ -940,11 +940,11 @@ describe('Информация об оборудовании', () => {
   describe('История перемещений', () => {
     test('Кнопка отображается', async () => {
       mockGetEquipmentSuccess(props.equipmentId, { body: warehouseFixtures.equipment() })
-      mockGetEquipmentAttachmentListSuccess(props.equipmentId)
+      mockGetEquipmentAttachmentsSuccess(props.equipmentId)
 
       const { user } = render(<EquipmentDetails {...props} />, {
         store: getStoreWithAuth(undefined, undefined, undefined, {
-          queries: { ...getUserMeQueryMock(userFixtures.user()) },
+          queries: { ...getUserMeQueryMock(userFixtures.userDetail()) },
         }),
       })
 
@@ -957,7 +957,7 @@ describe('Информация об оборудовании', () => {
 
     test('Кнопка активна если условия соблюдены', async () => {
       mockGetEquipmentSuccess(props.equipmentId, { body: warehouseFixtures.equipment() })
-      mockGetEquipmentAttachmentListSuccess(props.equipmentId)
+      mockGetEquipmentAttachmentsSuccess(props.equipmentId)
 
       const { user } = render(<EquipmentDetails {...props} />, {
         store: getStoreWithAuth(undefined, undefined, undefined, {
@@ -981,7 +981,7 @@ describe('Информация об оборудовании', () => {
 
     test('Кнопка не активна если условия соблюдены, но нет прав на чтение оборудования', async () => {
       mockGetEquipmentSuccess(props.equipmentId, { body: warehouseFixtures.equipment() })
-      mockGetEquipmentAttachmentListSuccess(props.equipmentId)
+      mockGetEquipmentAttachmentsSuccess(props.equipmentId)
 
       const { user } = render(<EquipmentDetails {...props} />, {
         store: getStoreWithAuth(undefined, undefined, undefined, {
@@ -1000,7 +1000,7 @@ describe('Информация об оборудовании', () => {
 
     test('Кнопка не активна если условия соблюдены, но нет прав на чтение заявок на перемещение', async () => {
       mockGetEquipmentSuccess(props.equipmentId, { body: warehouseFixtures.equipment() })
-      mockGetEquipmentAttachmentListSuccess(props.equipmentId)
+      mockGetEquipmentAttachmentsSuccess(props.equipmentId)
 
       const { user } = render(<EquipmentDetails {...props} />, {
         store: getStoreWithAuth(undefined, undefined, undefined, {
@@ -1020,7 +1020,7 @@ describe('Информация об оборудовании', () => {
     test('При клике на кнопку открывается модалка', async () => {
       mockGetEquipmentSuccess(props.equipmentId, { body: warehouseFixtures.equipment() })
       mockGetEquipmentRelocationHistorySuccess(props.equipmentId)
-      mockGetEquipmentAttachmentListSuccess(props.equipmentId)
+      mockGetEquipmentAttachmentsSuccess(props.equipmentId)
 
       const { user } = render(<EquipmentDetails {...props} />, {
         store: getStoreWithAuth(undefined, undefined, undefined, {
@@ -1045,7 +1045,7 @@ describe('Информация об оборудовании', () => {
 
     test('При успешном запросе данные отображаются', async () => {
       mockGetEquipmentSuccess(props.equipmentId, { body: warehouseFixtures.equipment() })
-      mockGetEquipmentAttachmentListSuccess(props.equipmentId)
+      mockGetEquipmentAttachmentsSuccess(props.equipmentId)
 
       const equipmentRelocationHistory = warehouseFixtures.equipmentRelocationHistory()
       mockGetEquipmentRelocationHistorySuccess(props.equipmentId, {
@@ -1080,7 +1080,7 @@ describe('Информация об оборудовании', () => {
     describe('При не успешном запросе', () => {
       test('Обрабатывается ошибка 403', async () => {
         mockGetEquipmentSuccess(props.equipmentId, { body: warehouseFixtures.equipment() })
-        mockGetEquipmentAttachmentListSuccess(props.equipmentId)
+        mockGetEquipmentAttachmentsSuccess(props.equipmentId)
 
         const errorMsg = fakeWord()
         mockGetEquipmentRelocationHistoryForbiddenError(props.equipmentId, {
@@ -1111,7 +1111,7 @@ describe('Информация об оборудовании', () => {
 
       test('Обрабатывается ошибка 404', async () => {
         mockGetEquipmentSuccess(props.equipmentId, { body: warehouseFixtures.equipment() })
-        mockGetEquipmentAttachmentListSuccess(props.equipmentId)
+        mockGetEquipmentAttachmentsSuccess(props.equipmentId)
 
         const errorMsg = fakeWord()
         mockGetEquipmentRelocationHistoryNotFoundError(props.equipmentId, {
@@ -1143,7 +1143,7 @@ describe('Информация об оборудовании', () => {
       test('Обрабатывается ошибка 500', async () => {
         mockGetEquipmentSuccess(props.equipmentId, { body: warehouseFixtures.equipment() })
         mockGetEquipmentRelocationHistoryServerError(props.equipmentId)
-        mockGetEquipmentAttachmentListSuccess(props.equipmentId)
+        mockGetEquipmentAttachmentsSuccess(props.equipmentId)
 
         const { user } = render(<EquipmentDetails {...props} />, {
           store: getStoreWithAuth(undefined, undefined, undefined, {
@@ -1172,7 +1172,7 @@ describe('Информация об оборудовании', () => {
 
     test('При клике на строку истории открывается карточка заявки на перемещение', async () => {
       mockGetEquipmentSuccess(props.equipmentId, { body: warehouseFixtures.equipment() })
-      mockGetEquipmentAttachmentListSuccess(props.equipmentId)
+      mockGetEquipmentAttachmentsSuccess(props.equipmentId)
 
       const equipmentRelocationHistoryItem = warehouseFixtures.equipmentRelocationHistoryItem()
       mockGetEquipmentRelocationHistorySuccess(props.equipmentId, {
@@ -1180,7 +1180,7 @@ describe('Информация об оборудовании', () => {
       })
 
       mockGetRelocationTaskSuccess({ relocationTaskId: equipmentRelocationHistoryItem.id })
-      mockGetRelocationEquipmentListSuccess({ relocationTaskId: equipmentRelocationHistoryItem.id })
+      mockGetRelocationEquipmentsSuccess({ relocationTaskId: equipmentRelocationHistoryItem.id })
 
       const { user } = render(<EquipmentDetails {...props} />, {
         store: getStoreWithAuth(undefined, undefined, undefined, {
@@ -1214,11 +1214,11 @@ describe('Информация об оборудовании', () => {
     test('Элемент в меню отображается и активен', async () => {
       const equipment = warehouseFixtures.equipment({ id: props.equipmentId })
       mockGetEquipmentSuccess(equipment.id, { body: equipment })
-      mockGetEquipmentAttachmentListSuccess(props.equipmentId)
+      mockGetEquipmentAttachmentsSuccess(props.equipmentId)
 
       const { user } = render(<EquipmentDetails {...props} />, {
         store: getStoreWithAuth(undefined, undefined, undefined, {
-          queries: { ...getUserMeQueryMock(userFixtures.user()) },
+          queries: { ...getUserMeQueryMock(userFixtures.userDetail()) },
         }),
       })
 
@@ -1233,18 +1233,18 @@ describe('Информация об оборудовании', () => {
     test('Модалка открывается', async () => {
       const equipment = warehouseFixtures.equipment({ id: props.equipmentId })
       mockGetEquipmentSuccess(equipment.id, { body: equipment })
-      mockGetEquipmentAttachmentListSuccess(props.equipmentId)
-      mockGetWarehouseListSuccess()
+      mockGetEquipmentAttachmentsSuccess(props.equipmentId)
+      mockGetWarehousesSuccess()
       mockGetWorkTypesSuccess()
-      mockGetCurrencyListSuccess()
-      mockGetEquipmentCategoryListSuccess()
-      mockGetNomenclatureListSuccess()
+      mockGetCurrenciesSuccess()
+      mockGetEquipmentCategoriesSuccess()
+      mockGetNomenclaturesSuccess()
       mockGetNomenclatureSuccess(equipment.nomenclature.id)
-      mockGetCustomerListSuccess()
+      mockGetCustomersSuccess()
 
       const { user } = render(<EquipmentDetails {...props} />, {
         store: getStoreWithAuth(undefined, undefined, undefined, {
-          queries: { ...getUserMeQueryMock(userFixtures.user()) },
+          queries: { ...getUserMeQueryMock(userFixtures.userDetail()) },
         }),
       })
 
@@ -1261,11 +1261,11 @@ describe('Информация об оборудовании', () => {
     test('Элемент в меню отображается и активен', async () => {
       const equipment = warehouseFixtures.equipment({ id: props.equipmentId })
       mockGetEquipmentSuccess(equipment.id, { body: equipment })
-      mockGetEquipmentAttachmentListSuccess(props.equipmentId)
+      mockGetEquipmentAttachmentsSuccess(props.equipmentId)
 
       const { user } = render(<EquipmentDetails {...props} />, {
         store: getStoreWithAuth(undefined, undefined, undefined, {
-          queries: { ...getUserMeQueryMock(userFixtures.user()) },
+          queries: { ...getUserMeQueryMock(userFixtures.userDetail()) },
         }),
       })
 
@@ -1280,12 +1280,12 @@ describe('Информация об оборудовании', () => {
     test('Модалка открывается', async () => {
       const equipment = warehouseFixtures.equipment({ id: props.equipmentId })
       mockGetEquipmentSuccess(equipment.id, { body: equipment })
-      mockGetEquipmentAttachmentListSuccess(props.equipmentId)
+      mockGetEquipmentAttachmentsSuccess(props.equipmentId)
       mockGetTechnicalExaminationsSuccess()
 
       const { user } = render(<EquipmentDetails {...props} />, {
         store: getStoreWithAuth(undefined, undefined, undefined, {
-          queries: { ...getUserMeQueryMock(userFixtures.user()) },
+          queries: { ...getUserMeQueryMock(userFixtures.userDetail()) },
         }),
       })
 
@@ -1302,11 +1302,11 @@ describe('Информация об оборудовании', () => {
     test('Элемент в меню отображается', async () => {
       const equipment = warehouseFixtures.equipment({ id: props.equipmentId })
       mockGetEquipmentSuccess(equipment.id, { body: equipment })
-      mockGetEquipmentAttachmentListSuccess(props.equipmentId)
+      mockGetEquipmentAttachmentsSuccess(props.equipmentId)
 
       const { user } = render(<EquipmentDetails {...props} />, {
         store: getStoreWithAuth(undefined, undefined, undefined, {
-          queries: { ...getUserMeQueryMock(userFixtures.user()) },
+          queries: { ...getUserMeQueryMock(userFixtures.userDetail()) },
         }),
       })
 
@@ -1323,13 +1323,13 @@ describe('Информация об оборудовании', () => {
       })
 
       mockGetEquipmentSuccess(equipment.id, { body: equipment })
-      mockGetEquipmentAttachmentListSuccess(props.equipmentId)
+      mockGetEquipmentAttachmentsSuccess(props.equipmentId)
 
       const { user } = render(<EquipmentDetails {...props} />, {
         store: getStoreWithAuth(undefined, undefined, undefined, {
           queries: {
             ...getUserMeQueryMock(
-              userFixtures.user({ permissions: [UserPermissionsEnum.EquipmentsRead] }),
+              userFixtures.userDetail({ permissions: [UserPermissionsEnum.EquipmentsRead] }),
             ),
           },
         }),
@@ -1348,13 +1348,13 @@ describe('Информация об оборудовании', () => {
       })
 
       mockGetEquipmentSuccess(equipment.id, { body: equipment })
-      mockGetEquipmentAttachmentListSuccess(props.equipmentId)
+      mockGetEquipmentAttachmentsSuccess(props.equipmentId)
 
       const { user } = render(<EquipmentDetails {...props} />, {
         store: getStoreWithAuth(undefined, undefined, undefined, {
           queries: {
             ...getUserMeQueryMock(
-              userFixtures.user({ permissions: [UserPermissionsEnum.EquipmentsRead] }),
+              userFixtures.userDetail({ permissions: [UserPermissionsEnum.EquipmentsRead] }),
             ),
           },
         }),
@@ -1373,13 +1373,13 @@ describe('Информация об оборудовании', () => {
       })
 
       mockGetEquipmentSuccess(equipment.id, { body: equipment })
-      mockGetEquipmentAttachmentListSuccess(props.equipmentId)
+      mockGetEquipmentAttachmentsSuccess(props.equipmentId)
 
       const { user } = render(<EquipmentDetails {...props} />, {
         store: getStoreWithAuth(undefined, undefined, undefined, {
           queries: {
             ...getUserMeQueryMock(
-              userFixtures.user({ permissions: [UserPermissionsEnum.EquipmentsRead] }),
+              userFixtures.userDetail({ permissions: [UserPermissionsEnum.EquipmentsRead] }),
             ),
           },
         }),
@@ -1398,11 +1398,11 @@ describe('Информация об оборудовании', () => {
       })
 
       mockGetEquipmentSuccess(equipment.id, { body: equipment })
-      mockGetEquipmentAttachmentListSuccess(props.equipmentId)
+      mockGetEquipmentAttachmentsSuccess(props.equipmentId)
 
       const { user } = render(<EquipmentDetails {...props} />, {
         store: getStoreWithAuth(undefined, undefined, undefined, {
-          queries: { ...getUserMeQueryMock(userFixtures.user()) },
+          queries: { ...getUserMeQueryMock(userFixtures.userDetail()) },
         }),
       })
 
@@ -1419,11 +1419,11 @@ describe('Информация об оборудовании', () => {
       })
 
       mockGetEquipmentSuccess(equipment.id, { body: equipment })
-      mockGetEquipmentAttachmentListSuccess(props.equipmentId)
+      mockGetEquipmentAttachmentsSuccess(props.equipmentId)
 
       const { user } = render(<EquipmentDetails {...props} />, {
         store: getStoreWithAuth(undefined, undefined, undefined, {
-          queries: { ...getUserMeQueryMock(userFixtures.user()) },
+          queries: { ...getUserMeQueryMock(userFixtures.userDetail()) },
         }),
       })
 
@@ -1440,13 +1440,13 @@ describe('Информация об оборудовании', () => {
       })
 
       mockGetEquipmentSuccess(equipment.id, { body: equipment })
-      mockGetEquipmentAttachmentListSuccess(props.equipmentId)
+      mockGetEquipmentAttachmentsSuccess(props.equipmentId)
 
       const { user } = render(<EquipmentDetails {...props} />, {
         store: getStoreWithAuth(undefined, undefined, undefined, {
           queries: {
             ...getUserMeQueryMock(
-              userFixtures.user({ permissions: [UserPermissionsEnum.EquipmentsRead] }),
+              userFixtures.userDetail({ permissions: [UserPermissionsEnum.EquipmentsRead] }),
             ),
           },
         }),

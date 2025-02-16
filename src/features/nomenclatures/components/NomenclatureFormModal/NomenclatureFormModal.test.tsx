@@ -5,10 +5,10 @@ import { validationMessages } from 'shared/constants/validation'
 import {
   addModeProps,
   props,
-} from '_tests_/features/warehouse/components/NomenclatureFormModal/constants'
-import { nomenclatureFormModalTestUtils } from '_tests_/features/warehouse/components/NomenclatureFormModal/testUtils'
+} from '_tests_/features/warehouses/components/NomenclatureFormModal/constants'
+import { nomenclatureFormModalTestUtils } from '_tests_/features/warehouses/components/NomenclatureFormModal/testUtils'
 import warehouseFixtures from '_tests_/fixtures/warehouse'
-import { fakeWord, render } from '_tests_/utils'
+import { fakeWord, render } from '_tests_/helpers'
 
 import NomenclatureFormModal from './index'
 

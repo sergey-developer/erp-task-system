@@ -87,7 +87,7 @@ export const taskPriorityMap: Map<TaskDetailDTO['priorityCode'], string> = new M
 ])
 
 export const taskDetailsTabNameDict: Readonly<StringMap<TaskDetailsTabsEnum>> = {
-  [TaskDetailsTabsEnum.SubTaskList]: 'Задания',
+  [TaskDetailsTabsEnum.SubTasks]: 'Задания',
   [TaskDetailsTabsEnum.Comments]: 'Комментарии',
   [TaskDetailsTabsEnum.Resolution]: 'Решение',
   [TaskDetailsTabsEnum.Description]: 'Описание',

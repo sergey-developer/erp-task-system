@@ -2,7 +2,7 @@ import { screen, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 
 import { TestIdsEnum } from '_tests_/features/tasks/components/CreateTaskModal/constants'
-import { selectTestUtils } from '_tests_/utils'
+import { selectTestUtils } from '_tests_/helpers'
 
 const getContainer = () => screen.getByTestId(TestIdsEnum.Container)
 const findContainer = () => screen.findByTestId(TestIdsEnum.Container)

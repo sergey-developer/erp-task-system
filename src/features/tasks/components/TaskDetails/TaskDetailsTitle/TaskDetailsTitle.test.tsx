@@ -19,8 +19,8 @@ import {
 import { taskDetailsTitleTestUtils } from '_tests_/features/tasks/components/TaskDetails/TaskDetailsTitle/testUtils'
 import taskFixtures from '_tests_/fixtures/tasks'
 import userFixtures from '_tests_/fixtures/users'
-import { getUserMeQueryMock } from '_tests_/mocks/state/user'
-import { getStoreWithAuth, menuTestUtils, render } from '_tests_/utils'
+import { getStoreWithAuth, menuTestUtils, render } from '_tests_/helpers'
+import { getUserMeQueryMock } from '_tests_/mocks/store/users'
 
 import TaskDetailsTitle from './index'
 
@@ -28,7 +28,7 @@ describe('Заголовок карточки заявки', () => {
   test('Идентификатор заявки отображается', () => {
     render(<TaskDetailsTitle {...props} />, {
       store: getStoreWithAuth(undefined, undefined, undefined, {
-        queries: { ...getUserMeQueryMock(userFixtures.user()) },
+        queries: { ...getUserMeQueryMock(userFixtures.userDetail()) },
       }),
     })
 
@@ -39,7 +39,7 @@ describe('Заголовок карточки заявки', () => {
     test('Отображается корректно', () => {
       render(<TaskDetailsTitle {...props} />, {
         store: getStoreWithAuth(undefined, undefined, undefined, {
-          queries: { ...getUserMeQueryMock(userFixtures.user()) },
+          queries: { ...getUserMeQueryMock(userFixtures.userDetail()) },
         }),
       })
 
@@ -52,7 +52,7 @@ describe('Заголовок карточки заявки', () => {
     test('При клике обработчик вызывается корректно', async () => {
       const { user } = render(<TaskDetailsTitle {...props} />, {
         store: getStoreWithAuth(undefined, undefined, undefined, {
-          queries: { ...getUserMeQueryMock(userFixtures.user()) },
+          queries: { ...getUserMeQueryMock(userFixtures.userDetail()) },
         }),
       })
 
@@ -66,7 +66,7 @@ describe('Заголовок карточки заявки', () => {
       test('Отображается', () => {
         render(<TaskDetailsTitle {...props} />, {
           store: getStoreWithAuth(undefined, undefined, undefined, {
-            queries: { ...getUserMeQueryMock(userFixtures.user()) },
+            queries: { ...getUserMeQueryMock(userFixtures.userDetail()) },
           }),
         })
 
@@ -79,7 +79,7 @@ describe('Заголовок карточки заявки', () => {
       test('Открывает меню', async () => {
         const { user } = render(<TaskDetailsTitle {...props} />, {
           store: getStoreWithAuth(undefined, undefined, undefined, {
-            queries: { ...getUserMeQueryMock(userFixtures.user()) },
+            queries: { ...getUserMeQueryMock(userFixtures.userDetail()) },
           }),
         })
 
@@ -92,7 +92,7 @@ describe('Заголовок карточки заявки', () => {
       test('Отображается', async () => {
         const { user } = render(<TaskDetailsTitle {...props} />, {
           store: getStoreWithAuth(undefined, undefined, undefined, {
-            queries: { ...getUserMeQueryMock(userFixtures.user()) },
+            queries: { ...getUserMeQueryMock(userFixtures.userDetail()) },
           }),
         })
 
@@ -107,7 +107,7 @@ describe('Заголовок карточки заявки', () => {
       test('При клике вызывается обработчик', async () => {
         const { user } = render(<TaskDetailsTitle {...props} {...canRegisterFNItemProps} />, {
           store: getStoreWithAuth(canRegisterFNItemProps.assignee!, undefined, undefined, {
-            queries: { ...getUserMeQueryMock(userFixtures.user()) },
+            queries: { ...getUserMeQueryMock(userFixtures.userDetail()) },
           }),
         })
 
@@ -119,7 +119,7 @@ describe('Заголовок карточки заявки', () => {
       test('Активен если условия соблюдены', async () => {
         const { user } = render(<TaskDetailsTitle {...props} {...canRegisterFNItemProps} />, {
           store: getStoreWithAuth(canRegisterFNItemProps.assignee!, undefined, undefined, {
-            queries: { ...getUserMeQueryMock(userFixtures.user()) },
+            queries: { ...getUserMeQueryMock(userFixtures.userDetail()) },
           }),
         })
 
@@ -137,7 +137,7 @@ describe('Заголовок карточки заявки', () => {
             />,
             {
               store: getStoreWithAuth(canRegisterFNItemProps.assignee!, undefined, undefined, {
-                queries: { ...getUserMeQueryMock(userFixtures.user()) },
+                queries: { ...getUserMeQueryMock(userFixtures.userDetail()) },
               }),
             },
           )
@@ -151,7 +151,7 @@ describe('Заголовок карточки заявки', () => {
             <TaskDetailsTitle {...props} {...canRegisterFNItemProps} status={TaskStatusEnum.New} />,
             {
               store: getStoreWithAuth(canRegisterFNItemProps.assignee!, undefined, undefined, {
-                queries: { ...getUserMeQueryMock(userFixtures.user()) },
+                queries: { ...getUserMeQueryMock(userFixtures.userDetail()) },
               }),
             },
           )
@@ -163,7 +163,7 @@ describe('Заголовок карточки заявки', () => {
         test('Но исполнитель заявки не является авторизованным пользователем', async () => {
           const { user } = render(<TaskDetailsTitle {...props} {...canRegisterFNItemProps} />, {
             store: getStoreWithAuth(undefined, undefined, undefined, {
-              queries: { ...getUserMeQueryMock(userFixtures.user()) },
+              queries: { ...getUserMeQueryMock(userFixtures.userDetail()) },
             }),
           })
 
@@ -176,7 +176,7 @@ describe('Заголовок карточки заявки', () => {
             <TaskDetailsTitle {...props} {...canRegisterFNItemProps} workGroup={null} />,
             {
               store: getStoreWithAuth(canRegisterFNItemProps.assignee!, undefined, undefined, {
-                queries: { ...getUserMeQueryMock(userFixtures.user()) },
+                queries: { ...getUserMeQueryMock(userFixtures.userDetail()) },
               }),
             },
           )
@@ -191,7 +191,7 @@ describe('Заголовок карточки заявки', () => {
       test('Отображается', async () => {
         const { user } = render(<TaskDetailsTitle {...props} {...canExecuteTaskProps} />, {
           store: getStoreWithAuth(undefined, undefined, undefined, {
-            queries: { ...getUserMeQueryMock(userFixtures.user()) },
+            queries: { ...getUserMeQueryMock(userFixtures.userDetail()) },
           }),
         })
 
@@ -206,7 +206,7 @@ describe('Заголовок карточки заявки', () => {
       test('При клике вызывается обработчик', async () => {
         const { user } = render(<TaskDetailsTitle {...props} {...canExecuteTaskProps} />, {
           store: getStoreWithAuth(undefined, undefined, undefined, {
-            queries: { ...getUserMeQueryMock(userFixtures.user()) },
+            queries: { ...getUserMeQueryMock(userFixtures.userDetail()) },
           }),
         })
 
@@ -218,7 +218,7 @@ describe('Заголовок карточки заявки', () => {
       test('Элемент активен если userActions содержит id заявки', async () => {
         const { user } = render(<TaskDetailsTitle {...props} {...canExecuteTaskProps} />, {
           store: getStoreWithAuth(undefined, undefined, undefined, {
-            queries: { ...getUserMeQueryMock(userFixtures.user()) },
+            queries: { ...getUserMeQueryMock(userFixtures.userDetail()) },
           }),
         })
 
@@ -239,7 +239,7 @@ describe('Заголовок карточки заявки', () => {
           />,
           {
             store: getStoreWithAuth(undefined, undefined, undefined, {
-              queries: { ...getUserMeQueryMock(userFixtures.user()) },
+              queries: { ...getUserMeQueryMock(userFixtures.userDetail()) },
             }),
           },
         )
@@ -255,7 +255,7 @@ describe('Заголовок карточки заявки', () => {
           <TaskDetailsTitle {...props} {...showRequestReclassificationItemProps} />,
           {
             store: getStoreWithAuth(undefined, undefined, undefined, {
-              queries: { ...getUserMeQueryMock(userFixtures.user()) },
+              queries: { ...getUserMeQueryMock(userFixtures.userDetail()) },
             }),
           },
         )
@@ -273,7 +273,7 @@ describe('Заголовок карточки заявки', () => {
           <TaskDetailsTitle {...props} {...hideRequestReclassificationItemProps} />,
           {
             store: getStoreWithAuth(undefined, undefined, undefined, {
-              queries: { ...getUserMeQueryMock(userFixtures.user()) },
+              queries: { ...getUserMeQueryMock(userFixtures.userDetail()) },
             }),
           },
         )
@@ -291,7 +291,7 @@ describe('Заголовок карточки заявки', () => {
           />,
           {
             store: getStoreWithAuth(undefined, undefined, undefined, {
-              queries: { ...getUserMeQueryMock(userFixtures.user()) },
+              queries: { ...getUserMeQueryMock(userFixtures.userDetail()) },
             }),
           },
         )
@@ -310,7 +310,7 @@ describe('Заголовок карточки заявки', () => {
           />,
           {
             store: getStoreWithAuth(undefined, undefined, undefined, {
-              queries: { ...getUserMeQueryMock(userFixtures.user()) },
+              queries: { ...getUserMeQueryMock(userFixtures.userDetail()) },
             }),
           },
         )
@@ -332,7 +332,7 @@ describe('Заголовок карточки заявки', () => {
             />,
             {
               store: getStoreWithAuth(undefined, undefined, undefined, {
-                queries: { ...getUserMeQueryMock(userFixtures.user()) },
+                queries: { ...getUserMeQueryMock(userFixtures.userDetail()) },
               }),
             },
           )
@@ -353,7 +353,7 @@ describe('Заголовок карточки заявки', () => {
             />,
             {
               store: getStoreWithAuth(undefined, undefined, undefined, {
-                queries: { ...getUserMeQueryMock(userFixtures.user()) },
+                queries: { ...getUserMeQueryMock(userFixtures.userDetail()) },
               }),
             },
           )
@@ -374,7 +374,7 @@ describe('Заголовок карточки заявки', () => {
             />,
             {
               store: getStoreWithAuth(undefined, undefined, undefined, {
-                queries: { ...getUserMeQueryMock(userFixtures.user()) },
+                queries: { ...getUserMeQueryMock(userFixtures.userDetail()) },
               }),
             },
           )
@@ -396,7 +396,7 @@ describe('Заголовок карточки заявки', () => {
             />,
             {
               store: getStoreWithAuth(undefined, undefined, undefined, {
-                queries: { ...getUserMeQueryMock(userFixtures.user()) },
+                queries: { ...getUserMeQueryMock(userFixtures.userDetail()) },
               }),
             },
           )
@@ -419,7 +419,7 @@ describe('Заголовок карточки заявки', () => {
             />,
             {
               store: getStoreWithAuth(undefined, undefined, undefined, {
-                queries: { ...getUserMeQueryMock(userFixtures.user()) },
+                queries: { ...getUserMeQueryMock(userFixtures.userDetail()) },
               }),
             },
           )
@@ -440,7 +440,7 @@ describe('Заголовок карточки заявки', () => {
             />,
             {
               store: getStoreWithAuth(undefined, undefined, undefined, {
-                queries: { ...getUserMeQueryMock(userFixtures.user()) },
+                queries: { ...getUserMeQueryMock(userFixtures.userDetail()) },
               }),
             },
           )
@@ -457,7 +457,7 @@ describe('Заголовок карточки заявки', () => {
       test('Отображается', async () => {
         const { user } = render(<TaskDetailsTitle {...props} />, {
           store: getStoreWithAuth(undefined, undefined, undefined, {
-            queries: { ...getUserMeQueryMock(userFixtures.user()) },
+            queries: { ...getUserMeQueryMock(userFixtures.userDetail()) },
           }),
         })
 
@@ -474,7 +474,7 @@ describe('Заголовок карточки заявки', () => {
           <TaskDetailsTitle {...props} {...activeRequestSuspendItemProps} />,
           {
             store: getStoreWithAuth(undefined, undefined, undefined, {
-              queries: { ...getUserMeQueryMock(userFixtures.user()) },
+              queries: { ...getUserMeQueryMock(userFixtures.userDetail()) },
             }),
           },
         )
@@ -489,7 +489,7 @@ describe('Заголовок карточки заявки', () => {
           <TaskDetailsTitle {...props} {...activeRequestSuspendItemProps} />,
           {
             store: getStoreWithAuth(undefined, undefined, undefined, {
-              queries: { ...getUserMeQueryMock(userFixtures.user()) },
+              queries: { ...getUserMeQueryMock(userFixtures.userDetail()) },
             }),
           },
         )
@@ -508,7 +508,7 @@ describe('Заголовок карточки заявки', () => {
             />,
             {
               store: getStoreWithAuth(undefined, undefined, undefined, {
-                queries: { ...getUserMeQueryMock(userFixtures.user()) },
+                queries: { ...getUserMeQueryMock(userFixtures.userDetail()) },
               }),
             },
           )
@@ -526,7 +526,7 @@ describe('Заголовок карточки заявки', () => {
             />,
             {
               store: getStoreWithAuth(undefined, undefined, undefined, {
-                queries: { ...getUserMeQueryMock(userFixtures.user()) },
+                queries: { ...getUserMeQueryMock(userFixtures.userDetail()) },
               }),
             },
           )
@@ -544,7 +544,7 @@ describe('Заголовок карточки заявки', () => {
             />,
             {
               store: getStoreWithAuth(undefined, undefined, undefined, {
-                queries: { ...getUserMeQueryMock(userFixtures.user()) },
+                queries: { ...getUserMeQueryMock(userFixtures.userDetail()) },
               }),
             },
           )
@@ -562,7 +562,7 @@ describe('Заголовок карточки заявки', () => {
             />,
             {
               store: getStoreWithAuth(undefined, undefined, undefined, {
-                queries: { ...getUserMeQueryMock(userFixtures.user()) },
+                queries: { ...getUserMeQueryMock(userFixtures.userDetail()) },
               }),
             },
           )
@@ -582,7 +582,7 @@ describe('Заголовок карточки заявки', () => {
             />,
             {
               store: getStoreWithAuth(undefined, undefined, undefined, {
-                queries: { ...getUserMeQueryMock(userFixtures.user()) },
+                queries: { ...getUserMeQueryMock(userFixtures.userDetail()) },
               }),
             },
           )
@@ -600,7 +600,7 @@ describe('Заголовок карточки заявки', () => {
             />,
             {
               store: getStoreWithAuth(undefined, undefined, undefined, {
-                queries: { ...getUserMeQueryMock(userFixtures.user()) },
+                queries: { ...getUserMeQueryMock(userFixtures.userDetail()) },
               }),
             },
           )

@@ -3,7 +3,7 @@ import { WarehouseDetailDTO } from 'features/warehouses/api/dto'
 import pick from 'lodash/pick'
 
 import macroregionFixtures from '_tests_/fixtures/macroregions'
-import { fakeId, fakeWord } from '_tests_/utils'
+import { fakeId, fakeWord } from '_tests_/helpers'
 
 export const warehouse = (
   props?: Partial<Pick<WarehouseDetailDTO, 'id' | 'type'>>,
@@ -23,5 +23,5 @@ export const warehouse = (
     id: fakeId(),
     title: fakeWord(),
   },
-  macroregions: [pick(macroregionFixtures.macroregionListItem(), 'id', 'title')],
+  macroregions: [pick(macroregionFixtures.macroregion(), 'id', 'title')],
 })

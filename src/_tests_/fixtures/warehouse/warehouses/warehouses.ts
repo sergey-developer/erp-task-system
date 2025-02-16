@@ -1,7 +1,7 @@
 import { WarehouseDTO, WarehousesDTO } from 'features/warehouses/api/dto'
 import times from 'lodash/times'
 
-import { fakeId, fakeWord } from '_tests_/utils'
+import { fakeId, fakeWord } from '_tests_/helpers'
 
 export const warehouseListItem = (): WarehouseDTO => ({
   id: fakeId(),

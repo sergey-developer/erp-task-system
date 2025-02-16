@@ -5,11 +5,11 @@ import {
 import pick from 'lodash/pick'
 import times from 'lodash/times'
 
-import { fakeId, fakeInteger } from '_tests_/utils'
+import { fakeId, fakeInteger } from '_tests_/helpers'
 
 import warehouseFixtures from '../warehouse'
 
-export const amountEquipmentSpentReportListItem = (): AmountEquipmentSpentReportItemDTO => ({
+export const amountEquipmentSpentReportItem = (): AmountEquipmentSpentReportItemDTO => ({
   id: fakeId(),
   quantity: fakeInteger(),
   equipment: pick(warehouseFixtures.equipment(), 'id', 'title'),
@@ -24,4 +24,4 @@ export const amountEquipmentSpentReportListItem = (): AmountEquipmentSpentReport
 })
 
 export const amountEquipmentSpentReport = (length: number = 1): AmountEquipmentSpentReportDTO =>
-  times(length, () => amountEquipmentSpentReportListItem())
+  times(length, () => amountEquipmentSpentReportItem())

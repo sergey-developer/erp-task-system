@@ -1,6 +1,6 @@
 import { InfrastructureOrderFormWorkTypeCostDTO } from 'features/infrastructures/api/dto/infrastructureOrderFormWorkTypeCost.dto'
 
-import { fakeInteger } from '_tests_/utils'
+import { fakeInteger } from '_tests_/helpers'
 
 import { infrastructureWorkType } from './infrastructureWorkType'
 

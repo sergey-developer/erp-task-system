@@ -3,9 +3,9 @@ import isUndefined from 'lodash/isUndefined'
 import pick from 'lodash/pick'
 
 import userFixtures from '_tests_/fixtures/users'
-import { fakeId, fakeWord } from '_tests_/utils'
+import { fakeId, fakeWord } from '_tests_/helpers'
 
-import { infrastructureStatusHistory } from './infrastructureStatusHistory'
+import { infrastructureStatusHistoryItem } from './infrastructureStatusHistory'
 
 export const infrastructure = (
   props?: Partial<Pick<InfrastructureDTO, 'id' | 'manager'>>,
@@ -14,7 +14,7 @@ export const infrastructure = (
   manager: isUndefined(props?.manager)
     ? {
         ...pick(
-          userFixtures.user(),
+          userFixtures.userDetail(),
           'id',
           'firstName',
           'lastName',
@@ -27,5 +27,5 @@ export const infrastructure = (
       }
     : props!.manager,
 
-  status: infrastructureStatusHistory(),
+  status: infrastructureStatusHistoryItem(),
 })

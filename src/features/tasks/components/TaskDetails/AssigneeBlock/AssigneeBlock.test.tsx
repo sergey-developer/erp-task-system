@@ -1,5 +1,5 @@
-import { TaskWorkGroupDTO } from 'features/tasks/api/dto'
 import { TaskActionsPermissionsEnum } from 'features/tasks/api/constants'
+import { TaskWorkGroupDTO } from 'features/tasks/api/dto'
 import { UserPermissionsEnum } from 'features/users/api/constants'
 import { getFullUserName } from 'features/users/helpers'
 
@@ -17,8 +17,8 @@ import {
 } from '_tests_/features/tasks/components/TaskDetails/AssigneeBlock/constants'
 import { assigneeBlockTestUtils } from '_tests_/features/tasks/components/TaskDetails/AssigneeBlock/testUtils'
 import userFixtures from '_tests_/fixtures/users'
-import { getUserMeQueryMock } from '_tests_/mocks/state/user'
-import { getStoreWithAuth, render, selectTestUtils } from '_tests_/utils'
+import { getStoreWithAuth, render, selectTestUtils } from '_tests_/helpers'
+import { getUserMeQueryMock } from '_tests_/mocks/store/users'
 
 import AssigneeBlock from './index'
 
@@ -37,7 +37,7 @@ describe('Блок "Исполнитель заявки"', () => {
     test('Отображается если текущий пользователь не исполнитель заявки', () => {
       render(<AssigneeBlock {...props} />, {
         store: getStoreWithAuth(undefined, undefined, undefined, {
-          queries: { ...getUserMeQueryMock(userFixtures.user()) },
+          queries: { ...getUserMeQueryMock(userFixtures.userDetail()) },
         }),
       })
 
@@ -86,7 +86,7 @@ describe('Блок "Исполнитель заявки"', () => {
             store: getStoreWithAuth(undefined, undefined, undefined, {
               queries: {
                 ...getUserMeQueryMock(
-                  userFixtures.user({
+                  userFixtures.userDetail({
                     permissions: [
                       UserPermissionsEnum.SelfAssigneeTasksUpdate,
                       UserPermissionsEnum.AnyAssigneeTasksUpdate,
@@ -104,7 +104,7 @@ describe('Блок "Исполнитель заявки"', () => {
       test(`Если userActions содержит id но нет прав ${UserPermissionsEnum.SelfAssigneeTasksUpdate} или ${UserPermissionsEnum.AnyAssigneeTasksUpdate}`, () => {
         render(<AssigneeBlock {...props} {...activeAssignOnMeButtonProps} />, {
           store: getStoreWithAuth(undefined, undefined, undefined, {
-            queries: { ...getUserMeQueryMock(userFixtures.user()) },
+            queries: { ...getUserMeQueryMock(userFixtures.userDetail()) },
           }),
         })
 
@@ -113,7 +113,7 @@ describe('Блок "Исполнитель заявки"', () => {
     })
 
     test('Переданный обработчик вызывается корректно', async () => {
-      const currentUser = userFixtures.user()
+      const currentUser = userFixtures.userDetail()
 
       const { user } = render(<AssigneeBlock {...props} {...activeAssignOnMeButtonProps} />, {
         store: getStoreWithAuth(currentUser, undefined, undefined, {
@@ -134,7 +134,7 @@ describe('Блок "Исполнитель заявки"', () => {
     test('Отображается если текущий пользователь исполнитель заявки', () => {
       render(<AssigneeBlock {...props} {...showRefuseTaskButtonProps} />, {
         store: getStoreWithAuth(showRefuseTaskButtonProps.assignee, undefined, undefined, {
-          queries: { ...getUserMeQueryMock(userFixtures.user()) },
+          queries: { ...getUserMeQueryMock(userFixtures.userDetail()) },
         }),
       })
 
@@ -150,7 +150,7 @@ describe('Блок "Исполнитель заявки"', () => {
         />,
         {
           store: getStoreWithAuth(showRefuseTaskButtonProps.assignee, undefined, undefined, {
-            queries: { ...getUserMeQueryMock(userFixtures.user()) },
+            queries: { ...getUserMeQueryMock(userFixtures.userDetail()) },
           }),
         },
       )
@@ -172,7 +172,7 @@ describe('Блок "Исполнитель заявки"', () => {
         />,
         {
           store: getStoreWithAuth(showRefuseTaskButtonProps.assignee, undefined, undefined, {
-            queries: { ...getUserMeQueryMock(userFixtures.user()) },
+            queries: { ...getUserMeQueryMock(userFixtures.userDetail()) },
           }),
         },
       )
@@ -185,7 +185,7 @@ describe('Блок "Исполнитель заявки"', () => {
     test('Отображается', () => {
       render(<AssigneeBlock {...props} />, {
         store: getStoreWithAuth(undefined, undefined, undefined, {
-          queries: { ...getUserMeQueryMock(userFixtures.user()) },
+          queries: { ...getUserMeQueryMock(userFixtures.userDetail()) },
         }),
       })
 
@@ -196,7 +196,7 @@ describe('Блок "Исполнитель заявки"', () => {
     test('Активна если userActions содержит id заявки', () => {
       render(<AssigneeBlock {...props} {...activeTakeTaskButtonProps} />, {
         store: getStoreWithAuth(undefined, undefined, undefined, {
-          queries: { ...getUserMeQueryMock(userFixtures.user()) },
+          queries: { ...getUserMeQueryMock(userFixtures.userDetail()) },
         }),
       })
 
@@ -217,7 +217,7 @@ describe('Блок "Исполнитель заявки"', () => {
         />,
         {
           store: getStoreWithAuth(undefined, undefined, undefined, {
-            queries: { ...getUserMeQueryMock(userFixtures.user()) },
+            queries: { ...getUserMeQueryMock(userFixtures.userDetail()) },
           }),
         },
       )
@@ -228,7 +228,7 @@ describe('Блок "Исполнитель заявки"', () => {
     test('Обработчик вызывается корректно', async () => {
       const { user } = render(<AssigneeBlock {...props} {...activeTakeTaskButtonProps} />, {
         store: getStoreWithAuth(undefined, undefined, undefined, {
-          queries: { ...getUserMeQueryMock(userFixtures.user()) },
+          queries: { ...getUserMeQueryMock(userFixtures.userDetail()) },
         }),
       })
 
@@ -244,7 +244,7 @@ describe('Блок "Исполнитель заявки"', () => {
           store: getStoreWithAuth(undefined, undefined, undefined, {
             queries: {
               ...getUserMeQueryMock(
-                userFixtures.user({ permissions: canSelectAssigneeProps.permissions }),
+                userFixtures.userDetail({ permissions: canSelectAssigneeProps.permissions }),
               ),
             },
           }),
@@ -258,7 +258,7 @@ describe('Блок "Исполнитель заявки"', () => {
         test(`Если userActions содержит id заявки но нет прав ${UserPermissionsEnum.AnyAssigneeTasksUpdate}`, () => {
           render(<AssigneeBlock {...props} {...canSelectAssigneeProps} />, {
             store: getStoreWithAuth(undefined, undefined, undefined, {
-              queries: { ...getUserMeQueryMock(userFixtures.user()) },
+              queries: { ...getUserMeQueryMock(userFixtures.userDetail()) },
             }),
           })
 
@@ -280,7 +280,7 @@ describe('Блок "Исполнитель заявки"', () => {
               store: getStoreWithAuth(undefined, undefined, undefined, {
                 queries: {
                   ...getUserMeQueryMock(
-                    userFixtures.user({ permissions: canSelectAssigneeProps.permissions }),
+                    userFixtures.userDetail({ permissions: canSelectAssigneeProps.permissions }),
                   ),
                 },
               }),
@@ -296,7 +296,7 @@ describe('Блок "Исполнитель заявки"', () => {
           store: getStoreWithAuth(undefined, undefined, undefined, {
             queries: {
               ...getUserMeQueryMock(
-                userFixtures.user({ permissions: canSelectAssigneeProps.permissions }),
+                userFixtures.userDetail({ permissions: canSelectAssigneeProps.permissions }),
               ),
             },
           }),
@@ -312,7 +312,7 @@ describe('Блок "Исполнитель заявки"', () => {
           store: getStoreWithAuth(undefined, undefined, undefined, {
             queries: {
               ...getUserMeQueryMock(
-                userFixtures.user({ permissions: canSelectAssigneeProps.permissions }),
+                userFixtures.userDetail({ permissions: canSelectAssigneeProps.permissions }),
               ),
             },
           }),
@@ -328,7 +328,7 @@ describe('Блок "Исполнитель заявки"', () => {
             store: getStoreWithAuth(undefined, undefined, undefined, {
               queries: {
                 ...getUserMeQueryMock(
-                  userFixtures.user({ permissions: canSelectAssigneeProps.permissions }),
+                  userFixtures.userDetail({ permissions: canSelectAssigneeProps.permissions }),
                 ),
               },
             }),
@@ -347,7 +347,7 @@ describe('Блок "Исполнитель заявки"', () => {
           store: getStoreWithAuth(undefined, undefined, undefined, {
             queries: {
               ...getUserMeQueryMock(
-                userFixtures.user({ permissions: canSelectAssigneeProps.permissions }),
+                userFixtures.userDetail({ permissions: canSelectAssigneeProps.permissions }),
               ),
             },
           }),
@@ -367,7 +367,7 @@ describe('Блок "Исполнитель заявки"', () => {
             store: getStoreWithAuth(undefined, undefined, undefined, {
               queries: {
                 ...getUserMeQueryMock(
-                  userFixtures.user({ permissions: canSelectAssigneeProps.permissions }),
+                  userFixtures.userDetail({ permissions: canSelectAssigneeProps.permissions }),
                 ),
               },
             }),
@@ -399,7 +399,7 @@ describe('Блок "Исполнитель заявки"', () => {
               store: getStoreWithAuth(undefined, undefined, undefined, {
                 queries: {
                   ...getUserMeQueryMock(
-                    userFixtures.user({ permissions: canSelectAssigneeProps.permissions }),
+                    userFixtures.userDetail({ permissions: canSelectAssigneeProps.permissions }),
                   ),
                 },
               }),
@@ -431,7 +431,7 @@ describe('Блок "Исполнитель заявки"', () => {
               store: getStoreWithAuth(props.assignee, undefined, undefined, {
                 queries: {
                   ...getUserMeQueryMock(
-                    userFixtures.user({ permissions: canSelectAssigneeProps.permissions }),
+                    userFixtures.userDetail({ permissions: canSelectAssigneeProps.permissions }),
                   ),
                 },
               }),
@@ -449,7 +449,7 @@ describe('Блок "Исполнитель заявки"', () => {
     test('Исполнитель отображается если его нельзя выбрать и если он есть', () => {
       render(<AssigneeBlock {...props} />, {
         store: getStoreWithAuth(undefined, undefined, undefined, {
-          queries: { ...getUserMeQueryMock(userFixtures.user()) },
+          queries: { ...getUserMeQueryMock(userFixtures.userDetail()) },
         }),
       })
 
@@ -471,7 +471,7 @@ describe('Блок "Исполнитель заявки"', () => {
             store: getStoreWithAuth(undefined, undefined, undefined, {
               queries: {
                 ...getUserMeQueryMock(
-                  userFixtures.user({ permissions: canSelectAssigneeProps.permissions }),
+                  userFixtures.userDetail({ permissions: canSelectAssigneeProps.permissions }),
                 ),
               },
             }),
@@ -486,7 +486,7 @@ describe('Блок "Исполнитель заявки"', () => {
       test('Если его нельзя выбрать и если его нет', () => {
         render(<AssigneeBlock {...props} assignee={null} />, {
           store: getStoreWithAuth(undefined, undefined, undefined, {
-            queries: { ...getUserMeQueryMock(userFixtures.user()) },
+            queries: { ...getUserMeQueryMock(userFixtures.userDetail()) },
           }),
         })
 
@@ -499,7 +499,7 @@ describe('Блок "Исполнитель заявки"', () => {
     test('Отображается соответствующий текст если исполнителя нельзя выбрать и если его нет', () => {
       render(<AssigneeBlock {...props} assignee={null} />, {
         store: getStoreWithAuth(undefined, undefined, undefined, {
-          queries: { ...getUserMeQueryMock(userFixtures.user()) },
+          queries: { ...getUserMeQueryMock(userFixtures.userDetail()) },
         }),
       })
 
@@ -509,7 +509,7 @@ describe('Блок "Исполнитель заявки"', () => {
     test('Отображается кнопка "В работу"', () => {
       render(<AssigneeBlock {...props} />, {
         store: getStoreWithAuth(undefined, undefined, undefined, {
-          queries: { ...getUserMeQueryMock(userFixtures.user()) },
+          queries: { ...getUserMeQueryMock(userFixtures.userDetail()) },
         }),
       })
 
@@ -522,7 +522,7 @@ describe('Блок "Исполнитель заявки"', () => {
           store: getStoreWithAuth(undefined, undefined, undefined, {
             queries: {
               ...getUserMeQueryMock(
-                userFixtures.user({ permissions: canSelectAssigneeProps.permissions }),
+                userFixtures.userDetail({ permissions: canSelectAssigneeProps.permissions }),
               ),
             },
           }),
@@ -538,7 +538,7 @@ describe('Блок "Исполнитель заявки"', () => {
         test(`Если userActions содержит id заявки но нет прав ${UserPermissionsEnum.AnyAssigneeTasksUpdate}`, () => {
           render(<AssigneeBlock {...props} {...canSelectAssigneeProps} />, {
             store: getStoreWithAuth(undefined, undefined, undefined, {
-              queries: { ...getUserMeQueryMock(userFixtures.user()) },
+              queries: { ...getUserMeQueryMock(userFixtures.userDetail()) },
             }),
           })
 
@@ -560,7 +560,7 @@ describe('Блок "Исполнитель заявки"', () => {
               store: getStoreWithAuth(undefined, undefined, undefined, {
                 queries: {
                   ...getUserMeQueryMock(
-                    userFixtures.user({ permissions: canSelectAssigneeProps.permissions }),
+                    userFixtures.userDetail({ permissions: canSelectAssigneeProps.permissions }),
                   ),
                 },
               }),
@@ -576,7 +576,7 @@ describe('Блок "Исполнитель заявки"', () => {
           store: getStoreWithAuth(undefined, undefined, undefined, {
             queries: {
               ...getUserMeQueryMock(
-                userFixtures.user({ permissions: canSelectAssigneeProps.permissions }),
+                userFixtures.userDetail({ permissions: canSelectAssigneeProps.permissions }),
               ),
             },
           }),

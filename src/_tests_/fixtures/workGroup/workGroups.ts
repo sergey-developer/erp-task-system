@@ -5,7 +5,7 @@ import { ArrayFirst } from 'shared/types/utils'
 import { WorkGroupTypeEnum } from 'shared/workGroups/api/constants'
 import { WorkGroupDTO, WorkGroupsDTO } from 'shared/workGroups/api/dto'
 
-import { fakeId, fakeInteger, fakeName, fakeWord } from '_tests_/utils'
+import { fakeId, fakeInteger, fakeName, fakeWord } from '_tests_/helpers'
 
 export const workGroupMember = (): ArrayFirst<WorkGroupDTO['members']> => ({
   id: fakeId(),

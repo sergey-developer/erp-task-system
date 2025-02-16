@@ -5,12 +5,12 @@ import {
   MacroregionsCatalogDTO,
 } from 'shared/catalogs/macroregions/api/dto/macroregionsCatalog.dto'
 
-import { fakeInteger, fakeWord } from '_tests_/utils'
+import { fakeInteger, fakeWord } from '_tests_/helpers'
 
-export const macroregionListItem = (): MacroregionCatalogItemDTO => ({
+export const macroregion = (): MacroregionCatalogItemDTO => ({
   id: fakeInteger(),
   title: fakeWord(),
 })
 
 export const macroregions = (length: number = 1): MacroregionsCatalogDTO =>
-  times(length, () => macroregionListItem())
+  times(length, () => macroregion())

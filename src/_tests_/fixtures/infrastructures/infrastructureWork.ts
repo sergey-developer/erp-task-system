@@ -1,6 +1,6 @@
 import { InfrastructureWorkDTO } from 'features/infrastructures/api/dto'
 
-import { fakeId, fakeInteger } from '_tests_/utils'
+import { fakeId, fakeInteger } from '_tests_/helpers'
 
 import { infrastructureWorkType } from './infrastructureWorkType'
 

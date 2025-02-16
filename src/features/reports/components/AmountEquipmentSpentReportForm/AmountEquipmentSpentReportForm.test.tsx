@@ -9,7 +9,7 @@ import { validationMessages } from 'shared/constants/validation'
 
 import catalogsFixtures from '_tests_/fixtures/catalogs'
 import warehouseFixtures from '_tests_/fixtures/warehouse'
-import { buttonTestUtils, render, selectTestUtils } from '_tests_/utils'
+import { buttonTestUtils, render, selectTestUtils } from '_tests_/helpers'
 
 import AmountEquipmentSpentReportForm from './index'
 import { AmountEquipmentSpentReportFormProps } from './types'
@@ -188,15 +188,15 @@ describe('Форма отчета количества потраченного 
 
   describe('Поле объект выбытия', () => {
     test('Можно установить значение', async () => {
-      const locationCatalogListItem = catalogsFixtures.locationCatalogListItem()
+      const locationCatalogItem = catalogsFixtures.locationCatalogItem()
 
       const { user } = render(
-        <AmountEquipmentSpentReportForm {...props} locations={[locationCatalogListItem]} />,
+        <AmountEquipmentSpentReportForm {...props} locations={[locationCatalogItem]} />,
       )
 
       await testUtils.openRelocateFromSelect(user)
-      await testUtils.setRelocateFrom(user, locationCatalogListItem.title)
-      const value = testUtils.getSelectedRelocateFrom(locationCatalogListItem.title)
+      await testUtils.setRelocateFrom(user, locationCatalogItem.title)
+      const value = testUtils.getSelectedRelocateFrom(locationCatalogItem.title)
 
       expect(value).toBeInTheDocument()
     })
@@ -209,14 +209,14 @@ describe('Форма отчета количества потраченного 
     })
 
     test('Не обязательное поле если объект прибытия выбран', async () => {
-      const locationCatalogListItem = catalogsFixtures.locationCatalogListItem()
+      const locationCatalogItem = catalogsFixtures.locationCatalogItem()
 
       const { user } = render(
-        <AmountEquipmentSpentReportForm {...props} locations={[locationCatalogListItem]} />,
+        <AmountEquipmentSpentReportForm {...props} locations={[locationCatalogItem]} />,
       )
 
       await testUtils.openRelocateToSelect(user)
-      await testUtils.setRelocateTo(user, locationCatalogListItem.title)
+      await testUtils.setRelocateTo(user, locationCatalogItem.title)
       await testUtils.clickSubmitButton(user)
       const error = testUtils.queryRelocateFromError(validationMessages.required)
       expect(error).not.toBeInTheDocument()
@@ -225,15 +225,15 @@ describe('Форма отчета количества потраченного 
 
   describe('Поле объект прибытия', () => {
     test('Можно установить значение', async () => {
-      const locationCatalogListItem = catalogsFixtures.locationCatalogListItem()
+      const locationCatalogItem = catalogsFixtures.locationCatalogItem()
 
       const { user } = render(
-        <AmountEquipmentSpentReportForm {...props} locations={[locationCatalogListItem]} />,
+        <AmountEquipmentSpentReportForm {...props} locations={[locationCatalogItem]} />,
       )
 
       await testUtils.openRelocateToSelect(user)
-      await testUtils.setRelocateTo(user, locationCatalogListItem.title)
-      const value = testUtils.getSelectedRelocateTo(locationCatalogListItem.title)
+      await testUtils.setRelocateTo(user, locationCatalogItem.title)
+      const value = testUtils.getSelectedRelocateTo(locationCatalogItem.title)
 
       expect(value).toBeInTheDocument()
     })
@@ -246,14 +246,14 @@ describe('Форма отчета количества потраченного 
     })
 
     test('Не обязательное поле если объект выбытия выбран', async () => {
-      const locationCatalogListItem = catalogsFixtures.locationCatalogListItem()
+      const locationCatalogItem = catalogsFixtures.locationCatalogItem()
 
       const { user } = render(
-        <AmountEquipmentSpentReportForm {...props} locations={[locationCatalogListItem]} />,
+        <AmountEquipmentSpentReportForm {...props} locations={[locationCatalogItem]} />,
       )
 
       await testUtils.openRelocateFromSelect(user)
-      await testUtils.setRelocateFrom(user, locationCatalogListItem.title)
+      await testUtils.setRelocateFrom(user, locationCatalogItem.title)
       await testUtils.clickSubmitButton(user)
       const error = testUtils.queryRelocateToError(validationMessages.required)
       expect(error).not.toBeInTheDocument()

@@ -2,7 +2,7 @@ import { getWarehouseErrorMessage } from 'features/warehouses/api/constants'
 import { makeWarehousePageLink } from 'features/warehouses/helpers'
 import { WarehousesRoutesEnum } from 'features/warehouses/routes/routes'
 
-import { warehousePageTestUtils } from '_tests_/features/warehouse/pages/WarehousePage/testUtils'
+import { warehousePageTestUtils } from '_tests_/features/warehouses/pages/WarehousePage/testUtils'
 import warehouseFixtures from '_tests_/fixtures/warehouse'
 import {
   mockGetWarehouseNotFoundError,
@@ -15,7 +15,7 @@ import {
   notificationTestUtils,
   renderWithRouter,
   setupApiTests,
-} from '_tests_/utils'
+} from '_tests_/helpers'
 
 import WarehousePage from './index'
 

@@ -7,9 +7,9 @@ import {
   relocationTaskTypeDict,
 } from 'features/relocationTasks/constants'
 
-import { props } from '_tests_/features/warehouse/components/RelocationTasksFilter/constants'
-import { relocationTasksFilterTestUtils } from '_tests_/features/warehouse/components/RelocationTasksFilter/testUtils'
-import { render, selectTestUtils } from '_tests_/utils'
+import { props } from '_tests_/features/warehouses/components/RelocationTasksFilter/constants'
+import { relocationTasksFilterTestUtils } from '_tests_/features/warehouses/components/RelocationTasksFilter/testUtils'
+import { render, selectTestUtils } from '_tests_/helpers'
 
 import RelocationTasksFilter from './index'
 

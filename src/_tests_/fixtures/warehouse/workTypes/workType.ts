@@ -2,7 +2,7 @@ import isUndefined from 'lodash/isUndefined'
 
 import { WorkTypeDetailDTO } from 'shared/catalogs/workTypes/api/dto'
 
-import { fakeInteger, fakeWord } from '_tests_/utils'
+import { fakeInteger, fakeWord } from '_tests_/helpers'
 
 export const workType = (
   props?: Partial<Pick<WorkTypeDetailDTO, 'actions'>>,

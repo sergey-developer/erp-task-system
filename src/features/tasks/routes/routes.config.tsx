@@ -1,5 +1,5 @@
 import ProtectedRoute from 'features/auth/components/ProtectedRoute'
-import TaskListLayout from 'features/tasks/components/TaskListLayout'
+import TasksLayout from 'features/tasks/components/TasksLayout'
 import React from 'react'
 import { Navigate, RouteObject } from 'react-router-dom'
 
@@ -8,11 +8,11 @@ import { CommonRoutesEnum } from 'configs/routes'
 import { TasksRoutesEnum } from './routes'
 
 const TasksPage = React.lazy(() => import('features/tasks/pages/TasksPage'))
-const TasksMapPage = React.lazy(() => import('features/tasks/pages/TasksMapPage'))
+const TasksOnMapPage = React.lazy(() => import('features/tasks/pages/TasksOnMapPage'))
 
 export const tasksRoutes: Readonly<RouteObject> = {
   path: CommonRoutesEnum.Desktop,
-  element: <TaskListLayout />,
+  element: <TasksLayout />,
   children: [
     {
       index: true,
@@ -24,7 +24,7 @@ export const tasksRoutes: Readonly<RouteObject> = {
     },
     {
       path: TasksRoutesEnum.DesktopTasksMap,
-      element: <ProtectedRoute component={<TasksMapPage />} />,
+      element: <ProtectedRoute component={<TasksOnMapPage />} />,
     },
   ],
 }

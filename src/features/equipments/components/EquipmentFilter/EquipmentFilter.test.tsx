@@ -4,9 +4,9 @@ import { equipmentConditionDict } from 'features/equipments/constants'
 import { yesNoOptions } from 'shared/constants/selectField'
 import { getBooleanOptions } from 'shared/utils/selectField'
 
-import { props } from '_tests_/features/warehouse/components/EquipmentFilter/constants'
-import { equipmentFilterTestUtils } from '_tests_/features/warehouse/components/EquipmentFilter/testUtils'
-import { render } from '_tests_/utils'
+import { props } from '_tests_/features/warehouses/components/EquipmentFilter/constants'
+import { equipmentFilterTestUtils } from '_tests_/features/warehouses/components/EquipmentFilter/testUtils'
+import { render } from '_tests_/helpers'
 
 import EquipmentFilter from './index'
 

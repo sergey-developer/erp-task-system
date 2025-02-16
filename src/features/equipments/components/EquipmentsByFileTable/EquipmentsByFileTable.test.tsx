@@ -6,9 +6,9 @@ import { getYesNoWord } from 'shared/utils/common'
 import {
   props,
   tableRow,
-} from '_tests_/features/warehouse/components/EquipmentsByFileTable/constants'
-import { equipmentsByFileTableTestUtils } from '_tests_/features/warehouse/components/EquipmentsByFileTable/testUtils'
-import { render } from '_tests_/utils'
+} from '_tests_/features/warehouses/components/EquipmentsByFileTable/constants'
+import { equipmentsByFileTableTestUtils } from '_tests_/features/warehouses/components/EquipmentsByFileTable/testUtils'
+import { render } from '_tests_/helpers'
 
 import EquipmentsByFileTable from './index'
 

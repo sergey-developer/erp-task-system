@@ -2,7 +2,7 @@ import { EquipmentCategoryEnum } from 'features/equipments/api/constants'
 import { CheckInventorizationEquipmentsTableRow } from 'features/inventorizations/components/CheckInventorizationEquipmentsTable/types'
 import isBoolean from 'lodash/isBoolean'
 
-import { fakeId, fakeInteger, fakeWord } from '_tests_/utils'
+import { fakeId, fakeInteger, fakeWord } from '_tests_/helpers'
 
 export const checkInventorizationEquipmentsTableRow = (
   props?: Partial<Pick<CheckInventorizationEquipmentsTableRow, 'isCredited'>>,

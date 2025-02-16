@@ -3,7 +3,7 @@ import { UserEvent } from '@testing-library/user-event/setup/setup'
 
 import { MaybeNull, NumberOrString } from 'shared/types/utils'
 
-import { spinnerTestUtils } from '_tests_/utils'
+import { spinnerTestUtils } from '_tests_/helpers'
 
 import { filterCheckedClass, filterDisabledClass, TestIdsEnum } from './constants'
 

@@ -1,4 +1,4 @@
-import { fakeWord } from '_tests_/utils'
+import { fakeWord } from '_tests_/helpers'
 
 import { getTextWithCounter } from './getTextWithCounter'
 

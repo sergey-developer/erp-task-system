@@ -1,7 +1,7 @@
 import { ReclassificationReasonEnum } from 'features/tasks/api/constants'
 import { RequestTaskReclassificationModalProps } from 'features/tasks/components/RequestTaskReclassificationModal/types'
 
-import { fakeIdStr } from '_tests_/utils'
+import { fakeIdStr } from '_tests_/helpers'
 
 export const reasonValues = Object.values(ReclassificationReasonEnum)
 

@@ -12,8 +12,8 @@ import * as reactRouterDom from 'react-router-dom'
 import { NO_ASSIGNEE_TEXT } from 'shared/constants/common'
 import { formatDate } from 'shared/utils/date'
 
-import { infrastructureStatusHistoryModalTestUtils } from '_tests_/features/infrastructure/components/InfrastructureStatusHistoryModal/testUtils'
-import { changeInfrastructurePageTestUtils as testUtils } from '_tests_/features/infrastructure/pages/ChangeInfrastructurePage/testUtils'
+import { infrastructureStatusHistoryModalTestUtils } from '_tests_/features/infrastructures/components/InfrastructureStatusHistoryModal/testUtils'
+import { changeInfrastructurePageTestUtils as testUtils } from '_tests_/features/infrastructures/pages/ChangeInfrastructurePage/testUtils'
 import { taskAssigneeTestUtils } from '_tests_/features/tasks/components/TaskAssignee/testUtils'
 import {
   activeChangeInfrastructureButton,
@@ -28,6 +28,14 @@ import taskFixtures from '_tests_/fixtures/tasks'
 import { fakeUseLocationResult } from '_tests_/fixtures/useLocation'
 import userFixtures from '_tests_/fixtures/users'
 import {
+  fakeDateString,
+  fakeId,
+  getStoreWithAuth,
+  render,
+  renderWithRouter,
+  setupApiTests,
+} from '_tests_/helpers'
+import {
   mockGetInfrastructureOrdersFormsSuccess,
   mockGetInfrastructureStatusHistorySuccess,
   mockGetInfrastructureSuccess,
@@ -38,15 +46,7 @@ import {
   mockUpdateInfrastructureStatusSuccess,
   mockUpdateInfrastructureSuccess,
 } from '_tests_/mocks/api'
-import { getUserMeQueryMock } from '_tests_/mocks/state/user'
-import {
-  fakeDateString,
-  fakeId,
-  getStoreWithAuth,
-  render,
-  renderWithRouter,
-  setupApiTests,
-} from '_tests_/utils'
+import { getUserMeQueryMock } from '_tests_/mocks/store/users'
 
 import ChangeInfrastructurePage from './index'
 import { getChangeInfrastructurePageLocationState } from './utils'
@@ -74,7 +74,7 @@ describe('Страница изменения инфраструктуры за�
     mockGetInfrastructureSuccess({ infrastructureId }, { body: infrastructure })
     mockGetInfrastructureOrdersFormsSuccess()
 
-    const currentUser = userFixtures.user()
+    const currentUser = userFixtures.userDetail()
 
     render(<ChangeInfrastructurePage />, {
       store: getStoreWithAuth(currentUser, undefined, undefined, {
@@ -104,7 +104,7 @@ describe('Страница изменения инфраструктуры за�
     mockGetInfrastructureSuccess({ infrastructureId }, { body: infrastructure })
     mockGetInfrastructureOrdersFormsSuccess()
 
-    const currentUser = userFixtures.user()
+    const currentUser = userFixtures.userDetail()
 
     render(<ChangeInfrastructurePage />, {
       store: getStoreWithAuth(currentUser, undefined, undefined, {
@@ -135,7 +135,7 @@ describe('Страница изменения инфраструктуры за�
       mockGetInfrastructureSuccess({ infrastructureId }, { body: infrastructure })
       mockGetInfrastructureOrdersFormsSuccess()
 
-      const currentUser = userFixtures.user()
+      const currentUser = userFixtures.userDetail()
 
       render(<ChangeInfrastructurePage />, {
         store: getStoreWithAuth(currentUser, undefined, undefined, {
@@ -165,7 +165,7 @@ describe('Страница изменения инфраструктуры за�
       mockGetInfrastructureSuccess({ infrastructureId }, { body: infrastructure })
       mockGetInfrastructureOrdersFormsSuccess()
 
-      const currentUser = userFixtures.user()
+      const currentUser = userFixtures.userDetail()
 
       render(<ChangeInfrastructurePage />, {
         store: getStoreWithAuth(currentUser, undefined, undefined, {
@@ -193,7 +193,7 @@ describe('Страница изменения инфраструктуры за�
         mockGetInfrastructureSuccess({ infrastructureId }, { body: infrastructure })
         mockGetInfrastructureOrdersFormsSuccess()
 
-        const currentUser = userFixtures.user({
+        const currentUser = userFixtures.userDetail({
           permissions: [UserPermissionsEnum.InfrastructureProjectLeading],
         })
 
@@ -221,7 +221,7 @@ describe('Страница изменения инфраструктуры за�
         mockGetInfrastructureSuccess({ infrastructureId }, { body: infrastructure })
         mockGetInfrastructureOrdersFormsSuccess()
 
-        const currentUser = userFixtures.user({ permissions: [] })
+        const currentUser = userFixtures.userDetail({ permissions: [] })
 
         render(<ChangeInfrastructurePage />, {
           store: getStoreWithAuth(currentUser, undefined, undefined, {
@@ -250,7 +250,7 @@ describe('Страница изменения инфраструктуры за�
         mockGetInfrastructureSuccess({ infrastructureId }, { body: infrastructure, once: false })
         mockGetInfrastructureOrdersFormsSuccess({ body: [], once: false })
 
-        const currentUser = userFixtures.user({
+        const currentUser = userFixtures.userDetail({
           permissions: [UserPermissionsEnum.InfrastructureProjectLeading],
         })
 
@@ -290,7 +290,7 @@ describe('Страница изменения инфраструктуры за�
       mockGetInfrastructureSuccess({ infrastructureId }, { body: infrastructure })
       mockGetInfrastructureOrdersFormsSuccess()
 
-      const currentUser = userFixtures.user()
+      const currentUser = userFixtures.userDetail()
 
       render(<ChangeInfrastructurePage />, {
         store: getStoreWithAuth(currentUser, undefined, undefined, {
@@ -320,7 +320,7 @@ describe('Страница изменения инфраструктуры за�
         .spyOn(reactRouterDom, 'useLocation')
         .mockReturnValue(fakeUseLocationResult({ state: locationState }))
 
-      const currentUser = userFixtures.user()
+      const currentUser = userFixtures.userDetail()
 
       const infrastructure = infrastructuresFixtures.infrastructure({
         manager: { ...currentUser, position: null },
@@ -371,7 +371,7 @@ describe('Страница изменения инфраструктуры за�
       mockGetInfrastructureOrdersFormsSuccess({ body: [] })
       mockGetInfrastructureStatusHistorySuccess()
 
-      const currentUser = userFixtures.user()
+      const currentUser = userFixtures.userDetail()
 
       const { user } = render(<ChangeInfrastructurePage />, {
         store: getStoreWithAuth(currentUser, undefined, undefined, {
@@ -401,7 +401,7 @@ describe('Страница изменения инфраструктуры за�
       mockGetInfrastructureSuccess({ infrastructureId }, { body: infrastructure })
       mockGetInfrastructureOrdersFormsSuccess()
 
-      const currentUser = userFixtures.user()
+      const currentUser = userFixtures.userDetail()
 
       render(<ChangeInfrastructurePage />, {
         store: getStoreWithAuth(currentUser, undefined, undefined, {
@@ -439,7 +439,7 @@ describe('Страница изменения инфраструктуры за�
         body: taskFixtures.task({ ...showChangeInfrastructureButton.task }),
       })
 
-      const currentUser = userFixtures.user({
+      const currentUser = userFixtures.userDetail({
         permissions: activeChangeInfrastructureButton.permissions,
       })
       mockGetUserActionsSuccess(currentUser.id, { body: userFixtures.userActions() })

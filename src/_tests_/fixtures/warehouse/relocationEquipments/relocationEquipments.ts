@@ -5,7 +5,7 @@ import times from 'lodash/times'
 
 import currencyFixtures from '_tests_/fixtures/currencies'
 import warehouseFixtures from '_tests_/fixtures/warehouse'
-import { fakeId, fakeInteger, fakeWord } from '_tests_/utils'
+import { fakeId, fakeInteger, fakeWord } from '_tests_/helpers'
 
 export const relocationEquipmentListItem = (): RelocationEquipmentDTO => ({
   id: fakeId(),
@@ -15,7 +15,7 @@ export const relocationEquipmentListItem = (): RelocationEquipmentDTO => ({
   quantity: fakeInteger(),
   condition: EquipmentConditionEnum.Working,
   serialNumber: fakeWord(),
-  currency: currencyFixtures.currencyListItem(),
+  currency: currencyFixtures.currency(),
   price: fakeInteger(),
   category: pick(warehouseFixtures.equipmentCategory(), 'id', 'title', 'code'),
 })

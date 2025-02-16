@@ -11,12 +11,12 @@ import { taskDetailsTestUtils } from '_tests_/features/tasks/components/TaskDeta
 import { tasksFiltersStorageTestUtils } from '_tests_/features/tasks/components/TasksFiltersStorage/testUtils'
 import { updateTasksButtonTestUtils } from '_tests_/features/tasks/components/UpdateTasksButton/testUtils'
 import reportsFixtures from '_tests_/fixtures/reports'
+import { fakeId, notificationTestUtils, render, setupApiTests } from '_tests_/helpers'
 import {
   mockGetFiscalAccumulatorTasksServerError,
   mockGetFiscalAccumulatorTasksSuccess,
   mockGetTaskSuccess,
 } from '_tests_/mocks/api'
-import { fakeId, notificationTestUtils, render, setupApiTests } from '_tests_/utils'
 
 import FiscalAccumulatorTasksReportPage from './index'
 
@@ -52,7 +52,7 @@ notificationTestUtils.setupNotifications()
 
 describe('Страница заявок фискальных накопителей', () => {
   test('При успешном запросе таблица отображается корректно', async () => {
-    const fiscalAccumulatorTasks = [reportsFixtures.fiscalAccumulatorTaskListItem()]
+    const fiscalAccumulatorTasks = [reportsFixtures.fiscalAccumulatorTask()]
     mockGetFiscalAccumulatorTasksSuccess({ body: fiscalAccumulatorTasks })
 
     render(<FiscalAccumulatorTasksReportPage />)
@@ -84,9 +84,9 @@ describe('Страница заявок фискальных накопител�
   })
 
   test.skip('При клике на заявку открывается карточка заявки', async () => {
-    const fiscalAccumulatorTaskListItem = reportsFixtures.fiscalAccumulatorTaskListItem()
-    mockGetFiscalAccumulatorTasksSuccess({ body: [fiscalAccumulatorTaskListItem] })
-    mockGetTaskSuccess(fiscalAccumulatorTaskListItem.id)
+    const fiscalAccumulatorTask = reportsFixtures.fiscalAccumulatorTask()
+    mockGetFiscalAccumulatorTasksSuccess({ body: [fiscalAccumulatorTask] })
+    mockGetTaskSuccess(fiscalAccumulatorTask.id)
 
     const { user } = render(<FiscalAccumulatorTasksReportPage />)
 
@@ -94,7 +94,7 @@ describe('Страница заявок фискальных накопител�
     await fiscalAccumulatorTaskTableTestUtils.expectLoadingFinished()
     await fiscalAccumulatorTaskTableTestUtils.clickRow(
       user,
-      fiscalAccumulatorTaskListItem.olaNextBreachTime,
+      fiscalAccumulatorTask.olaNextBreachTime,
     )
     const task = await taskDetailsTestUtils.findContainer()
 

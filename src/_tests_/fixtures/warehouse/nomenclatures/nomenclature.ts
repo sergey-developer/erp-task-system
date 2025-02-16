@@ -1,8 +1,8 @@
 import { NomenclatureDetailDTO } from 'features/nomenclatures/api/dto'
 
-import countryFixtures from '_tests_/fixtures/countries'
+import countriesFixtures from '_tests_/fixtures/countries'
 import warehouseFixtures from '_tests_/fixtures/warehouse'
-import { fakeId, fakeWord } from '_tests_/utils'
+import { fakeId, fakeWord } from '_tests_/helpers'
 
 export const nomenclature = (
   props?: Partial<
@@ -18,7 +18,7 @@ export const nomenclature = (
     >
   >,
 ): NomenclatureDetailDTO => ({
-  country: props?.country || countryFixtures.country(),
+  country: props?.country || countriesFixtures.country(),
   group: props?.group || warehouseFixtures.nomenclatureGroup(),
   measurementUnit: props?.measurementUnit || warehouseFixtures.measurementUnit(),
   equipmentHasSerialNumber: props?.equipmentHasSerialNumber || false,

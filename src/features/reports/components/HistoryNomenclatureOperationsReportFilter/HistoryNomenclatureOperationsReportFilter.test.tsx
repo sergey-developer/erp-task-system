@@ -5,7 +5,7 @@ import { equipmentConditionDict } from 'features/equipments/constants'
 
 import catalogsFixtures from '_tests_/fixtures/catalogs'
 import warehouseFixtures from '_tests_/fixtures/warehouse'
-import { buttonTestUtils, render, selectTestUtils } from '_tests_/utils'
+import { buttonTestUtils, render, selectTestUtils } from '_tests_/helpers'
 
 import HistoryNomenclatureOperationsReportFilter from './index'
 import { HistoryNomenclatureOperationsReportFilterProps } from './types'

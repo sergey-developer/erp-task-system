@@ -4,10 +4,10 @@ import { inventorizationTypeDict } from 'features/inventorizations/constants'
 
 import { validationMessages } from 'shared/constants/validation'
 
-import { props } from '_tests_/features/warehouse/components/CreateInventorizationRequestModal/constants'
-import { createInventorizationRequestModalTestUtils as testUtils } from '_tests_/features/warehouse/components/CreateInventorizationRequestModal/testUtils'
+import { props } from '_tests_/features/warehouses/components/CreateInventorizationRequestModal/constants'
+import { createInventorizationRequestModalTestUtils as testUtils } from '_tests_/features/warehouses/components/CreateInventorizationRequestModal/testUtils'
 import warehouseFixtures from '_tests_/fixtures/warehouse'
-import { fakeWord, iconTestUtils, render, selectTestUtils } from '_tests_/utils'
+import { fakeWord, iconTestUtils, render, selectTestUtils } from '_tests_/helpers'
 
 import CreateInventorizationRequestModal, { nomenclaturesPopoverContent } from './index'
 

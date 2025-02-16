@@ -1,6 +1,6 @@
 import { TaskAssigneeDTO } from 'features/tasks/api/dto'
 
-import { fakeEmail, fakeId, fakePhone, fakeUrl, fakeWord } from '_tests_/utils'
+import { fakeEmail, fakeId, fakePhone, fakeUrl, fakeWord } from '_tests_/helpers'
 
 export const assignee = (): TaskAssigneeDTO => ({
   id: fakeId(),

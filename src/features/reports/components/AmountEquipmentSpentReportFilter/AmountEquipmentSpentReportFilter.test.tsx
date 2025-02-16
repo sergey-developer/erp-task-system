@@ -2,7 +2,7 @@ import { screen, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 
 import warehouseFixtures from '_tests_/fixtures/warehouse'
-import { buttonTestUtils, render, selectTestUtils } from '_tests_/utils'
+import { buttonTestUtils, render, selectTestUtils } from '_tests_/helpers'
 
 import AmountEquipmentSpentReportFilter from './index'
 import { AmountEquipmentSpentReportFilterProps } from './types'

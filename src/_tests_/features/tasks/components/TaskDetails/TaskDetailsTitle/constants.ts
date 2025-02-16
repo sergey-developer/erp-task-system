@@ -1,17 +1,17 @@
-import { TaskDetailsTitleProps } from 'features/tasks/components/TaskDetails/TaskDetailsTitle/types'
 import {
   TaskActionsPermissionsEnum,
   TaskExtendedStatusEnum,
   TaskOlaStatusEnum,
   TaskStatusEnum,
   TaskTypeEnum,
-} from 'features/tasks/constants/task/index'
+} from 'features/tasks/api/constants'
+import { TaskDetailsTitleProps } from 'features/tasks/components/TaskDetails/TaskDetailsTitle/types'
 
 import { SystemEnum } from 'shared/constants/enums'
 
 import taskFixtures from '_tests_/fixtures/tasks/index'
 import userFixtures from '_tests_/fixtures/users/index'
-import { fakeId } from '_tests_/utils'
+import { fakeId } from '_tests_/helpers'
 
 export const props: Readonly<TaskDetailsTitleProps> = {
   id: fakeId(),

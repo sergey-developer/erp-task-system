@@ -10,7 +10,7 @@ import {
   fakeLongitude,
   fakeWord,
   render,
-} from '_tests_/utils'
+} from '_tests_/helpers'
 
 import AdditionalInfo from './index'
 

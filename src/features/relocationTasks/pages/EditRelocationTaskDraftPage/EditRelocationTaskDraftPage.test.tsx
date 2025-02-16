@@ -8,36 +8,36 @@ import { CommonRoutesEnum } from 'configs/routes'
 
 import { makeString } from 'shared/utils/string'
 
-import { relocationEquipmentDraftEditableTableTestUtils } from '_tests_/features/warehouse/components/RelocationEquipmentDraftEditableTable/testUtils'
-import { relocationTaskDetailsTestUtils } from '_tests_/features/warehouse/components/RelocationTaskDetails/testUtils'
-import { relocationTaskFormTestUtils } from '_tests_/features/warehouse/components/RelocationTaskForm/testUtils'
-import { editRelocationTaskDraftPageTestUtils as testUtils } from '_tests_/features/warehouse/pages/EditRelocationTaskDraftPage/testUtils'
-import { executeInventorizationPageTestUtils } from '_tests_/features/warehouse/pages/ExecuteInventorizationPage/testUtils'
+import { relocationEquipmentDraftEditableTableTestUtils } from '_tests_/features/warehouses/components/RelocationEquipmentDraftEditableTable/testUtils'
+import { relocationTaskDetailsTestUtils } from '_tests_/features/warehouses/components/RelocationTaskDetails/testUtils'
+import { relocationTaskFormTestUtils } from '_tests_/features/warehouses/components/RelocationTaskForm/testUtils'
+import { editRelocationTaskDraftPageTestUtils as testUtils } from '_tests_/features/warehouses/pages/EditRelocationTaskDraftPage/testUtils'
+import { executeInventorizationPageTestUtils } from '_tests_/features/warehouses/pages/ExecuteInventorizationPage/testUtils'
 import catalogsFixtures from '_tests_/fixtures/catalogs'
 import commonFixtures from '_tests_/fixtures/common'
 import { fakeUseLocationResult } from '_tests_/fixtures/useLocation'
 import userFixtures from '_tests_/fixtures/users'
 import warehouseFixtures from '_tests_/fixtures/warehouse'
 import {
-  mockCreateRelocationTaskSuccess,
-  mockGetCurrencyListSuccess,
-  mockGetEquipmentCatalogListSuccess,
-  mockGetInventorizationEquipmentsSuccess,
-  mockGetInventorizationEquipmentSuccess,
-  mockGetLocationsCatalogSuccess,
-  mockGetRelocationEquipmentListSuccess,
-  mockGetRelocationTaskSuccess,
-  mockGetUsersGroupsSuccess,
-  mockGetUsersSuccess,
-} from '_tests_/mocks/api'
-import { getUserMeQueryMock } from '_tests_/mocks/state/user'
-import {
   getStoreWithAuth,
   notificationTestUtils,
   render,
   renderWithRouter,
   setupApiTests,
-} from '_tests_/utils'
+} from '_tests_/helpers'
+import {
+  mockCreateRelocationTaskSuccess,
+  mockGetCurrenciesSuccess,
+  mockGetEquipmentsCatalogSuccess,
+  mockGetInventorizationEquipmentsSuccess,
+  mockGetInventorizationEquipmentSuccess,
+  mockGetLocationsCatalogSuccess,
+  mockGetRelocationEquipmentsSuccess,
+  mockGetRelocationTaskSuccess,
+  mockGetUsersGroupsSuccess,
+  mockGetUsersSuccess,
+} from '_tests_/mocks/api'
+import { getUserMeQueryMock } from '_tests_/mocks/store/users'
 
 import EditRelocationTaskDraftPage from './index'
 
@@ -62,8 +62,8 @@ describe('Страница создания черновика заявки на
 
       mockGetUsersSuccess()
       mockGetLocationsCatalogSuccess({ once: false })
-      mockGetEquipmentCatalogListSuccess()
-      mockGetCurrencyListSuccess()
+      mockGetEquipmentsCatalogSuccess()
+      mockGetCurrenciesSuccess()
       mockGetUsersGroupsSuccess()
       mockGetInventorizationEquipmentsSuccess({
         inventorizationId: locationStateMock.inventorization.id,
@@ -71,7 +71,7 @@ describe('Страница создания черновика заявки на
 
       render(<EditRelocationTaskDraftPage />, {
         store: getStoreWithAuth(undefined, undefined, undefined, {
-          queries: { ...getUserMeQueryMock(userFixtures.user()) },
+          queries: { ...getUserMeQueryMock(userFixtures.userDetail()) },
         }),
       })
 
@@ -88,13 +88,13 @@ describe('Страница создания черновика заявки на
         .spyOn(reactRouterDom, 'useLocation')
         .mockReturnValue(fakeUseLocationResult({ state: locationStateMock }))
 
-      const executorUser = userFixtures.userListItem()
-      const currentUser = userFixtures.userListItem()
-      const otherUser = userFixtures.userListItem()
+      const executorUser = userFixtures.user()
+      const currentUser = userFixtures.userDetail()
+      const otherUser = userFixtures.user()
       mockGetUsersSuccess({ body: [executorUser, currentUser, otherUser] })
       mockGetLocationsCatalogSuccess({ body: [], once: false })
-      mockGetCurrencyListSuccess({ body: [] })
-      mockGetEquipmentCatalogListSuccess({
+      mockGetCurrenciesSuccess({ body: [] })
+      mockGetEquipmentsCatalogSuccess({
         body: warehouseFixtures.equipmentsCatalog(),
         once: false,
       })
@@ -105,7 +105,7 @@ describe('Страница создания черновика заявки на
 
       const { user } = render(<EditRelocationTaskDraftPage />, {
         store: getStoreWithAuth({ id: currentUser.id }, undefined, undefined, {
-          queries: { ...getUserMeQueryMock(userFixtures.user()) },
+          queries: { ...getUserMeQueryMock(userFixtures.userDetail()) },
         }),
       })
 
@@ -136,12 +136,12 @@ describe('Страница создания черновика заявки на
         .spyOn(reactRouterDom, 'useLocation')
         .mockReturnValue(fakeUseLocationResult({ state: locationStateMock }))
 
-      const controllerUser = userFixtures.userListItem()
-      const currentUser = userFixtures.userListItem()
+      const controllerUser = userFixtures.user()
+      const currentUser = userFixtures.userDetail()
       mockGetUsersSuccess({ body: [controllerUser, currentUser] })
       mockGetLocationsCatalogSuccess({ body: [], once: false })
-      mockGetCurrencyListSuccess({ body: [] })
-      mockGetEquipmentCatalogListSuccess({
+      mockGetCurrenciesSuccess({ body: [] })
+      mockGetEquipmentsCatalogSuccess({
         body: warehouseFixtures.equipmentsCatalog(),
         once: false,
       })
@@ -152,7 +152,7 @@ describe('Страница создания черновика заявки на
 
       const { user } = render(<EditRelocationTaskDraftPage />, {
         store: getStoreWithAuth({ id: currentUser.id }, undefined, undefined, {
-          queries: { ...getUserMeQueryMock(userFixtures.user()) },
+          queries: { ...getUserMeQueryMock(userFixtures.userDetail()) },
         }),
       })
 
@@ -183,8 +183,8 @@ describe('Страница создания черновика заявки на
 
       mockGetUsersSuccess()
       mockGetLocationsCatalogSuccess({ once: false })
-      mockGetEquipmentCatalogListSuccess()
-      mockGetCurrencyListSuccess()
+      mockGetEquipmentsCatalogSuccess()
+      mockGetCurrenciesSuccess()
       mockGetUsersGroupsSuccess()
       mockGetInventorizationEquipmentsSuccess({
         inventorizationId: locationStateMock.inventorization.id,
@@ -192,7 +192,7 @@ describe('Страница создания черновика заявки на
 
       render(<EditRelocationTaskDraftPage />, {
         store: getStoreWithAuth(undefined, undefined, undefined, {
-          queries: { ...getUserMeQueryMock(userFixtures.user()) },
+          queries: { ...getUserMeQueryMock(userFixtures.userDetail()) },
         }),
       })
 
@@ -219,8 +219,8 @@ describe('Страница создания черновика заявки на
 
     mockGetUsersSuccess()
     mockGetLocationsCatalogSuccess({ once: false })
-    mockGetEquipmentCatalogListSuccess()
-    mockGetCurrencyListSuccess()
+    mockGetEquipmentsCatalogSuccess()
+    mockGetCurrenciesSuccess()
     mockGetUsersGroupsSuccess()
     mockGetInventorizationEquipmentsSuccess({
       inventorizationId: locationStateMock.inventorization.id,
@@ -240,7 +240,7 @@ describe('Страница создания черновика заявки на
       { initialEntries: [CommonRoutesEnum.Root], initialIndex: 0 },
       {
         store: getStoreWithAuth(undefined, undefined, undefined, {
-          queries: { ...getUserMeQueryMock(userFixtures.user()) },
+          queries: { ...getUserMeQueryMock(userFixtures.userDetail()) },
         }),
       },
     )
@@ -263,13 +263,13 @@ describe('Страница создания черновика заявки на
       .spyOn(reactRouterDom, 'useParams')
       .mockReturnValue({ id: String(locationStateMock.inventorization.id) })
 
-    const controllerUser = userFixtures.userListItem()
+    const controllerUser = userFixtures.user()
     mockGetUsersSuccess({ body: [controllerUser] })
 
-    const locationFrom = catalogsFixtures.locationCatalogListItem()
+    const locationFrom = catalogsFixtures.locationCatalogItem()
     mockGetLocationsCatalogSuccess({ body: [locationFrom], once: false })
-    mockGetEquipmentCatalogListSuccess({ body: [] })
-    mockGetCurrencyListSuccess({ body: [] })
+    mockGetEquipmentsCatalogSuccess({ body: [] })
+    mockGetCurrenciesSuccess({ body: [] })
     mockGetUsersGroupsSuccess({ body: [] })
 
     const inventorizationEquipmentListItem = warehouseFixtures.inventorizationEquipmentListItem()
@@ -292,7 +292,7 @@ describe('Страница создания черновика заявки на
     mockCreateRelocationTaskSuccess({ body: relocationTask })
 
     mockGetRelocationTaskSuccess({ relocationTaskId: relocationTask.id })
-    mockGetRelocationEquipmentListSuccess({ relocationTaskId: relocationTask.id })
+    mockGetRelocationEquipmentsSuccess({ relocationTaskId: relocationTask.id })
 
     const { user } = renderWithRouter(
       [
@@ -308,7 +308,7 @@ describe('Страница создания черновика заявки на
       { initialEntries: [CommonRoutesEnum.Root], initialIndex: 0 },
       {
         store: getStoreWithAuth(undefined, undefined, undefined, {
-          queries: { ...getUserMeQueryMock(userFixtures.user()) },
+          queries: { ...getUserMeQueryMock(userFixtures.userDetail()) },
         }),
       },
     )

@@ -10,11 +10,11 @@ import {
 import {
   props,
   warehouseListItem,
-} from '_tests_/features/warehouse/components/WarehouseTable/constants'
-import { warehouseTableTestUtils } from '_tests_/features/warehouse/components/WarehouseTable/testUtils'
-import { warehousePageTestUtils } from '_tests_/features/warehouse/pages/WarehousePage/testUtils'
+} from '_tests_/features/warehouses/components/WarehouseTable/constants'
+import { warehouseTableTestUtils } from '_tests_/features/warehouses/components/WarehouseTable/testUtils'
+import { warehousePageTestUtils } from '_tests_/features/warehouses/pages/WarehousePage/testUtils'
 import { mockGetWarehouseSuccess } from '_tests_/mocks/api'
-import { renderWithRouter } from '_tests_/utils'
+import { renderWithRouter } from '_tests_/helpers'
 
 import { WarehousesRoutesEnum } from '../../routes/routes'
 import WarehouseTable from './index'

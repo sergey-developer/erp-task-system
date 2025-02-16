@@ -1,6 +1,6 @@
 import { addDotToEnd, getFirstLetterInUpperCase } from 'shared/utils/string'
 
-import { fakeWord } from '_tests_/utils'
+import { fakeWord } from '_tests_/helpers'
 
 import { getShortUserName } from './getShortUserName'
 

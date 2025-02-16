@@ -3,7 +3,7 @@ import { UserEvent } from '@testing-library/user-event/setup/setup'
 
 import { TasksFiltersStorageType } from 'features/tasks/services/taskLocalStorageService/taskLocalStorage.service'
 
-import { iconTestUtils } from '_tests_/utils/index'
+import { iconTestUtils } from '_tests_/helpers/index'
 
 import { TestIdsEnum } from '_tests_/features/tasks/components/TasksFiltersStorage/constants'
 

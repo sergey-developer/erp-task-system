@@ -11,16 +11,9 @@ import { DATE_PICKER_FORMAT, TIME_PICKER_FORMAT } from 'lib/antd/constants/dateT
 import { validationMessages } from 'shared/constants/validation'
 import { formatDate } from 'shared/utils/date'
 
-import { createRelocationTaskPageTestUtils } from '_tests_/features/warehouse/pages/CreateRelocationTaskPage/testUtils'
+import { createRelocationTaskPageTestUtils } from '_tests_/features/warehouses/pages/CreateRelocationTaskPage/testUtils'
 import catalogsFixtures from '_tests_/fixtures/catalogs'
 import userFixtures from '_tests_/fixtures/users'
-import {
-  mockGetCurrencyListSuccess,
-  mockGetEquipmentCatalogListSuccess,
-  mockGetLocationsCatalogSuccess,
-  mockGetUsersSuccess,
-} from '_tests_/mocks/api'
-import { getUserMeQueryMock } from '_tests_/mocks/state/user'
 import {
   buttonTestUtils,
   fakeWord,
@@ -28,7 +21,14 @@ import {
   render,
   selectTestUtils,
   setupApiTests,
-} from '_tests_/utils'
+} from '_tests_/helpers'
+import {
+  mockGetCurrenciesSuccess,
+  mockGetEquipmentsCatalogSuccess,
+  mockGetLocationsCatalogSuccess,
+  mockGetUsersSuccess,
+} from '_tests_/mocks/api'
+import { getUserMeQueryMock } from '_tests_/mocks/store/users'
 
 import RelocationTaskForm from './index'
 import { RelocationTaskFormProps } from './types'
@@ -332,12 +332,12 @@ describe('Форма создания заявки на перемещение �
         test('Если не заполнить поле и нажать кнопку отправки', async () => {
           mockGetUsersSuccess({ body: [] })
           mockGetLocationsCatalogSuccess({ body: [], once: false })
-          mockGetEquipmentCatalogListSuccess()
-          mockGetCurrencyListSuccess({ body: [] })
+          mockGetEquipmentsCatalogSuccess()
+          mockGetCurrenciesSuccess({ body: [] })
 
           const { user } = render(<CreateRelocationTaskPage />, {
             store: getStoreWithAuth(undefined, undefined, undefined, {
-              queries: { ...getUserMeQueryMock(userFixtures.user()) },
+              queries: { ...getUserMeQueryMock(userFixtures.userDetail()) },
             }),
           })
 
@@ -398,12 +398,12 @@ describe('Форма создания заявки на перемещение �
         test('Если не заполнить поле и нажать кнопку отправки', async () => {
           mockGetUsersSuccess({ body: [] })
           mockGetLocationsCatalogSuccess({ body: [], once: false })
-          mockGetEquipmentCatalogListSuccess()
-          mockGetCurrencyListSuccess({ body: [] })
+          mockGetEquipmentsCatalogSuccess()
+          mockGetCurrenciesSuccess({ body: [] })
 
           const { user } = render(<CreateRelocationTaskPage />, {
             store: getStoreWithAuth(undefined, undefined, undefined, {
-              queries: { ...getUserMeQueryMock(userFixtures.user()) },
+              queries: { ...getUserMeQueryMock(userFixtures.userDetail()) },
             }),
           })
 
@@ -478,7 +478,7 @@ describe('Форма создания заявки на перемещение �
 
   describe('Объект выбытия', () => {
     test('Отображается корректно', async () => {
-      const locationListItem = catalogsFixtures.locationCatalogListItem()
+      const locationListItem = catalogsFixtures.locationCatalogItem()
       const locationList = [locationListItem]
 
       const { user } = render(
@@ -501,7 +501,7 @@ describe('Форма создания заявки на перемещение �
     })
 
     test('Можно выбрать значение', async () => {
-      const locationListItem = catalogsFixtures.locationCatalogListItem()
+      const locationListItem = catalogsFixtures.locationCatalogItem()
 
       const { user } = render(
         <Form>
@@ -519,12 +519,12 @@ describe('Форма создания заявки на перемещение �
     test('Отображается ошибка если не заполнить поле и нажать кнопку отправки', async () => {
       mockGetUsersSuccess({ body: [] })
       mockGetLocationsCatalogSuccess({ body: catalogsFixtures.locationsCatalog(), once: false })
-      mockGetEquipmentCatalogListSuccess()
-      mockGetCurrencyListSuccess({ body: [] })
+      mockGetEquipmentsCatalogSuccess()
+      mockGetCurrenciesSuccess({ body: [] })
 
       const { user } = render(<CreateRelocationTaskPage />, {
         store: getStoreWithAuth(undefined, undefined, undefined, {
-          queries: { ...getUserMeQueryMock(userFixtures.user()) },
+          queries: { ...getUserMeQueryMock(userFixtures.userDetail()) },
         }),
       })
 
@@ -537,7 +537,7 @@ describe('Форма создания заявки на перемещение �
 
   describe('Объект прибытия', () => {
     test('Отображается корректно', async () => {
-      const locationListItem = catalogsFixtures.locationCatalogListItem()
+      const locationListItem = catalogsFixtures.locationCatalogItem()
       const locationList = [locationListItem]
 
       const { user } = render(
@@ -560,7 +560,7 @@ describe('Форма создания заявки на перемещение �
     })
 
     test('Можно выбрать значение', async () => {
-      const locationListItem = catalogsFixtures.locationCatalogListItem()
+      const locationListItem = catalogsFixtures.locationCatalogItem()
 
       const { user } = render(
         <Form>
@@ -578,7 +578,7 @@ describe('Форма создания заявки на перемещение �
 
   describe('Исполнитель', () => {
     test('Отображается корректно', async () => {
-      const userListItem = userFixtures.userListItem()
+      const userListItem = userFixtures.user()
       const users = [userListItem]
 
       const { user } = render(
@@ -601,7 +601,7 @@ describe('Форма создания заявки на перемещение �
     })
 
     test('Можно выбрать значение', async () => {
-      const userListItem = userFixtures.userListItem()
+      const userListItem = userFixtures.user()
 
       const { user } = render(
         <Form>
@@ -622,12 +622,12 @@ describe('Форма создания заявки на перемещение �
     test('Отображается ошибка если не заполнить поле и нажать кнопку отправки', async () => {
       mockGetUsersSuccess({ body: [] })
       mockGetLocationsCatalogSuccess({ body: [], once: false })
-      mockGetEquipmentCatalogListSuccess()
-      mockGetCurrencyListSuccess({ body: [] })
+      mockGetEquipmentsCatalogSuccess()
+      mockGetCurrenciesSuccess({ body: [] })
 
       const { user } = render(<CreateRelocationTaskPage />, {
         store: getStoreWithAuth(undefined, undefined, undefined, {
-          queries: { ...getUserMeQueryMock(userFixtures.user()) },
+          queries: { ...getUserMeQueryMock(userFixtures.userDetail()) },
         }),
       })
 
@@ -640,7 +640,7 @@ describe('Форма создания заявки на перемещение �
 
   describe('Контролер', () => {
     test('Отображается корректно', async () => {
-      const userListItem = userFixtures.userListItem()
+      const userListItem = userFixtures.user()
       const users = [userListItem]
 
       const { user } = render(
@@ -663,7 +663,7 @@ describe('Форма создания заявки на перемещение �
     })
 
     test('Можно выбрать значение', async () => {
-      const userListItem = userFixtures.userListItem()
+      const userListItem = userFixtures.user()
 
       const { user } = render(
         <Form>
@@ -685,8 +685,8 @@ describe('Форма создания заявки на перемещение �
     test.skip('Обязателен если перемещение не с основного склада на склад МСИ', async () => {
       mockGetUsersSuccess()
       mockGetLocationsCatalogSuccess({ body: [], once: false })
-      mockGetEquipmentCatalogListSuccess()
-      mockGetCurrencyListSuccess({ body: [] })
+      mockGetEquipmentsCatalogSuccess()
+      mockGetCurrenciesSuccess({ body: [] })
 
       const { user } = render(<CreateRelocationTaskPage />)
 
@@ -700,8 +700,8 @@ describe('Форма создания заявки на перемещение �
     test.skip('Не обязателен если перемещение с основного склада на склад МСИ', async () => {
       mockGetUsersSuccess()
       mockGetLocationsCatalogSuccess({ body: [], once: false })
-      mockGetEquipmentCatalogListSuccess()
-      mockGetCurrencyListSuccess({ body: [] })
+      mockGetEquipmentsCatalogSuccess()
+      mockGetCurrenciesSuccess({ body: [] })
 
       const { user } = render(<CreateRelocationTaskPage />)
 

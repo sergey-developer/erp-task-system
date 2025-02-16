@@ -3,9 +3,9 @@ import { equipmentConditionDict } from 'features/equipments/constants'
 import {
   props,
   relocationEquipmentListItem,
-} from '_tests_/features/warehouse/components/RelocationEquipmentTable/constants'
-import { relocationEquipmentTableTestUtils } from '_tests_/features/warehouse/components/RelocationEquipmentTable/testUtils'
-import { render, tableTestUtils } from '_tests_/utils'
+} from '_tests_/features/warehouses/components/RelocationEquipmentTable/constants'
+import { relocationEquipmentTableTestUtils } from '_tests_/features/warehouses/components/RelocationEquipmentTable/testUtils'
+import { render, tableTestUtils } from '_tests_/helpers'
 
 import RelocationEquipmentTable from './index'
 
