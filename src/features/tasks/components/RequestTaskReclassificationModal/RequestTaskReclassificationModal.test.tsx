@@ -1,4 +1,4 @@
-import { ReclassificationReasonEnum } from 'features/tasks/constants/taskReclassificationRequest'
+import { ReclassificationReasonEnum } from 'features/tasks/api/constants'
 
 import { validationMessages } from 'shared/constants/validation'
 

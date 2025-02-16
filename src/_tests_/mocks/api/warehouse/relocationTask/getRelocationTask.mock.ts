@@ -1,6 +1,6 @@
-import { getRelocationTaskUrl } from 'features/relocationTasks/api/helpers'
-import { GetRelocationTaskResponse } from 'features/warehouses/api/dto'
-import { RequestWithRelocationTask } from 'features/warehouses/types'
+import { makeGetRelocationTaskApiPath } from 'features/relocationTasks/api/helpers'
+import { GetRelocationTaskResponse } from 'features/relocationTasks/api/schemas'
+import { RequestWithRelocationTask } from 'features/relocationTasks/api/types'
 
 import { ErrorData } from 'shared/api/baseApi'
 import { HttpMethodEnum } from 'shared/constants/http'
@@ -15,7 +15,7 @@ import {
 import { ResponseResolverOptions } from '_tests_/mocks/response'
 
 const getRelocationTaskMockFn = ({ relocationTaskId }: RequestWithRelocationTask) =>
-  getRequestMockFn(HttpMethodEnum.Get, getRelocationTaskUrl({ relocationTaskId }))
+  getRequestMockFn(HttpMethodEnum.Get, makeGetRelocationTaskApiPath({ relocationTaskId }))
 
 export const mockGetRelocationTaskSuccess = (
   { relocationTaskId }: RequestWithRelocationTask,

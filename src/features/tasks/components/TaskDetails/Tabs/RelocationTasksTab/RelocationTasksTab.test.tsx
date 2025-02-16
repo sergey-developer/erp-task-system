@@ -1,5 +1,5 @@
 import { within } from '@testing-library/react'
-import { getRelocationTasksErrorMessage } from 'features/relocationTasks/constants'
+import { getRelocationTasksErrorMessage } from 'features/relocationTasks/api/constants'
 import CreateRelocationTaskSimplifiedPage from 'features/relocationTasks/pages/CreateRelocationTaskSimplifiedPage'
 import RelocationTasksPage from 'features/relocationTasks/pages/RelocationTasksPage'
 import { TasksRoutesEnum } from 'features/tasks/routes/routes'
@@ -14,7 +14,7 @@ import { relocationTaskDetailsTestUtils } from '_tests_/features/warehouse/compo
 import { createDocumentsPackagePageTestUtils } from '_tests_/features/warehouse/pages/CreateDocumentsPackagePage/testUtils'
 import { createRelocationTaskSimplifiedPageTestUtils } from '_tests_/features/warehouse/pages/CreateRelocationTaskSimplifiedPage/testUtils'
 import commonFixtures from '_tests_/fixtures/common'
-import userFixtures from '_tests_/fixtures/user'
+import userFixtures from '_tests_/fixtures/users'
 import warehouseFixtures from '_tests_/fixtures/warehouse'
 import {
   mockGetCurrencyListSuccess,

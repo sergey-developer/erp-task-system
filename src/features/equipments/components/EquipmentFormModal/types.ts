@@ -1,22 +1,21 @@
 import { FormInstance, SelectProps, UploadProps } from 'antd'
 import { UploadFile } from 'antd/es/upload'
 import { EquipmentConditionEnum } from 'features/equipments/api/constants'
+import { EquipmentCategoriesDTO, EquipmentCategoryDTO } from 'features/equipments/api/dto'
+import { CreateEquipmentsBadRequestResponse } from 'features/equipments/api/schemas'
 import {
-  CreateEquipmentsBadRequestErrorResponse,
-  CustomersModel,
-  EquipmentCategoriesDTO,
-  EquipmentCategoryDTO,
   NomenclatureDetailDTO,
   NomenclatureDTO,
-  NomenclaturesModel,
-  WarehousesDTO,
-  WorkTypesCatalogDTO,
-} from 'features/warehouses/api/dto'
+  NomenclaturesDTO,
+} from 'features/nomenclatures/api/dto'
+import { WarehousesDTO } from 'features/warehouses/api/dto'
 
 import { BaseModalProps } from 'components/Modals/BaseModal'
 
-import { CurrenciesCatalogDTO } from 'shared/catalogs/api/dto/currencies'
-import { MacroregionsCatalogDTO } from 'shared/catalogs/api/dto/macroregions'
+import { CurrenciesCatalogDTO } from 'shared/catalogs/currencies/api/dto'
+import { CustomersCatalogDTO } from 'shared/catalogs/customers/api/dto'
+import { MacroregionsCatalogDTO } from 'shared/catalogs/macroregions/api/dto'
+import { WorkTypesCatalogDTO } from 'shared/catalogs/workTypes/api/dto'
 import { IdType } from 'shared/types/common'
 import { FileResponse } from 'shared/types/file'
 import { ArrayFirst } from 'shared/types/utils'
@@ -72,7 +71,7 @@ export type EquipmentFormModalProps = Required<
     currencies: CurrenciesCatalogDTO
     currenciesIsLoading: boolean
 
-    owners: CustomersModel
+    owners: CustomersCatalogDTO
     ownersIsLoading: boolean
     onChangeOwner: (id: IdType) => void
 
@@ -88,11 +87,11 @@ export type EquipmentFormModalProps = Required<
     >
     nomenclatureIsLoading: boolean
 
-    nomenclatures: NomenclaturesModel
+    nomenclatures: NomenclaturesDTO
     nomenclaturesIsLoading: boolean
     onChangeNomenclature: NonNullable<SelectProps<IdType, NomenclatureDTO>['onChange']>
 
     values?: Partial<Pick<EquipmentFormFields, 'title' | 'images'>>
     initialValues?: Partial<EquipmentFormFields>
-    errors?: ArrayFirst<CreateEquipmentsBadRequestErrorResponse>
+    errors?: ArrayFirst<CreateEquipmentsBadRequestResponse>
   }

@@ -1,10 +1,9 @@
 import { screen, within } from '@testing-library/react'
-
 import {
   getTaskJournalCsvErrorMessage,
   getTaskJournalErrorMessage,
   TaskJournalSourceEnum,
-} from 'features/tasks/constants/taskJournal'
+} from 'features/tasks/api/constants'
 
 import { commonApiMessages } from 'shared/constants/common'
 import { MimetypeEnum } from 'shared/constants/mimetype'
@@ -13,7 +12,7 @@ import * as downloadLink from 'shared/utils/file/downloadFile'
 import { journalEntryTestUtils } from '_tests_/features/tasks/components/TaskDetails/Tabs/JournalTab/JournalEntry/testUtils'
 import { props } from '_tests_/features/tasks/components/TaskDetails/Tabs/JournalTab/constants'
 import { journalTabTestUtils } from '_tests_/features/tasks/components/TaskDetails/Tabs/JournalTab/testUtils'
-import taskFixtures from '_tests_/fixtures/task'
+import taskFixtures from '_tests_/fixtures/tasks'
 import {
   mockGetJournalCsvServerError,
   mockGetJournalCsvSuccess,
@@ -204,7 +203,9 @@ describe('Вкладка журнала задачи', () => {
 
         expect(downloadFileSpy).not.toBeCalled()
 
-        const notification = await notificationTestUtils.findNotification(getTaskJournalCsvErrorMessage)
+        const notification = await notificationTestUtils.findNotification(
+          getTaskJournalCsvErrorMessage,
+        )
         expect(notification).toBeInTheDocument()
       })
     })
@@ -294,7 +295,9 @@ describe('Вкладка журнала задачи', () => {
         await journalTabTestUtils.expectJournalLoadingStarted()
         await journalTabTestUtils.expectJournalLoadingFinished()
 
-        const notification = await notificationTestUtils.findNotification(getTaskJournalErrorMessage)
+        const notification = await notificationTestUtils.findNotification(
+          getTaskJournalErrorMessage,
+        )
         expect(notification).toBeInTheDocument()
       })
 

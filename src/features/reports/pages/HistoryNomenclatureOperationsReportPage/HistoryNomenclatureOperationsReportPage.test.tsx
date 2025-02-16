@@ -16,7 +16,7 @@ import { historyNomenclatureOperationsReportPageTestUtils } from '_tests_/featur
 import catalogsFixtures from '_tests_/fixtures/catalogs'
 import commonFixtures from '_tests_/fixtures/common'
 import reportsFixtures from '_tests_/fixtures/reports'
-import userFixtures from '_tests_/fixtures/user'
+import userFixtures from '_tests_/fixtures/users'
 import warehouseFixtures from '_tests_/fixtures/warehouse'
 import {
   mockGetCustomerListSuccess,

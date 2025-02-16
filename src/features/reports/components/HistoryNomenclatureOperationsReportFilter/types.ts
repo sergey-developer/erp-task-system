@@ -1,9 +1,9 @@
 import { EquipmentConditionEnum } from 'features/equipments/api/constants'
-import { CustomersModel } from 'features/warehouses/api/dto'
 
 import { DrawerFilterProps } from 'components/Filters/DrawerFilter'
 
-import { LocationsCatalogDTO } from 'shared/catalogs/api/dto/locations'
+import { CustomersCatalogDTO } from 'shared/catalogs/customers/api/dto'
+import { LocationsCatalogDTO } from 'shared/catalogs/locations/api/dto'
 import { IdType } from 'shared/types/common'
 
 export type HistoryNomenclatureOperationsReportFilterFormFields = Partial<{
@@ -22,7 +22,7 @@ export type HistoryNomenclatureOperationsReportFilterProps = Pick<
   locations: LocationsCatalogDTO
   locationsIsLoading: boolean
 
-  owners: CustomersModel
+  owners: CustomersCatalogDTO
   ownersIsLoading: boolean
 
   onApply: (values: HistoryNomenclatureOperationsReportFilterFormFields) => void

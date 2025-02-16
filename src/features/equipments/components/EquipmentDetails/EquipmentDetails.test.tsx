@@ -25,7 +25,7 @@ import { equipmentRelocationHistoryModalTestUtils } from '_tests_/features/wareh
 import { relocationTaskDetailsTestUtils } from '_tests_/features/warehouse/components/RelocationTaskDetails/testUtils'
 import attachmentFixtures from '_tests_/fixtures/attachments'
 import commonFixtures from '_tests_/fixtures/common'
-import userFixtures from '_tests_/fixtures/user'
+import userFixtures from '_tests_/fixtures/users'
 import warehouseFixtures from '_tests_/fixtures/warehouse'
 import {
   mockGetCurrencyListSuccess,
@@ -671,7 +671,7 @@ describe('Информация об оборудовании', () => {
       test('При успешном запросе отображаются корректно', async () => {
         mockGetEquipmentSuccess(props.equipmentId, { body: warehouseFixtures.equipment() })
 
-        const attachmentList = attachmentFixtures.attachmentList()
+        const attachmentList = attachmentFixtures.attachments()
         mockGetEquipmentAttachmentListSuccess(props.equipmentId, {
           body: commonFixtures.paginatedListResponse(attachmentList),
         })
@@ -764,7 +764,7 @@ describe('Информация об оборудовании', () => {
           mockGetEquipmentSuccess(props.equipmentId, { body: warehouseFixtures.equipment() })
 
           const attachmentListResponse = commonFixtures.paginatedListResponse(
-            attachmentFixtures.attachmentList(),
+            attachmentFixtures.attachments(),
           )
           mockGetEquipmentAttachmentListSuccess(props.equipmentId, {
             body: attachmentListResponse,
@@ -789,7 +789,7 @@ describe('Информация об оборудовании', () => {
         test('Модалка отображается корректно', async () => {
           mockGetEquipmentSuccess(props.equipmentId, { body: warehouseFixtures.equipment() })
 
-          const attachmentList = attachmentFixtures.attachmentList()
+          const attachmentList = attachmentFixtures.attachments()
           mockGetEquipmentAttachmentListSuccess(props.equipmentId, {
             body: commonFixtures.paginatedListResponse(attachmentList),
             once: false,

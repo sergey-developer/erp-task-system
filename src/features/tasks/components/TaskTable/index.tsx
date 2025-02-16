@@ -1,15 +1,14 @@
 import useBreakpoint from 'antd/es/grid/hooks/useBreakpoint'
 import { ColumnsType, ColumnType } from 'antd/es/table'
+import { DEFAULT_PAGE_SIZE } from 'features/tasks/pages/TasksPage/constants'
 import isEmpty from 'lodash/isEmpty'
 import { CSSProperties, forwardRef, useEffect, useMemo, useState } from 'react'
 import { ResizableProps } from 'react-resizable'
 
-import { DEFAULT_PAGE_SIZE } from 'features/tasks/pages/TasksPage/constants'
-
 import { localeConfig } from './constants/common'
 import components from './constants/components'
 import { TableStyled } from './styles'
-import { TaskTableListItem, TaskTableProps } from './types'
+import { TaskTableItem, TaskTableProps } from './types'
 import { applySortToColumn, applyWidthToColumn, getColumns } from './utils'
 
 // todo: создать функционал для переиспользования
@@ -18,7 +17,7 @@ const tableWrapperStyles: Pick<CSSProperties, 'height'> = { height: 'calc(100vh 
 const TaskTable = forwardRef<HTMLDivElement, TaskTableProps>(
   ({ sort, pagination, ...props }, ref) => {
     const breakpoints = useBreakpoint()
-    const [columns, setColumns] = useState<ColumnsType<TaskTableListItem>>(getColumns())
+    const [columns, setColumns] = useState<ColumnsType<TaskTableItem>>(getColumns())
 
     const handleResize =
       (index: number): ResizableProps['onResize'] =>
@@ -38,7 +37,7 @@ const TaskTable = forwardRef<HTMLDivElement, TaskTableProps>(
       setColumns((prevColumns) =>
         prevColumns.map((col, index) => ({
           ...col,
-          onHeaderCell: (col: ColumnType<TaskTableListItem>) => ({
+          onHeaderCell: (col: ColumnType<TaskTableItem>) => ({
             width: col.width,
             onResize: handleResize(index),
           }),
@@ -63,7 +62,7 @@ const TaskTable = forwardRef<HTMLDivElement, TaskTableProps>(
 
     return (
       <div data-testid='task-table' ref={ref} style={tableWrapperStyles}>
-        <TableStyled<TaskTableListItem>
+        <TableStyled<TaskTableItem>
           {...props}
           components={components}
           columns={sortedColumns}

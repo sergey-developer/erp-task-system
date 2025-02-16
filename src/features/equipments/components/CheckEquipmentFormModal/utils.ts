@@ -1,10 +1,10 @@
-import { EquipmentDetailDTO } from 'features/warehouses/api/dto'
+import { EquipmentDetailDTO } from 'features/equipments/api/dto'
+import { CheckInventorizationEquipmentsTableRow } from 'features/inventorizations/components/CheckInventorizationEquipmentsTable/types'
 import isBoolean from 'lodash/isBoolean'
 import isNumber from 'lodash/isNumber'
 
 import { undefinedSelectOption } from 'shared/constants/selectField'
 
-import { CheckInventorizationEquipmentsTableRow } from '../../../inventorizations/components/CheckInventorizationEquipmentsTable/types'
 import { CheckEquipmentFormModalProps } from './types'
 
 export const getCheckEquipmentFormInitialValues = (

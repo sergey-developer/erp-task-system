@@ -6,8 +6,8 @@ import { validationMessages } from 'shared/constants/validation'
 
 import { props } from '_tests_/features/equipment/components/CheckEquipmentFormModal/constants'
 import { checkEquipmentFormModalTestUtils as testUtils } from '_tests_/features/equipment/components/CheckEquipmentFormModal/utils'
-import currencyFixtures from '_tests_/fixtures/currency'
-import macroregionFixtures from '_tests_/fixtures/macroregion'
+import currencyFixtures from '_tests_/fixtures/currencies'
+import macroregionFixtures from '_tests_/fixtures/macroregions'
 import warehouseFixtures from '_tests_/fixtures/warehouse'
 import { fakeInteger, fakeWord, render } from '_tests_/utils'
 

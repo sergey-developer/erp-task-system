@@ -1,9 +1,9 @@
 import { GetTasksSortKey, GetTasksSortValue } from 'features/tasks/api/schemas'
 
-import { TaskTableListItem } from '../types'
+import { TaskTableItem } from '../types'
 
 export type SortableField = keyof Pick<
-  TaskTableListItem,
+  TaskTableItem,
   | 'id'
   | 'name'
   | 'title'

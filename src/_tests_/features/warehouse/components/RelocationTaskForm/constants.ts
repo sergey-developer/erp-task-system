@@ -1,5 +1,5 @@
+import { RelocationTaskTypeEnum } from 'features/relocationTasks/api/constants'
 import { RelocationTaskFormProps } from 'features/relocationTasks/components/RelocationTaskForm/types'
-import { RelocationTaskTypeEnum } from 'features/relocationTasks/constants'
 
 export const props: RelocationTaskFormProps = {
   isLoading: false,

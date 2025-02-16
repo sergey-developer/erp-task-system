@@ -1,6 +1,6 @@
 import { Badge, Col, Layout, Row, Select, Space, Typography } from 'antd'
 import LogoutButton from 'features/auth/components/LogoutButton'
-import { MonitoringRoutesEnum } from 'features/monitoring/constants'
+import { MonitoringRoutesEnum } from 'features/monitoring/routes/routes'
 import { taskLocalStorageService } from 'features/tasks/services/taskLocalStorageService/taskLocalStorage.service'
 import { updateUserStatusMessages, updateUserTimeZoneMessages } from 'features/users/api/constants'
 import { UserDetailDTO } from 'features/users/api/dto'

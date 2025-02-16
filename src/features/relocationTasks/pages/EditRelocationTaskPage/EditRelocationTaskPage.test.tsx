@@ -6,7 +6,7 @@ import {
 import { UserPermissionsEnum } from 'features/users/api/constants'
 import * as reactRouterDom from 'react-router-dom'
 
-import { LocationTypeEnum } from 'shared/catalogs/constants'
+import { LocationTypeEnum } from 'shared/catalogs/locations/api/constants'
 import { MimetypeEnum } from 'shared/constants/mimetype'
 import * as base64Utils from 'shared/utils/common/base64'
 import * as downloadFileUtils from 'shared/utils/file/downloadFile'
@@ -17,7 +17,7 @@ import { relocationTaskFormTestUtils } from '_tests_/features/warehouse/componen
 import { relocationTaskId } from '_tests_/features/warehouse/pages/EditRelocationTaskPage/constants'
 import { editRelocationTaskPageTestUtils } from '_tests_/features/warehouse/pages/EditRelocationTaskPage/testUtils'
 import catalogsFixtures from '_tests_/fixtures/catalogs'
-import userFixtures from '_tests_/fixtures/user'
+import userFixtures from '_tests_/fixtures/users'
 import warehouseFixtures from '_tests_/fixtures/warehouse'
 import {
   mockCreateAttachmentSuccess,
@@ -295,7 +295,9 @@ describe('Страница редактирования заявки на пер
       })
 
       await editRelocationTaskPageTestUtils.clickDownloadTemplateButton(user)
-      const notification = await notificationTestUtils.findNotification(getEquipmentsTemplateErrorMessage)
+      const notification = await notificationTestUtils.findNotification(
+        getEquipmentsTemplateErrorMessage,
+      )
 
       expect(notification).toBeInTheDocument()
     })

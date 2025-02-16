@@ -1,6 +1,6 @@
 import { useBoolean, useSetState } from 'ahooks'
 import { Button } from 'antd'
-import { relocationTasksFilterToRequestArgs } from 'features/relocationTasks/api/helpers'
+import { RelocationTaskStatusEnum } from 'features/relocationTasks/api/constants'
 import { GetRelocationTasksRequest } from 'features/relocationTasks/api/schemas'
 import RelocationTaskTable from 'features/relocationTasks/components/RelocationTaskTable'
 import {
@@ -10,14 +10,16 @@ import {
 } from 'features/relocationTasks/components/RelocationTaskTable/sort'
 import { RelocationTaskTableProps } from 'features/relocationTasks/components/RelocationTaskTable/types'
 import { RelocationTasksFilterFormFields } from 'features/relocationTasks/components/RelocationTasksFilter/types'
-import { RelocationTaskStatusEnum } from 'features/relocationTasks/constants'
-import { makeRelocationTasksPageLink } from 'features/relocationTasks/helpers'
+import {
+  makeRelocationTasksPageLink,
+  relocationTasksFilterToRequestArgs,
+} from 'features/relocationTasks/helpers'
 import {
   useGetRelocationTasks,
   useNavigateToCreateRelocationTaskSimplifiedPage,
 } from 'features/relocationTasks/hooks'
-import { useGetTask, useGetTasks } from 'features/tasks/hooks'
 import { GetTasksRequest } from 'features/tasks/api/schemas'
+import { useGetTask, useGetTasks } from 'features/tasks/hooks'
 import { UserPermissionsEnum } from 'features/users/api/constants'
 import { useGetUsers, useUserPermissions } from 'features/users/hooks'
 import { WarehousesRoutesEnum } from 'features/warehouses/routes/routes'
@@ -29,7 +31,7 @@ import FilterButton from 'components/Buttons/FilterButton'
 import ModalFallback from 'components/Modals/ModalFallback'
 import Space from 'components/Space'
 
-import { useGetLocationsCatalog } from 'shared/catalogs/hooks/locations'
+import { useGetLocationsCatalog } from 'shared/catalogs/locations/hooks'
 import { DEFAULT_DEBOUNCE_VALUE } from 'shared/constants/common'
 import { useDebounceFn } from 'shared/hooks/useDebounceFn'
 import { IdType } from 'shared/types/common'

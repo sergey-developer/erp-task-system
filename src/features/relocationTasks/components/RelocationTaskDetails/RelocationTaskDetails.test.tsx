@@ -49,7 +49,7 @@ import { relocationTaskDetailsTestUtils } from '_tests_/features/warehouse/compo
 import { returnRelocationTaskToReworkModalTestUtils } from '_tests_/features/warehouse/components/ReturnRelocationTaskToReworkModal/testUtils'
 import { createDocumentsPackagePageTestUtils } from '_tests_/features/warehouse/pages/CreateDocumentsPackagePage/testUtils'
 import { editRelocationTaskDraftPageTestUtils } from '_tests_/features/warehouse/pages/EditRelocationTaskDraftPage/testUtils'
-import userFixtures from '_tests_/fixtures/user'
+import userFixtures from '_tests_/fixtures/users'
 import warehouseFixtures from '_tests_/fixtures/warehouse'
 import {
   mockCancelRelocationTaskBadRequestError,
@@ -685,7 +685,7 @@ describe('Информация о заявке о перемещении', () =>
   describe('Перечень оборудования', () => {
     test('При успешном запросе отображается', async () => {
       mockGetRelocationTaskSuccess({ relocationTaskId: props.relocationTaskId })
-      const relocationEquipmentList = warehouseFixtures.relocationEquipmentList()
+      const relocationEquipmentList = warehouseFixtures.relocationEquipments()
       mockGetRelocationEquipmentListSuccess(
         { relocationTaskId: props.relocationTaskId },
         {

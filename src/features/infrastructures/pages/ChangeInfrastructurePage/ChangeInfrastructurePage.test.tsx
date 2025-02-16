@@ -24,9 +24,9 @@ import { taskTableTestUtils } from '_tests_/features/tasks/components/TaskTable/
 import { tasksPageTestUtils } from '_tests_/features/tasks/pages/TasksPage/testUtils'
 import commonFixtures from '_tests_/fixtures/common'
 import infrastructuresFixtures from '_tests_/fixtures/infrastructures'
-import taskFixtures from '_tests_/fixtures/task'
+import taskFixtures from '_tests_/fixtures/tasks'
 import { fakeUseLocationResult } from '_tests_/fixtures/useLocation'
-import userFixtures from '_tests_/fixtures/user'
+import userFixtures from '_tests_/fixtures/users'
 import {
   mockGetInfrastructureOrdersFormsSuccess,
   mockGetInfrastructureStatusHistorySuccess,

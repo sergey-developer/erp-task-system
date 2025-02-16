@@ -8,7 +8,7 @@ import { ReportsRoutesEnum } from 'features/reports/routes/routes'
 import { UserPermissionsEnum } from 'features/users/api/constants'
 import React from 'react'
 
-import userFixtures from '_tests_/fixtures/user'
+import userFixtures from '_tests_/fixtures/users'
 import {
   mockGetCustomerListSuccess,
   mockGetFiscalAccumulatorTasksSuccess,

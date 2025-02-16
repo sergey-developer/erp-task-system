@@ -1,4 +1,4 @@
-import { makeGetInfrastructureEndpoint } from 'features/infrastructures/api/helpers'
+import { makeGetInfrastructureApiPath } from 'features/infrastructures/api/helpers'
 import { GetInfrastructureResponse } from 'features/infrastructures/api/schemas'
 import { RequestWithInfrastructure } from 'features/infrastructures/api/types'
 

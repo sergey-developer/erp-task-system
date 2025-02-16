@@ -16,9 +16,9 @@ import { amountEquipmentSpentReportPageTestUtils } from '_tests_/features/wareho
 import catalogsFixtures from '_tests_/fixtures/catalogs'
 import commonFixtures from '_tests_/fixtures/common'
 import reportsFixtures from '_tests_/fixtures/reports'
-import taskFixtures from '_tests_/fixtures/task'
+import taskFixtures from '_tests_/fixtures/tasks'
 import { fakeUseLocationResult } from '_tests_/fixtures/useLocation'
-import userFixtures from '_tests_/fixtures/user'
+import userFixtures from '_tests_/fixtures/users'
 import warehouseFixtures from '_tests_/fixtures/warehouse'
 import {
   mockGetAmountEquipmentSpentReportSuccess,

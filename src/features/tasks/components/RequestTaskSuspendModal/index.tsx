@@ -12,18 +12,13 @@ import {
   Space,
   Typography,
 } from 'antd'
+import { ExternalResponsibleCompanyEnum, SuspendReasonEnum } from 'features/tasks/api/constants'
+import { organizationOptions, suspendReasonDict } from 'features/tasks/constants'
 import isEqual from 'lodash/isEqual'
 import moment from 'moment-timezone'
 import React, { FC } from 'react'
 
 import { TIME_PICKER_FORMAT } from 'lib/antd/constants/dateTimePicker'
-
-import {
-  ExternalResponsibleCompanyEnum,
-  organizationOptions,
-  suspendReasonDict,
-  SuspendReasonEnum,
-} from 'features/tasks/constants/taskSuspendRequest'
 
 import DatePicker from 'components/DatePicker'
 import BaseModal from 'components/Modals/BaseModal'

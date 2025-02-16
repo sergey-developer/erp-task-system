@@ -6,9 +6,9 @@ import moment from 'moment-timezone'
 
 import { props } from '_tests_/features/tasks/components/TasksFilter/constants'
 import { tasksFilterTestUtils } from '_tests_/features/tasks/components/TasksFilter/testUtils'
-import macroregionFixtures from '_tests_/fixtures/macroregion'
-import supportGroupFixtures from '_tests_/fixtures/supportGroup'
-import userFixtures from '_tests_/fixtures/user'
+import macroregionFixtures from '_tests_/fixtures/macroregions'
+import supportGroupFixtures from '_tests_/fixtures/supportGroups'
+import userFixtures from '_tests_/fixtures/users'
 import warehouseFixtures from '_tests_/fixtures/warehouse'
 import workGroupFixtures from '_tests_/fixtures/workGroup'
 import {
@@ -91,7 +91,7 @@ describe('Расширенный фильтр', () => {
   describe('Группа поддержки', () => {
     describe('Клиенты', () => {
       test('Отображается корректно', async () => {
-        const customerList = warehouseFixtures.customerList()
+        const customerList = warehouseFixtures.customers()
         const { user } = render(<TasksFilter {...props} customers={customerList} />)
 
         const field = tasksFilterTestUtils.getCustomersSelect()

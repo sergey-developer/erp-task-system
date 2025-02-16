@@ -2,7 +2,7 @@ import { TechnicalExaminationDTO } from 'features/technicalExaminations/api/dto'
 import isUndefined from 'lodash/isUndefined'
 import pick from 'lodash/pick'
 
-import userFixtures from '_tests_/fixtures/user'
+import userFixtures from '_tests_/fixtures/users'
 import { fakeDateString, fakeId, fakeInteger, fakeWord } from '_tests_/utils'
 
 export const technicalExaminationListItem = (

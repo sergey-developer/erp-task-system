@@ -1,10 +1,7 @@
 import { screen, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
-
-import {
-  equipmentConditionDict,
-  EquipmentConditionEnum,
-} from 'features/equipments/api/constants'
+import { EquipmentConditionEnum } from 'features/equipments/api/constants'
+import { equipmentConditionDict } from 'features/equipments/constants'
 
 import catalogsFixtures from '_tests_/fixtures/catalogs'
 import warehouseFixtures from '_tests_/fixtures/warehouse'
@@ -22,7 +19,7 @@ const props: Readonly<HistoryNomenclatureOperationsReportFilterProps> = {
   locations: catalogsFixtures.locationsCatalog(2),
   locationsIsLoading: false,
 
-  owners: warehouseFixtures.customerList(2),
+  owners: warehouseFixtures.customers(2),
   ownersIsLoading: false,
 
   onClose: jest.fn(),

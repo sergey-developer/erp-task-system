@@ -1,4 +1,4 @@
-import { makeDeleteAttachmentEndpoint } from 'features/attachments/api/helpers'
+import { makeDeleteAttachmentApiPath } from 'features/attachments/api/helpers'
 import { DeleteAttachmentResponse } from 'features/attachments/api/schemas'
 
 import { ErrorData } from 'shared/api/baseApi'

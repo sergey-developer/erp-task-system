@@ -1,10 +1,6 @@
 import { within } from '@testing-library/react'
-
-import {
-  EquipmentCategoryEnum,
-  equipmentConditionDict,
-  EquipmentConditionEnum,
-} from 'features/equipments/api/constants'
+import { EquipmentCategoryEnum, EquipmentConditionEnum } from 'features/equipments/api/constants'
+import { equipmentConditionDict } from 'features/equipments/constants'
 
 import { yesNoOptions } from 'shared/constants/selectField'
 import { validationMessages } from 'shared/constants/validation'
@@ -14,8 +10,8 @@ import {
   props,
 } from '_tests_/features/warehouse/components/EquipmentFormModal/constants'
 import { equipmentFormModalTestUtils } from '_tests_/features/warehouse/components/EquipmentFormModal/testUtils'
-import currencyFixtures from '_tests_/fixtures/currency'
-import macroregionFixtures from '_tests_/fixtures/macroregion'
+import currencyFixtures from '_tests_/fixtures/currencies'
+import macroregionFixtures from '_tests_/fixtures/macroregions'
 import warehouseFixtures from '_tests_/fixtures/warehouse'
 import { fakeInteger, fakeWord, render } from '_tests_/utils'
 

@@ -1,6 +1,6 @@
 import { TaskListProps } from 'features/tasks/components/TaskList/types'
 
-import taskFixtures from '_tests_/fixtures/task/index'
+import taskFixtures from '_tests_/fixtures/tasks/index'
 
 export const taskListItem = taskFixtures.taskListItem()
 

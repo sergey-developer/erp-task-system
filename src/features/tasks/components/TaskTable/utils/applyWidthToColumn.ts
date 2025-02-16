@@ -9,12 +9,12 @@ import {
   XxlColumnWidthMap,
   xxlColumnWidthMap,
 } from '../constants/columnWidth'
-import { TaskTableListItem } from '../types'
+import { TaskTableItem } from '../types'
 
 export const applyWidthToColumn = (
-  column: ColumnType<TaskTableListItem>,
+  column: ColumnType<TaskTableItem>,
   breakpoints: ScreenMap,
-): ColumnType<TaskTableListItem> => {
+): ColumnType<TaskTableItem> => {
   const defaultWidth = defaultColumnWidthMap[(column.key || column.dataIndex) as AllColumnWidthMap]
 
   const colWidth: MaybeUndefined<number> = breakpoints.xxl

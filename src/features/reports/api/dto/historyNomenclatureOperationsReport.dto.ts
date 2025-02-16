@@ -1,5 +1,5 @@
 import { EquipmentConditionEnum } from 'features/equipments/api/constants'
-import { RelocationTaskDetailDTO } from 'features/warehouses/api/dto'
+import { RelocationTaskDetailDTO } from 'features/relocationTasks/api/dto'
 
 import { LocationCatalogItemDTO } from 'shared/catalogs/locations/api/dto'
 import { IdType } from 'shared/types/common'

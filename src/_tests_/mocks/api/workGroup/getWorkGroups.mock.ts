@@ -1,6 +1,6 @@
 import { HttpMethodEnum } from 'shared/constants/http'
 import { WorkGroupsApiPathsEnum } from 'shared/workGroups/api/constants'
-import { GetWorkGroupsResponse } from 'shared/workGroups/api/dto'
+import { GetWorkGroupsResponse } from 'shared/workGroups/api/schemas'
 
 import { getRequestMockFn, getServerErrorMockFn, getSuccessMockFn } from '_tests_/mocks/request'
 import { ResponseResolverOptions } from '_tests_/mocks/response'

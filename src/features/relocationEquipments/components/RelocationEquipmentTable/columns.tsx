@@ -1,7 +1,6 @@
 import { Button } from 'antd'
 import { ColumnsType } from 'antd/es/table'
-
-import { equipmentConditionDict } from 'features/equipments/api/constants'
+import { equipmentConditionDict } from 'features/equipments/constants'
 
 import { valueOr } from 'shared/utils/common'
 

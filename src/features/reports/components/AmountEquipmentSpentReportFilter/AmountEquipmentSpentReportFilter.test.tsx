@@ -13,7 +13,7 @@ const props: Readonly<AmountEquipmentSpentReportFilterProps> = {
   values: {},
   initialValues: {},
 
-  categories: warehouseFixtures.equipmentCategoryList(2),
+  categories: warehouseFixtures.equipmentCategories(2),
   categoriesIsLoading: false,
 
   onClose: jest.fn(),

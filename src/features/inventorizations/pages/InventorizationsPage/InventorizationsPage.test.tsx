@@ -1,9 +1,11 @@
 import {
   getInventorizationsErrorMessage,
-  inventorizationStatusDict,
   InventorizationStatusEnum,
-  inventorizationTypeDict,
   InventorizationTypeEnum,
+} from 'features/inventorizations/api/constants'
+import {
+  inventorizationStatusDict,
+  inventorizationTypeDict,
 } from 'features/inventorizations/constants'
 
 import { ariaSortAttrAscValue, ariaSortAttrName } from '_tests_/constants/components'
@@ -12,7 +14,7 @@ import { inventorizationTableTestUtils } from '_tests_/features/warehouse/compon
 import { inventorizationsFilterTestUtils } from '_tests_/features/warehouse/components/InventorizationsFilter/testUtils'
 import { inventorizationsPageTestUtils } from '_tests_/features/warehouse/pages/InventorizationsPage/testUtils'
 import commonFixtures from '_tests_/fixtures/common'
-import userFixtures from '_tests_/fixtures/user'
+import userFixtures from '_tests_/fixtures/users'
 import warehouseFixtures from '_tests_/fixtures/warehouse'
 import {
   mockGetInventorizationsForbiddenError,

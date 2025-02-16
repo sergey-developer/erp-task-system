@@ -1,8 +1,9 @@
 import { EquipmentConditionEnum } from 'features/equipments/api/constants'
-import { CustomersModel, EquipmentCategoriesDTO } from 'features/warehouses/api/dto'
+import { EquipmentCategoriesDTO } from 'features/equipments/api/dto'
 import { Moment } from 'moment-timezone'
 
-import { LocationsCatalogDTO } from 'shared/catalogs/api/dto/locations'
+import { CustomersCatalogDTO } from 'shared/catalogs/customers/api/dto'
+import { LocationsCatalogDTO } from 'shared/catalogs/locations/api/dto'
 import { EmptyFn } from 'shared/types/utils'
 
 export type EquipmentsFilterFormFields = Partial<{
@@ -31,7 +32,7 @@ export type EquipmentFilterProps = {
   categories: EquipmentCategoriesDTO
   categoriesIsLoading: boolean
 
-  owners: CustomersModel
+  owners: CustomersCatalogDTO
   ownersIsLoading: boolean
 
   onApply: (values: EquipmentsFilterFormFields) => void

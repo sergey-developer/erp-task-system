@@ -1,9 +1,7 @@
 import { screen, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
-import {
-  reclassificationReasonDict,
-  ReclassificationReasonEnum,
-} from 'features/tasks/constants/taskReclassificationRequest/index'
+import { ReclassificationReasonEnum } from 'features/tasks/api/constants'
+import { reclassificationReasonDict } from 'features/tasks/constants'
 
 import { TestIdsEnum } from '_tests_/features/tasks/components/RequestTaskReclassificationModal/constants'
 import { buttonTestUtils, radioButtonTestUtils } from '_tests_/utils'

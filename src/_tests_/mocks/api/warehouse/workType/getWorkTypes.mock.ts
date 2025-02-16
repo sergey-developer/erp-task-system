@@ -1,6 +1,5 @@
-import { CatalogApiPathsEnum } from 'features/warehouses/constants/workType'
-import { GetWorkTypesCatalogResponse } from 'features/warehouses/api/dto'
-
+import { CatalogApiPathsEnum } from 'shared/catalogs/api/constants'
+import { GetWorkTypesCatalogResponse } from 'shared/catalogs/workTypes/api/schemas'
 import { HttpMethodEnum } from 'shared/constants/http'
 
 import { getRequestMockFn, getSuccessMockFn } from '_tests_/mocks/request'

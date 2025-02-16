@@ -1,5 +1,5 @@
-import { getRelocationEquipmentBalanceListUrl } from 'features/relocationTasks/api/helpers'
-import { GetRelocationEquipmentBalancesResponse } from 'features/warehouses/api/dto'
+import { makeGetRelocationEquipmentBalancesApiPath } from 'features/relocationTasks/api/helpers'
+import { GetRelocationEquipmentBalancesResponse } from 'features/relocationTasks/api/schemas'
 
 import { ErrorData } from 'shared/api/baseApi'
 import { HttpMethodEnum } from 'shared/constants/http'
@@ -15,7 +15,7 @@ import {
 import { ResponseResolverOptions } from '_tests_/mocks/response'
 
 const getRelocationEquipmentBalanceListMockFn = (id: IdType) =>
-  getRequestMockFn(HttpMethodEnum.Get, getRelocationEquipmentBalanceListUrl(id))
+  getRequestMockFn(HttpMethodEnum.Get, makeGetRelocationEquipmentBalancesApiPath(id))
 
 export const mockGetRelocationEquipmentBalanceListSuccess = (
   id: IdType,

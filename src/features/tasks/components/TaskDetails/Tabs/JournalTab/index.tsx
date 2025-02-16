@@ -89,7 +89,7 @@ const JournalTab: FC<JournalTabProps> = ({ taskId }) => {
                 <Select
                   {...selectProps}
                   data-testid='type-filter-select'
-                  style={{ width: taskJournalRequest.types?.length ? '100%' : 150 }}
+                  style={{ width: taskJournalRequestArgs.types?.length ? '100%' : 150 }}
                   placeholder='Выберите тип'
                   mode='multiple'
                   filterOption={filterOptionBy('label')}

@@ -30,10 +30,6 @@ import {
   useGetEquipmentCategories,
   useGetEquipmentsCatalog,
 } from 'features/equipments/hooks'
-import {
-  checkInventorizationStatusIsInProgress,
-  checkInventorizationStatusIsNew,
-} from 'features/inventorizations/api/helpers'
 import { CheckInventorizationEquipmentsModalProps } from 'features/inventorizations/components/CheckInventorizationEquipmentsModal'
 import { CheckInventorizationEquipmentsTableRow } from 'features/inventorizations/components/CheckInventorizationEquipmentsTable/types'
 import {
@@ -42,6 +38,10 @@ import {
 } from 'features/inventorizations/components/CreateInventorizationEquipmentModal/types'
 import ReviseInventorizationEquipmentTable from 'features/inventorizations/components/ReviseInventorizationEquipmentTable'
 import { ReviseInventorizationEquipmentTableProps } from 'features/inventorizations/components/ReviseInventorizationEquipmentTable/types'
+import {
+  checkInventorizationStatusIsInProgress,
+  checkInventorizationStatusIsNew,
+} from 'features/inventorizations/helpers'
 import {
   useCheckInventorizationEquipments,
   useCheckInventorizationEquipmentsTemplate,

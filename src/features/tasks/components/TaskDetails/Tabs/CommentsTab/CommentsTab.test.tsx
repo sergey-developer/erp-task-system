@@ -1,12 +1,12 @@
 import { within } from '@testing-library/react'
-import { createTaskCommentErrorMessage } from 'features/tasks/constants/taskComment'
+import { createTaskCommentErrorMessage } from 'features/tasks/api/constants'
 import { UserPermissionsEnum } from 'features/users/api/constants'
 
 import { commentsTestUtils } from '_tests_/features/tasks/components/TaskDetails/Tabs/CommentsTab/Comments/testUtils'
 import { createCommentFormTestUtils } from '_tests_/features/tasks/components/TaskDetails/Tabs/CommentsTab/CreateCommentForm/testUtils'
 import { props } from '_tests_/features/tasks/components/TaskDetails/Tabs/CommentsTab/constants'
 import { commentsTabTestUtils } from '_tests_/features/tasks/components/TaskDetails/Tabs/CommentsTab/testUtils'
-import taskFixtures from '_tests_/fixtures/task'
+import taskFixtures from '_tests_/fixtures/tasks'
 import {
   mockCreateTaskCommentBadRequestError,
   mockCreateTaskCommentForbiddenError,
@@ -260,7 +260,7 @@ describe('Вкладка списка комментариев заявки', ()
           detail: [fakeWord()],
         }
         mockCreateTaskCommentBadRequestError<CreateCommentFormFields>(props.taskId, {
-          body: badRequestErrorResponse,
+          body: badRequestResponse,
         })
 
         const { user } = render(<CommentsTab {...props} />, {
@@ -279,15 +279,15 @@ describe('Вкладка списка комментариев заявки', ()
         await createCommentFormTestUtils.expectLoadingFinished()
 
         const commentError = await createCommentFormTestUtils.findCommentError(
-          badRequestErrorResponse.comment[0],
+          badRequestResponse.comment[0],
         )
 
         const attachmentsError = await createCommentFormTestUtils.findAttachmentsError(
-          badRequestErrorResponse.attachments[0],
+          badRequestResponse.attachments[0],
         )
 
         const detailError = await notificationTestUtils.findNotification(
-          badRequestErrorResponse.detail[0],
+          badRequestResponse.detail[0],
         )
 
         expect(commentError).toBeInTheDocument()

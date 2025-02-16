@@ -4,7 +4,6 @@ import ReadonlyField from 'features/relocationTasks/components/RelocationTaskDet
 import { TaskDetailDTO } from 'features/tasks/api/dto'
 import { useTaskStatus } from 'features/tasks/hooks'
 import { MatchedUserPermissions } from 'features/users/types'
-import { WorkTypesCatalogDTO } from 'features/warehouses/api/dto'
 import React, { FC } from 'react'
 
 import Expandable from 'components/Expandable'
@@ -12,6 +11,7 @@ import { MapPointIcon } from 'components/Icons'
 import Label from 'components/Label'
 import Space from 'components/Space'
 
+import { WorkTypesCatalogDTO } from 'shared/catalogs/workTypes/api/dto'
 import { idAndTitleSelectFieldNames } from 'shared/constants/selectField'
 import { useDebounceFn } from 'shared/hooks/useDebounceFn'
 import { IdType } from 'shared/types/common'

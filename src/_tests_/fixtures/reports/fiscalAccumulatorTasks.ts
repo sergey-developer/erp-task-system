@@ -10,8 +10,8 @@ import {
   fakeWord,
 } from '_tests_/utils'
 
-import taskFixtures from '../task'
-import userFixtures from '../user'
+import taskFixtures from '../tasks'
+import userFixtures from '../users'
 
 export const fiscalAccumulatorTaskListItem = (
   props?: Partial<Pick<FiscalAccumulatorTaskDTO, 'faFormat'>>,

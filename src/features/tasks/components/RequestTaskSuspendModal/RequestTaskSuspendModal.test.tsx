@@ -1,13 +1,9 @@
 import { within } from '@testing-library/react'
+import { ExternalResponsibleCompanyEnum, SuspendReasonEnum } from 'features/tasks/api/constants'
+import { externalResponsibleCompanyDict } from 'features/tasks/constants'
 import moment from 'moment-timezone'
 
 import { DATE_PICKER_FORMAT, TIME_PICKER_FORMAT } from 'lib/antd/constants/dateTimePicker'
-
-import {
-  externalResponsibleCompanyDict,
-  ExternalResponsibleCompanyEnum,
-  SuspendReasonEnum,
-} from 'features/tasks/constants/taskSuspendRequest'
 
 import { validationMessages } from 'shared/constants/validation'
 import { formatDate } from 'shared/utils/date'

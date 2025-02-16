@@ -1,7 +1,6 @@
-import { RequestWithRelocationTask } from 'features/warehouses/types'
+import { RequestWithRelocationTask } from 'features/relocationTasks/api/types'
 
 import { RelocationTaskDetailDTO } from '../dto'
 
 export type MoveRelocationTaskDraftToWorkRequest = RequestWithRelocationTask
-
 export type MoveRelocationTaskDraftToWorkResponse = Pick<RelocationTaskDetailDTO, 'status'>

@@ -4,7 +4,7 @@ import { PauseCircleIcon } from 'components/Icons/index'
 
 import { ArrayFirst } from 'shared/types/utils'
 
-import userFixtures from '_tests_/fixtures/user/index'
+import userFixtures from '_tests_/fixtures/users/index'
 import { fakeDateString, fakeWord } from '_tests_/utils/index'
 
 export const action: ArrayFirst<TaskRequestProps['actions']> = {

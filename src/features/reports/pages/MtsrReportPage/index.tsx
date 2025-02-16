@@ -1,6 +1,6 @@
 import { useSetState } from 'ahooks'
 import { Col, Flex, Radio, RadioGroupProps, Row } from 'antd'
-import { GetMtsrReportBaseRequest } from 'features/reports/api/types'
+import { GetMtsrReportBaseRequest } from 'features/reports/api/schemas'
 import MtsrReportForm from 'features/reports/components/MtsrReportForm'
 import { MtsrReportFormProps } from 'features/reports/components/MtsrReportForm/types'
 import MtsrReportTable from 'features/reports/components/MtsrReportTable'
@@ -53,14 +53,14 @@ const MtsrReportPage: FC = () => {
     useSetState<GetMtsrReportBaseRequest>(getMtsrReportInitialRequest)
 
   const { currentData: macroregionsMtsrReport = [], isFetching: macroregionsMtsrReportIsFetching } =
-    useGetMacroregionsMtsrReport(baseMtsrReportRequest, { skip: !isMacroregionsReportLevel })
+    useGetMacroregionsMtsrReport(baseMtsrReportRequestArgs, { skip: !isMacroregionsReportLevel })
 
   const {
     currentData: supportGroupsMtsrReport = [],
     isFetching: supportGroupsMtsrReportIsFetching,
   } = useGetSupportGroupsMtsrReport(
     {
-      ...baseMtsrReportRequest,
+      ...baseMtsrReportRequestArgs,
       macroregions: selectedReportLevelObjects[MtsrReportLevelEnum.Macroregions],
     },
     { skip: !isSupportGroupsReportLevel },
@@ -69,7 +69,7 @@ const MtsrReportPage: FC = () => {
   const { currentData: workGroupsMtsrReport = [], isFetching: workGroupsMtsrReportIsFetching } =
     useGetWorkGroupsMtsrReport(
       {
-        ...baseMtsrReportRequest,
+        ...baseMtsrReportRequestArgs,
         macroregions: selectedReportLevelObjects[MtsrReportLevelEnum.Macroregions],
         supportGroups: selectedReportLevelObjects[MtsrReportLevelEnum.SupportGroups],
       },
@@ -79,7 +79,7 @@ const MtsrReportPage: FC = () => {
   const { currentData: usersMtsrReport = [], isFetching: usersMtsrReportIsFetching } =
     useGetUsersMtsrReport(
       {
-        ...baseMtsrReportRequest,
+        ...baseMtsrReportRequestArgs,
         macroregions: selectedReportLevelObjects[MtsrReportLevelEnum.Macroregions],
         supportGroups: selectedReportLevelObjects[MtsrReportLevelEnum.SupportGroups],
         workGroups: selectedReportLevelObjects[MtsrReportLevelEnum.WorkGroups],
@@ -91,13 +91,13 @@ const MtsrReportPage: FC = () => {
 
   const onClickUpdate = useCallback<MtsrReportFormProps['onSubmit']>(
     (values) => {
-      setBaseMtsrReportRequest({
+      setBaseMtsrReportRequestArgs({
         customers: values.customers,
         dateStart: formatDate(values.period[0], DATE_FORMAT),
         dateEnd: formatDate(values.period[1], DATE_FORMAT),
       })
     },
-    [setBaseMtsrReportRequest],
+    [setBaseMtsrReportRequestArgs],
   )
 
   const onTableSort = useCallback(
@@ -106,13 +106,13 @@ const MtsrReportPage: FC = () => {
         const { field, order } = Array.isArray(sorter) ? sorter[0] : sorter
 
         if (field && (field as string) in sortableFieldToSortValues) {
-          setBaseMtsrReportRequest({
+          setBaseMtsrReportRequestArgs({
             ordering: order ? getSort(field as SortableField, order) : undefined,
           })
         }
       }
     },
-    [setBaseMtsrReportRequest],
+    [setBaseMtsrReportRequestArgs],
   )
 
   const onChangeTable = useCallback<MtsrReportTableProps['onChange']>(
@@ -177,7 +177,7 @@ const MtsrReportPage: FC = () => {
           onChange={onChangeTable}
           onSelect={onSelectTableRow}
           selectedRowKeys={selectedReportLevelObjects[selectedReportLevel] as React.Key[]}
-          sort={baseMtsrReportRequest?.ordering}
+          sort={baseMtsrReportRequestArgs?.ordering}
         />
       </Flex>
     </Flex>

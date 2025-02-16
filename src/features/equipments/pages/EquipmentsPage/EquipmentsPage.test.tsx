@@ -5,7 +5,7 @@ import { ariaSortAttrAscValue, ariaSortAttrName } from '_tests_/constants/compon
 import { equipmentDetailsTestUtils } from '_tests_/features/warehouse/components/EquipmentDetails/testUtils'
 import { equipmentTableTestUtils } from '_tests_/features/warehouse/components/EquipmentTable/testUtils'
 import commonFixtures from '_tests_/fixtures/common'
-import userFixtures from '_tests_/fixtures/user'
+import userFixtures from '_tests_/fixtures/users'
 import warehouseFixtures from '_tests_/fixtures/warehouse'
 import {
   mockGetEquipmentListForbiddenError,

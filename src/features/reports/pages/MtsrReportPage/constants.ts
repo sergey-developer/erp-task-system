@@ -1,4 +1,4 @@
-import { GetMtsrReportBaseRequest } from 'features/reports/api/types'
+import { GetMtsrReportBaseRequest } from 'features/reports/api/schemas'
 import { MtsrReportFormFields } from 'features/reports/components/MtsrReportForm/types'
 import moment from 'moment-timezone'
 

@@ -2,7 +2,7 @@ import { NomenclaturesGroupsApiPathsEnum } from 'features/nomenclatures/api/cons
 import {
   CreateNomenclatureGroupBadRequestResponse,
   CreateNomenclatureGroupResponse,
-} from 'features/warehouses/api/dto'
+} from 'features/nomenclatures/api/schemas'
 
 import { ErrorData } from 'shared/api/baseApi'
 import { HttpMethodEnum } from 'shared/constants/http'

@@ -1,5 +1,5 @@
 import { CatalogApiPathsEnum } from 'shared/catalogs/api/constants/endpoints'
-import { GetLocationsCatalogResponse } from 'shared/catalogs/api/schemas/getLocationsCatalog.schema'
+import { GetLocationsCatalogResponse } from 'shared/catalogs/locations/api/schemas'
 import { HttpMethodEnum } from 'shared/constants/http'
 
 import { getRequestMockFn, getSuccessMockFn } from '_tests_/mocks/request'

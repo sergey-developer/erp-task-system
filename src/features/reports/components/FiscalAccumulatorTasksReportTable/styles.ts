@@ -1,8 +1,6 @@
 import { Typography } from 'antd'
-import {
-  fiscalAccumulatorFormatColorDict,
-  FiscalAccumulatorFormatEnum,
-} from 'features/reports/api/constants'
+import { FiscalAccumulatorFormatEnum } from 'features/reports/api/constants'
+import { fiscalAccumulatorFormatColorDict } from 'features/reports/constants'
 import styled from 'styled-components'
 
 import { MaybeNull } from 'shared/types/utils'

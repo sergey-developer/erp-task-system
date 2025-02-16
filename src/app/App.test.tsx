@@ -6,7 +6,7 @@ import { testUtils as privateHeaderTestUtils } from 'components/Headers/PrivateH
 
 import { taskTableTestUtils } from '_tests_/features/tasks/components/TaskTable/testUtils'
 import catalogsFixtures from '_tests_/fixtures/catalogs'
-import userFixtures from '_tests_/fixtures/user'
+import userFixtures from '_tests_/fixtures/users'
 import {
   mockGetSystemInfoSuccess,
   mockGetTimeZoneListSuccess,

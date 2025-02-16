@@ -1,7 +1,7 @@
 import { waitFor, within } from '@testing-library/react'
-import { InfrastructuresRoutesEnum } from 'features/infrastructures/constants/routes'
 import ChangeInfrastructurePage from 'features/infrastructures/pages/ChangeInfrastructurePage'
 import { getChangeInfrastructurePageLocationState } from 'features/infrastructures/pages/ChangeInfrastructurePage/utils'
+import { InfrastructuresRoutesEnum } from 'features/infrastructures/routes/routes'
 import {
   takeTaskErrorMessage,
   TaskActionsPermissionsEnum,
@@ -17,9 +17,9 @@ import { CreateTaskSuspendRequestBadRequestResponse } from 'features/tasks/api/s
 import { TasksRoutesEnum } from 'features/tasks/routes/routes'
 import { UserPermissionsEnum } from 'features/users/api/constants'
 import { getFullUserName } from 'features/users/helpers'
-import { WorkTypeActionsEnum } from 'features/warehouses/constants/workType/enum'
 import * as reactRouterDom from 'react-router-dom'
 
+import { WorkTypeActionsEnum } from 'shared/catalogs/workTypes/api/constants'
 import { NO_ASSIGNEE_TEXT } from 'shared/constants/common'
 
 import { changeInfrastructurePageTestUtils } from '_tests_/features/infrastructure/pages/ChangeInfrastructurePage/testUtils'
@@ -48,9 +48,9 @@ import { taskSuspendRequestTestUtils } from '_tests_/features/tasks/components/T
 import catalogsFixtures from '_tests_/fixtures/catalogs'
 import infrastructuresFixtures from '_tests_/fixtures/infrastructures'
 import systemFixtures from '_tests_/fixtures/system'
-import taskFixtures from '_tests_/fixtures/task'
+import taskFixtures from '_tests_/fixtures/tasks'
 import { fakeUseLocationResult } from '_tests_/fixtures/useLocation'
-import userFixtures from '_tests_/fixtures/user'
+import userFixtures from '_tests_/fixtures/users'
 import warehouseFixtures from '_tests_/fixtures/warehouse'
 import {
   mockCancelReclassificationRequestSuccess,
@@ -478,7 +478,7 @@ describe('Карточка заявки', () => {
             }),
           })
 
-          const badRequestResponse: Required<CreateTaskSuspendRequestBadRequestErrorResponse> = {
+          const badRequestResponse: Required<CreateTaskSuspendRequestBadRequestResponse> = {
             comment: [fakeWord()],
             suspendEndAt: [fakeWord()],
             suspendReason: [fakeWord()],
@@ -486,7 +486,7 @@ describe('Карточка заявки', () => {
             externalResponsibleCompany: [fakeWord()],
           }
 
-          mockCreateTaskSuspendRequestBadRequestError<CreateTaskSuspendRequestBadRequestErrorResponse>(
+          mockCreateTaskSuspendRequestBadRequestError<CreateTaskSuspendRequestBadRequestResponse>(
             task.id,
             { body: { ...badRequestResponse } },
           )

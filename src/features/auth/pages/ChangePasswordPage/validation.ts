@@ -1,4 +1,4 @@
-import { incorrectPasswordErrorMessage } from 'features/auth/constants'
+import { incorrectPasswordErrorMessage } from 'features/auth/api/constants'
 import { checkPasswordValid } from 'features/auth/helpers'
 import { Rule } from 'rc-field-form/es/interface'
 

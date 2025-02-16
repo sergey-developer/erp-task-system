@@ -1,17 +1,17 @@
+import { CreateEquipmentsBadRequestResponse } from 'features/equipments/api/schemas'
 import React, { FC } from 'react'
 
 import BaseModal, { BaseModalProps } from 'components/Modals/BaseModal'
 
 import { ADD_TEXT } from 'shared/constants/common'
 
-import { CreateEquipmentsBadRequestErrorResponse } from '../../api/schemas'
 import EquipmentsByFileTable from '../EquipmentsByFileTable'
 import { EquipmentByFileTableRow, EquipmentsByFileTableProps } from '../EquipmentsByFileTable/types'
 
 export type CreateEquipmentsByFileModalProps = Required<Pick<BaseModalProps, 'open' | 'onCancel'>> &
   Pick<EquipmentsByFileTableProps, 'onEdit'> & {
     data: EquipmentByFileTableRow[]
-    errors?: CreateEquipmentsBadRequestErrorResponse
+    errors?: CreateEquipmentsBadRequestResponse
 
     onCreate: () => Promise<void>
     isCreating: boolean

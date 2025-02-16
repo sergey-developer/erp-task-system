@@ -1,5 +1,5 @@
-import { getRelocationTaskWaybillM15Url } from 'features/relocationTasks/api/helpers'
-import { GetRelocationTaskWaybillM15Response } from 'features/warehouses/api/dto'
+import { makeGetRelocationTaskWaybillM15ApiPath } from 'features/relocationTasks/api/helpers'
+import { GetRelocationTaskWaybillM15Response } from 'features/relocationTasks/api/schemas'
 
 import { ErrorData } from 'shared/api/baseApi'
 import { HttpMethodEnum } from 'shared/constants/http'
@@ -15,7 +15,7 @@ import {
 import { ResponseResolverOptions } from '_tests_/mocks/response'
 
 const getRelocationTaskWaybillM15MockFn = (id: IdType) =>
-  getRequestMockFn(HttpMethodEnum.Get, getRelocationTaskWaybillM15Url(id))
+  getRequestMockFn(HttpMethodEnum.Get, makeGetRelocationTaskWaybillM15ApiPath(id))
 
 export const mockGetRelocationTaskWaybillM15Success = (
   id: IdType,

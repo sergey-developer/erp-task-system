@@ -1,6 +1,6 @@
 import { EquipmentsApiPathsEnum } from 'features/equipments/api/constants'
 import {
-  CreateEquipmentBadRequestErrorResponse,
+  CreateEquipmentBadRequestResponse,
   ImportEquipmentsByFileResponse,
 } from 'features/equipments/api/schemas'
 
@@ -23,7 +23,7 @@ export const mockImportEquipmentsByFileSuccess = (
 ) => getSuccessMockFn(importEquipmentsByFileMockFn(), options)()
 
 export const mockImportEquipmentsByFileBadRequestError = <
-  T extends CreateEquipmentBadRequestErrorResponse,
+  T extends CreateEquipmentBadRequestResponse,
 >(
   options?: Partial<ResponseResolverOptions<ErrorData<T>>>,
 ) => getBadRequestErrorMockFn(importEquipmentsByFileMockFn(), options)()

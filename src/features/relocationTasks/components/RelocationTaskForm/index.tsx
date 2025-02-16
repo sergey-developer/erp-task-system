@@ -4,7 +4,7 @@ import {
   checkRelocationTaskTypeIsEnteringBalances,
   checkRelocationTaskTypeIsWriteOff,
   getRelocationTaskTypeOptions,
-} from 'features/relocationTasks/api/helpers'
+} from 'features/relocationTasks/helpers'
 import React, { useMemo } from 'react'
 
 import UploadButton from 'components/Buttons/UploadButton'

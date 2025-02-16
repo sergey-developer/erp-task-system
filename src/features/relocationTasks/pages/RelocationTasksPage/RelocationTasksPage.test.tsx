@@ -1,10 +1,12 @@
 import { waitFor } from '@testing-library/react'
 import {
   getRelocationTasksErrorMessage,
-  relocationTaskStatusDict,
   RelocationTaskStatusEnum,
-  relocationTaskTypeDict,
   RelocationTaskTypeEnum,
+} from 'features/relocationTasks/api/constants'
+import {
+  relocationTaskStatusDict,
+  relocationTaskTypeDict,
 } from 'features/relocationTasks/constants'
 import { UserPermissionsEnum } from 'features/users/api/constants'
 import { WarehousesRoutesEnum } from 'features/warehouses/routes/routes'
@@ -16,7 +18,7 @@ import { relocationTasksFilterTestUtils } from '_tests_/features/warehouse/compo
 import { createRelocationTaskPageTestUtils } from '_tests_/features/warehouse/pages/CreateRelocationTaskPage/testUtils'
 import { relocationTasksPageTestUtils } from '_tests_/features/warehouse/pages/RelocationTasksPage/testUtils'
 import commonFixtures from '_tests_/fixtures/common'
-import userFixtures from '_tests_/fixtures/user'
+import userFixtures from '_tests_/fixtures/users'
 import warehouseFixtures from '_tests_/fixtures/warehouse'
 import {
   mockGetCurrencyListSuccess,

@@ -17,7 +17,7 @@ import { validationMessages } from 'shared/constants/validation'
 
 import { tasksPageTestUtils } from '_tests_/features/tasks/pages/TasksPage/testUtils'
 import authFixtures from '_tests_/fixtures/auth'
-import userFixtures from '_tests_/fixtures/user'
+import userFixtures from '_tests_/fixtures/users'
 import {
   mockGetTaskCountersSuccess,
   mockGetTasksSuccess,

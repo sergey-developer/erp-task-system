@@ -1,6 +1,6 @@
-import { getRelocationEquipmentListUrl } from 'features/relocationTasks/api/helpers'
-import { GetRelocationEquipmentsResponse } from 'features/warehouses/api/dto'
-import { RequestWithRelocationTask } from 'features/warehouses/types'
+import { makeGetRelocationEquipmentsApiPath } from 'features/relocationTasks/api/helpers'
+import { GetRelocationEquipmentsResponse } from 'features/relocationTasks/api/schemas'
+import { RequestWithRelocationTask } from 'features/relocationTasks/api/types'
 
 import { ErrorData } from 'shared/api/baseApi'
 import { HttpMethodEnum } from 'shared/constants/http'
@@ -15,7 +15,7 @@ import {
 import { ResponseResolverOptions } from '_tests_/mocks/response'
 
 const getRelocationEquipmentListMockFn = ({ relocationTaskId }: RequestWithRelocationTask) =>
-  getRequestMockFn(HttpMethodEnum.Get, getRelocationEquipmentListUrl({ relocationTaskId }))
+  getRequestMockFn(HttpMethodEnum.Get, makeGetRelocationEquipmentsApiPath({ relocationTaskId }))
 
 export const mockGetRelocationEquipmentListSuccess = (
   { relocationTaskId }: RequestWithRelocationTask,

@@ -1,5 +1,8 @@
-import { TaskExtendedStatusEnum, TaskStatusEnum } from 'features/tasks/api/constants'
-import { SuspendRequestStatusEnum } from 'features/tasks/constants/taskSuspendRequest'
+import {
+  SuspendRequestStatusEnum,
+  TaskExtendedStatusEnum,
+  TaskStatusEnum,
+} from 'features/tasks/api/constants'
 
 import {
   activeCancelButtonProps,
@@ -11,7 +14,7 @@ import {
 import { subTaskTestUtils } from '_tests_/features/tasks/components/SubTaskList/SubTask/testUtils'
 import { taskAssigneeTestUtils } from '_tests_/features/tasks/components/TaskAssignee/testUtils'
 import { taskStatusTestUtils } from '_tests_/features/tasks/components/TaskStatus/testUtils'
-import taskFixtures from '_tests_/fixtures/task'
+import taskFixtures from '_tests_/fixtures/tasks'
 import { render } from '_tests_/utils'
 
 import SubTask from './SubTask'

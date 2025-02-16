@@ -1,5 +1,5 @@
 import { TableProps } from 'antd'
-import { NomenclatureDTO } from 'features/warehouses/api/dto'
+import { NomenclatureDTO } from 'features/nomenclatures/api/dto'
 
 import { IdType } from 'shared/types/common'
 

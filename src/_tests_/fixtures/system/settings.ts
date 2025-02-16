@@ -1,4 +1,4 @@
-import { SuspendReasonEnum } from 'features/tasks/constants/taskSuspendRequest'
+import { SuspendReasonEnum } from 'features/tasks/api/constants'
 
 import { SystemSettingsDTO } from 'shared/system/api/dto'
 

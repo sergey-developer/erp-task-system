@@ -1,7 +1,7 @@
 import { InfrastructureStatusHistoryItemDTO } from 'features/infrastructures/api/dto'
 import { InfrastructureStatusEnum } from 'features/infrastructures/constants'
 
-import userFixtures from '_tests_/fixtures/user'
+import userFixtures from '_tests_/fixtures/users'
 import { fakeDateString, fakeId } from '_tests_/utils'
 
 export const infrastructureStatusHistory = (): InfrastructureStatusHistoryItemDTO => ({

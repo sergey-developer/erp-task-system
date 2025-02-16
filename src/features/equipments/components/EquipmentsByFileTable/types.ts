@@ -1,8 +1,7 @@
 import { TableProps } from 'antd'
 import { UploadFile } from 'antd/es/upload'
-
-import { CreateEquipmentsBadRequestErrorResponse } from 'features/warehouses/api/dto'
-import { ImportedEquipmentByFile } from 'features/warehouses/types'
+import { CreateEquipmentsBadRequestResponse } from 'features/equipments/api/schemas'
+import { ImportedEquipmentByFile } from 'features/equipments/types'
 
 import { FileResponse } from 'shared/types/file'
 
@@ -30,5 +29,5 @@ export type EquipmentByFileTableRow = Pick<ImportedEquipmentByFile, 'rowId'> & {
 export type EquipmentsByFileTableProps = {
   dataSource: NonNullable<TableProps<EquipmentByFileTableRow>['dataSource']>
   onEdit: (row: EquipmentByFileTableRow, index: number) => void
-  errors?: CreateEquipmentsBadRequestErrorResponse
+  errors?: CreateEquipmentsBadRequestResponse
 }

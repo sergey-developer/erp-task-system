@@ -1,4 +1,4 @@
-import { TaskJournalTypeEnum } from 'features/tasks/constants/taskJournal'
+import { TaskJournalTypeEnum } from 'features/tasks/api/constants'
 
 import { journalEntryTypeDict } from './constants'
 

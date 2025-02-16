@@ -1,9 +1,9 @@
 import { TableComponents } from 'rc-table/es/interface'
 
 import ResizeableTitle from '../ResizeableTitle'
-import { TaskTableListItem } from '../types'
+import { TaskTableItem } from '../types'
 
-const components: TableComponents<TaskTableListItem> = {
+const components: TableComponents<TaskTableItem> = {
   header: {
     cell: ResizeableTitle,
   },

@@ -1,6 +1,6 @@
 import { CheckboxOptionType } from 'antd'
 
-import { externalResponsibleCompanyDict } from './taskSuspendRequest'
+import { externalResponsibleCompanyDict } from './dict'
 
 export const organizationOptions: CheckboxOptionType[] = Object.keys(
   externalResponsibleCompanyDict,

@@ -1,8 +1,7 @@
+import { SuspendReasonEnum } from 'features/tasks/api/constants'
 import isNumber from 'lodash/isNumber'
 import moment, { Moment } from 'moment-timezone'
 import { Rule } from 'rc-field-form/es/interface'
-
-import { SuspendReasonEnum } from 'features/tasks/constants/taskSuspendRequest'
 
 import { validationMessages } from 'shared/constants/validation'
 import { timeValidator } from 'shared/utils/validation'

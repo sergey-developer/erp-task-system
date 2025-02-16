@@ -1,9 +1,8 @@
-import { CustomersModel } from 'features/warehouses/api/dto'
-
 import { DrawerFilterProps } from 'components/Filters/DrawerFilter'
 
-import { MacroregionsCatalogDTO } from 'shared/catalogs/api/dto/macroregions'
-import { SupportGroupListModel } from 'shared/supportGroups/api/dto'
+import { CustomersCatalogDTO } from 'shared/catalogs/customers/api/dto'
+import { MacroregionsCatalogDTO } from 'shared/catalogs/macroregions/api/dto'
+import { SupportGroupsDTO } from 'shared/supportGroups/api/dto'
 import { IdType } from 'shared/types/common'
 
 export type FiscalAccumulatorTasksReportFilterFormFields = Partial<{
@@ -18,7 +17,7 @@ export type FiscalAccumulatorTasksReportFilterProps = Required<
   values: FiscalAccumulatorTasksReportFilterFormFields
   initialValues: FiscalAccumulatorTasksReportFilterFormFields
 
-  customers: CustomersModel
+  customers: CustomersCatalogDTO
   customersIsLoading: boolean
   onChangeCustomers: (value: IdType[]) => void
 
@@ -26,7 +25,7 @@ export type FiscalAccumulatorTasksReportFilterProps = Required<
   macroregionsIsLoading: boolean
   onChangeMacroregions: (value: IdType[]) => void
 
-  supportGroups: SupportGroupListModel
+  supportGroups: SupportGroupsDTO
   supportGroupsIsLoading: boolean
 
   onSubmit: (values: FiscalAccumulatorTasksReportFilterFormFields) => void

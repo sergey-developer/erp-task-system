@@ -2,8 +2,8 @@ import { useBoolean } from 'ahooks'
 import { Flex, Form, Upload, UploadProps } from 'antd'
 import { UploadFile } from 'antd/es/upload'
 import { attachmentsToFiles, renderUploadedFile } from 'features/attachments/helpers'
+import { deleteInfrastructureOrdersFormsWorkErrorMessage } from 'features/infrastructures/api/constants'
 import { InfrastructureOrderFormDTO } from 'features/infrastructures/api/dto'
-import { deleteInfrastructureOrdersFormsWorkErrorMessage } from 'features/infrastructures/constants'
 import {
   useCreateInfrastructureOrderFormWork,
   useUpdateInfrastructureOrderFormWork,
@@ -18,7 +18,7 @@ import UploadButton from 'components/Buttons/UploadButton'
 import ModalFallback from 'components/Modals/ModalFallback'
 import Space from 'components/Space'
 
-import { InfrastructureWorkTypesCatalogDTO } from 'shared/catalogs/api/dto/infrastructureWorkTypes'
+import { InfrastructureWorkTypesCatalogDTO } from 'shared/catalogs/infrastructureWorkTypes/api/dto'
 import { useDebounceFn } from 'shared/hooks/useDebounceFn'
 import { IdType } from 'shared/types/common'
 import { FileResponse } from 'shared/types/file'

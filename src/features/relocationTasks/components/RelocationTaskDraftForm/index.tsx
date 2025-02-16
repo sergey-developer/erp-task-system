@@ -4,7 +4,7 @@ import {
   checkRelocationTaskTypeIsEnteringBalances,
   checkRelocationTaskTypeIsWriteOff,
   getRelocationTaskTypeOptions,
-} from 'features/relocationTasks/api/helpers'
+} from 'features/relocationTasks/helpers'
 import React, { useMemo } from 'react'
 
 import { TIME_PICKER_FORMAT } from 'lib/antd/constants/dateTimePicker'

@@ -1,9 +1,9 @@
-import { EquipmentsCatalogDTO } from 'features/warehouses/api/dto'
-import { RelocationTaskEquipment } from 'features/warehouses/types'
+import { EquipmentsCatalogDTO } from 'features/equipments/api/dto'
+import { RelocationTaskEquipment } from 'features/relocationTasks/types'
 import { NamePath } from 'rc-field-form/es/interface'
 import { Key } from 'react'
 
-import { CurrenciesCatalogDTO } from 'shared/catalogs/api/dto/currencies'
+import { CurrenciesCatalogDTO } from 'shared/catalogs/currencies/api/dto'
 
 export type RelocationEquipmentRow = Partial<RelocationTaskEquipment> & {
   rowId: number

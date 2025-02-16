@@ -1,5 +1,5 @@
 import { ColumnsType } from 'antd/es/table'
-import { equipmentConditionDict } from 'features/equipments/api/constants'
+import { equipmentConditionDict } from 'features/equipments/constants'
 import { checkEquipmentCategoryIsConsumable } from 'features/equipments/helpers'
 import isBoolean from 'lodash/isBoolean'
 import isNumber from 'lodash/isNumber'

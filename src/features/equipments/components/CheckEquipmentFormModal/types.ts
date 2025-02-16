@@ -1,20 +1,19 @@
 import { FormInstance, SelectProps } from 'antd'
 import { EquipmentConditionEnum } from 'features/equipments/api/constants'
+import { EquipmentCategoriesDTO, EquipmentCategoryDTO } from 'features/equipments/api/dto'
 import {
-  CustomersModel,
-  EquipmentCategoriesDTO,
-  EquipmentCategoryDTO,
   NomenclatureDetailDTO,
   NomenclatureDTO,
-  NomenclaturesModel,
-  WorkTypesCatalogDTO,
-} from 'features/warehouses/api/dto'
+  NomenclaturesDTO,
+} from 'features/nomenclatures/api/dto'
 
 import { BaseModalProps } from 'components/Modals/BaseModal'
 
-import { CurrenciesCatalogDTO } from 'shared/catalogs/api/dto/currencies'
-import { LocationsCatalogDTO } from 'shared/catalogs/api/dto/locations'
-import { MacroregionsCatalogDTO } from 'shared/catalogs/api/dto/macroregions'
+import { CurrenciesCatalogDTO } from 'shared/catalogs/currencies/api/dto'
+import { CustomersCatalogDTO } from 'shared/catalogs/customers/api/dto'
+import { LocationsCatalogDTO } from 'shared/catalogs/locations/api/dto'
+import { MacroregionsCatalogDTO } from 'shared/catalogs/macroregions/api/dto'
+import { WorkTypesCatalogDTO } from 'shared/catalogs/workTypes/api/dto'
 import { IdType } from 'shared/types/common'
 
 export type CheckEquipmentFormFields = {
@@ -61,7 +60,7 @@ export type CheckEquipmentFormModalProps = Required<
     currencies: CurrenciesCatalogDTO
     currenciesIsLoading: boolean
 
-    owners: CustomersModel
+    owners: CustomersCatalogDTO
     ownersIsLoading: boolean
     onChangeOwner: (id: IdType) => void
 
@@ -77,7 +76,7 @@ export type CheckEquipmentFormModalProps = Required<
     >
     nomenclatureIsLoading: boolean
 
-    nomenclatures: NomenclaturesModel
+    nomenclatures: NomenclaturesDTO
     nomenclaturesIsLoading: boolean
     onChangeNomenclature: NonNullable<SelectProps<IdType, NomenclatureDTO>['onChange']>
 

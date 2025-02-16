@@ -7,6 +7,7 @@ import { useCreateAttachment, useDeleteAttachment } from 'features/attachments/h
 import { useAuthUser } from 'features/auth/hooks'
 import { EquipmentConditionEnum } from 'features/equipments/api/constants'
 import { EquipmentCategoryDTO } from 'features/equipments/api/dto'
+import { CreateEquipmentsBadRequestResponse } from 'features/equipments/api/schemas'
 import { CreateEquipmentsByFileModalProps } from 'features/equipments/components/CreateEquipmentsByFileModal'
 import { EquipmentFormModalProps } from 'features/equipments/components/EquipmentFormModal/types'
 import { EquipmentByFileTableRow } from 'features/equipments/components/EquipmentsByFileTable/types'
@@ -28,11 +29,6 @@ import {
   RelocationEquipmentRow,
 } from 'features/relocationEquipments/components/RelocationEquipmentEditableTable/types'
 import { useGetRelocationEquipmentAttachments } from 'features/relocationEquipments/hooks'
-import {
-  checkRelocationTaskTypeIsEnteringBalances,
-  checkRelocationTaskTypeIsWriteOff,
-  makeRelocationTasksPageLink,
-} from 'features/relocationTasks/api/helpers'
 import RelocationTaskForm from 'features/relocationTasks/components/RelocationTaskForm'
 import {
   LocationOption,
@@ -40,6 +36,11 @@ import {
   UserGroupOptionGroup,
 } from 'features/relocationTasks/components/RelocationTaskForm/types'
 import { makeUserGroupOptions } from 'features/relocationTasks/components/RelocationTaskForm/utils'
+import {
+  checkRelocationTaskTypeIsEnteringBalances,
+  checkRelocationTaskTypeIsWriteOff,
+  makeRelocationTasksPageLink,
+} from 'features/relocationTasks/helpers'
 import {
   useGetRelocationEquipmentBalances,
   useGetRelocationEquipments,
@@ -140,7 +141,7 @@ const EditRelocationTaskPage: FC = () => {
   const categoryIsConsumable = checkEquipmentCategoryIsConsumable(selectedCategory?.code)
 
   const [createEquipmentsErrors, setCreateEquipmentsErrors] =
-    useState<CreateEquipmentsBadRequestErrorResponse>()
+    useState<CreateEquipmentsBadRequestResponse>()
 
   const [editableEquipmentByFile, setEditableEquipmentByFile] = useState<EquipmentByFileTableRow>()
   const [editableEquipmentByFileIndex, setEditableEquipmentByFileIndex] = useState<number>()
@@ -583,7 +584,7 @@ const EditRelocationTaskPage: FC = () => {
       handleCloseCreateEquipmentsByFileModal()
     } catch (error) {
       if (isErrorResponse(error) && isBadRequestError(error) && error.data.errorList) {
-        const errors = error.data.errorList as CreateEquipmentsBadRequestErrorResponse
+        const errors = error.data.errorList as CreateEquipmentsBadRequestResponse
         setCreateEquipmentsErrors(errors)
       }
     }

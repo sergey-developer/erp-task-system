@@ -1,5 +1,5 @@
-import { getWarehouseUrl } from 'features/warehouses/helpers'
-import { GetWarehouseResponse } from 'features/warehouses/api/dto'
+import { makeGetWarehouseApiPath } from 'features/warehouses/api/helpers'
+import { GetWarehouseResponse } from 'features/warehouses/api/schemas'
 
 import { ErrorData } from 'shared/api/baseApi'
 import { HttpMethodEnum } from 'shared/constants/http'
@@ -14,7 +14,7 @@ import {
 import { ResponseResolverOptions } from '_tests_/mocks/response'
 
 const getWarehouseMockFn = (warehouseId: IdType) =>
-  getRequestMockFn(HttpMethodEnum.Get, getWarehouseUrl(warehouseId))
+  getRequestMockFn(HttpMethodEnum.Get, makeGetWarehouseApiPath(warehouseId))
 
 export const mockGetWarehouseSuccess = (
   warehouseId: IdType,

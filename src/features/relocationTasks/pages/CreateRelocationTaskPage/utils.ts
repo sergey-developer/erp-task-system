@@ -1,19 +1,19 @@
 import { EquipmentConditionEnum } from 'features/equipments/api/constants'
+import { GetEquipmentsCatalogRequest } from 'features/equipments/api/schemas'
 import { EquipmentFormModalProps } from 'features/equipments/components/EquipmentFormModal/types'
 import { EquipmentByFileTableRow } from 'features/equipments/components/EquipmentsByFileTable/types'
+import { RelocationTaskTypeEnum } from 'features/relocationTasks/api/constants'
+import { LocationOption } from 'features/relocationTasks/components/RelocationTaskForm/types'
 import {
   checkRelocationTaskTypeIsCustomer,
   checkRelocationTaskTypeIsWarranty,
-} from 'features/relocationTasks/api/helpers'
-import { LocationOption } from 'features/relocationTasks/components/RelocationTaskForm/types'
-import { RelocationTaskTypeEnum } from 'features/relocationTasks/constants'
+} from 'features/relocationTasks/helpers'
 import { WarehouseTypeEnum } from 'features/warehouses/api/constants'
-import { GetEquipmentsCatalogRequest } from 'features/warehouses/api/dto'
 import isBoolean from 'lodash/isBoolean'
 import isNumber from 'lodash/isNumber'
 
-import { GetLocationsCatalogRequest } from 'shared/catalogs/api/dto/locations'
-import { LocationTypeEnum } from 'shared/catalogs/constants'
+import { LocationTypeEnum } from 'shared/catalogs/locations/api/constants'
+import { GetLocationsCatalogRequest } from 'shared/catalogs/locations/api/schemas'
 import { checkLocationTypeIsWarehouse } from 'shared/catalogs/locations/helpers/checkLocationType'
 import { MaybeUndefined } from 'shared/types/utils'
 

@@ -1,6 +1,7 @@
-import { ReportsRoutesEnum } from 'features/reports/api/constants'
+import { ReportsRoutesEnum } from 'features/reports/routes/routes'
 import { TasksRoutesEnum } from 'features/tasks/routes/routes'
 import { UserPermissionsEnum } from 'features/users/api/constants'
+import { WarehousesRoutesEnum } from 'features/warehouses/routes/routes'
 
 import { CommonRoutesEnum } from 'configs/routes'
 

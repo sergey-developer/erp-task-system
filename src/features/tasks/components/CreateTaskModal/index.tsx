@@ -24,7 +24,7 @@ import Expandable from 'components/Expandable'
 import BaseModal from 'components/Modals/BaseModal'
 import TimePicker from 'components/TimePicker'
 
-import { LocationCatalogItemDTO } from 'shared/catalogs/api/dto/locations'
+import { LocationCatalogItemDTO } from 'shared/catalogs/locations/api/dto'
 import { filesFormItemProps } from 'shared/constants/form'
 import {
   idAndFullNameSelectFieldNames,

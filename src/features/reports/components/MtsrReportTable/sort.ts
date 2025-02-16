@@ -1,6 +1,6 @@
 import { ColumnType } from 'antd/es/table'
 import { SortOrder } from 'antd/es/table/interface'
-import { GetMtsrReportBaseSortKey, GetMtsrReportBaseSortValue } from 'features/reports/api/types'
+import { GetMtsrReportBaseSortKey, GetMtsrReportBaseSortValue } from 'features/reports/api/schemas'
 import isEqual from 'lodash/isEqual'
 
 import { SortOrderEnum } from 'shared/constants/sort'

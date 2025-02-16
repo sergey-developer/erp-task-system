@@ -1,6 +1,6 @@
-import { CustomersModel } from 'features/warehouses/api/dto'
 import { Moment } from 'moment-timezone'
 
+import { CustomersCatalogDTO } from 'shared/catalogs/customers/api/dto'
 import { IdType } from 'shared/types/common'
 
 export type MtsrReportFormFields = {
@@ -11,7 +11,7 @@ export type MtsrReportFormFields = {
 export type MtsrReportFormProps = {
   initialValues: Partial<MtsrReportFormFields>
 
-  customers: CustomersModel
+  customers: CustomersCatalogDTO
   customersIsLoading: boolean
 
   onSubmit: (values: MtsrReportFormFields) => void

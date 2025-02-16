@@ -1,9 +1,10 @@
 import { FormInstance } from 'antd'
-import { MeasurementUnitsCatalogDTO, NomenclatureDetailDTO } from 'features/warehouses/api/dto'
+import { NomenclatureDetailDTO, NomenclaturesGroupsDTO } from 'features/nomenclatures/api/dto'
 
 import { BaseModalProps } from 'components/Modals/BaseModal'
 
-import { CountriesCatalogDTO } from 'shared/catalogs/api/dto/countries'
+import { CountriesCatalogDTO } from 'shared/catalogs/countries/api/dto'
+import { MeasurementUnitsCatalogDTO } from 'shared/catalogs/measurementUnits/api/dto'
 import { MaybeNull } from 'shared/types/utils'
 
 export type NomenclatureFormFields = {
@@ -25,7 +26,7 @@ export type NomenclatureFormModalProps = Required<Pick<BaseModalProps, 'open' | 
   nomenclature?: NomenclatureDetailDTO
   nomenclatureIsLoading?: boolean
 
-  groups: NomenclatureGroupsModel
+  groups: NomenclaturesGroupsDTO
   groupsIsLoading: boolean
 
   countries: CountriesCatalogDTO

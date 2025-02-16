@@ -1,8 +1,5 @@
 import { FormInstance, ModalProps } from 'antd'
-import {
-  ExternalResponsibleCompanyEnum,
-  SuspendReasonEnum,
-} from 'features/tasks/constants/taskSuspendRequest'
+import { ExternalResponsibleCompanyEnum, SuspendReasonEnum } from 'features/tasks/api/constants'
 import { Moment } from 'moment-timezone'
 
 import { BaseModalProps } from 'components/Modals/BaseModal'

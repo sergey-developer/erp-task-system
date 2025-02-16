@@ -1,8 +1,5 @@
 import { AuthApiPathsEnum } from 'features/auth/api/constants'
-import {
-  UpdatePasswordBadRequestErrorResponse,
-  UpdatePasswordResponse,
-} from 'features/auth/api/schemas'
+import { UpdatePasswordBadRequestResponse, UpdatePasswordResponse } from 'features/auth/api/schemas'
 
 import { ErrorData } from 'shared/api/baseApi'
 import { HttpMethodEnum } from 'shared/constants/http'
@@ -25,7 +22,7 @@ export const mockUpdatePasswordSuccess = (
 ) => getSuccessMockFn(updatePasswordMockFn(), options)()
 
 export const mockUpdatePasswordBadRequestError = <
-  T extends ErrorData<UpdatePasswordBadRequestErrorResponse>,
+  T extends ErrorData<UpdatePasswordBadRequestResponse>,
 >(
   options?: Partial<ResponseResolverOptions<T>>,
 ) => getBadRequestErrorMockFn(updatePasswordMockFn(), options)()

@@ -1,10 +1,7 @@
 import times from 'lodash/times'
 
-import {
-  LocationCatalogItemDTO,
-  LocationsCatalogDTO,
-} from 'shared/catalogs/api/dto/locationsCatalog.dto'
-import { LocationTypeEnum } from 'shared/catalogs/constants'
+import { LocationTypeEnum } from 'shared/catalogs/locations/api/constants'
+import { LocationCatalogItemDTO, LocationsCatalogDTO } from 'shared/catalogs/locations/api/dto'
 
 import { fakeId, fakeWord } from '_tests_/utils'
 

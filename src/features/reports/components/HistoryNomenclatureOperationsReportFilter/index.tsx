@@ -1,8 +1,7 @@
 import { Form, Select } from 'antd'
+import { equipmentConditionOptions } from 'features/equipments/constants'
 import isEmpty from 'lodash/isEmpty'
 import React, { FC, useEffect } from 'react'
-
-import { equipmentConditionOptions } from 'features/equipments/api/constants'
 
 import DrawerFilter from 'components/Filters/DrawerFilter'
 import FilterBlock from 'components/Filters/DrawerFilter/FilterBlock'

@@ -7,7 +7,7 @@ import {
   iconByTaskStatus,
 } from 'features/tasks/components/TaskStatus/constants'
 import TaskStatus from 'features/tasks/components/TaskStatus/index'
-import { TaskTableListItem } from 'features/tasks/components/TaskTable/types'
+import { TaskTableItem } from 'features/tasks/components/TaskTable/types'
 import { taskStatusDict } from 'features/tasks/constants'
 import { getOlaStatusTextType } from 'features/tasks/helpers'
 import { getShortUserName } from 'features/users/helpers'
@@ -19,7 +19,7 @@ import { formatDate } from 'shared/utils/date'
 
 const { Text } = Typography
 
-export const getColumns = (): ColumnsType<TaskTableListItem> => [
+export const getColumns = (): ColumnsType<TaskTableItem> => [
   {
     key: 'noop',
     render: (_, { status, extendedStatus }) => {
@@ -42,32 +42,32 @@ export const getColumns = (): ColumnsType<TaskTableListItem> => [
     dataIndex: 'id',
     title: 'Заявка',
     sorter: true,
-    render: (value: TaskTableListItem['id']) => valueOr(value),
+    render: (value: TaskTableItem['id']) => valueOr(value),
   },
   {
     dataIndex: 'recordId',
     title: 'Внеш.номер',
     sorter: true,
-    render: (value: TaskTableListItem['recordId']) => valueOr(value),
+    render: (value: TaskTableItem['recordId']) => valueOr(value),
   },
   {
     dataIndex: 'name',
     title: 'Объект',
     ellipsis: true,
     sorter: true,
-    render: (value: TaskTableListItem['name']) => valueOr(value),
+    render: (value: TaskTableItem['name']) => valueOr(value),
   },
   {
     dataIndex: 'title',
     title: 'Тема',
     ellipsis: true,
     sorter: true,
-    render: (value: TaskTableListItem['title']) => valueOr(value),
+    render: (value: TaskTableItem['title']) => valueOr(value),
   },
   {
     dataIndex: 'assignee',
     title: 'Исполнитель',
-    render: (value: TaskTableListItem['assignee']) =>
+    render: (value: TaskTableItem['assignee']) =>
       valueOr(value, (value) => getShortUserName(value)),
     ellipsis: true,
     sorter: true,
@@ -75,21 +75,21 @@ export const getColumns = (): ColumnsType<TaskTableListItem> => [
   {
     dataIndex: 'supportGroup',
     title: 'Группа поддержки',
-    render: (value: TaskTableListItem['supportGroup']) => valueOr(value?.name),
+    render: (value: TaskTableItem['supportGroup']) => valueOr(value?.name),
     sorter: true,
     ellipsis: true,
   },
   {
     dataIndex: 'workGroup',
     title: 'Рабочая группа',
-    render: (value: TaskTableListItem['workGroup']) => valueOr(value?.name),
+    render: (value: TaskTableItem['workGroup']) => valueOr(value?.name),
     sorter: true,
     ellipsis: true,
   },
   {
     dataIndex: 'responseTime',
     title: 'Срок реакции',
-    render: (value: TaskTableListItem['responseTime'], { workGroup, assignee }) => {
+    render: (value: TaskTableItem['responseTime'], { workGroup, assignee }) => {
       if (!!assignee) return valueOr(null)
       const responseTime = parseResponseTime(value, workGroup)
       return valueOr(responseTime, (time) => <Text type={time.type}>{time.value}</Text>)
@@ -99,7 +99,7 @@ export const getColumns = (): ColumnsType<TaskTableListItem> => [
   {
     dataIndex: 'olaNextBreachTime',
     title: 'Выполнить до',
-    render: (value: TaskTableListItem['olaNextBreachTime'], { olaStatus }) =>
+    render: (value: TaskTableItem['olaNextBreachTime'], { olaStatus }) =>
       valueOr(value, (value) => (
         <Text type={olaStatus ? getOlaStatusTextType(olaStatus) : undefined}>
           {formatDate(value)}
@@ -126,12 +126,12 @@ export const getColumns = (): ColumnsType<TaskTableListItem> => [
     title: 'Комментарий',
     ellipsis: true,
     sorter: true,
-    render: (value: TaskTableListItem['lastComment']) => valueOr(value),
+    render: (value: TaskTableItem['lastComment']) => valueOr(value),
   },
   {
     dataIndex: 'createdAt',
     title: 'Дата создания',
-    render: (value: TaskTableListItem['createdAt']) => valueOr(value, (value) => formatDate(value)),
+    render: (value: TaskTableItem['createdAt']) => valueOr(value, (value) => formatDate(value)),
     sorter: true,
     ellipsis: true,
   },

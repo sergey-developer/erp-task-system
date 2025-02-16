@@ -1,12 +1,12 @@
 import { within } from '@testing-library/react'
 import {
-  makeExecuteInventorizationPageLocationState,
-  mapInventorizationWarehousesTitles,
-} from 'features/inventorizations/api/helpers'
-import {
   inventorizationStatusDict,
   inventorizationTypeDict,
 } from 'features/inventorizations/constants'
+import {
+  makeExecuteInventorizationPageLocationState,
+  mapInventorizationWarehousesTitles,
+} from 'features/inventorizations/helpers'
 import InventorizationsPage from 'features/inventorizations/pages/InventorizationsPage'
 import { WarehousesRoutesEnum } from 'features/warehouses/routes/routes'
 import * as reactRouterDom from 'react-router-dom'
@@ -20,7 +20,7 @@ import * as downloadFileUtils from 'shared/utils/file/downloadFile'
 import { inventorizationDetailsTestUtils } from '_tests_/features/warehouse/components/InventorizationDetails/testUtils'
 import { executeInventorizationPageTestUtils } from '_tests_/features/warehouse/pages/ExecuteInventorizationPage/testUtils'
 import { fakeUseLocationResult } from '_tests_/fixtures/useLocation'
-import userFixtures from '_tests_/fixtures/user'
+import userFixtures from '_tests_/fixtures/users'
 import warehouseFixtures from '_tests_/fixtures/warehouse'
 import {
   mockCompleteInventorizationSuccess,

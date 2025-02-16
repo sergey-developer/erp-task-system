@@ -9,7 +9,7 @@ import AttachmentsModal, { AttachmentsModalProps } from './index'
 const props: AttachmentsModalProps = {
   open: true,
   title: fakeWord(),
-  data: attachmentFixtures.attachmentList(),
+  data: attachmentFixtures.attachments(),
   onCancel: jest.fn(),
 }
 

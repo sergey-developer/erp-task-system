@@ -5,7 +5,7 @@ import { Geometry as OlGeometry } from 'ol/geom'
 import { MaybeNull } from 'shared/types/utils'
 
 export type TaskListMapProps = {
-  tasks: TasksMapModel
+  tasks: TasksMapDTO
   onClickTask: (coords: MaybeNull<Coordinate>) => void
 }
 

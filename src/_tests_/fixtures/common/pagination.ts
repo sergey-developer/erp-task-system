@@ -1,4 +1,4 @@
-import { PaginationResponse } from 'shared/api/schemas/pagination.schema'
+import { PaginationResponse } from 'shared/api/schemas'
 import { ArrayFirst } from 'shared/types/utils'
 
 export const paginatedListResponse = <T extends any[]>(

@@ -3,7 +3,7 @@ import { RowEditableConfig } from '@ant-design/pro-utils/es/useEditableArray'
 import { InfrastructureWorkDTO } from 'features/infrastructures/api/dto'
 import { Key } from 'react'
 
-import { InfrastructureWorkTypesCatalogDTO } from 'shared/catalogs/api/dto/infrastructureWorkTypes'
+import { InfrastructureWorkTypesCatalogDTO } from 'shared/catalogs/infrastructureWorkTypes/api/dto'
 import { IdType } from 'shared/types/common'
 import { Nullable, SetNonNullable } from 'shared/types/utils'
 

@@ -1,5 +1,6 @@
 import { TableProps } from 'antd'
-import { EquipmentDTO, GetEquipmentsSortValue } from 'features/warehouses/api/dto'
+import { EquipmentDTO } from 'features/equipments/api/dto'
+import { GetEquipmentsSortValue } from 'features/equipments/api/schemas'
 
 export type EquipmentTableItem = Pick<
   EquipmentDTO,

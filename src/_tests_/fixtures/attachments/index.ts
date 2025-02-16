@@ -1,4 +1,4 @@
-import * as attachmentList from './attachmentList'
+import * as attachmentList from './attachments'
 
 const attachmentFixtures = {
   ...attachmentList,

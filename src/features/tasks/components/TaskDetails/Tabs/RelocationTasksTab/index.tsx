@@ -1,7 +1,7 @@
 import { Button, Col, Row, Typography } from 'antd'
 import { useIdBelongAuthUser } from 'features/auth/hooks'
-import { makeRelocationTasksPageLink } from 'features/relocationTasks/api/helpers'
-import { RelocationTaskStatusEnum } from 'features/relocationTasks/constants'
+import { RelocationTaskStatusEnum } from 'features/relocationTasks/api/constants'
+import { makeRelocationTasksPageLink } from 'features/relocationTasks/helpers'
 import {
   useCreateRelocationTaskAttachment,
   useGetRelocationTasks,

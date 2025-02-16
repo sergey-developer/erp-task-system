@@ -1,7 +1,5 @@
-import {
-  equipmentConditionDict,
-  EquipmentConditionEnum,
-} from 'features/equipments/api/constants'
+import { EquipmentConditionEnum } from 'features/equipments/api/constants'
+import { equipmentConditionDict } from 'features/equipments/constants'
 
 import { yesNoOptions } from 'shared/constants/selectField'
 import { getBooleanOptions } from 'shared/utils/selectField'

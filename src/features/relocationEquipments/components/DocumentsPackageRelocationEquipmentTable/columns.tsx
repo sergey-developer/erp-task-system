@@ -1,11 +1,8 @@
 import { Button } from 'antd'
 import { ColumnsType } from 'antd/es/table'
+import { EquipmentConditionEnum } from 'features/equipments/api/constants'
+import { equipmentConditionDict } from 'features/equipments/constants'
 import React from 'react'
-
-import {
-  equipmentConditionDict,
-  EquipmentConditionEnum,
-} from 'features/equipments/api/constants'
 
 import {
   DocumentsPackageRelocationEquipmentTableItem,

@@ -1,5 +1,5 @@
 import { UploadProps } from 'antd'
-import { RelocationTaskDTO } from 'features/warehouses/api/dto'
+import { RelocationTaskDTO } from 'features/relocationTasks/api/dto'
 
 export type RelocationTasksProps = {
   data: RelocationTaskDTO[]

@@ -1,8 +1,8 @@
 import { UsersDTO, UsersGroupsDTO } from 'features/users/api/dto'
 import sortBy from 'lodash/sortBy'
 
-import { LocationsCatalogDTO } from 'shared/catalogs/api/dto/locations'
-import { locationTypeDict } from 'shared/catalogs/constants'
+import { LocationsCatalogDTO } from 'shared/catalogs/locations/api/dto'
+import { locationTypeDict } from 'shared/catalogs/locations/constants'
 import { IdType } from 'shared/types/common'
 
 import {

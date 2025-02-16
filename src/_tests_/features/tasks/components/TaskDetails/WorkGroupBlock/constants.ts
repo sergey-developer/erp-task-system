@@ -5,8 +5,8 @@ import {
   TaskTypeEnum,
 } from 'features/tasks/constants/task/index'
 
-import taskFixtures from '_tests_/fixtures/task/index'
-import userFixtures from '_tests_/fixtures/user/index'
+import taskFixtures from '_tests_/fixtures/tasks/index'
+import userFixtures from '_tests_/fixtures/users/index'
 import { fakeId, fakeIdStr } from '_tests_/utils'
 
 export const props: Readonly<WorkGroupBlockProps> = {

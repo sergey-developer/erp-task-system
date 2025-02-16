@@ -9,7 +9,7 @@ import { useGetWorkTypesCatalog } from 'shared/catalogs/workTypes/hooks'
 import { idAndTitleSelectFieldNames } from 'shared/constants/selectField'
 import { onlyRequiredRules } from 'shared/constants/validation'
 import { filterOptionBy } from 'shared/utils/common'
-import { WorkGroupTypeEnum } from 'shared/workGroups/api/dto'
+import { WorkGroupTypeEnum } from 'shared/workGroups/api/constants'
 import { useGetWorkGroups } from 'shared/workGroups/hooks'
 
 import { WorkGroupFormItem } from './styles'

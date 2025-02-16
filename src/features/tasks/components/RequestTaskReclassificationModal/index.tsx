@@ -1,10 +1,7 @@
 import { Form, Input, Radio, Space, Typography } from 'antd'
+import { ReclassificationReasonEnum } from 'features/tasks/api/constants'
+import { reclassificationReasonDict } from 'features/tasks/constants'
 import React, { FC } from 'react'
-
-import {
-  reclassificationReasonDict,
-  ReclassificationReasonEnum,
-} from 'features/tasks/constants/taskReclassificationRequest'
 
 import BaseModal from 'components/Modals/BaseModal'
 

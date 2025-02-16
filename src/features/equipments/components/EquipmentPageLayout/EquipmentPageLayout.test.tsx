@@ -1,12 +1,13 @@
 import EquipmentsPage from 'features/equipments/pages/EquipmentsPage'
 import EquipmentNomenclaturesPage from 'features/nomenclatures/pages/EquipmentNomenclaturesPage'
+import { WarehousesRoutesEnum } from 'features/warehouses/routes/routes'
 import React from 'react'
 
 import { equipmentFilterTestUtils } from '_tests_/features/warehouse/components/EquipmentFilter/testUtils'
 import { equipmentNomenclatureTableTestUtils } from '_tests_/features/warehouse/components/EquipmentNomenclatureTable/testUtils'
 import { equipmentPageLayoutTestUtils } from '_tests_/features/warehouse/components/EquipmentPageLayout/testUtils'
-import { equipmentNomenclatureListPageTestUtils } from '_tests_/features/warehouse/pages/EquipmentNomenclaturesPage/testUtils'
-import { equipmentListPageTestUtils } from '_tests_/features/warehouse/pages/EquipmentsPage/testUtils'
+import { equipmentListPageTestUtils } from '_tests_/features/warehouse/pages/EquipmentListPage/testUtils'
+import { equipmentNomenclatureListPageTestUtils } from '_tests_/features/warehouse/pages/EquipmentNomenclatureListPage/testUtils'
 import catalogsFixtures from '_tests_/fixtures/catalogs'
 import commonFixtures from '_tests_/fixtures/common'
 import warehouseFixtures from '_tests_/fixtures/warehouse'
@@ -86,7 +87,7 @@ describe('Layout номенклатуры оборудования', () => {
       mockGetCustomerListSuccess()
       mockGetLocationsCatalogSuccess({ body: catalogsFixtures.locationsCatalog() })
       mockGetEquipmentCategoryListSuccess({
-        body: warehouseFixtures.equipmentCategoryList(),
+        body: warehouseFixtures.equipmentCategories(),
       })
       mockGetEquipmentNomenclaturesSuccess()
 
@@ -107,7 +108,7 @@ describe('Layout номенклатуры оборудования', () => {
       const locationCatalogListItem = catalogsFixtures.locationCatalogListItem()
       mockGetLocationsCatalogSuccess({ body: [locationCatalogListItem] })
 
-      mockGetEquipmentCategoryListSuccess({ body: warehouseFixtures.equipmentCategoryList() })
+      mockGetEquipmentCategoryListSuccess({ body: warehouseFixtures.equipmentCategories() })
       mockGetEquipmentNomenclaturesSuccess({ once: false })
 
       const { user } = renderWithRouter(
@@ -142,7 +143,7 @@ describe('Layout номенклатуры оборудования', () => {
     test('После применения переходит на страницу списка номенклатуры оборудования', async () => {
       mockGetCustomerListSuccess()
       mockGetLocationsCatalogSuccess({ body: catalogsFixtures.locationsCatalog() })
-      mockGetEquipmentCategoryListSuccess({ body: warehouseFixtures.equipmentCategoryList() })
+      mockGetEquipmentCategoryListSuccess({ body: warehouseFixtures.equipmentCategories() })
 
       const equipmentNomenclatureListItem = warehouseFixtures.equipmentNomenclatureListItem()
       mockGetEquipmentNomenclaturesSuccess({

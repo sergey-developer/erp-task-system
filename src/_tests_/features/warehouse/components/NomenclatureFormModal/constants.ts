@@ -1,6 +1,6 @@
 import { NomenclatureFormModalProps } from 'features/nomenclatures/components/NomenclatureFormModal/types'
 
-import countryFixtures from '_tests_/fixtures/country/index'
+import countryFixtures from '_tests_/fixtures/countries/index'
 import warehouseFixtures from '_tests_/fixtures/warehouse/index'
 import { fakeWord } from '_tests_/utils'
 

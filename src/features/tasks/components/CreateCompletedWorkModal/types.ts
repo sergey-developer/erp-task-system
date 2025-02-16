@@ -1,8 +1,8 @@
 import { FormInstance } from 'antd'
-import { MeasurementUnitsCatalogDTO } from 'features/warehouses/api/dto'
 
 import { BaseModalProps } from 'components/Modals/BaseModal'
 
+import { MeasurementUnitsCatalogDTO } from 'shared/catalogs/measurementUnits/api/dto'
 import { IdType } from 'shared/types/common'
 
 export type CreateCompletedWorkModalProps = Required<

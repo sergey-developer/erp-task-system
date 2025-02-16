@@ -1,5 +1,5 @@
 import { WarehousesApiPathsEnum } from 'features/warehouses/api/constants'
-import { GetWarehousesResponse } from 'features/warehouses/api/dto'
+import { GetWarehousesResponse } from 'features/warehouses/api/schemas'
 
 import { HttpMethodEnum } from 'shared/constants/http'
 

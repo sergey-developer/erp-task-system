@@ -1,9 +1,11 @@
 import { TableProps } from 'antd'
-import { GetTasksSortValue, TaskDTO } from 'features/tasks/api/dto'
 
 import { TableSortProps } from 'shared/types/sort'
 
-export type TaskTableListItem = Pick<
+import { TaskDTO } from 'features/tasks/api/dto'
+import { GetTasksSortValue } from 'features/tasks/api/schemas'
+
+export type TaskTableItem = Pick<
   TaskDTO,
   | 'id'
   | 'recordId'
@@ -27,7 +29,7 @@ export type TaskTableListItem = Pick<
 export type TaskTableColumnKey =
   | 'noop'
   | keyof Pick<
-      TaskTableListItem,
+      TaskTableItem,
       | 'id'
       | 'recordId'
       | 'name'
@@ -44,9 +46,6 @@ export type TaskTableColumnKey =
     >
 
 export type TaskTableProps = Required<
-  Pick<
-    TableProps<TaskTableListItem>,
-    'dataSource' | 'loading' | 'onChange' | 'pagination' | 'onRow'
-  >
+  Pick<TableProps<TaskTableItem>, 'dataSource' | 'loading' | 'onChange' | 'pagination' | 'onRow'>
 > &
   TableSortProps<GetTasksSortValue>

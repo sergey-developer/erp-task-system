@@ -1,4 +1,4 @@
-import { EquipmentDetailDTO } from 'features/warehouses/api/dto'
+import { EquipmentDetailDTO } from 'features/equipments/api/dto'
 import isBoolean from 'lodash/isBoolean'
 import isNumber from 'lodash/isNumber'
 

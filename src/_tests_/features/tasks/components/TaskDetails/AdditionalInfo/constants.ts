@@ -2,7 +2,7 @@ import { AdditionalInfoProps } from 'features/tasks/components/TaskDetails/Addit
 import { TaskStatusEnum } from 'features/tasks/constants/task/index'
 import pick from 'lodash/pick'
 
-import taskFixtures from '_tests_/fixtures/task/index'
+import taskFixtures from '_tests_/fixtures/tasks/index'
 import { fakeWord } from '_tests_/utils'
 
 export const props: Readonly<

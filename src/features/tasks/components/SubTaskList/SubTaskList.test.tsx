@@ -7,7 +7,7 @@ import {
 import { subTaskTestUtils } from '_tests_/features/tasks/components/SubTaskList/SubTask/testUtils'
 import { props } from '_tests_/features/tasks/components/SubTaskList/constants'
 import { subTaskListTestUtils } from '_tests_/features/tasks/components/SubTaskList/testUtils'
-import taskFixtures from '_tests_/fixtures/task'
+import taskFixtures from '_tests_/fixtures/tasks'
 import { render } from '_tests_/utils'
 
 import SubTaskList from './index'

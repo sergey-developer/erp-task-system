@@ -1,4 +1,4 @@
-import { makeTaskMonitoringEndpoint } from 'features/monitoring/api/helpers'
+import { makeTaskMonitoringApiPath } from 'features/monitoring/api/helpers'
 import {
   GetTaskMonitoringRequest,
   GetTaskMonitoringResponse,

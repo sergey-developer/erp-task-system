@@ -1,9 +1,9 @@
+import { getRelocationTaskAttachmentsErrorMessage } from 'features/relocationTasks/api/constants'
 import { useGetRelocationTaskAttachmentsQuery } from 'features/relocationTasks/api/endpoints/relocationTasks.endpoints'
-import { getRelocationTaskAttachmentsErrorMessage } from 'features/relocationTasks/constants'
 import {
   GetRelocationTaskAttachmentsRequest,
   GetRelocationTaskAttachmentsResponse,
-} from 'features/warehouses/api/dto'
+} from 'features/relocationTasks/api/schemas'
 import { useEffect } from 'react'
 
 import { CustomUseQueryHookResult, CustomUseQueryOptions } from 'lib/rtk-query/types'

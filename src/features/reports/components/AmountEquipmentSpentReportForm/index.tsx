@@ -1,12 +1,12 @@
 import { Button, Col, Flex, Form, Popover, Row, Select, Typography } from 'antd'
 import { useForm } from 'antd/es/form/Form'
-import { EquipmentNomenclatureDTO } from 'features/warehouses/api/dto'
+import { EquipmentNomenclatureDTO } from 'features/equipments/api/dto'
 import React, { FC } from 'react'
 
 import DatePicker from 'components/DatePicker'
 import { QuestionCircleIcon } from 'components/Icons'
 
-import { LocationCatalogItemDTO } from 'shared/catalogs/api/dto/locations'
+import { LocationCatalogItemDTO } from 'shared/catalogs/locations/api/dto'
 import { UPDATE_TEXT } from 'shared/constants/common'
 import { idAndTitleSelectFieldNames } from 'shared/constants/selectField'
 import { onlyRequiredRules } from 'shared/constants/validation'

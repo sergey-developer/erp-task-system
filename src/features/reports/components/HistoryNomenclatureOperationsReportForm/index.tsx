@@ -1,6 +1,6 @@
 import { Button, Col, Flex, Form, Popover, Row, Select, Typography } from 'antd'
 import { useForm } from 'antd/es/form/Form'
-import { EquipmentNomenclatureDTO } from 'features/warehouses/api/dto'
+import { EquipmentNomenclatureDTO } from 'features/equipments/api/dto'
 import React, { FC } from 'react'
 
 import DatePicker from 'components/DatePicker'

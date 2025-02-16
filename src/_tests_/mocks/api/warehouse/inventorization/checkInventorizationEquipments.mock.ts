@@ -1,8 +1,8 @@
-import { InventorizationsApiPathsEnum } from 'features/inventorizations/constants'
+import { InventorizationsApiPathsEnum } from 'features/inventorizations/api/constants'
 import {
-  CheckInventorizationEquipmentsBadRequestErrorResponse,
+  CheckInventorizationEquipmentsBadRequestResponse,
   CheckInventorizationEquipmentsResponse,
-} from 'features/warehouses/api/dto'
+} from 'features/inventorizations/api/schemas'
 
 import { HttpMethodEnum } from 'shared/constants/http'
 
@@ -17,5 +17,5 @@ export const mockCheckInventorizationEquipmentsSuccess = (
 ) => getSuccessMockFn(checkInventorizationEquipmentsMockFn(), options)()
 
 export const mockCheckInventorizationEquipmentsBadRequestError = (
-  options?: Partial<ResponseResolverOptions<CheckInventorizationEquipmentsBadRequestErrorResponse>>,
+  options?: Partial<ResponseResolverOptions<CheckInventorizationEquipmentsBadRequestResponse>>,
 ) => getBadRequestErrorMockFn(checkInventorizationEquipmentsMockFn(), options)()

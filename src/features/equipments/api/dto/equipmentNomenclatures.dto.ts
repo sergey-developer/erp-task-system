@@ -1,4 +1,4 @@
-import { NomenclaturesGroupDTO } from 'features/warehouses/api/dto'
+import { NomenclaturesGroupDTO } from 'features/nomenclatures/api/dto'
 
 import { IdType } from 'shared/types/common'
 

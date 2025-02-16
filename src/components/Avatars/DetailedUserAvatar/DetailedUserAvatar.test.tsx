@@ -8,7 +8,7 @@ import pick from 'lodash/pick'
 
 import { CommonRoutesEnum } from 'configs/routes'
 
-import userFixtures from '_tests_/fixtures/user'
+import userFixtures from '_tests_/fixtures/users'
 import {
   mockGetTimeZoneListSuccess,
   mockGetUserMeCodeSuccess,

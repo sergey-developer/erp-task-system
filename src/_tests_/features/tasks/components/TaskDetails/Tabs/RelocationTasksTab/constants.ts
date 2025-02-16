@@ -1,6 +1,6 @@
 import { RelocationTasksTabProps } from 'features/tasks/components/TaskDetails/Tabs/RelocationTasksTab/types'
 
-import taskFixtures from '_tests_/fixtures/task/index'
+import taskFixtures from '_tests_/fixtures/tasks/index'
 
 export const props: RelocationTasksTabProps = {
   task: taskFixtures.task(),

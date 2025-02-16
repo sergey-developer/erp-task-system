@@ -1,5 +1,5 @@
 import { FormInstance } from 'antd'
-import { RelocationEquipmentTechnicalExaminationModel } from 'features/relocationEquipments/api/schemas'
+import { RelocationEquipmentTechnicalExaminationDTO } from 'features/relocationEquipments/api/dto'
 import { DocumentsPackageRelocationEquipmentTableItem } from 'features/relocationEquipments/components/DocumentsPackageRelocationEquipmentTable/types'
 
 import { BaseModalProps } from 'components/Modals/BaseModal'
@@ -20,7 +20,7 @@ export type CreateRelocationEquipmentTechnicalExaminationModalProps = Required<
     setFields: FormInstance<CreateRelocationEquipmentTechnicalExaminationFormFields>['setFields'],
   ) => Promise<void>
 
-  technicalExamination?: RelocationEquipmentTechnicalExaminationModel
+  technicalExamination?: RelocationEquipmentTechnicalExaminationDTO
   technicalExaminationIsLoading: boolean
 
   relocationEquipment?: DocumentsPackageRelocationEquipmentTableItem

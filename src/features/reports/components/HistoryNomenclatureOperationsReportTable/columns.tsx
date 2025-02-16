@@ -1,6 +1,6 @@
 import { Typography } from 'antd'
 import { ColumnsType } from 'antd/es/table'
-import { equipmentConditionDict } from 'features/equipments/api/constants'
+import { equipmentConditionDict } from 'features/equipments/constants'
 import { relocationTaskStatusDict } from 'features/relocationTasks/constants'
 
 import { DATE_FORMAT } from 'shared/constants/dateTime'

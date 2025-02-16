@@ -6,7 +6,7 @@ import { testUtils as homeLayoutTestUtils } from 'features/layouts/components/Ho
 import { taskLocalStorageService } from 'features/tasks/services/taskLocalStorageService/taskLocalStorage.service'
 import { updateUserStatusMessages, UserPermissionsEnum } from 'features/users/api/constants'
 
-import { UserStatusCodeEnum } from 'shared/catalogs/constants'
+import { UserStatusCodeEnum } from 'shared/catalogs/userStatuses/api/constants'
 import { MaybeNull } from 'shared/types/utils'
 
 import App from 'app/App'
@@ -14,7 +14,7 @@ import App from 'app/App'
 import { tasksPageTestUtils } from '_tests_/features/tasks/pages/TasksPage/testUtils'
 import authFixtures from '_tests_/fixtures/auth'
 import catalogsFixtures from '_tests_/fixtures/catalogs'
-import userFixtures from '_tests_/fixtures/user'
+import userFixtures from '_tests_/fixtures/users'
 import {
   mockGetSystemInfoSuccess,
   mockGetSystemSettingsSuccess,

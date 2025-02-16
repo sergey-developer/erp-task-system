@@ -1,6 +1,6 @@
 import { within } from '@testing-library/react'
 import ExecuteInventorizationPage from 'features/inventorizations/pages/ExecuteInventorizationPage'
-import { makeCreateRelocationTaskDraftPageLocationState } from 'features/relocationTasks/api/helpers'
+import { makeCreateRelocationTaskDraftPageLocationState } from 'features/relocationTasks/helpers'
 import { WarehousesRoutesEnum } from 'features/warehouses/routes/routes'
 import * as reactRouterDom from 'react-router-dom'
 
@@ -16,7 +16,7 @@ import { executeInventorizationPageTestUtils } from '_tests_/features/warehouse/
 import catalogsFixtures from '_tests_/fixtures/catalogs'
 import commonFixtures from '_tests_/fixtures/common'
 import { fakeUseLocationResult } from '_tests_/fixtures/useLocation'
-import userFixtures from '_tests_/fixtures/user'
+import userFixtures from '_tests_/fixtures/users'
 import warehouseFixtures from '_tests_/fixtures/warehouse'
 import {
   mockCreateRelocationTaskSuccess,

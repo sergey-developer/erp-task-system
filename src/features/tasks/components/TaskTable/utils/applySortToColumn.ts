@@ -1,15 +1,14 @@
 import { ColumnType } from 'antd/es/table'
+import { GetTasksSortValue } from 'features/tasks/api/schemas'
 import isEqual from 'lodash/isEqual'
 
-import { GetTasksSortValue } from 'features/tasks/api/schemas'
-
-import { TaskTableListItem } from '../types'
+import { TaskTableItem } from '../types'
 import { parseSort } from './parseSort'
 
 export const applySortToColumn = (
-  column: ColumnType<TaskTableListItem>,
+  column: ColumnType<TaskTableItem>,
   sort: GetTasksSortValue,
-): ColumnType<TaskTableListItem> => {
+): ColumnType<TaskTableItem> => {
   const sorterResult = parseSort(sort)
 
   if (!isEqual(column.dataIndex, sorterResult.columnKey)) return column

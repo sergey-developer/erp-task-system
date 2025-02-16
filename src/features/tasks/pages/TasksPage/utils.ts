@@ -1,6 +1,6 @@
 import { TasksDTO } from 'features/tasks/api/dto'
 import { TasksFilterRequestArgs } from 'features/tasks/api/schemas'
-import { TaskTableListItem } from 'features/tasks/components/TaskTable/types'
+import { TaskTableItem } from 'features/tasks/components/TaskTable/types'
 import { DEFAULT_SEARCH_FIELD } from 'features/tasks/components/TasksFilter/constants'
 import { TasksFilterFormFields } from 'features/tasks/components/TasksFilter/types'
 import { checkOlaStatusExpired } from 'features/tasks/helpers'
@@ -52,13 +52,13 @@ export const getInitialTasksFilterValues = (
   supportGroups: get(tasksFiltersStorage, 'supportGroups', []),
 })
 
-export const getTasksByOlaNextBreachTime = (tasks: TasksDTO): TaskTableListItem[] => {
+export const getTasksByOlaNextBreachTime = (tasks: TasksDTO): TaskTableItem[] => {
   const currentDate = moment()
   const granularity = 'day'
-  const olaStatusExpiredTasks: TaskTableListItem[] = []
-  const equalCurrentDateTasks: TaskTableListItem[] = []
-  const moreThanCurrentDateTasks: TaskTableListItem[] = []
-  const restTasks: TaskTableListItem[] = []
+  const olaStatusExpiredTasks: TaskTableItem[] = []
+  const equalCurrentDateTasks: TaskTableItem[] = []
+  const moreThanCurrentDateTasks: TaskTableItem[] = []
+  const restTasks: TaskTableItem[] = []
 
   tasks.forEach((task) => {
     const olaNextBreachTimeMoment = moment(task.olaNextBreachTime)

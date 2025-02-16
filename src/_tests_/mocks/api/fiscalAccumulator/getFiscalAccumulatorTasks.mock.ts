@@ -1,5 +1,5 @@
 import { ReportsApiPathsEnum } from 'features/reports/api/constants'
-import { GetFiscalAccumulatorTasksReportResponse } from 'features/reports/api/dto'
+import { GetFiscalAccumulatorTasksReportResponse } from 'features/reports/api/schemas'
 
 import { HttpMethodEnum } from 'shared/constants/http'
 

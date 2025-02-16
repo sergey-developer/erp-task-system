@@ -1,8 +1,8 @@
-import { executeRelocationTaskUrl } from 'features/relocationTasks/api/helpers'
+import { makeExecuteRelocationTaskApiPath } from 'features/relocationTasks/api/helpers'
 import {
-  ExecuteRelocationTaskBadRequestErrorResponse,
+  ExecuteRelocationTaskBadRequestResponse,
   ExecuteRelocationTaskResponse,
-} from 'features/warehouses/api/dto'
+} from 'features/relocationTasks/api/schemas'
 
 import { ErrorData } from 'shared/api/baseApi'
 import { HttpMethodEnum } from 'shared/constants/http'
@@ -19,7 +19,7 @@ import {
 import { ResponseResolverOptions } from '_tests_/mocks/response'
 
 const executeRelocationTaskMockFn = (id: IdType) =>
-  getRequestMockFn(HttpMethodEnum.Post, executeRelocationTaskUrl(id))
+  getRequestMockFn(HttpMethodEnum.Post, makeExecuteRelocationTaskApiPath(id))
 
 export const mockExecuteRelocationTaskSuccess = (
   id: IdType,
@@ -28,9 +28,7 @@ export const mockExecuteRelocationTaskSuccess = (
 
 export const mockExecuteRelocationTaskBadRequestError = (
   id: IdType,
-  options?: Partial<
-    ResponseResolverOptions<ErrorData<ExecuteRelocationTaskBadRequestErrorResponse>>
-  >,
+  options?: Partial<ResponseResolverOptions<ErrorData<ExecuteRelocationTaskBadRequestResponse>>>,
 ) => getBadRequestErrorMockFn(executeRelocationTaskMockFn(id), options)()
 
 export const mockExecuteRelocationTaskNotFoundError = (

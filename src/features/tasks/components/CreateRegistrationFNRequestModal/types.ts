@@ -3,7 +3,7 @@ import { UploadFile } from 'antd/es/upload'
 
 import { BaseModalProps } from 'components/Modals/BaseModal'
 
-import { FaChangeTypesCatalogDTO } from 'shared/catalogs/api/dto/faChangeTypes'
+import { FaChangeTypesCatalogDTO } from 'shared/catalogs/faChangeTypes/api/dto'
 import { IdType } from 'shared/types/common'
 import { FileResponse } from 'shared/types/file'
 

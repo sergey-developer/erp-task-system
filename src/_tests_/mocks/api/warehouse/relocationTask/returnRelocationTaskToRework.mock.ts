@@ -1,8 +1,8 @@
-import { returnRelocationTaskToReworkUrl } from 'features/relocationTasks/api/helpers'
+import { makeReturnRelocationTaskToReworkApiPath } from 'features/relocationTasks/api/helpers'
 import {
-  ReturnRelocationTaskToReworkBadRequestErrorResponse,
+  ReturnRelocationTaskToReworkBadRequestResponse,
   ReturnRelocationTaskToReworkResponse,
-} from 'features/warehouses/api/dto'
+} from 'features/relocationTasks/api/schemas'
 
 import { ErrorData } from 'shared/api/baseApi'
 import { HttpMethodEnum } from 'shared/constants/http'
@@ -19,7 +19,7 @@ import {
 import { ResponseResolverOptions } from '_tests_/mocks/response'
 
 const returnRelocationTaskToReworkMockFn = (id: IdType) =>
-  getRequestMockFn(HttpMethodEnum.Post, returnRelocationTaskToReworkUrl(id))
+  getRequestMockFn(HttpMethodEnum.Post, makeReturnRelocationTaskToReworkApiPath(id))
 
 export const mockReturnRelocationTaskToReworkSuccess = (
   id: IdType,
@@ -29,7 +29,7 @@ export const mockReturnRelocationTaskToReworkSuccess = (
 export const mockReturnRelocationTaskToReworkBadRequestError = (
   id: IdType,
   options?: Partial<
-    ResponseResolverOptions<ErrorData<ReturnRelocationTaskToReworkBadRequestErrorResponse>>
+    ResponseResolverOptions<ErrorData<ReturnRelocationTaskToReworkBadRequestResponse>>
   >,
 ) => getBadRequestErrorMockFn(returnRelocationTaskToReworkMockFn(id), options)()
 

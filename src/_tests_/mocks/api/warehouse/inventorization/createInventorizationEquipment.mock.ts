@@ -1,6 +1,6 @@
-import { makeCreateInventorizationEquipmentUrl } from 'features/inventorizations/api/helpers'
-import { CreateInventorizationEquipmentResponse } from 'features/warehouses/api/dto'
-import { RequestWithInventorization } from 'features/warehouses/types'
+import { makeCreateInventorizationEquipmentApiPath } from 'features/inventorizations/api/helpers'
+import { CreateInventorizationEquipmentResponse } from 'features/inventorizations/api/schemas'
+import { RequestWithInventorization } from 'features/inventorizations/api/types'
 
 import { HttpMethodEnum } from 'shared/constants/http'
 
@@ -12,7 +12,7 @@ const createInventorizationEquipmentMockFn = ({
 }: Pick<RequestWithInventorization, 'inventorizationId'>) =>
   getRequestMockFn(
     HttpMethodEnum.Post,
-    makeCreateInventorizationEquipmentUrl({ inventorizationId }),
+    makeCreateInventorizationEquipmentApiPath({ inventorizationId }),
   )
 
 export const mockCreateInventorizationEquipmentSuccess = (

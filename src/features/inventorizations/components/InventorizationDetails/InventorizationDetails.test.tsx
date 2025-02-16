@@ -1,14 +1,14 @@
 import { within } from '@testing-library/react'
 import { testUtils as attachmentsTestUtils } from 'features/attachments/components/Attachments/Attachments.test'
+import { InventorizationStatusEnum } from 'features/inventorizations/api/constants'
+import {
+  inventorizationStatusDict,
+  inventorizationTypeDict,
+} from 'features/inventorizations/constants'
 import {
   makeExecuteInventorizationPageLocationState,
   mapInventorizationWarehousesTitles,
-} from 'features/inventorizations/api/helpers'
-import {
-  inventorizationStatusDict,
-  InventorizationStatusEnum,
-  inventorizationTypeDict,
-} from 'features/inventorizations/constants'
+} from 'features/inventorizations/helpers'
 import ExecuteInventorizationPage from 'features/inventorizations/pages/ExecuteInventorizationPage'
 import { UserPermissionsEnum } from 'features/users/api/constants'
 import { WarehousesRoutesEnum } from 'features/warehouses/routes/routes'
@@ -20,7 +20,7 @@ import { props } from '_tests_/features/warehouse/components/InventorizationDeta
 import { inventorizationDetailsTestUtils } from '_tests_/features/warehouse/components/InventorizationDetails/testUtils'
 import { executeInventorizationPageTestUtils } from '_tests_/features/warehouse/pages/ExecuteInventorizationPage/testUtils'
 import { fakeUseLocationResult } from '_tests_/fixtures/useLocation'
-import userFixtures from '_tests_/fixtures/user'
+import userFixtures from '_tests_/fixtures/users'
 import warehouseFixtures from '_tests_/fixtures/warehouse'
 import { mockGetInventorizationSuccess } from '_tests_/mocks/api'
 import { getUserMeQueryMock } from '_tests_/mocks/state/user'

@@ -1,5 +1,5 @@
 import { Col, Form, InputNumber, Radio, Row, Select, SelectProps } from 'antd'
-import { equipmentConditionOptions } from 'features/equipments/api/constants'
+import { equipmentConditionOptions } from 'features/equipments/constants'
 import isEmpty from 'lodash/isEmpty'
 import React, { FC, useCallback, useEffect, useMemo } from 'react'
 

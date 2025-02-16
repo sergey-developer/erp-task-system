@@ -1,4 +1,4 @@
-import { EquipmentCategoriesDTO } from 'features/warehouses/api/dto'
+import { EquipmentCategoriesDTO } from 'features/equipments/api/dto'
 
 import { DrawerFilterProps } from 'components/Filters/DrawerFilter'
 

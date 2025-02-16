@@ -3,13 +3,14 @@ import { UploadFile } from 'antd/es/upload'
 import { TaskTypeEnum } from 'features/tasks/api/constants'
 import { UsersDTO } from 'features/users/api/dto'
 import { MatchedUserPermissions } from 'features/users/types'
-import { CustomersModel, WorkTypesCatalogDTO } from 'features/warehouses/api/dto'
 import { Moment } from 'moment-timezone'
 
 import { BaseModalProps } from 'components/Modals/BaseModal'
 
-import { LocationsCatalogDTO } from 'shared/catalogs/api/dto/locations'
-import { WorkGroupsCatalogDTO } from 'shared/catalogs/api/dto/workGroups'
+import { CustomersCatalogDTO } from 'shared/catalogs/customers/api/dto'
+import { LocationsCatalogDTO } from 'shared/catalogs/locations/api/dto'
+import { WorkGroupsCatalogDTO } from 'shared/catalogs/workGroups/api/dto'
+import { WorkTypesCatalogDTO } from 'shared/catalogs/workTypes/api/dto'
 import { IdType } from 'shared/types/common'
 import { SetNonNullable } from 'shared/types/utils'
 
@@ -43,7 +44,7 @@ export type CreateTaskModalProps = SetNonNullable<
   executors: UsersDTO
   executorsIsLoading: boolean
 
-  customers: CustomersModel
+  customers: CustomersCatalogDTO
   customersIsLoading: boolean
 
   locations: LocationsCatalogDTO

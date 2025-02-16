@@ -2,7 +2,7 @@ import { waitFor } from '@testing-library/react'
 import { UserPermissionsEnum } from 'features/users/api/constants'
 
 import { validationMessages } from 'shared/constants/validation'
-import { WorkGroupTypeEnum } from 'shared/workGroups/api/dto'
+import { WorkGroupTypeEnum } from 'shared/workGroups/api/constants'
 
 import { props } from '_tests_/features/tasks/components/TaskSecondLineModal/constants'
 import { taskSecondLineModalTestUtils } from '_tests_/features/tasks/components/TaskSecondLineModal/testUtils'

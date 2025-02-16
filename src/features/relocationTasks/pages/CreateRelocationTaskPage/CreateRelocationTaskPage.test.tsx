@@ -5,7 +5,7 @@ import {
 } from 'features/equipments/api/constants'
 import { UserPermissionsEnum } from 'features/users/api/constants'
 
-import { LocationTypeEnum } from 'shared/catalogs/constants'
+import { LocationTypeEnum } from 'shared/catalogs/locations/api/constants'
 import { MimetypeEnum } from 'shared/constants/mimetype'
 import * as base64Utils from 'shared/utils/common/base64'
 import * as downloadFileUtils from 'shared/utils/file/downloadFile'
@@ -15,7 +15,7 @@ import { relocationEquipmentEditableTableTestUtils } from '_tests_/features/ware
 import { relocationTaskFormTestUtils } from '_tests_/features/warehouse/components/RelocationTaskForm/testUtils'
 import { createRelocationTaskPageTestUtils } from '_tests_/features/warehouse/pages/CreateRelocationTaskPage/testUtils'
 import catalogsFixtures from '_tests_/fixtures/catalogs'
-import userFixtures from '_tests_/fixtures/user'
+import userFixtures from '_tests_/fixtures/users'
 import warehouseFixtures from '_tests_/fixtures/warehouse'
 import {
   mockGetCurrencyListSuccess,
@@ -243,7 +243,9 @@ describe('Страница создания заявки на перемещен
       })
 
       await createRelocationTaskPageTestUtils.clickDownloadTemplateButton(user)
-      const notification = await notificationTestUtils.findNotification(getEquipmentsTemplateErrorMessage)
+      const notification = await notificationTestUtils.findNotification(
+        getEquipmentsTemplateErrorMessage,
+      )
 
       expect(notification).toBeInTheDocument()
     })

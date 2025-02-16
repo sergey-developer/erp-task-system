@@ -1,4 +1,4 @@
-import { PaginationRequestParams, PaginationResponse } from 'shared/api/schemas/pagination.schema'
+import { PaginationRequestParams, PaginationResponse } from 'shared/api/schemas'
 import { LocationTypeEnum } from 'shared/catalogs/locations/api/constants'
 import { IdType } from 'shared/types/common'
 import { FilterParams } from 'shared/types/filter'

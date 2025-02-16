@@ -1,7 +1,7 @@
 import {
   RelocationTaskStatusEnum,
   RelocationTaskTypeEnum,
-} from 'features/relocationTasks/constants'
+} from 'features/relocationTasks/api/constants'
 import { UsersDTO } from 'features/users/api/dto'
 import { Moment } from 'moment-timezone'
 

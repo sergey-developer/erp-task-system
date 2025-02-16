@@ -1,4 +1,5 @@
-import { EquipmentDetailDTO, RelocationTaskDetailDTO } from 'features/warehouses/api/dto'
+import { EquipmentDetailDTO } from 'features/equipments/api/dto'
+import { RelocationTaskDetailDTO } from 'features/relocationTasks/api/dto'
 
 import { IdType } from 'shared/types/common'
 

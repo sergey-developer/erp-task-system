@@ -1,6 +1,6 @@
 import { DescriptionTabProps } from 'features/tasks/components/TaskDetails/Tabs/DescriptionTab/index'
 
-import taskFixtures from '_tests_/fixtures/task/index'
+import taskFixtures from '_tests_/fixtures/tasks/index'
 import { fakeWord } from '_tests_/utils'
 
 export const props: Readonly<DescriptionTabProps> = {

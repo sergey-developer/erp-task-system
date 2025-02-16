@@ -12,7 +12,7 @@ import { relocationTaskDetailsTestUtils } from '_tests_/features/warehouse/compo
 import { employeesActionsReportPageTestUtils } from '_tests_/features/warehouse/pages/EmployeesActionsReportPage/testUtils'
 import commonFixtures from '_tests_/fixtures/common'
 import reportsFixtures from '_tests_/fixtures/reports'
-import userFixtures from '_tests_/fixtures/user'
+import userFixtures from '_tests_/fixtures/users'
 import {
   mockGetEmployeesActionsReportSuccess,
   mockGetEmployeesActionsReportXlsxSuccess,

@@ -1,12 +1,11 @@
 import { waitForElementToBeRemoved } from '@testing-library/react'
-
-import { ReworkSubTaskFormErrors } from 'features/tasks/components/ReworkSubTaskModal/types'
 import {
   getSubTasksErrorMessage,
   TaskExtendedStatusEnum,
   TaskStatusEnum,
   TaskTypeEnum,
 } from 'features/tasks/api/constants'
+import { ReworkSubTaskFormErrors } from 'features/tasks/components/ReworkSubTaskModal/types'
 
 import { cancelSubTaskModalTestUtils } from '_tests_/features/tasks/components/CancelSubTaskModal/testUtils'
 import { createSubTaskModalTestUtils } from '_tests_/features/tasks/components/CreateSubTaskModal/testUtils'
@@ -24,9 +23,9 @@ import {
 import { subTaskListTabTestUtils } from '_tests_/features/tasks/components/TaskDetails/Tabs/SubTaskListTab/testUtils'
 import { taskStatusTestUtils } from '_tests_/features/tasks/components/TaskStatus/testUtils'
 import catalogsFixtures from '_tests_/fixtures/catalogs'
-import supportGroupFixtures from '_tests_/fixtures/supportGroup'
-import taskFixtures from '_tests_/fixtures/task'
-import userFixtures from '_tests_/fixtures/user'
+import supportGroupFixtures from '_tests_/fixtures/supportGroups'
+import taskFixtures from '_tests_/fixtures/tasks'
+import userFixtures from '_tests_/fixtures/users'
 import {
   mockCancelSubTaskBadRequestError,
   mockCancelSubTaskServerError,
@@ -346,7 +345,9 @@ describe('Вкладка списка заданий заявки', () => {
 
         await subTaskListTabTestUtils.expectLoadingFinished()
 
-        expect(await notificationTestUtils.findNotification(getSubTasksErrorMessage)).toBeInTheDocument()
+        expect(
+          await notificationTestUtils.findNotification(getSubTasksErrorMessage),
+        ).toBeInTheDocument()
       })
     })
   })

@@ -1,9 +1,7 @@
 import { screen, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
-import {
-  suspendReasonDict,
-  SuspendReasonEnum,
-} from 'features/tasks/constants/taskSuspendRequest/index'
+import { SuspendReasonEnum } from 'features/tasks/api/constants'
+import { suspendReasonDict } from 'features/tasks/constants'
 
 import { TestIdsEnum } from '_tests_/features/tasks/components/RequestTaskSuspendModal/constants'
 import { buttonTestUtils, radioButtonTestUtils, selectTestUtils } from '_tests_/utils'

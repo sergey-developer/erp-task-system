@@ -10,9 +10,9 @@ import {
   ExecuteInventorizationRelocationTaskTableProps,
   ExecuteInventorizationRelocationTaskTableSortValue,
 } from 'features/inventorizations/components/ExecuteInventorizationRelocationTaskTable/types'
-import { makeCreateRelocationTaskDraftPageLocationState } from 'features/relocationTasks/api/helpers'
+import { GetRelocationTasksRequest } from 'features/relocationTasks/api/schemas'
+import { makeCreateRelocationTaskDraftPageLocationState } from 'features/relocationTasks/helpers'
 import { useGetRelocationTasks } from 'features/relocationTasks/hooks'
-import { GetRelocationTasksRequest } from 'features/warehouses/api/dto'
 import { WarehousesRoutesEnum } from 'features/warehouses/routes/routes'
 import debounce from 'lodash/debounce'
 import React, { FC, useCallback, useState } from 'react'

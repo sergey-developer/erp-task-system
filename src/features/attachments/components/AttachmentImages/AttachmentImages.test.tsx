@@ -7,7 +7,7 @@ import AttachmentImages from './index'
 import { AttachmentImagesProps } from './types'
 
 const props: AttachmentImagesProps = {
-  data: attachmentFixtures.attachmentList(),
+  data: attachmentFixtures.attachments(),
 }
 
 const getImageIn = (container: HTMLElement, name: string) =>

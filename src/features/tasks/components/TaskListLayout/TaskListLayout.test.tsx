@@ -8,7 +8,7 @@ import { CommonRoutesEnum } from 'configs/routes'
 import { taskListLayoutTestUtils } from '_tests_/features/tasks/components/TaskListLayout/testUtils'
 import { testUtils as taskListMapPageTestUtils } from '_tests_/features/tasks/pages/TaskListMapPage/testUtils'
 import { tasksPageTestUtils } from '_tests_/features/tasks/pages/TasksPage/testUtils'
-import userFixtures from '_tests_/fixtures/user'
+import userFixtures from '_tests_/fixtures/users'
 import {
   mockGetTaskCountersSuccess,
   mockGetTaskListMapSuccess,

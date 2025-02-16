@@ -4,7 +4,7 @@ import { TaskDetailDTO } from 'features/tasks/api/dto'
 
 import { BaseModalProps } from 'components/Modals/BaseModal'
 
-import { ResolutionClassificationsCatalogDTO } from 'shared/catalogs/api/dto/resolutionClassifications'
+import { ResolutionClassificationsCatalogDTO } from 'shared/catalogs/resolutionClassifications/api/dto'
 import { IdType } from 'shared/types/common'
 import { SetNonNullable } from 'shared/types/utils'
 

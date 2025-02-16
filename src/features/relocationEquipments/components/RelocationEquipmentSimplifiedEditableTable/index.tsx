@@ -1,11 +1,11 @@
 import { EditableProTable, ProColumns } from '@ant-design/pro-components'
 import { Button, Form } from 'antd'
-import { equipmentConditionOptions } from 'features/equipments/api/constants'
+import { EquipmentDetailDTO } from 'features/equipments/api/dto'
+import { equipmentConditionOptions } from 'features/equipments/constants'
 import {
   checkEquipmentCategoryIsConsumable,
   makeEquipmentsSelectOptions,
 } from 'features/equipments/helpers'
-import { EquipmentDetailDTO } from 'features/warehouses/api/dto'
 import isUndefined from 'lodash/isUndefined'
 import random from 'lodash/random'
 import { DefaultOptionType } from 'rc-select/lib/Select'

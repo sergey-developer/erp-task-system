@@ -1,8 +1,8 @@
 import { props } from '_tests_/features/tasks/components/TaskDetails/MainDetails/constants'
 import { mainDetailsTestUtils } from '_tests_/features/tasks/components/TaskDetails/MainDetails/testUtils'
 import { taskStatusTestUtils } from '_tests_/features/tasks/components/TaskStatus/testUtils'
-import taskFixtures from '_tests_/fixtures/task'
-import userFixtures from '_tests_/fixtures/user'
+import taskFixtures from '_tests_/fixtures/tasks'
+import userFixtures from '_tests_/fixtures/users'
 import { getUserMeQueryMock } from '_tests_/mocks/state/user'
 import {
   fakeAddress,

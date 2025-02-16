@@ -1,11 +1,11 @@
 import {
+  SuspendRequestStatusEnum,
   TaskActionsPermissionsEnum,
   TaskExtendedStatusEnum,
   TaskOlaStatusEnum,
   TaskStatusEnum,
   TaskTypeEnum,
 } from 'features/tasks/api/constants'
-import { SuspendRequestStatusEnum } from 'features/tasks/constants/taskSuspendRequest'
 
 import {
   activeRequestReclassificationItemProps,
@@ -17,8 +17,8 @@ import {
   showRequestReclassificationItemProps,
 } from '_tests_/features/tasks/components/TaskDetails/TaskDetailsTitle/constants'
 import { taskDetailsTitleTestUtils } from '_tests_/features/tasks/components/TaskDetails/TaskDetailsTitle/testUtils'
-import taskFixtures from '_tests_/fixtures/task'
-import userFixtures from '_tests_/fixtures/user'
+import taskFixtures from '_tests_/fixtures/tasks'
+import userFixtures from '_tests_/fixtures/users'
 import { getUserMeQueryMock } from '_tests_/mocks/state/user'
 import { getStoreWithAuth, menuTestUtils, render } from '_tests_/utils'
 

@@ -1,5 +1,5 @@
 import ProtectedRoute from 'features/auth/components/ProtectedRoute'
-import { MonitoringRoutesEnum } from 'features/monitoring/constants'
+import { MonitoringRoutesEnum } from 'features/monitoring/routes/routes'
 import React from 'react'
 import { Navigate, RouteObject } from 'react-router-dom'
 

@@ -4,6 +4,8 @@ import { AttachmentTypeEnum } from 'features/attachments/api/constants'
 import { useCreateAttachment, useDeleteAttachment } from 'features/attachments/hooks'
 import { useAuthUser } from 'features/auth/hooks'
 import { EquipmentConditionEnum } from 'features/equipments/api/constants'
+import { EquipmentCategoryDTO } from 'features/equipments/api/dto'
+import { CreateEquipmentsBadRequestResponse } from 'features/equipments/api/schemas'
 import { CreateEquipmentsByFileModalProps } from 'features/equipments/components/CreateEquipmentsByFileModal'
 import { EquipmentFormModalProps } from 'features/equipments/components/EquipmentFormModal/types'
 import { EquipmentByFileTableRow } from 'features/equipments/components/EquipmentsByFileTable/types'
@@ -24,11 +26,6 @@ import {
   ActiveEquipmentRow,
   RelocationEquipmentRow,
 } from 'features/relocationEquipments/components/RelocationEquipmentEditableTable/types'
-import {
-  checkRelocationTaskTypeIsEnteringBalances,
-  checkRelocationTaskTypeIsWriteOff,
-  makeRelocationTasksPageLink,
-} from 'features/relocationTasks/api/helpers'
 import RelocationTaskForm from 'features/relocationTasks/components/RelocationTaskForm'
 import {
   LocationOption,
@@ -36,17 +33,12 @@ import {
   UserGroupOptionGroup,
 } from 'features/relocationTasks/components/RelocationTaskForm/types'
 import { makeUserGroupOptions } from 'features/relocationTasks/components/RelocationTaskForm/utils'
-import { RelocationTaskTypeEnum } from 'features/relocationTasks/constants'
 import { useCreateRelocationTask } from 'features/relocationTasks/hooks'
 import { UserGroupCategoryEnum, UserPermissionsEnum } from 'features/users/api/constants'
 import { useGetUsers, useGetUsersGroups, useUserPermissions } from 'features/users/hooks'
 import { WarehouseTypeEnum } from 'features/warehouses/api/constants'
-import {
-  CreateEquipmentsBadRequestErrorResponse,
-  EquipmentCategoryDTO,
-} from 'features/warehouses/api/dto'
 import { useGetWarehouse } from 'features/warehouses/hooks'
-import { RelocationTaskFormFields } from 'features/warehouses/types'
+import { WarehousesRoutesEnum } from 'features/warehouses/routes/routes'
 import isBoolean from 'lodash/isBoolean'
 import isNumber from 'lodash/isNumber'
 import stubFalse from 'lodash/stubFalse'
@@ -59,11 +51,11 @@ import ModalFallback from 'components/Modals/ModalFallback'
 import Space from 'components/Space'
 
 import { isBadRequestError, isErrorResponse, isForbiddenError } from 'shared/api/baseApi'
+import { useGetCurrenciesCatalog } from 'shared/catalogs/currencies/hooks'
 import { useLazyGetCustomersCatalog } from 'shared/catalogs/customers/hooks'
-import { useGetCurrenciesCatalog } from 'shared/catalogs/hooks/currencies'
-import { useLazyGetLocationsCatalog } from 'shared/catalogs/hooks/locations'
-import { useGetMacroregionsCatalog } from 'shared/catalogs/hooks/macroregions'
 import { checkLocationTypeIsWarehouse } from 'shared/catalogs/locations/helpers/checkLocationType'
+import { useLazyGetLocationsCatalog } from 'shared/catalogs/locations/hooks'
+import { useGetMacroregionsCatalog } from 'shared/catalogs/macroregions/hooks'
 import { useGetWorkTypesCatalog } from 'shared/catalogs/workTypes/hooks'
 import { SAVE_TEXT } from 'shared/constants/common'
 import { useDebounceFn } from 'shared/hooks/useDebounceFn'
@@ -75,6 +67,13 @@ import { extractIdsFromFilesResponse } from 'shared/utils/file'
 import { getFieldsErrors } from 'shared/utils/form'
 import { extractPaginationResults } from 'shared/utils/pagination'
 
+import { RelocationTaskTypeEnum } from '../../api/constants'
+import {
+  checkRelocationTaskTypeIsEnteringBalances,
+  checkRelocationTaskTypeIsWriteOff,
+  makeRelocationTasksPageLink,
+} from '../../helpers'
+import { RelocationTaskFormFields } from '../../types'
 import {
   checkCreateEquipmentBtnEnabled,
   getEquipmentFormInitialValues,
@@ -137,7 +136,7 @@ const CreateRelocationTaskPage: FC = () => {
   const categoryIsConsumable = checkEquipmentCategoryIsConsumable(selectedCategory?.code)
 
   const [createEquipmentsErrors, setCreateEquipmentsErrors] =
-    useState<CreateEquipmentsBadRequestErrorResponse>()
+    useState<CreateEquipmentsBadRequestResponse>()
 
   const [editableEquipmentByFile, setEditableEquipmentByFile] = useState<EquipmentByFileTableRow>()
   const [editableEquipmentByFileIndex, setEditableEquipmentByFileIndex] = useState<number>()
@@ -545,7 +544,7 @@ const CreateRelocationTaskPage: FC = () => {
       handleCloseCreateEquipmentsByFileModal()
     } catch (error) {
       if (isErrorResponse(error) && isBadRequestError(error) && error.data.errorList) {
-        const errors = error.data.errorList as CreateEquipmentsBadRequestErrorResponse
+        const errors = error.data.errorList as CreateEquipmentsBadRequestResponse
         setCreateEquipmentsErrors(errors)
       }
     }

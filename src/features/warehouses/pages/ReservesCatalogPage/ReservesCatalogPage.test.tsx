@@ -9,7 +9,7 @@ import { equipmentNomenclatureListPageTestUtils } from '_tests_/features/warehou
 import { inventorizationsPageTestUtils } from '_tests_/features/warehouse/pages/InventorizationsPage/testUtils'
 import { relocationTasksPageTestUtils } from '_tests_/features/warehouse/pages/RelocationTasksPage/testUtils'
 import { reserveCatalogListPageTestUtils } from '_tests_/features/warehouse/pages/ReserveCatalogListPage/testUtils'
-import userFixtures from '_tests_/fixtures/user'
+import userFixtures from '_tests_/fixtures/users'
 import {
   mockGetEquipmentNomenclaturesSuccess,
   mockGetInventorizationsSuccess,

@@ -1,6 +1,6 @@
 import { Typography } from 'antd'
 import { ColumnsType } from 'antd/es/table'
-import { fiscalAccumulatorFormatColorDict } from 'features/reports/api/constants'
+import { fiscalAccumulatorFormatColorDict } from 'features/reports/constants'
 import { getFullUserName } from 'features/users/helpers'
 
 import { valueOr } from 'shared/utils/common'

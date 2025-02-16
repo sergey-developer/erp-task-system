@@ -1,6 +1,7 @@
 import { TableProps } from 'antd'
 import { TableRowSelection } from 'antd/es/table/interface'
-import { BaseMtsrReportItemDTO, GetMtsrReportBaseSortValue } from 'features/reports/api/types'
+import { BaseMtsrReportItemDTO } from 'features/reports/api/dto'
+import { GetMtsrReportBaseSortValue } from 'features/reports/api/schemas'
 
 import { TableSortProps } from 'shared/types/sort'
 import { SetNonNullable } from 'shared/types/utils'

@@ -1,7 +1,6 @@
+import { TaskJournalTypeEnum } from 'features/tasks/api/constants'
 import sortBy from 'lodash/sortBy'
 import { DefaultOptionType } from 'rc-select/lib/Select'
-
-import { TaskJournalTypeEnum } from 'features/tasks/constants/taskJournal'
 
 import { StringMap } from 'shared/types/utils'
 

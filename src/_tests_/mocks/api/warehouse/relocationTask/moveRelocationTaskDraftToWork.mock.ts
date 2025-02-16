@@ -1,6 +1,6 @@
-import { makeMoveRelocationTaskDraftToWorkApiUrl } from 'features/relocationTasks/api/helpers'
-import { MoveRelocationTaskDraftToWorkResponse } from 'features/warehouses/api/dto'
-import { RequestWithRelocationTask } from 'features/warehouses/types'
+import { makeMoveRelocationTaskDraftToWorkApiPath } from 'features/relocationTasks/api/helpers'
+import { MoveRelocationTaskDraftToWorkResponse } from 'features/relocationTasks/api/schemas'
+import { RequestWithRelocationTask } from 'features/relocationTasks/api/types'
 
 import { HttpMethodEnum } from 'shared/constants/http'
 
@@ -10,7 +10,7 @@ import { ResponseResolverOptions } from '_tests_/mocks/response'
 const moveRelocationTaskDraftToWorkMockFn = ({ relocationTaskId }: RequestWithRelocationTask) =>
   getRequestMockFn(
     HttpMethodEnum.Post,
-    makeMoveRelocationTaskDraftToWorkApiUrl({ relocationTaskId }),
+    makeMoveRelocationTaskDraftToWorkApiPath({ relocationTaskId }),
   )
 
 export const mockMoveRelocationTaskDraftToWorkSuccess = (

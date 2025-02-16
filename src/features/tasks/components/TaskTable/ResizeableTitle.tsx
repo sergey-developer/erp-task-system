@@ -2,11 +2,9 @@ import { ColumnsType } from 'antd/lib/table'
 import React from 'react'
 import { Resizable, ResizableProps } from 'react-resizable'
 
-import { TaskTableListItem } from './types'
+import { TaskTableItem } from './types'
 
-const ResizeableTitle = (
-  props: ColumnsType<TaskTableListItem> & ResizableProps,
-) => {
+const ResizeableTitle = (props: ColumnsType<TaskTableItem> & ResizableProps) => {
   const { onResize, width, ...restProps } = props
 
   if (!width) {

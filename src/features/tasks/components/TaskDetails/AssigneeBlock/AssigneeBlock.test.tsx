@@ -16,7 +16,7 @@ import {
   showRefuseTaskButtonProps,
 } from '_tests_/features/tasks/components/TaskDetails/AssigneeBlock/constants'
 import { assigneeBlockTestUtils } from '_tests_/features/tasks/components/TaskDetails/AssigneeBlock/testUtils'
-import userFixtures from '_tests_/fixtures/user'
+import userFixtures from '_tests_/fixtures/users'
 import { getUserMeQueryMock } from '_tests_/mocks/state/user'
 import { getStoreWithAuth, render, selectTestUtils } from '_tests_/utils'
 

@@ -1,4 +1,4 @@
-import { GetNomenclaturesRequest } from 'features/warehouses/api/dto'
+import { GetNomenclaturesRequest } from 'features/nomenclatures/api/schemas'
 
 export const defaultGetNomenclaturesRequestParams: Pick<
   NonNullable<GetNomenclaturesRequest>,

@@ -12,10 +12,10 @@ export const props: Readonly<EquipmentFilterProps> = {
   locations: catalogsFixtures.locationsCatalog(2),
   locationsIsLoading: false,
 
-  categories: warehouseFixtures.equipmentCategoryList(2),
+  categories: warehouseFixtures.equipmentCategories(2),
   categoriesIsLoading: false,
 
-  owners: warehouseFixtures.customerList(2),
+  owners: warehouseFixtures.customers(2),
   ownersIsLoading: false,
 
   onClose: jest.fn(),

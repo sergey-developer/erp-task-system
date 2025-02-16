@@ -8,11 +8,9 @@ import {
   getTaskWorkPerformedActErrorMessage,
   TaskAttachmentTypeEnum,
 } from 'features/tasks/api/constants'
-import {
-  CreateTaskSuspendRequestBadRequestErrorResponse,
-  TaskAssigneeDTO,
-} from 'features/tasks/api/dto'
+import { TaskAssigneeDTO } from 'features/tasks/api/dto'
 import { useGetTaskWorkPerformedActMutation } from 'features/tasks/api/endpoints/tasks.endpoints'
+import { CreateTaskSuspendRequestBadRequestResponse } from 'features/tasks/api/schemas'
 import {
   CreateInternalTaskFormFields,
   CreateInternalTaskModalProps,
@@ -63,7 +61,6 @@ import {
 } from 'features/tasks/hooks'
 import { UserPermissionsEnum } from 'features/users/api/constants'
 import { useGetUserActions, useGetUsers, useUserPermissions } from 'features/users/hooks'
-import { WorkTypeActionsEnum } from 'features/warehouses/constants/workType/enum'
 import debounce from 'lodash/debounce'
 import React, { FC, useCallback, useEffect, useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
@@ -80,15 +77,16 @@ import {
   isErrorResponse,
   isNotFoundError,
 } from 'shared/api/baseApi'
-import { useGetFaChangeTypesCatalog } from 'shared/catalogs/hooks/faChangeTypes'
-import { useGetResolutionClassificationsCatalog } from 'shared/catalogs/hooks/resolutionClassifications'
-import { useGetWorkGroupsCatalog } from 'shared/catalogs/hooks/workGroups'
+import { useGetFaChangeTypesCatalog } from 'shared/catalogs/faChangeTypes/hooks'
+import { useGetResolutionClassificationsCatalog } from 'shared/catalogs/resolutionClassifications/hooks'
+import { useGetWorkGroupsCatalog } from 'shared/catalogs/workGroups/hooks'
+import { WorkTypeActionsEnum } from 'shared/catalogs/workTypes/api/constants'
 import { useGetWorkTypesCatalog } from 'shared/catalogs/workTypes/hooks'
 import { DEFAULT_DEBOUNCE_VALUE, NO_ASSIGNEE_TEXT } from 'shared/constants/common'
 import { MimetypeEnum } from 'shared/constants/mimetype'
 import { useDebounceFn } from 'shared/hooks/useDebounceFn'
 import { useCancelReclassificationRequest } from 'shared/reclassificationRequests/hooks'
-import { useSystemSettingsState } from 'shared/system/hooks/systemInfo'
+import { useSystemSettingsState } from 'shared/system/hooks'
 import { IdType } from 'shared/types/common'
 import { EmptyFn } from 'shared/types/utils'
 import { base64ToBytes, isFalse, isTrue, valueOr } from 'shared/utils/common'
@@ -746,7 +744,7 @@ const TaskDetails: FC<TaskDetailsProps> = ({
           setFields(
             getFieldsErrors(
               getFormErrorsFromBadRequestError(
-                error.data as CreateTaskSuspendRequestBadRequestErrorResponse,
+                error.data as CreateTaskSuspendRequestBadRequestResponse,
               ),
             ),
           )

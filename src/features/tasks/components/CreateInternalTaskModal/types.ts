@@ -3,12 +3,12 @@ import { UploadFile } from 'antd/es/upload'
 import { TaskDetailDTO } from 'features/tasks/api/dto'
 import { UsersDTO } from 'features/users/api/dto'
 import { MatchedUserPermissions } from 'features/users/types'
-import { WorkTypesCatalogDTO } from 'features/warehouses/api/dto'
 import { Moment } from 'moment-timezone'
 
 import { BaseModalProps } from 'components/Modals/BaseModal'
 
-import { WorkGroupsCatalogDTO } from 'shared/catalogs/api/dto/workGroups'
+import { WorkGroupsCatalogDTO } from 'shared/catalogs/workGroups/api/dto'
+import { WorkTypesCatalogDTO } from 'shared/catalogs/workTypes/api/dto'
 import { IdType } from 'shared/types/common'
 import { SetNonNullable } from 'shared/types/utils'
 

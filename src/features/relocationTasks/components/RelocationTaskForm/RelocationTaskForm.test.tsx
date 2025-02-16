@@ -1,5 +1,6 @@
 import { Form } from 'antd'
-import { relocationTaskTypeDict, RelocationTaskTypeEnum } from 'features/relocationTasks/constants'
+import { RelocationTaskTypeEnum } from 'features/relocationTasks/api/constants'
+import { relocationTaskTypeDict } from 'features/relocationTasks/constants'
 import CreateRelocationTaskPage from 'features/relocationTasks/pages/CreateRelocationTaskPage'
 import moment from 'moment-timezone'
 
@@ -12,7 +13,7 @@ import { props } from '_tests_/features/warehouse/components/RelocationTaskForm/
 import { relocationTaskFormTestUtils } from '_tests_/features/warehouse/components/RelocationTaskForm/testUtils'
 import { createRelocationTaskPageTestUtils } from '_tests_/features/warehouse/pages/CreateRelocationTaskPage/testUtils'
 import catalogsFixtures from '_tests_/fixtures/catalogs'
-import userFixtures from '_tests_/fixtures/user'
+import userFixtures from '_tests_/fixtures/users'
 import {
   mockGetCurrencyListSuccess,
   mockGetEquipmentCatalogListSuccess,

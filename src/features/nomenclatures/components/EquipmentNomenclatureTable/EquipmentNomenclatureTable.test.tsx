@@ -1,5 +1,6 @@
 import { getEquipmentListPageLink } from 'features/equipments/helpers'
 import EquipmentsPage from 'features/equipments/pages/EquipmentsPage'
+import { WarehousesRoutesEnum } from 'features/warehouses/routes/routes'
 
 import {
   equipmentNomenclatureListItem,

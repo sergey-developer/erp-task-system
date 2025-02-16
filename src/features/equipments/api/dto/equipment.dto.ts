@@ -1,6 +1,7 @@
 import { EquipmentConditionEnum } from 'features/equipments/api/constants'
+import { NomenclatureDetailDTO } from 'features/nomenclatures/api/dto'
 import { UserDetailDTO } from 'features/users/api/dto'
-import { NomenclatureDetailDTO, WarehouseDetailDTO } from 'features/warehouses/api/dto'
+import { WarehouseDetailDTO } from 'features/warehouses/api/dto'
 
 import { CurrencyCatalogItemDTO } from 'shared/catalogs/currencies/api/dto'
 import { CustomerCatalogItemDTO } from 'shared/catalogs/customers/api/dto'

@@ -3,7 +3,7 @@ import { UploadFile } from 'antd/es/upload'
 
 import { BaseModalProps } from 'components/Modals/BaseModal'
 
-import { UrgencyRateTypesCatalogDTO } from 'shared/catalogs/api/dto/urgencyRateTypes'
+import { UrgencyRateTypesCatalogDTO } from 'shared/catalogs/urgencyRateTypes/api/dto'
 import { IdType } from 'shared/types/common'
 import { FileResponse } from 'shared/types/file'
 

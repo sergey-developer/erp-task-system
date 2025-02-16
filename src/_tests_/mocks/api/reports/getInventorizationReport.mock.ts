@@ -1,6 +1,6 @@
-import { GetInventorizationReportResponse } from 'features/reports/api/dto'
-import { makeGetInventorizationReportEndpoint } from 'features/reports/helpers'
-import { RequestWithInventorization } from 'features/warehouses/types'
+import { RequestWithInventorization } from 'features/inventorizations/api/types'
+import { makeGetInventorizationReportApiPath } from 'features/reports/api/helpers'
+import { GetInventorizationReportResponse } from 'features/reports/api/schemas'
 
 import { HttpMethodEnum } from 'shared/constants/http'
 

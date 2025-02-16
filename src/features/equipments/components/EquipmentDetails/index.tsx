@@ -19,7 +19,7 @@ import {
 } from 'features/equipments/hooks'
 import { defaultGetNomenclaturesRequestParams } from 'features/nomenclatures/api/constants'
 import { useGetNomenclature, useGetNomenclatures } from 'features/nomenclatures/hooks'
-import { RelocationTaskStatusEnum } from 'features/relocationTasks/constants'
+import { RelocationTaskStatusEnum } from 'features/relocationTasks/api/constants'
 import { GetTechnicalExaminationPdfTransformedResponse } from 'features/technicalExaminations/api/types'
 import {
   useGetTechnicalExaminations,
