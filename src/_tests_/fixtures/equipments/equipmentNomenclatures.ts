@@ -1,15 +1,14 @@
 import { EquipmentNomenclatureDTO, EquipmentNomenclaturesDTO } from 'features/equipments/api/dto'
 import times from 'lodash/times'
 
+import nomenclaturesFixtures from '_tests_/fixtures/nomenclatures'
 import { fakeId, fakeInteger, fakeWord } from '_tests_/helpers'
-
-import { nomenclatureGroup } from '../warehouse/nomenclatureGroup'
 
 export const equipmentNomenclatureListItem = (): EquipmentNomenclatureDTO => ({
   id: fakeId(),
   title: fakeWord(),
   quantity: fakeInteger(),
-  group: nomenclatureGroup(),
+  group: nomenclaturesFixtures.nomenclatureGroup(),
 })
 
 export const equipmentNomenclatures = (length: number = 1): EquipmentNomenclaturesDTO =>

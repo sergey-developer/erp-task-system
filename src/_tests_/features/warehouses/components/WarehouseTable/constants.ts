@@ -1,8 +1,8 @@
 import { WarehouseTableProps } from 'features/warehouses/components/WarehouseTable/types'
 
-import warehousesFixtures from '_tests_/fixtures/warehouse/index'
+import warehousesFixtures from '_tests_/fixtures/warehouses'
 
-export const warehouseListItem = warehousesFixtures.warehouseListItem()
+export const warehouseListItem = warehousesFixtures.warehouse()
 
 export const props: Readonly<WarehouseTableProps> = {
   dataSource: [warehouseListItem],

@@ -5,7 +5,7 @@ import catalogsFixtures from '_tests_/fixtures/catalogs'
 import equipmentsFixtures from '_tests_/fixtures/equipments'
 import { fakeId, fakeInteger, fakeWord } from '_tests_/helpers'
 
-export const inventorizationEquipment = (): InventorizationEquipmentDetailDTO => ({
+export const inventorizationEquipmentDetail = (): InventorizationEquipmentDetailDTO => ({
   quantity: { plan: fakeInteger(), fact: fakeInteger(), diff: fakeInteger() },
   title: fakeWord(),
   category: equipmentsFixtures.equipmentCategory(),

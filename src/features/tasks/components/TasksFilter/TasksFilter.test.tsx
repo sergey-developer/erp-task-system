@@ -9,7 +9,7 @@ import { tasksFilterTestUtils } from '_tests_/features/tasks/components/TasksFil
 import catalogsFixtures from '_tests_/fixtures/catalogs'
 import supportGroupsFixtures from '_tests_/fixtures/supportGroups'
 import userFixtures from '_tests_/fixtures/users'
-import workGroupFixtures from '_tests_/fixtures/workGroup'
+import workGroupsFixtures from '_tests_/fixtures/workGroups'
 import {
   checkboxTestUtils,
   fakeName,
@@ -948,7 +948,7 @@ describe('Расширенный фильтр', () => {
       render(
         <TasksFilter
           {...props}
-          workGroups={workGroupFixtures.workGroups()}
+          workGroups={workGroupsFixtures.workGroups()}
           permissions={{ selfWorkGroupsRead: true }}
         />,
       )
@@ -958,7 +958,7 @@ describe('Расширенный фильтр', () => {
     })
 
     test('Переданное значение перезаписывает значение по умолчанию', () => {
-      const workGroupListItem = workGroupFixtures.workGroupListItem()
+      const workGroupListItem = workGroupsFixtures.workGroup()
 
       render(
         <TasksFilter
@@ -987,7 +987,7 @@ describe('Расширенный фильтр', () => {
     })
 
     test('Можно выбрать рабочую группу из списка', async () => {
-      const workGroupListItem = workGroupFixtures.workGroupListItem()
+      const workGroupListItem = workGroupsFixtures.workGroup()
 
       const { user } = render(
         <TasksFilter
@@ -1007,8 +1007,8 @@ describe('Расширенный фильтр', () => {
     })
 
     test('Поиск по списку работает', async () => {
-      const workGroupListItem1 = workGroupFixtures.workGroupListItem()
-      const workGroupListItem2 = workGroupFixtures.workGroupListItem()
+      const workGroupListItem1 = workGroupsFixtures.workGroup()
+      const workGroupListItem2 = workGroupsFixtures.workGroup()
 
       const { user } = render(
         <TasksFilter
@@ -1031,7 +1031,7 @@ describe('Расширенный фильтр', () => {
 
     describe('Сбрасывает значения', () => {
       test('Кнопка "Сбросить"', async () => {
-        const workGroupListItem = workGroupFixtures.workGroupListItem()
+        const workGroupListItem = workGroupsFixtures.workGroup()
 
         const { user } = render(
           <TasksFilter
@@ -1053,7 +1053,7 @@ describe('Расширенный фильтр', () => {
       })
 
       test('Кнопка "Сбросить всё"', async () => {
-        const workGroupListItem = workGroupFixtures.workGroupListItem()
+        const workGroupListItem = workGroupsFixtures.workGroup()
 
         const { user } = render(
           <TasksFilter

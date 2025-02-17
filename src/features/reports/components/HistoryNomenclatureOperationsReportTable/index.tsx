@@ -18,7 +18,7 @@ const HistoryNomenclatureOperationsReportTable: FC<
   )
 
   return (
-    <Flex data-testid='history-nomenclature-operations-report-table'>
+    <Flex data-testid='history-nomenclatureDetail-operations-report-table'>
       <ParentSizedTable<HistoryNomenclatureOperationsReportTableItem>
         {...props}
         rowKey='id'

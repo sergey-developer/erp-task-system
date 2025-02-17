@@ -53,7 +53,7 @@ const HistoryNomenclatureOperationsReportFilter: FC<
   return (
     <DrawerFilter
       {...props}
-      data-testid='history-nomenclature-operations-report-filter'
+      data-testid='history-nomenclatureDetail-operations-report-filter'
       onReset={resetFields()}
       onApply={form.submit}
     >

@@ -136,7 +136,7 @@ const ExecuteInventorizationReviseTab: FC<ExecuteInventorizationReviseTabProps> 
   const [selectedCategory, setSelectedCategory] = useState<EquipmentCategoryDTO>()
   const categoryIsConsumable = checkEquipmentCategoryIsConsumable(selectedCategory?.code)
 
-  // get inventorization equipments
+  // get inventorizationDetail equipments
   const [getInventorizationEquipmentsArgs, setGetInventorizationEquipmentsArgs] =
     useSetState<GetInventorizationEquipmentsRequest>({
       inventorizationId: inventorization.id,
@@ -149,9 +149,9 @@ const ExecuteInventorizationReviseTab: FC<ExecuteInventorizationReviseTabProps> 
     refetch: refetchGetInventorizationEquipments,
     fulfilledTimeStamp: getInventorizationEquipmentsFulfilledTimeStamp,
   } = useGetInventorizationEquipments(getInventorizationEquipmentsArgs)
-  // get inventorization equipments
+  // get inventorizationDetail equipments
 
-  // edit checked inventorization equipment
+  // edit checked inventorizationDetail equipment
   const [editableCheckedInventorizationEquipment, setEditableCheckedInventorizationEquipment] =
     useState<CheckInventorizationEquipmentsTableRow>()
 
@@ -196,7 +196,7 @@ const ExecuteInventorizationReviseTab: FC<ExecuteInventorizationReviseTabProps> 
     [onCloseEditCheckedInventorizationEquipmentModal],
   )
 
-  // check inventorization equipments template
+  // check inventorizationDetail equipments template
   const [checkedInventorizationEquipments, setCheckedInventorizationEquipments] = useState<
     CheckInventorizationEquipmentsTableRow[]
   >([])
@@ -220,7 +220,7 @@ const ExecuteInventorizationReviseTab: FC<ExecuteInventorizationReviseTabProps> 
     { isLoading: checkInventorizationEquipmentsTemplateIsLoading },
   ] = useCheckInventorizationEquipmentsTemplate()
 
-  // check inventorization equipments template
+  // check inventorizationDetail equipments template
   const onCheckByExcel: NonNullable<UploadProps['onChange']> = async ({ file }) => {
     try {
       const equipments = await checkInventorizationEquipmentsTemplateMutation({
@@ -239,7 +239,7 @@ const ExecuteInventorizationReviseTab: FC<ExecuteInventorizationReviseTabProps> 
             message: 'Ошибка проверки сверяемого оборудования из Excel',
             description: (
               <TableRowsErrors
-                data-testid='check-inventorization-equipments-template-errors'
+                data-testid='check-inventorizationDetail-equipments-template-errors'
                 errors={error.data as TableRowsApiErrors}
               />
             ),
@@ -251,7 +251,7 @@ const ExecuteInventorizationReviseTab: FC<ExecuteInventorizationReviseTabProps> 
     }
   }
 
-  // check inventorization equipments
+  // check inventorizationDetail equipments
   const [
     checkInventorizationEquipmentsMutation,
     { isLoading: checkInventorizationEquipmentsIsLoading },
@@ -302,7 +302,7 @@ const ExecuteInventorizationReviseTab: FC<ExecuteInventorizationReviseTabProps> 
             message: 'Ошибка проверки сверяемого оборудования',
             description: (
               <TableRowsErrors
-                data-testid='check-inventorization-equipments-errors'
+                data-testid='check-inventorizationDetail-equipments-errors'
                 errors={error.data as TableRowsApiErrors}
               />
             ),
@@ -320,7 +320,7 @@ const ExecuteInventorizationReviseTab: FC<ExecuteInventorizationReviseTabProps> 
     onCloseCheckInventorizationEquipmentsModal,
     refetchGetInventorizationEquipments,
   ])
-  // check inventorization equipments
+  // check inventorizationDetail equipments
 
   const [
     createEquipmentModalOpened,
@@ -750,7 +750,7 @@ const ExecuteInventorizationReviseTab: FC<ExecuteInventorizationReviseTabProps> 
 
   return (
     <>
-      <Flex data-testid='execute-inventorization-revise-tab' vertical gap='small'>
+      <Flex data-testid='execute-inventorizationDetail-revise-tab' vertical gap='small'>
         <Title level={5}>Перечень оборудования для сверки</Title>
 
         <Row justify='space-between'>

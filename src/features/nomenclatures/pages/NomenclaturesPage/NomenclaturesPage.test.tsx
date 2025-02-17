@@ -6,8 +6,8 @@ import { nomenclatureFormModalTestUtils } from '_tests_/features/warehouses/comp
 import { nomenclatureGroupFormModalTestUtils } from '_tests_/features/warehouses/components/NomenclatureGroupFormModal/testUtils'
 import { nomenclatureTableTestUtils } from '_tests_/features/warehouses/components/NomenclatureTable/testUtils'
 import { nomenclatureListPageTestUtils } from '_tests_/features/warehouses/pages/NomenclatureListPage/testUtils'
+import nomenclaturesFixtures from '_tests_/fixtures/nomenclatures'
 import userFixtures from '_tests_/fixtures/users'
-import warehousesFixtures from '_tests_/fixtures/warehouse'
 import {
   buttonTestUtils,
   fakeWord,
@@ -88,7 +88,7 @@ describe('Страница списка номенклатур', () => {
     })
 
     test('После поиска группы отображаются', async () => {
-      const groupListItem = warehousesFixtures.nomenclatureGroupListItem()
+      const groupListItem = nomenclaturesFixtures.nomenclatureGroup()
       const groupList = [groupListItem]
       mockGetNomenclatureGroupsSuccess({ body: groupList, once: false })
 
@@ -169,10 +169,10 @@ describe('Страница списка номенклатур', () => {
 
   describe('Добавление группы', () => {
     test('При успешном запросе закрывается модалка и в список добавляется новая группа', async () => {
-      const groupList = [warehousesFixtures.nomenclatureGroupListItem()]
+      const groupList = [nomenclaturesFixtures.nomenclatureGroup()]
       mockGetNomenclatureGroupsSuccess({ body: groupList })
 
-      const createdGroup = warehousesFixtures.nomenclatureGroupListItem()
+      const createdGroup = nomenclaturesFixtures.nomenclatureGroup()
       mockCreateNomenclatureGroupSuccess({ body: createdGroup })
       mockGetNomenclaturesSuccess()
 
@@ -365,7 +365,7 @@ describe('Страница списка номенклатур', () => {
 
     test('При клике перезапрашивается номенклатура', async () => {
       mockGetNomenclaturesSuccess({ once: false })
-      const nomenclatureGroupListItem = warehousesFixtures.nomenclatureGroupListItem()
+      const nomenclatureGroupListItem = nomenclaturesFixtures.nomenclatureGroup()
       mockGetNomenclatureGroupsSuccess({ body: [nomenclatureGroupListItem] })
 
       const { user } = render(<NomenclaturesPage />, {
@@ -387,7 +387,7 @@ describe('Страница списка номенклатур', () => {
 
   describe('Список групп', () => {
     test('Отображается', async () => {
-      const groupList = [warehousesFixtures.nomenclatureGroupListItem()]
+      const groupList = [nomenclaturesFixtures.nomenclatureGroup()]
       mockGetNomenclatureGroupsSuccess({ body: groupList })
       mockGetNomenclaturesSuccess()
 

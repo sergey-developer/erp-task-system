@@ -11,9 +11,9 @@ import tasksFixtures from '_tests_/fixtures/tasks'
 import userFixtures from '_tests_/fixtures/users'
 import { fakeDateString, fakeId, fakeIdStr, fakeWord } from '_tests_/helpers'
 
-import { relocationTaskAttachment } from './relocationTaskAttachment'
+import { relocationTaskAttachmentDetail } from './relocationTaskAttachmentDetail'
 
-export const relocationTask = (
+export const relocationTaskDetail = (
   props?: Partial<
     Pick<RelocationTaskDetailDTO, 'id' | 'status' | 'completedBy' | 'executors' | 'createdBy'>
   >,
@@ -38,7 +38,7 @@ export const relocationTask = (
   relocateFrom: { id: fakeId(), title: fakeWord() },
   relocateTo: { id: fakeId(), title: fakeWord() },
   comment: fakeWord(),
-  documents: [relocationTaskAttachment()],
+  documents: [relocationTaskAttachmentDetail()],
   revision: {
     relocationJournalEntry: fakeId(),
     text: fakeWord(),

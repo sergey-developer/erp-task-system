@@ -127,7 +127,7 @@ const ExecuteInventorizationRelocationsTab: FC<ExecuteInventorizationRelocations
 
   return (
     <>
-      <Flex data-testid='execute-inventorization-relocations-tab' vertical gap='small'>
+      <Flex data-testid='execute-inventorizationDetail-relocations-tab' vertical gap='small'>
         <Space direction='vertical'>
           <Title level={5}>Заявки на перемещение оборудования</Title>
 

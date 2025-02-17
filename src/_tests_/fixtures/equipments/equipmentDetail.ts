@@ -5,9 +5,10 @@ import pick from 'lodash/pick'
 
 import catalogsFixtures from '_tests_/fixtures/catalogs'
 import userFixtures from '_tests_/fixtures/users'
-import warehousesFixtures from '_tests_/fixtures/warehouse'
+import warehousesFixtures from '_tests_/fixtures/warehouses'
 import { fakeDateString, fakeId, fakeInteger, fakeUrl, fakeWord } from '_tests_/helpers'
 
+import nomenclaturesFixtures from '../nomenclatures'
 import { equipmentCategory } from './equipmentCategory'
 
 export const equipmentDetail = (
@@ -32,7 +33,7 @@ export const equipmentDetail = (
   id: props?.id || fakeId(),
   nomenclature:
     props?.nomenclature ||
-    pick(warehousesFixtures.nomenclature(), 'id', 'title', 'equipmentHasSerialNumber'),
+    pick(nomenclaturesFixtures.nomenclatureDetail(), 'id', 'title', 'equipmentHasSerialNumber'),
   category: props?.category || pick(equipmentCategory(), 'id', 'title', 'code'),
   isNew: props?.isNew || false,
   isWarranty: props?.isWarranty || false,
@@ -50,7 +51,7 @@ export const equipmentDetail = (
 
   title: fakeWord(),
   location: pick(catalogsFixtures.locationCatalogItem(), 'id', 'title'),
-  warehouse: pick(warehousesFixtures.warehouse(), 'id', 'title'),
+  warehouse: pick(warehousesFixtures.warehouseDetail(), 'id', 'title'),
   createdAt: fakeDateString(),
   createdBy: pick(userFixtures.userDetail(), 'id', 'fullName'),
   measurementUnit: pick(catalogsFixtures.measurementUnitCatalogItem(), 'id', 'title'),

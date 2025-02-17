@@ -18,7 +18,7 @@ const ExecuteInventorizationRelocationTaskTable: FC<
   )
 
   return (
-    <div data-testid='execute-inventorization-relocation-task-table'>
+    <div data-testid='execute-inventorizationDetail-relocation-task-table'>
       <ParentSizedTable<ExecuteInventorizationRelocationTaskTableItem>
         {...props}
         rowKey='id'

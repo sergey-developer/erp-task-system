@@ -18,8 +18,8 @@ import { relocationTaskId } from '_tests_/features/warehouses/pages/EditRelocati
 import { editRelocationTaskPageTestUtils } from '_tests_/features/warehouses/pages/EditRelocationTaskPage/testUtils'
 import catalogsFixtures from '_tests_/fixtures/catalogs'
 import equipmentsFixtures from '_tests_/fixtures/equipments'
+import relocationTasksFixtures from '_tests_/fixtures/relocationTasks'
 import userFixtures from '_tests_/fixtures/users'
-import warehousesFixtures from '_tests_/fixtures/warehouse'
 import {
   fakeWord,
   getStoreWithAuth,
@@ -355,7 +355,7 @@ describe('Страница редактирования заявки на пер
       mockGetUsersSuccess({ body: [] })
       mockGetRelocationTaskSuccess(
         { relocationTaskId },
-        { body: warehousesFixtures.relocationTask() },
+        { body: relocationTasksFixtures.relocationTaskDetail() },
       )
       mockGetRelocationEquipmentsSuccess({ relocationTaskId })
       mockGetRelocationEquipmentBalancesSuccess(relocationTaskId)
@@ -396,7 +396,7 @@ describe('Страница редактирования заявки на пер
         mockGetUsersSuccess()
         mockGetRelocationTaskSuccess(
           { relocationTaskId },
-          { body: warehousesFixtures.relocationTask() },
+          { body: relocationTasksFixtures.relocationTaskDetail() },
         )
         mockGetRelocationEquipmentsSuccess({ relocationTaskId })
         mockGetRelocationEquipmentBalancesSuccess(relocationTaskId)
@@ -427,7 +427,7 @@ describe('Страница редактирования заявки на пер
         mockGetUsersSuccess({ body: [] })
         mockGetRelocationTaskSuccess(
           { relocationTaskId },
-          { body: warehousesFixtures.relocationTask() },
+          { body: relocationTasksFixtures.relocationTaskDetail() },
         )
         mockGetRelocationEquipmentsSuccess({ relocationTaskId })
         mockGetRelocationEquipmentBalancesSuccess(relocationTaskId)
@@ -463,7 +463,7 @@ describe('Страница редактирования заявки на пер
         mockGetUsersSuccess({ body: [] })
         mockGetRelocationTaskSuccess(
           { relocationTaskId },
-          { body: warehousesFixtures.relocationTask() },
+          { body: relocationTasksFixtures.relocationTaskDetail() },
         )
         mockGetRelocationEquipmentsSuccess({ relocationTaskId })
         mockGetRelocationEquipmentBalancesSuccess(relocationTaskId)
@@ -502,7 +502,7 @@ describe('Страница редактирования заявки на пер
       mockGetUsersSuccess({ body: [] })
       mockGetRelocationTaskSuccess(
         { relocationTaskId },
-        { body: warehousesFixtures.relocationTask() },
+        { body: relocationTasksFixtures.relocationTaskDetail() },
       )
       mockGetRelocationEquipmentsSuccess({ relocationTaskId })
       mockGetRelocationEquipmentBalancesSuccess(relocationTaskId)
@@ -554,7 +554,7 @@ describe('Страница редактирования заявки на пер
         mockGetUsersSuccess({ body: [] })
         mockGetRelocationTaskSuccess(
           { relocationTaskId },
-          { body: warehousesFixtures.relocationTask() },
+          { body: relocationTasksFixtures.relocationTaskDetail() },
         )
         mockGetRelocationEquipmentsSuccess({ relocationTaskId })
         mockGetRelocationEquipmentBalancesSuccess(relocationTaskId)
@@ -600,7 +600,7 @@ describe('Страница редактирования заявки на пер
         mockGetUsersSuccess({ body: [] })
         mockGetRelocationTaskSuccess(
           { relocationTaskId },
-          { body: warehousesFixtures.relocationTask() },
+          { body: relocationTasksFixtures.relocationTaskDetail() },
         )
         mockGetRelocationEquipmentsSuccess({ relocationTaskId })
         mockGetRelocationEquipmentBalancesSuccess(relocationTaskId)

@@ -34,7 +34,7 @@ const HistoryNomenclatureOperationsReportForm: FC<HistoryNomenclatureOperationsR
       onFinish={onSubmit}
     >
       <Form.Item
-        data-testid='nomenclature-form-item'
+        data-testid='nomenclatureDetail-form-item'
         name='nomenclature'
         label='Номенклатура'
         labelCol={{ span: 6 }}
@@ -42,7 +42,7 @@ const HistoryNomenclatureOperationsReportForm: FC<HistoryNomenclatureOperationsR
         rules={onlyRequiredRules}
       >
         <Select<EquipmentNomenclatureDTO['id'], EquipmentNomenclatureDTO>
-          data-testid='nomenclature-select'
+          data-testid='nomenclatureDetail-select'
           fieldNames={idAndTitleSelectFieldNames}
           disabled={nomenclaturesIsLoading}
           loading={nomenclaturesIsLoading}

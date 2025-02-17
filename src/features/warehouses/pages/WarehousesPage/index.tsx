@@ -64,7 +64,7 @@ const WarehousesPage: FC = () => {
   )
 
   return (
-    <Space data-testid='warehouse-list-page' $block direction='vertical' size='large'>
+    <Space data-testid='warehouseDetail-list-page' $block direction='vertical' size='large'>
       <FilterButton onClick={debouncedToggleFilterOpened} />
 
       <WarehouseTable

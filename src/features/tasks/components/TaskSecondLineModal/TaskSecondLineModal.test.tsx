@@ -7,7 +7,7 @@ import { WorkGroupTypeEnum } from 'shared/workGroups/api/constants'
 import { props } from '_tests_/features/tasks/components/TaskSecondLineModal/constants'
 import { taskSecondLineModalTestUtils } from '_tests_/features/tasks/components/TaskSecondLineModal/testUtils'
 import catalogsFixtures from '_tests_/fixtures/catalogs'
-import workGroupFixtures from '_tests_/fixtures/workGroup'
+import workGroupsFixtures from '_tests_/fixtures/workGroups'
 import { fakeWord, render, selectTestUtils, setupApiTests } from '_tests_/helpers'
 import { mockGetWorkGroupsSuccess, mockGetWorkTypesSuccess } from '_tests_/mocks/api'
 
@@ -59,13 +59,13 @@ describe('Модалка перевода заявки на 2-ю линию', ()
     describe('Имеет верное значение по умолчанию', () => {
       test(`Если есть группа с типом ${WorkGroupTypeEnum.AssociatedWithSapId}`, async () => {
         const workGroups = [
-          workGroupFixtures.workGroupListItem({
-            priority: workGroupFixtures.workGroupPriority({
+          workGroupsFixtures.workGroup({
+            priority: workGroupsFixtures.workGroupPriority({
               type: WorkGroupTypeEnum.AssociatedWithSapId,
             }),
           }),
-          workGroupFixtures.workGroupListItem({
-            priority: workGroupFixtures.workGroupPriority({
+          workGroupsFixtures.workGroup({
+            priority: workGroupsFixtures.workGroupPriority({
               type: WorkGroupTypeEnum.NoType,
             }),
           }),
@@ -91,13 +91,13 @@ describe('Модалка перевода заявки на 2-ю линию', ()
 
       test(`Если есть группа с типом ${WorkGroupTypeEnum.DefaultForSupportGroup}`, async () => {
         const workGroups = [
-          workGroupFixtures.workGroupListItem({
-            priority: workGroupFixtures.workGroupPriority({
+          workGroupsFixtures.workGroup({
+            priority: workGroupsFixtures.workGroupPriority({
               type: WorkGroupTypeEnum.DefaultForSupportGroup,
             }),
           }),
-          workGroupFixtures.workGroupListItem({
-            priority: workGroupFixtures.workGroupPriority({
+          workGroupsFixtures.workGroup({
+            priority: workGroupsFixtures.workGroupPriority({
               type: WorkGroupTypeEnum.NoType,
             }),
           }),
@@ -124,7 +124,7 @@ describe('Модалка перевода заявки на 2-ю линию', ()
 
     describe('Не имеет значения по умолчанию', () => {
       test(`Если нет группы с типом ${WorkGroupTypeEnum.AssociatedWithSapId} или ${WorkGroupTypeEnum.DefaultForSupportGroup}`, async () => {
-        const workGroups = workGroupFixtures.workGroups(2)
+        const workGroups = workGroupsFixtures.workGroups(2)
         mockGetWorkGroupsSuccess({ body: workGroups })
 
         render(<TaskSecondLineModal {...props} />)
@@ -135,7 +135,7 @@ describe('Модалка перевода заявки на 2-ю линию', ()
     })
 
     test('Отображает верное количество вариантов', async () => {
-      const workGroups = workGroupFixtures.workGroups()
+      const workGroups = workGroupsFixtures.workGroups()
       mockGetWorkGroupsSuccess({ body: workGroups })
 
       const { user } = render(<TaskSecondLineModal {...props} />)
@@ -151,7 +151,7 @@ describe('Модалка перевода заявки на 2-ю линию', ()
     })
 
     test('Корректно отображает варианты', async () => {
-      const workGroups = workGroupFixtures.workGroups()
+      const workGroups = workGroupsFixtures.workGroups()
       mockGetWorkGroupsSuccess({ body: workGroups })
 
       const { user } = render(<TaskSecondLineModal {...props} />)
@@ -173,8 +173,8 @@ describe('Модалка перевода заявки на 2-ю линию', ()
 
     test('Корректно отображает варианты с приоритетом >= 4', async () => {
       const workGroups = [
-        workGroupFixtures.workGroupListItem({
-          priority: workGroupFixtures.workGroupPriority({ value: 4 }),
+        workGroupsFixtures.workGroup({
+          priority: workGroupsFixtures.workGroupPriority({ value: 4 }),
         }),
       ]
       mockGetWorkGroupsSuccess({ body: workGroups })
@@ -197,8 +197,8 @@ describe('Модалка перевода заявки на 2-ю линию', ()
 
     test('Корректно отображает варианты с приоритетом < 4', async () => {
       const workGroups = [
-        workGroupFixtures.workGroupListItem({
-          priority: workGroupFixtures.workGroupPriority({ value: 3 }),
+        workGroupsFixtures.workGroup({
+          priority: workGroupsFixtures.workGroupPriority({ value: 3 }),
         }),
       ]
       mockGetWorkGroupsSuccess({ body: workGroups })
@@ -219,7 +219,7 @@ describe('Модалка перевода заявки на 2-ю линию', ()
     })
 
     test('Можно выбрать рабочую группу', async () => {
-      const workGroups = workGroupFixtures.workGroups()
+      const workGroups = workGroupsFixtures.workGroups()
       mockGetWorkGroupsSuccess({ body: workGroups })
 
       const { user } = render(<TaskSecondLineModal {...props} />)
@@ -232,7 +232,7 @@ describe('Модалка перевода заявки на 2-ю линию', ()
     })
 
     test('Отображает ошибку если не выбрать группу и нажать кнопку отправки', async () => {
-      const workGroups = workGroupFixtures.workGroups()
+      const workGroups = workGroupsFixtures.workGroups()
       mockGetWorkGroupsSuccess({ body: workGroups })
 
       const { user } = render(<TaskSecondLineModal {...props} />)
@@ -391,7 +391,7 @@ describe('Модалка перевода заявки на 2-ю линию', ()
 
     describe('Обработчик вызывается корректно', () => {
       test('Если заполнить обязательные поля', async () => {
-        const workGroups = workGroupFixtures.workGroups()
+        const workGroups = workGroupsFixtures.workGroups()
         mockGetWorkGroupsSuccess({ body: workGroups })
 
         const { user } = render(<TaskSecondLineModal {...props} />)
@@ -406,7 +406,7 @@ describe('Модалка перевода заявки на 2-ю линию', ()
       })
 
       test('Если не заполнить обязательные поля', async () => {
-        const workGroups = workGroupFixtures.workGroups()
+        const workGroups = workGroupsFixtures.workGroups()
         mockGetWorkGroupsSuccess({ body: workGroups })
 
         const { user } = render(<TaskSecondLineModal {...props} />)

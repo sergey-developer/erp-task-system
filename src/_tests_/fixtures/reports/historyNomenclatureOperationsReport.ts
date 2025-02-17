@@ -10,7 +10,7 @@ import times from 'lodash/times'
 import { fakeDateString, fakeId, fakeIdStr, fakeWord } from '_tests_/helpers'
 
 import catalogsFixtures from '../catalogs'
-import warehousesFixtures from '../warehouse'
+import relocationTasksFixtures from '../relocationTasks'
 
 export const historyNomenclatureOperationsReportItem = (
   props?: Partial<
@@ -24,7 +24,12 @@ export const historyNomenclatureOperationsReportItem = (
   id: fakeId(),
   title: fakeWord(),
   condition: EquipmentConditionEnum.Working,
-  lastRelocationTask: pick(warehousesFixtures.relocationTask(), 'id', 'createdAt', 'status'),
+  lastRelocationTask: pick(
+    relocationTasksFixtures.relocationTaskDetail(),
+    'id',
+    'createdAt',
+    'status',
+  ),
   creditedAt: fakeDateString(),
   serialNumber: fakeIdStr(),
   inventoryNumber: fakeIdStr(),

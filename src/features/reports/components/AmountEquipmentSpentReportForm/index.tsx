@@ -37,7 +37,7 @@ const AmountEquipmentSpentReportForm: FC<AmountEquipmentSpentReportFormProps> = 
       onFinish={onSubmit}
     >
       <Form.Item
-        data-testid='nomenclature-form-item'
+        data-testid='nomenclatureDetail-form-item'
         name='nomenclature'
         label='Номенклатура'
         labelCol={{ span: 6 }}
@@ -45,7 +45,7 @@ const AmountEquipmentSpentReportForm: FC<AmountEquipmentSpentReportFormProps> = 
         rules={onlyRequiredRules}
       >
         <Select<EquipmentNomenclatureDTO['id'], EquipmentNomenclatureDTO>
-          data-testid='nomenclature-select'
+          data-testid='nomenclatureDetail-select'
           fieldNames={idAndTitleSelectFieldNames}
           disabled={nomenclaturesIsLoading}
           loading={nomenclaturesIsLoading}

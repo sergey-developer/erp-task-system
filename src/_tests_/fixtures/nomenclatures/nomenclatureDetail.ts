@@ -1,11 +1,11 @@
 import { NomenclatureDetailDTO } from 'features/nomenclatures/api/dto'
 
-import warehousesFixtures from '_tests_/fixtures/warehouse'
 import { fakeId, fakeWord } from '_tests_/helpers'
 
-import catalogsFixtures from '../../catalogs'
+import catalogsFixtures from '../catalogs'
+import { nomenclatureGroup } from './nomenclatureGroups'
 
-export const nomenclature = (
+export const nomenclatureDetail = (
   props?: Partial<
     Pick<
       NomenclatureDetailDTO,
@@ -20,7 +20,7 @@ export const nomenclature = (
   >,
 ): NomenclatureDetailDTO => ({
   country: props?.country || catalogsFixtures.countryCatalogItem(),
-  group: props?.group || warehousesFixtures.nomenclatureGroup(),
+  group: props?.group || nomenclatureGroup(),
   measurementUnit: props?.measurementUnit || catalogsFixtures.measurementUnitCatalogItem(),
   equipmentHasSerialNumber: props?.equipmentHasSerialNumber || false,
   id: props?.id || fakeId(),

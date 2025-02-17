@@ -189,7 +189,7 @@ const EquipmentFormModal: FC<EquipmentFormModalProps> = ({
         </Form.Item>
 
         <LoadingArea
-          data-testid='nomenclature-loading'
+          data-testid='nomenclatureDetail-loading'
           isLoading={nomenclatureIsLoading}
           tip='Загрузка номенклатуры...'
         >
@@ -230,7 +230,7 @@ const EquipmentFormModal: FC<EquipmentFormModalProps> = ({
 
               {mode === 'edit' && (
                 <Form.Item
-                  data-testid='warehouse-form-item'
+                  data-testid='warehouseDetail-form-item'
                   label='Склад'
                   name='warehouse'
                   rules={onlyRequiredRules}

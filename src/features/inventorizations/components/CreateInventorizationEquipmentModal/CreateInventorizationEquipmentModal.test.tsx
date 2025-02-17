@@ -6,7 +6,7 @@ import { makeString } from 'shared/utils/string'
 import { props } from '_tests_/features/warehouses/components/CreateInventorizationEquipmentModal/constants'
 import { createInventorizationEquipmentModalTestUtils } from '_tests_/features/warehouses/components/CreateInventorizationEquipmentModal/testUtils'
 import equipmentsFixtures from '_tests_/fixtures/equipments'
-import warehousesFixtures from '_tests_/fixtures/warehouse'
+import warehousesFixtures from '_tests_/fixtures/warehouses'
 import { render } from '_tests_/helpers'
 
 import CreateInventorizationEquipmentModal from './index'
@@ -28,7 +28,7 @@ describe('Модалка создания оборудования для инв
     })
 
     test('При заполнении обязательных полей и клике вызывается обработчик', async () => {
-      const warehouseListItem = warehousesFixtures.warehouseListItem()
+      const warehouseListItem = warehousesFixtures.warehouse()
       const equipmentCatalogListItem = equipmentsFixtures.equipmentCatalogListItem()
 
       const { user } = render(
@@ -154,7 +154,7 @@ describe('Модалка создания оборудования для инв
     })
 
     test('Можно выбрать значение', async () => {
-      const warehouseListItem = warehousesFixtures.warehouseListItem()
+      const warehouseListItem = warehousesFixtures.warehouse()
 
       const { user } = render(
         <CreateInventorizationEquipmentModal {...props} warehouses={[warehouseListItem]} />,

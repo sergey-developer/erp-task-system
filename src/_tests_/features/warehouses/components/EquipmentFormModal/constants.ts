@@ -1,7 +1,7 @@
 import { EquipmentFormModalProps } from 'features/equipments/components/EquipmentFormModal/types'
 
 import equipmentsFixtures from '_tests_/fixtures/equipments'
-import warehousesFixtures from '_tests_/fixtures/warehouse/index'
+import nomenclaturesFixtures from '_tests_/fixtures/nomenclatures'
 import { fakeWord } from '_tests_/helpers'
 
 export const props: Readonly<EquipmentFormModalProps> = {
@@ -19,7 +19,7 @@ export const props: Readonly<EquipmentFormModalProps> = {
   onDeleteImage: jest.fn(),
   imageIsDeleting: false,
 
-  nomenclature: warehousesFixtures.nomenclature(),
+  nomenclature: nomenclaturesFixtures.nomenclatureDetail(),
   nomenclatureIsLoading: false,
 
   nomenclatures: [],

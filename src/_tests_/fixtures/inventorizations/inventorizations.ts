@@ -7,14 +7,14 @@ import pick from 'lodash/pick'
 import times from 'lodash/times'
 
 import userFixtures from '_tests_/fixtures/users'
-import warehousesFixtures from '_tests_/fixtures/warehouse'
+import warehousesFixtures from '_tests_/fixtures/warehouses'
 import { fakeDateString, fakeId, fakeWord } from '_tests_/helpers'
 
-export const inventorizationListItem = (): InventorizationDTO => ({
+export const inventorization = (): InventorizationDTO => ({
   id: fakeId(),
   warehouses: [
-    pick(warehousesFixtures.warehouse(), 'id', 'title'),
-    pick(warehousesFixtures.warehouse(), 'id', 'title'),
+    pick(warehousesFixtures.warehouseDetail(), 'id', 'title'),
+    pick(warehousesFixtures.warehouseDetail(), 'id', 'title'),
   ],
   createdAt: fakeDateString(),
   createdBy: pick(userFixtures.userDetail(), 'id', 'fullName'),
@@ -26,5 +26,4 @@ export const inventorizationListItem = (): InventorizationDTO => ({
   revisionReason: fakeWord(),
 })
 
-export const inventorizations = (length: number = 1) =>
-  times(length, () => inventorizationListItem())
+export const inventorizations = (length: number = 1) => times(length, () => inventorization())

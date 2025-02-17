@@ -80,14 +80,14 @@ const InventorizationDetails: FC<InventorizationDetailsProps> = ({
     <Drawer
       {...props}
       width={530}
-      data-testid='inventorization-details'
+      data-testid='inventorizationDetail-details'
       title='Поручение на инвентаризацию'
       styles={height ? { wrapper: { top: 'unset', height } } : undefined}
       mask={false}
       footer={drawerFooter}
     >
       <LoadingArea
-        data-testid='inventorization-details-loading'
+        data-testid='inventorizationDetail-details-loading'
         isLoading={inventorizationIsFetching}
       >
         {inventorization && (

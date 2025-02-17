@@ -74,7 +74,7 @@ const ExecuteInventorizationDiscrepanciesTab: FC<ExecuteInventorizationDiscrepan
   )
 
   return (
-    <Flex data-testid='execute-inventorization-discrepancies-tab' vertical gap='small'>
+    <Flex data-testid='execute-inventorizationDetail-discrepancies-tab' vertical gap='small'>
       <Title level={5}>Список оборудования с расхождением</Title>
 
       <DiscrepanciesEquipmentTable

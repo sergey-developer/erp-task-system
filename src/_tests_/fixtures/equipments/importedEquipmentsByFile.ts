@@ -4,9 +4,9 @@ import pick from 'lodash/pick'
 import times from 'lodash/times'
 
 import catalogsFixtures from '_tests_/fixtures/catalogs'
-import warehousesFixtures from '_tests_/fixtures/warehouse'
 import { fakeId, fakeInteger, fakeWord } from '_tests_/helpers'
 
+import nomenclaturesFixtures from '../nomenclatures'
 import { equipmentCategory } from './equipmentCategory'
 
 export const importedEquipmentByFile = (): ImportedEquipmentByFile => ({
@@ -23,7 +23,7 @@ export const importedEquipmentByFile = (): ImportedEquipmentByFile => ({
   isWarranty: false,
   condition: EquipmentConditionEnum.Working,
   nomenclature: {
-    ...pick(warehousesFixtures.nomenclature(), 'id', 'title', 'equipmentHasSerialNumber'),
+    ...pick(nomenclaturesFixtures.nomenclatureDetail(), 'id', 'title', 'equipmentHasSerialNumber'),
     measurementUnit: fakeWord(),
   },
   owner: pick(catalogsFixtures.customerCatalogItem(), 'id', 'title'),

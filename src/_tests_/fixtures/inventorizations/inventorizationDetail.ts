@@ -6,10 +6,12 @@ import { InventorizationDetailDTO } from 'features/inventorizations/api/dto'
 import pick from 'lodash/pick'
 
 import userFixtures from '_tests_/fixtures/users'
-import warehousesFixtures from '_tests_/fixtures/warehouse'
+import warehousesFixtures from '_tests_/fixtures/warehouses'
 import { fakeDateString, fakeId, fakeInteger, fakeUrl, fakeWord } from '_tests_/helpers'
 
-export const inventorization = (
+import nomenclaturesFixtures from '../nomenclatures'
+
+export const inventorizationDetail = (
   props?: Partial<Pick<InventorizationDetailDTO, 'status' | 'executor'>>,
 ): InventorizationDetailDTO => ({
   status: props?.status || InventorizationStatusEnum.New,
@@ -17,15 +19,15 @@ export const inventorization = (
 
   id: fakeId(),
   warehouses: [
-    pick(warehousesFixtures.warehouse(), 'id', 'title'),
-    pick(warehousesFixtures.warehouse(), 'id', 'title'),
+    pick(warehousesFixtures.warehouseDetail(), 'id', 'title'),
+    pick(warehousesFixtures.warehouseDetail(), 'id', 'title'),
   ],
   createdAt: fakeDateString(),
   createdBy: pick(userFixtures.userDetail(), 'id', 'fullName'),
   type: InventorizationTypeEnum.Internal,
   deadlineAt: fakeDateString(),
   completedAt: fakeDateString(),
-  nomenclatures: [pick(warehousesFixtures.nomenclature(), 'id', 'title', 'group')],
+  nomenclatures: [pick(nomenclaturesFixtures.nomenclatureDetail(), 'id', 'title', 'group')],
   description: fakeWord(),
 
   // todo: использовать фикстуру когда она будет готова

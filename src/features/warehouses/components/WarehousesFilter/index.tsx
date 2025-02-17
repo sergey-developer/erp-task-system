@@ -41,7 +41,7 @@ const WarehousesFilter: FC<WarehousesFilterProps> = ({ visible, formValues, onCl
 
   return (
     <DrawerFilter
-      data-testid='warehouse-list-filter'
+      data-testid='warehouseDetail-list-filter'
       open={visible}
       onClose={onClose}
       onReset={resetFields()}

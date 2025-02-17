@@ -11,7 +11,7 @@ import tasksFixtures from '_tests_/fixtures/tasks'
 import userFixtures from '_tests_/fixtures/users'
 import { fakeDateString, fakeId, fakeWord } from '_tests_/helpers'
 
-export const relocationTaskListItem = (
+export const relocationTask = (
   props?: Partial<Pick<RelocationTaskDTO, 'completedBy' | 'executors'>>,
 ): RelocationTaskDTO => ({
   completedBy: isUndefined(props?.completedBy)
@@ -33,4 +33,4 @@ export const relocationTaskListItem = (
   documents: [tasksFixtures.taskAttachment()],
 })
 
-export const relocationTasks = (length: number = 1) => times(length, () => relocationTaskListItem())
+export const relocationTasks = (length: number = 1) => times(length, () => relocationTask())

@@ -16,7 +16,7 @@ import {
   props,
 } from '_tests_/features/warehouses/components/InventorizationTable/constants'
 import { inventorizationTableTestUtils } from '_tests_/features/warehouses/components/InventorizationTable/testUtils'
-import warehousesFixtures from '_tests_/fixtures/warehouse'
+import inventorizationsFixtures from '_tests_/fixtures/inventorizations'
 import { render, tableTestUtils } from '_tests_/helpers'
 
 import InventorizationTable from './index'
@@ -45,7 +45,7 @@ describe.skip('Таблица инвентаризаций', () => {
   })
 
   test('Пагинация работает', async () => {
-    const inventorizations = warehousesFixtures.inventorizations(11)
+    const inventorizations = inventorizationsFixtures.inventorizations(11)
 
     const { user } = render(<InventorizationTable {...props} dataSource={inventorizations} />)
 

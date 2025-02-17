@@ -21,7 +21,7 @@ const NomenclatureGroupFormModal: FC<NomenclatureGroupFormModalProps> = ({
   return (
     <BaseModal
       {...props}
-      data-testid='nomenclature-group-form-modal'
+      data-testid='nomenclatureDetail-group-form-modal'
       onOk={form.submit}
       confirmLoading={isLoading}
     >

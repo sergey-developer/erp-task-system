@@ -1,18 +1,15 @@
 import { EquipmentConditionEnum } from 'features/equipments/api/constants'
-import {
-  CheckedInventorizationEquipmentsTemplateDTO,
-  CheckedInventorizationEquipmentsTemplateItemDTO,
-} from 'features/inventorizations/api/dto'
+import { CheckedInventorizationEquipmentsTemplateItemDTO } from 'features/inventorizations/api/dto'
 import isBoolean from 'lodash/isBoolean'
 import isUndefined from 'lodash/isUndefined'
-import times from 'lodash/times'
 
 import catalogsFixtures from '_tests_/fixtures/catalogs'
 import equipmentsFixtures from '_tests_/fixtures/equipments'
-import warehousesFixtures from '_tests_/fixtures/warehouse'
 import { fakeInteger, fakeWord } from '_tests_/helpers'
 
-export const checkedInventorizationEquipmentsTemplateListItem = (
+import nomenclaturesFixtures from '../nomenclatures'
+
+export const checkedInventorizationEquipmentsTemplateItem = (
   props?: Partial<Pick<CheckedInventorizationEquipmentsTemplateItemDTO, 'isCredited' | 'category'>>,
 ): CheckedInventorizationEquipmentsTemplateItemDTO => ({
   isCredited: isBoolean(props?.isCredited) ? props!.isCredited : false,
@@ -29,15 +26,10 @@ export const checkedInventorizationEquipmentsTemplateListItem = (
   isRepaired: false,
   isWarranty: false,
   macroregion: catalogsFixtures.macroregionCatalogItem(),
-  nomenclature: warehousesFixtures.nomenclature(),
+  nomenclature: nomenclaturesFixtures.nomenclatureDetail(),
   owner: catalogsFixtures.customerCatalogItem(),
   price: fakeInteger(),
   purpose: catalogsFixtures.workTypeCatalogItem(),
   serialNumber: fakeWord(),
   usageCounter: fakeInteger(),
 })
-
-export const checkedInventorizationEquipmentsTemplate = (
-  length: number = 1,
-): CheckedInventorizationEquipmentsTemplateDTO =>
-  times(length, () => checkedInventorizationEquipmentsTemplateListItem())

@@ -6,7 +6,7 @@ import {
   tableRow,
 } from '_tests_/features/inventorizations/components/CheckInventorizationEquipmentsTable/constants'
 import { checkInventorizationEquipmentsTableTestUtils as testUtils } from '_tests_/features/inventorizations/components/CheckInventorizationEquipmentsTable/testUtils'
-import warehousesFixtures from '_tests_/fixtures/warehouse'
+import inventorizationsFixtures from '_tests_/fixtures/inventorizations'
 import { render } from '_tests_/helpers'
 
 import CheckInventorizationEquipmentsTable from './index'
@@ -96,7 +96,7 @@ describe('Таблица проверки оборудования по инве
 
   describe('Колонка иконки isCredited', () => {
     test('Отображает зеленую галочку если поле isCredited=false и была попытка редактирования', () => {
-      const tableRow = warehousesFixtures.checkInventorizationEquipmentsTableRow({
+      const tableRow = inventorizationsFixtures.checkInventorizationEquipmentsTableRow({
         isCredited: false,
       })
 
@@ -113,7 +113,7 @@ describe('Таблица проверки оборудования по инве
     })
 
     test('При наведении на зеленую галочку отображается текст', async () => {
-      const tableRow = warehousesFixtures.checkInventorizationEquipmentsTableRow({
+      const tableRow = inventorizationsFixtures.checkInventorizationEquipmentsTableRow({
         isCredited: false,
       })
 
@@ -134,7 +134,7 @@ describe('Таблица проверки оборудования по инве
     })
 
     test('Отображает восклицательный знак если поле isCredited=false и попытки редактирования не было', () => {
-      const tableRow = warehousesFixtures.checkInventorizationEquipmentsTableRow({
+      const tableRow = inventorizationsFixtures.checkInventorizationEquipmentsTableRow({
         isCredited: false,
       })
 
@@ -151,7 +151,7 @@ describe('Таблица проверки оборудования по инве
     })
 
     test('При наведении на восклицательный знак отображается текст', async () => {
-      const tableRow = warehousesFixtures.checkInventorizationEquipmentsTableRow({
+      const tableRow = inventorizationsFixtures.checkInventorizationEquipmentsTableRow({
         isCredited: false,
       })
 
@@ -172,7 +172,7 @@ describe('Таблица проверки оборудования по инве
     })
 
     test('Никакая иконка не отображается если поле isCredited не false, даже если была попытка редактирования', () => {
-      const tableRow = warehousesFixtures.checkInventorizationEquipmentsTableRow({
+      const tableRow = inventorizationsFixtures.checkInventorizationEquipmentsTableRow({
         isCredited: true,
       })
 

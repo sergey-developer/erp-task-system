@@ -26,10 +26,10 @@ export const workGroupPriority = (
   description: fakeWord(),
 })
 
-export const workGroupMemberList = (length: number = 1): WorkGroupDTO['members'] =>
+export const workGroupMembers = (length: number = 1): WorkGroupDTO['members'] =>
   times(length, () => workGroupMember())
 
-export const workGroupListItem = (
+export const workGroup = (
   props?: Partial<{
     seniorEngineerId: IdType
     groupLeadId: IdType
@@ -38,7 +38,7 @@ export const workGroupListItem = (
     Partial<Pick<WorkGroupDTO, 'id' | 'priority'>>,
 ): NonNullable<WorkGroupDTO> => ({
   id: props?.id || fakeId(),
-  members: workGroupMemberList(props?.memberAmount),
+  members: workGroupMembers(props?.memberAmount),
   seniorEngineer: {
     id: props?.seniorEngineerId || fakeId(),
     fullName: fakeName(),
@@ -52,5 +52,4 @@ export const workGroupListItem = (
   name: fakeName(),
 })
 
-export const workGroups = (length: number = 1): WorkGroupsDTO =>
-  times(length, () => workGroupListItem())
+export const workGroups = (length: number = 1): WorkGroupsDTO => times(length, () => workGroup())

@@ -3,7 +3,7 @@ import { WarehousesRoutesEnum } from 'features/warehouses/routes/routes'
 import { warehouseListFilterTestUtils } from '_tests_/features/warehouses/components/WarehouseListFilter/testUtils'
 import { warehouseTableTestUtils } from '_tests_/features/warehouses/components/WarehouseTable/testUtils'
 import { warehouseListPageTestUtils } from '_tests_/features/warehouses/pages/WarehouseListPage/testUtils'
-import warehousesFixtures from '_tests_/fixtures/warehouse'
+import warehousesFixtures from '_tests_/fixtures/warehouses'
 import { renderWithRouter, setupApiTests } from '_tests_/helpers'
 import { mockGetLegalEntitiesSuccess, mockGetWarehousesSuccess } from '_tests_/mocks/api'
 
@@ -13,7 +13,7 @@ setupApiTests()
 // todo: сделать тесты для сортировки как в EquipmentsPage
 describe('Страница списка складов', () => {
   test('Таблица складов отображается корректно', async () => {
-    const warehouseList = [warehousesFixtures.warehouseListItem()]
+    const warehouseList = [warehousesFixtures.warehouse()]
     mockGetWarehousesSuccess({ body: warehouseList })
 
     renderWithRouter(

@@ -18,8 +18,8 @@ import { relocationTasksFilterTestUtils } from '_tests_/features/warehouses/comp
 import { createRelocationTaskPageTestUtils } from '_tests_/features/warehouses/pages/CreateRelocationTaskPage/testUtils'
 import { relocationTasksPageTestUtils } from '_tests_/features/warehouses/pages/RelocationTasksPage/testUtils'
 import commonFixtures from '_tests_/fixtures/common'
+import relocationTasksFixtures from '_tests_/fixtures/relocationTasks'
 import userFixtures from '_tests_/fixtures/users'
-import warehousesFixtures from '_tests_/fixtures/warehouse'
 import {
   fakeWord,
   getStoreWithAuth,
@@ -51,7 +51,7 @@ notificationTestUtils.setupNotifications()
 describe('Страница списка заявок на перемещение оборудования', () => {
   describe.skip('Список заявок на перемещение оборудования', () => {
     test('При успешном запросе отображается корректно', async () => {
-      const relocationTasks = warehousesFixtures.relocationTasks()
+      const relocationTasks = relocationTasksFixtures.relocationTasks()
       mockGetRelocationTasksSuccess({
         body: commonFixtures.paginatedListResponse(relocationTasks),
       })
@@ -106,7 +106,7 @@ describe('Страница списка заявок на перемещение
     })
 
     test('Пагинация работает', async () => {
-      const relocationTasks = warehousesFixtures.relocationTasks(11)
+      const relocationTasks = relocationTasksFixtures.relocationTasks(11)
       mockGetRelocationTasksSuccess({
         body: commonFixtures.paginatedListResponse(relocationTasks),
         once: false,
@@ -131,7 +131,7 @@ describe('Страница списка заявок на перемещение
 
     test('Установлена сортировка по умолчанию', async () => {
       mockGetRelocationTasksSuccess({
-        body: commonFixtures.paginatedListResponse(warehousesFixtures.relocationTasks()),
+        body: commonFixtures.paginatedListResponse(relocationTasksFixtures.relocationTasks()),
         once: false,
       })
 
@@ -148,7 +148,7 @@ describe('Страница списка заявок на перемещение
     })
 
     test('Сортировка работает корректно', async () => {
-      const relocationTasks = warehousesFixtures.relocationTasks()
+      const relocationTasks = relocationTasksFixtures.relocationTasks()
       mockGetRelocationTasksSuccess({
         body: commonFixtures.paginatedListResponse(relocationTasks),
         once: false,
@@ -249,7 +249,7 @@ describe('Страница списка заявок на перемещение
     })
 
     test('После применения список отображается корректно', async () => {
-      const relocationTasks = warehousesFixtures.relocationTasks()
+      const relocationTasks = relocationTasksFixtures.relocationTasks()
       mockGetRelocationTasksSuccess({
         body: commonFixtures.paginatedListResponse(relocationTasks),
         once: false,
@@ -294,7 +294,7 @@ describe('Страница списка заявок на перемещение
 
   describe('Карточка заявки на перемещение оборудования', () => {
     test('Открывается по клику на строку в таблице', async () => {
-      const relocationTaskListItem = warehousesFixtures.relocationTaskListItem()
+      const relocationTaskListItem = relocationTasksFixtures.relocationTask()
       mockGetRelocationTasksSuccess({
         body: commonFixtures.paginatedListResponse([relocationTaskListItem]),
       })
@@ -315,7 +315,7 @@ describe('Страница списка заявок на перемещение
     })
 
     test('Закрывается', async () => {
-      const relocationTaskListItem = warehousesFixtures.relocationTaskListItem()
+      const relocationTaskListItem = relocationTasksFixtures.relocationTask()
       mockGetRelocationTasksSuccess({
         body: commonFixtures.paginatedListResponse([relocationTaskListItem]),
       })

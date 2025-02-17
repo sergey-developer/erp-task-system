@@ -14,7 +14,7 @@ import { taskFirstLineModalTestUtils } from '_tests_/features/tasks/components/T
 import { taskSecondLineModalTestUtils } from '_tests_/features/tasks/components/TaskSecondLineModal/testUtils'
 import tasksFixtures from '_tests_/fixtures/tasks'
 import userFixtures from '_tests_/fixtures/users'
-import workGroupFixtures from '_tests_/fixtures/workGroup'
+import workGroupsFixtures from '_tests_/fixtures/workGroups'
 import { fakeWord, getStoreWithAuth, render, setupApiTests } from '_tests_/helpers'
 import { mockGetWorkGroupsSuccess } from '_tests_/mocks/api'
 import { getUserMeQueryMock } from '_tests_/mocks/store/users'
@@ -210,7 +210,7 @@ describe('Блок рабочей группы', () => {
 
   describe('Модалка перевода на 2-ю линию', () => {
     test('При отправке обработчик вызывается', async () => {
-      const workGroups = workGroupFixtures.workGroups()
+      const workGroups = workGroupsFixtures.workGroups()
       mockGetWorkGroupsSuccess({ body: workGroups })
 
       const { user } = render(

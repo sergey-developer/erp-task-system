@@ -1,8 +1,8 @@
 import { RelocationTasksProps } from 'features/tasks/components/RelocationTasks/types'
 
-import warehousesFixtures from '_tests_/fixtures/warehouse/index'
+import relocationTasksFixtures from '_tests_/fixtures/relocationTasks'
 
-export const relocationTaskListItem = warehousesFixtures.relocationTaskListItem()
+export const relocationTaskListItem = relocationTasksFixtures.relocationTask()
 
 export const props: RelocationTasksProps = {
   data: [relocationTaskListItem],

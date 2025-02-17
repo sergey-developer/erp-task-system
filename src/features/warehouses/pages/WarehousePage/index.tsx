@@ -1,8 +1,7 @@
 import { Flex, Typography } from 'antd'
+import { useGetWarehouse } from 'features/warehouses/hooks'
 import { FC } from 'react'
 import { useParams } from 'react-router-dom'
-
-import { useGetWarehouse } from 'features/warehouses/hooks'
 
 import Label from 'components/Label'
 import LoadingArea from 'components/LoadingArea'
@@ -25,8 +24,8 @@ const WarehousePage: FC = () => {
   )
 
   return (
-    <WrapperStyled data-testid='warehouse-page'>
-      <LoadingArea data-testid='warehouse-loading' isLoading={warehouseIsFetching}>
+    <WrapperStyled data-testid='warehouseDetail-page'>
+      <LoadingArea data-testid='warehouseDetail-loading' isLoading={warehouseIsFetching}>
         {warehouse && (
           <Space $block direction='vertical'>
             <Label label='Наименование объекта'>{warehouse.title}</Label>

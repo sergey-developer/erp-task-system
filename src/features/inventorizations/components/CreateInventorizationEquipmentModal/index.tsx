@@ -62,7 +62,7 @@ const CreateInventorizationEquipmentModal: FC<CreateInventorizationEquipmentModa
 
   return (
     <BaseModal
-      data-testid='create-inventorization-equipmentDetail-modal'
+      data-testid='create-inventorizationDetail-equipmentDetail-modal'
       title='Добавление оборудования'
       confirmLoading={isLoading}
       onOk={form.submit}

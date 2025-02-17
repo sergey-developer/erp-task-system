@@ -80,7 +80,7 @@ const NomenclatureFormModal: FC<NomenclatureFormModalProps> = ({
   return (
     <BaseModal
       {...props}
-      data-testid='nomenclature-form-modal'
+      data-testid='nomenclatureDetail-form-modal'
       onOk={form.submit}
       okButtonProps={{ disabled: submitBtnDisabled }}
       confirmLoading={isLoading}

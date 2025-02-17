@@ -10,7 +10,7 @@ import catalogsFixtures from '_tests_/fixtures/catalogs'
 import equipmentsFixtures from '_tests_/fixtures/equipments'
 import { fakeId, fakeIdStr, fakeInteger, fakeWord } from '_tests_/helpers'
 
-export const inventorizationEquipmentListItem = (
+export const inventorizationEquipment = (
   props?: Partial<
     Pick<
       InventorizationEquipmentDTO,
@@ -52,4 +52,4 @@ export const inventorizationEquipmentListItem = (
 })
 
 export const inventorizationEquipments = (length: number = 1): InventorizationEquipmentsDTO =>
-  times(length, () => inventorizationEquipmentListItem())
+  times(length, () => inventorizationEquipment())

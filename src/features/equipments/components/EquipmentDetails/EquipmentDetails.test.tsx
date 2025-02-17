@@ -26,8 +26,8 @@ import { relocationTaskDetailsTestUtils } from '_tests_/features/warehouses/comp
 import attachmentsFixtures from '_tests_/fixtures/attachments'
 import commonFixtures from '_tests_/fixtures/common'
 import equipmentsFixtures from '_tests_/fixtures/equipments'
+import nomenclaturesFixtures from '_tests_/fixtures/nomenclatures'
 import userFixtures from '_tests_/fixtures/users'
-import warehousesFixtures from '_tests_/fixtures/warehouse'
 import {
   buttonTestUtils,
   fakeWord,
@@ -196,7 +196,9 @@ describe('Информация об оборудовании', () => {
     describe('Серийный номер', () => {
       test('Отображается если у оборудования он есть', async () => {
         const equipment = equipmentsFixtures.equipmentDetail({
-          nomenclature: warehousesFixtures.nomenclature({ equipmentHasSerialNumber: true }),
+          nomenclature: nomenclaturesFixtures.nomenclatureDetail({
+            equipmentHasSerialNumber: true,
+          }),
           category: equipmentsFixtures.equipmentCategory({
             code: EquipmentCategoryEnum.Consumable,
           }),
@@ -221,7 +223,9 @@ describe('Информация об оборудовании', () => {
 
       test('Не отображается если у оборудования его нет', async () => {
         const equipment = equipmentsFixtures.equipmentDetail({
-          nomenclature: warehousesFixtures.nomenclature({ equipmentHasSerialNumber: false }),
+          nomenclature: nomenclaturesFixtures.nomenclatureDetail({
+            equipmentHasSerialNumber: false,
+          }),
           category: equipmentsFixtures.equipmentCategory({
             code: EquipmentCategoryEnum.Consumable,
           }),

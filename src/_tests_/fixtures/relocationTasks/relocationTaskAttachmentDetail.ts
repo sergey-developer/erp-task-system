@@ -2,7 +2,7 @@ import { RelocationTaskAttachmentDetailDTO } from 'features/relocationTasks/api/
 
 import { fakeDateString, fakeId, fakeInteger, fakeName, fakeUrl, fakeWord } from '_tests_/helpers'
 
-export const relocationTaskAttachment = (): RelocationTaskAttachmentDetailDTO => ({
+export const relocationTaskAttachmentDetail = (): RelocationTaskAttachmentDetailDTO => ({
   id: fakeId(),
   url: fakeUrl(),
   name: fakeWord(),

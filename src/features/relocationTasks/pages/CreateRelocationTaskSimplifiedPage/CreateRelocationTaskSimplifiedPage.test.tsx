@@ -13,7 +13,7 @@ import { fakeUseLocationResult } from '_tests_/fixtures/common/hooks/useLocation
 import equipmentsFixtures from '_tests_/fixtures/equipments'
 import tasksFixtures from '_tests_/fixtures/tasks'
 import userFixtures from '_tests_/fixtures/users'
-import warehousesFixtures from '_tests_/fixtures/warehouse'
+import warehousesFixtures from '_tests_/fixtures/warehouses'
 import {
   fakeWord,
   getStoreWithAuth,
@@ -62,7 +62,7 @@ describe('Упрощенная страница создания заявки н
         once: false,
       })
 
-      const warehouseMSI = warehousesFixtures.warehouse()
+      const warehouseMSI = warehousesFixtures.warehouseDetail()
       mockGetWarehouseMSISuccess(locationStateTask.assignee!.id, { body: warehouseMSI })
 
       const { user } = render(<CreateRelocationTaskSimplifiedPage />, {

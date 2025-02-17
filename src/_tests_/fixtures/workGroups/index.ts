@@ -1,7 +1,7 @@
 import * as workGroups from './workGroups'
 
-const workGroupFixtures = {
+const workGroupsFixtures = {
   ...workGroups,
 } as const
 
-export default workGroupFixtures
+export default workGroupsFixtures

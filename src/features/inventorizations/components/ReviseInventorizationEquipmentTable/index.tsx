@@ -75,7 +75,7 @@ const ReviseInventorizationEquipmentTable: FC<ReviseInventorizationEquipmentTabl
 
   return (
     <Form form={form}>
-      <TableWrapperStyled data-testid='revise-inventorization-equipmentDetail-table'>
+      <TableWrapperStyled data-testid='revise-inventorizationDetail-equipmentDetail-table'>
         <EditableProTable<ReviseInventorizationEquipmentTableItem>
           name={tableName}
           rowKey='id'

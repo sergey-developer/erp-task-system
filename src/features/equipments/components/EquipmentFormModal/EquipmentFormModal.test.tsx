@@ -12,7 +12,7 @@ import {
 import { equipmentFormModalTestUtils } from '_tests_/features/warehouses/components/EquipmentFormModal/testUtils'
 import catalogsFixtures from '_tests_/fixtures/catalogs'
 import equipmentsFixtures from '_tests_/fixtures/equipments'
-import warehousesFixtures from '_tests_/fixtures/warehouse'
+import nomenclaturesFixtures from '_tests_/fixtures/nomenclatures'
 import { fakeInteger, fakeWord, render } from '_tests_/helpers'
 
 import EquipmentFormModal from './index'
@@ -66,7 +66,7 @@ describe('Модалка оборудования', () => {
     })
 
     test('Можно установить значение', async () => {
-      const nomenclature = warehousesFixtures.nomenclatureListItem()
+      const nomenclature = nomenclaturesFixtures.nomenclature()
       const { user } = render(<EquipmentFormModal {...props} nomenclatures={[nomenclature]} />)
 
       await equipmentFormModalTestUtils.openNomenclatureSelect(user)
@@ -169,7 +169,9 @@ describe('Модалка оборудования', () => {
 
   describe('Серийный номер', () => {
     test('Отображается если условия соблюдены', () => {
-      const nomenclature = warehousesFixtures.nomenclature({ equipmentHasSerialNumber: true })
+      const nomenclature = nomenclaturesFixtures.nomenclatureDetail({
+        equipmentHasSerialNumber: true,
+      })
 
       render(<EquipmentFormModal {...props} nomenclature={nomenclature} />)
 
@@ -190,7 +192,9 @@ describe('Модалка оборудования', () => {
     })
 
     test('Можно установить значение', async () => {
-      const nomenclature = warehousesFixtures.nomenclature({ equipmentHasSerialNumber: true })
+      const nomenclature = nomenclaturesFixtures.nomenclatureDetail({
+        equipmentHasSerialNumber: true,
+      })
 
       const { user } = render(<EquipmentFormModal {...props} nomenclature={nomenclature} />)
 
@@ -201,7 +205,9 @@ describe('Модалка оборудования', () => {
     })
 
     test('Показывается ошибка если поле не заполнено', async () => {
-      const nomenclature = warehousesFixtures.nomenclature({ equipmentHasSerialNumber: true })
+      const nomenclature = nomenclaturesFixtures.nomenclatureDetail({
+        equipmentHasSerialNumber: true,
+      })
 
       const { user } = render(
         <EquipmentFormModal {...props} {...addModeProps} nomenclature={nomenclature} />,

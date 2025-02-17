@@ -3,7 +3,7 @@ import times from 'lodash/times'
 
 import { fakeId, fakeWord } from '_tests_/helpers'
 
-export const warehouseListItem = (): WarehouseDTO => ({
+export const warehouse = (): WarehouseDTO => ({
   id: fakeId(),
   address: fakeWord(),
   title: fakeWord(),
@@ -17,5 +17,4 @@ export const warehouseListItem = (): WarehouseDTO => ({
   },
 })
 
-export const warehouses = (length: number = 1): WarehousesDTO =>
-  times(length, () => warehouseListItem())
+export const warehouses = (length: number = 1): WarehousesDTO => times(length, () => warehouse())

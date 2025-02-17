@@ -50,7 +50,7 @@ import commonFixtures from '_tests_/fixtures/common/index'
 import supportGroupsFixtures from '_tests_/fixtures/supportGroups'
 import tasksFixtures from '_tests_/fixtures/tasks'
 import userFixtures from '_tests_/fixtures/users'
-import workGroupFixtures from '_tests_/fixtures/workGroup'
+import workGroupsFixtures from '_tests_/fixtures/workGroups'
 import {
   fakeId,
   fakeWord,
@@ -282,7 +282,7 @@ describe('Страница реестра заявок', () => {
       })
 
       test('Сбрасывает расширенный фильтр', async () => {
-        const workGroupListItem = workGroupFixtures.workGroupListItem()
+        const workGroupListItem = workGroupsFixtures.workGroup()
         mockGetWorkGroupsSuccess({ body: [workGroupListItem], once: false })
         mockGetTaskCountersSuccess({ once: false })
         mockGetTasksSuccess({ once: false })
@@ -524,7 +524,7 @@ describe('Страница реестра заявок', () => {
       })
 
       test.skip('Сбрасывает расширенный фильтр', async () => {
-        const workGroupListItem = workGroupFixtures.workGroupListItem()
+        const workGroupListItem = workGroupsFixtures.workGroup()
         mockGetWorkGroupsSuccess({ body: [workGroupListItem], once: false })
         mockGetTaskCountersSuccess({ once: false })
         mockGetTasksSuccess({ once: false })
@@ -781,7 +781,7 @@ describe('Страница реестра заявок', () => {
       })
       mockGetTaskSuccess(task.id, { body: task })
 
-      const workGroup = workGroupFixtures.workGroupListItem()
+      const workGroup = workGroupsFixtures.workGroup()
       mockGetWorkGroupsSuccess({ body: [workGroup], once: false })
 
       mockUpdateTaskWorkGroupSuccess(task.id)
@@ -1193,7 +1193,7 @@ describe('Страница реестра заявок', () => {
       })
 
       test('Значения сохраняются если другой фильтр не применялся', async () => {
-        const workGroupListItem = workGroupFixtures.workGroupListItem()
+        const workGroupListItem = workGroupsFixtures.workGroup()
         mockGetWorkGroupsSuccess({ body: [workGroupListItem], once: false })
         mockGetTaskCountersSuccess({ once: false })
         mockGetTasksSuccess({ once: false })
@@ -1335,7 +1335,7 @@ describe('Страница реестра заявок', () => {
     })
 
     test('Значения не сохраняются если фильтр не был применён', async () => {
-      const workGroupListItem = workGroupFixtures.workGroupListItem()
+      const workGroupListItem = workGroupsFixtures.workGroup()
       mockGetWorkGroupsSuccess({ body: [workGroupListItem], once: false })
       mockGetTaskCountersSuccess()
       mockGetTasksSuccess()
@@ -1451,7 +1451,7 @@ describe('Страница реестра заявок', () => {
         mockGetMacroregionsSuccess()
         mockGetSupportGroupsSuccess()
         mockGetWorkGroupsSuccess({
-          body: workGroupFixtures.workGroups(),
+          body: workGroupsFixtures.workGroups(),
         })
 
         const { user } = render(<TasksPage />, {
@@ -1815,7 +1815,7 @@ describe('Страница реестра заявок', () => {
 
       // todo: не проходит на CI
       test.skip('Применяет расширенный фильтр если он был применён ранее', async () => {
-        const workGroupListItem = workGroupFixtures.workGroupListItem()
+        const workGroupListItem = workGroupsFixtures.workGroup()
         mockGetWorkGroupsSuccess({ body: [workGroupListItem], once: false })
         mockGetTaskCountersSuccess({ once: false })
         mockGetTasksSuccess({ once: false })
@@ -2000,7 +2000,7 @@ describe('Страница реестра заявок', () => {
 
       // todo: не проходит на CI
       test.skip('Применяет расширенный фильтр если он был применён ранее', async () => {
-        const workGroupListItem = workGroupFixtures.workGroupListItem()
+        const workGroupListItem = workGroupsFixtures.workGroup()
         mockGetWorkGroupsSuccess({ body: [workGroupListItem], once: false })
         mockGetTaskCountersSuccess({ once: false })
         mockGetTasksSuccess({ once: false })

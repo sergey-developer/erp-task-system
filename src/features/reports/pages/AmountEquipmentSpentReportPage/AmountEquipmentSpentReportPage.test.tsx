@@ -20,7 +20,6 @@ import equipmentsFixtures from '_tests_/fixtures/equipments'
 import reportsFixtures from '_tests_/fixtures/reports'
 import tasksFixtures from '_tests_/fixtures/tasks'
 import userFixtures from '_tests_/fixtures/users'
-import warehousesFixtures from '_tests_/fixtures/warehouse'
 import { fakeId, fakeWord, getStoreWithAuth, render, setupApiTests } from '_tests_/helpers'
 import {
   mockGetAmountEquipmentSpentReportSuccess,

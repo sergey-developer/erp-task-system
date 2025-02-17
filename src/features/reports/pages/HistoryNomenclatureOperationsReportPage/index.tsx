@@ -166,7 +166,7 @@ const HistoryNomenclatureOperationsReportPage: FC = () => {
 
   return (
     <>
-      <Row data-testid='history-nomenclature-operations-report-page' gutter={[0, 16]}>
+      <Row data-testid='history-nomenclatureDetail-operations-report-page' gutter={[0, 16]}>
         <Col span={7}>
           <HistoryNomenclatureOperationsReportForm
             nomenclatures={extractPaginationResults(equipmentNomenclatures)}

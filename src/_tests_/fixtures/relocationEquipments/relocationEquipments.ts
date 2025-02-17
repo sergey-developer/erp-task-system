@@ -7,7 +7,7 @@ import catalogsFixtures from '_tests_/fixtures/catalogs'
 import equipmentsFixtures from '_tests_/fixtures/equipments'
 import { fakeId, fakeInteger, fakeWord } from '_tests_/helpers'
 
-export const relocationEquipmentListItem = (): RelocationEquipmentDTO => ({
+export const relocationEquipment = (): RelocationEquipmentDTO => ({
   id: fakeId(),
   relocationEquipmentId: fakeId(),
   title: fakeWord(),
@@ -21,4 +21,4 @@ export const relocationEquipmentListItem = (): RelocationEquipmentDTO => ({
 })
 
 export const relocationEquipments = (length: number = 1) =>
-  times(length, () => relocationEquipmentListItem())
+  times(length, () => relocationEquipment())

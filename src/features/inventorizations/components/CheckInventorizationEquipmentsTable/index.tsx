@@ -23,7 +23,7 @@ const CheckInventorizationEquipmentsTable: FC<CheckInventorizationEquipmentsTabl
   )
 
   return (
-    <Flex data-testid='check-inventorization-equipments-table'>
+    <Flex data-testid='check-inventorizationDetail-equipments-table'>
       <Table<CheckInventorizationEquipmentsTableRow>
         virtual={!env.isTest}
         rowKey='rowId'

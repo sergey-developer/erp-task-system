@@ -1,7 +1,7 @@
 import { props } from '_tests_/features/warehouses/components/WarehouseListFilter/constants'
 import { warehouseListFilterTestUtils } from '_tests_/features/warehouses/components/WarehouseListFilter/testUtils'
 import catalogsFixtures from '_tests_/fixtures/catalogs'
-import warehousesFixtures from '_tests_/fixtures/warehouse'
+import warehousesFixtures from '_tests_/fixtures/warehouses'
 import { fakeWord, render, setupApiTests } from '_tests_/helpers'
 import { mockGetLegalEntitiesSuccess, mockGetWarehousesSuccess } from '_tests_/mocks/api'
 
@@ -74,7 +74,7 @@ describe('Фильтр списка складов', () => {
     })
 
     test('Сбрасывает значения полей', async () => {
-      const warehouseListItem = warehousesFixtures.warehouseListItem()
+      const warehouseListItem = warehousesFixtures.warehouse()
       mockGetWarehousesSuccess({ body: [warehouseListItem] })
 
       const legalEntityCatalogItem = catalogsFixtures.legalEntityCatalogItem()
@@ -298,7 +298,7 @@ describe('Фильтр списка складов', () => {
     })
 
     test('Можно установить значение', async () => {
-      const warehouseListItem = warehousesFixtures.warehouseListItem()
+      const warehouseListItem = warehousesFixtures.warehouse()
       mockGetWarehousesSuccess({ body: [warehouseListItem] })
       mockGetLegalEntitiesSuccess()
 
@@ -314,7 +314,7 @@ describe('Фильтр списка складов', () => {
     })
 
     test('Можно установить значение по умолчанию', async () => {
-      const warehouseListItem = warehousesFixtures.warehouseListItem()
+      const warehouseListItem = warehousesFixtures.warehouse()
       mockGetWarehousesSuccess({ body: [warehouseListItem] })
       mockGetLegalEntitiesSuccess()
 
@@ -328,7 +328,7 @@ describe('Фильтр списка складов', () => {
     })
 
     test('Можно сбросить значение', async () => {
-      const warehouseListItem = warehousesFixtures.warehouseListItem()
+      const warehouseListItem = warehousesFixtures.warehouse()
       mockGetWarehousesSuccess({ body: [warehouseListItem] })
       mockGetLegalEntitiesSuccess()
 

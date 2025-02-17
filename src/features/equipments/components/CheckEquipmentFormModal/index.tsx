@@ -178,7 +178,7 @@ const CheckEquipmentFormModal: FC<CheckEquipmentFormModalProps> = ({
         </Form.Item>
 
         <LoadingArea
-          data-testid='nomenclature-loading'
+          data-testid='nomenclatureDetail-loading'
           isLoading={nomenclatureIsLoading}
           tip='Загрузка номенклатуры...'
         >

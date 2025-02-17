@@ -803,7 +803,7 @@ const CreateRelocationTaskSimplifiedPage: FC = () => {
           </Col>
 
           <Col span={24}>
-            <Space data-testid='equipments-to-warehouse-block' $block direction='vertical'>
+            <Space data-testid='equipments-to-warehouseDetail-block' $block direction='vertical'>
               <Row justify='space-between' align='middle'>
                 <Col>
                   <Space>

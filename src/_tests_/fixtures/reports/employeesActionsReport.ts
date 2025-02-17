@@ -5,7 +5,7 @@ import times from 'lodash/times'
 import { fakeId, fakeInteger, fakeWord } from '_tests_/helpers'
 
 import equipmentsFixtures from '../equipments'
-import warehousesFixtures from '../warehouse'
+import relocationTasksFixtures from '../relocationTasks'
 
 export const employeesActionsReportItem = (): EmployeesActionsReportItemDTO => ({
   id: fakeId(),
@@ -19,7 +19,7 @@ export const employeesActionsReportItem = (): EmployeesActionsReportItemDTO => (
     'serialNumber',
   ),
   relocationTask: pick(
-    warehousesFixtures.relocationTask(),
+    relocationTasksFixtures.relocationTaskDetail(),
     'id',
     'createdAt',
     'relocateFrom',

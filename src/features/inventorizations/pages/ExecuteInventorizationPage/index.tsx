@@ -77,7 +77,7 @@ const ExecuteInventorizationPage: FC = () => {
   }
 
   return (
-    <Flex data-testid='execute-inventorization-page' vertical gap='large'>
+    <Flex data-testid='execute-inventorizationDetail-page' vertical gap='large'>
       {inventorization ? (
         <>
           <Row gutter={16}>

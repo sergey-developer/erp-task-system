@@ -5,7 +5,7 @@ import pick from 'lodash/pick'
 import catalogsFixtures from '_tests_/fixtures/catalogs'
 import { fakeId, fakeWord } from '_tests_/helpers'
 
-export const warehouse = (
+export const warehouseDetail = (
   props?: Partial<Pick<WarehouseDetailDTO, 'id' | 'type'>>,
 ): WarehouseDetailDTO => ({
   id: props?.id || fakeId(),

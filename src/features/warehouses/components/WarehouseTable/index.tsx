@@ -14,7 +14,7 @@ const WarehouseTable: FC<WarehouseTableProps> = ({ sort, ...props }) => {
   )
 
   return (
-    <Flex data-testid='warehouse-table'>
+    <Flex data-testid='warehouseDetail-table'>
       <ParentSizedTable<WarehouseTableItem>
         {...props}
         rowKey='id'

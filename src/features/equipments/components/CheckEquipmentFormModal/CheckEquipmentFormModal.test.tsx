@@ -8,7 +8,7 @@ import { props } from '_tests_/features/equipments/components/CheckEquipmentForm
 import { checkEquipmentFormModalTestUtils as testUtils } from '_tests_/features/equipments/components/CheckEquipmentFormModal/utils'
 import catalogsFixtures from '_tests_/fixtures/catalogs'
 import equipmentsFixtures from '_tests_/fixtures/equipments'
-import warehousesFixtures from '_tests_/fixtures/warehouse'
+import nomenclaturesFixtures from '_tests_/fixtures/nomenclatures'
 import { fakeInteger, fakeWord, render } from '_tests_/helpers'
 
 import { equipmentConditionDict } from '../../constants'
@@ -61,7 +61,7 @@ describe('Модалка проверки оборудования', () => {
     })
 
     test('Можно установить значение', async () => {
-      const nomenclature = warehousesFixtures.nomenclatureListItem()
+      const nomenclature = nomenclaturesFixtures.nomenclature()
       const { user } = render(<CheckEquipmentFormModal {...props} nomenclatures={[nomenclature]} />)
 
       await testUtils.openNomenclatureSelect(user)
@@ -160,7 +160,9 @@ describe('Модалка проверки оборудования', () => {
 
   describe('Серийный номер', () => {
     test('Отображается если условия соблюдены', () => {
-      const nomenclature = warehousesFixtures.nomenclature({ equipmentHasSerialNumber: true })
+      const nomenclature = nomenclaturesFixtures.nomenclatureDetail({
+        equipmentHasSerialNumber: true,
+      })
 
       render(<CheckEquipmentFormModal {...props} nomenclature={nomenclature} />)
 
@@ -181,7 +183,9 @@ describe('Модалка проверки оборудования', () => {
     })
 
     test('Можно установить значение', async () => {
-      const nomenclature = warehousesFixtures.nomenclature({ equipmentHasSerialNumber: true })
+      const nomenclature = nomenclaturesFixtures.nomenclatureDetail({
+        equipmentHasSerialNumber: true,
+      })
 
       const { user } = render(<CheckEquipmentFormModal {...props} nomenclature={nomenclature} />)
 
@@ -192,7 +196,9 @@ describe('Модалка проверки оборудования', () => {
     })
 
     test('Показывается ошибка если поле не заполнено', async () => {
-      const nomenclature = warehousesFixtures.nomenclature({ equipmentHasSerialNumber: true })
+      const nomenclature = nomenclaturesFixtures.nomenclatureDetail({
+        equipmentHasSerialNumber: true,
+      })
 
       const { user } = render(<CheckEquipmentFormModal {...props} nomenclature={nomenclature} />)
 

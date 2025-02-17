@@ -1,11 +1,11 @@
 import { ExecuteInventorizationRelocationsTabProps } from 'features/inventorizations/components/ExecuteInventorizationRelocationsTab/index'
 import pick from 'lodash/pick'
 
-import warehousesFixtures from '_tests_/fixtures/warehouse/index'
+import inventorizationsFixtures from '_tests_/fixtures/inventorizations'
 
 export const props: ExecuteInventorizationRelocationsTabProps = {
   inventorization: pick(
-    warehousesFixtures.inventorization(),
+    inventorizationsFixtures.inventorization(),
     'id',
     'executor',
     'status',

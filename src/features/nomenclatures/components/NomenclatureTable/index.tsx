@@ -10,7 +10,7 @@ const NomenclatureTable: FC<NomenclatureTableProps> = ({ onClickName, ...props }
   const columns = useMemo(() => getColumns({ onClickName }), [onClickName])
 
   return (
-    <Flex data-testid='nomenclature-table'>
+    <Flex data-testid='nomenclatureDetail-table'>
       <Table<NomenclatureTableItem>
         {...props}
         rowKey='id'

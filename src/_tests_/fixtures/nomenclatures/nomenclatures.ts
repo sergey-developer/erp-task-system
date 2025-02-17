@@ -2,7 +2,7 @@ import { NomenclatureDTO } from 'features/nomenclatures/api/dto'
 
 import { fakeId, fakeWord } from '_tests_/helpers'
 
-export const nomenclatureListItem = (): NomenclatureDTO => ({
+export const nomenclature = (): NomenclatureDTO => ({
   id: fakeId(),
   title: fakeWord(),
   vendorCode: fakeWord(),

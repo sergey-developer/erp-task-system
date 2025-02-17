@@ -3,7 +3,7 @@ import { within } from '@testing-library/react'
 import { props } from '_tests_/features/inventorizations/components/CheckInventorizationEquipmentsModal/constants'
 import { checkInventorizationEquipmentsModalTestUtils as testUtils } from '_tests_/features/inventorizations/components/CheckInventorizationEquipmentsModal/testUtils'
 import { checkInventorizationEquipmentsTableTestUtils } from '_tests_/features/inventorizations/components/CheckInventorizationEquipmentsTable/testUtils'
-import warehousesFixtures from '_tests_/fixtures/warehouse'
+import inventorizationsFixtures from '_tests_/fixtures/inventorizations'
 import { iconTestUtils, render } from '_tests_/helpers'
 
 import CheckInventorizationEquipmentsModal from './index'
@@ -24,7 +24,7 @@ describe('Модалка', () => {
   describe('Оборудование требующее оприходования', () => {
     test('Если есть в списке, отображается иконка, текст и чекбокс', () => {
       const checkInventorizationEquipmentsTableRow =
-        warehousesFixtures.checkInventorizationEquipmentsTableRow({ isCredited: false })
+        inventorizationsFixtures.checkInventorizationEquipmentsTableRow({ isCredited: false })
 
       render(
         <CheckInventorizationEquipmentsModal
@@ -48,10 +48,10 @@ describe('Модалка', () => {
 
     test('Если нет в списке, то блок в котором иконка, текст и чекбокс не отображается и отображается всё оборудование', () => {
       const checkInventorizationEquipmentsTableRow1 =
-        warehousesFixtures.checkInventorizationEquipmentsTableRow({ isCredited: true })
+        inventorizationsFixtures.checkInventorizationEquipmentsTableRow({ isCredited: true })
 
       const checkInventorizationEquipmentsTableRow2 =
-        warehousesFixtures.checkInventorizationEquipmentsTableRow({ isCredited: true })
+        inventorizationsFixtures.checkInventorizationEquipmentsTableRow({ isCredited: true })
 
       render(
         <CheckInventorizationEquipmentsModal
@@ -75,10 +75,10 @@ describe('Модалка', () => {
 
     test('Если есть в списке, по умолчанию, в таблице отображается всё оборудование', () => {
       const checkInventorizationEquipmentsTableRow1 =
-        warehousesFixtures.checkInventorizationEquipmentsTableRow({ isCredited: false })
+        inventorizationsFixtures.checkInventorizationEquipmentsTableRow({ isCredited: false })
 
       const checkInventorizationEquipmentsTableRow2 =
-        warehousesFixtures.checkInventorizationEquipmentsTableRow({ isCredited: true })
+        inventorizationsFixtures.checkInventorizationEquipmentsTableRow({ isCredited: true })
 
       const data = [
         checkInventorizationEquipmentsTableRow1,
@@ -95,10 +95,10 @@ describe('Модалка', () => {
 
     test('Если есть в списке и выбрано что отображается только оборудование требующее оприходования, то отображается только оно', async () => {
       const checkInventorizationEquipmentsTableRow1 =
-        warehousesFixtures.checkInventorizationEquipmentsTableRow({ isCredited: false })
+        inventorizationsFixtures.checkInventorizationEquipmentsTableRow({ isCredited: false })
 
       const checkInventorizationEquipmentsTableRow2 =
-        warehousesFixtures.checkInventorizationEquipmentsTableRow({ isCredited: true })
+        inventorizationsFixtures.checkInventorizationEquipmentsTableRow({ isCredited: true })
 
       const data = [
         checkInventorizationEquipmentsTableRow1,

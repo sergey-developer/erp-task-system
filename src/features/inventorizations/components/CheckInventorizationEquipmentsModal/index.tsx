@@ -46,7 +46,7 @@ const CheckInventorizationEquipmentsModal: FC<CheckInventorizationEquipmentsModa
   return (
     <BaseModal
       {...props}
-      data-testid='check-inventorization-equipments-modal'
+      data-testid='check-inventorizationDetail-equipments-modal'
       okText={SAVE_TEXT}
       onOk={onSubmit}
       confirmLoading={isLoading}

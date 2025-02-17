@@ -534,7 +534,7 @@ const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) 
                 <Col span={16}>{equipment.category.title}</Col>
               </Row>
 
-              <Row data-testid='nomenclature'>
+              <Row data-testid='nomenclatureDetail'>
                 <Col span={8}>
                   <Text type='secondary'>Номенклатура:</Text>
                 </Col>

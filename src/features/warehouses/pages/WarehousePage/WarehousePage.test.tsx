@@ -3,7 +3,7 @@ import { makeWarehousePageLink } from 'features/warehouses/helpers'
 import { WarehousesRoutesEnum } from 'features/warehouses/routes/routes'
 
 import { warehousePageTestUtils } from '_tests_/features/warehouses/pages/WarehousePage/testUtils'
-import warehousesFixtures from '_tests_/fixtures/warehouse'
+import warehousesFixtures from '_tests_/fixtures/warehouses'
 import {
   fakeId,
   fakeWord,
@@ -26,7 +26,7 @@ describe('Страница склада', () => {
   describe('При успешном запросе', () => {
     describe('Наименование объекта', () => {
       test('Отображается корректно', async () => {
-        const warehouse = warehousesFixtures.warehouse({ id: 1 })
+        const warehouse = warehousesFixtures.warehouseDetail({ id: 1 })
         mockGetWarehouseSuccess(warehouse.id, { body: warehouse })
 
         renderWithRouter(
@@ -50,7 +50,7 @@ describe('Страница склада', () => {
 
     describe('Родительский склад', () => {
       test('Отображается корректно', async () => {
-        const warehouse = warehousesFixtures.warehouse({ id: 1 })
+        const warehouse = warehousesFixtures.warehouseDetail({ id: 1 })
         mockGetWarehouseSuccess(warehouse.id, { body: warehouse })
 
         renderWithRouter(
@@ -74,7 +74,7 @@ describe('Страница склада', () => {
 
     describe('Юридическое лицо', () => {
       test('Отображается корректно', async () => {
-        const warehouse = warehousesFixtures.warehouse({ id: 1 })
+        const warehouse = warehousesFixtures.warehouseDetail({ id: 1 })
         mockGetWarehouseSuccess(warehouse.id, { body: warehouse })
 
         renderWithRouter(
@@ -98,7 +98,7 @@ describe('Страница склада', () => {
 
     describe('Адрес', () => {
       test('Отображается корректно', async () => {
-        const warehouse = warehousesFixtures.warehouse({ id: 1 })
+        const warehouse = warehousesFixtures.warehouseDetail({ id: 1 })
         mockGetWarehouseSuccess(warehouse.id, { body: warehouse })
 
         renderWithRouter(
@@ -122,7 +122,7 @@ describe('Страница склада', () => {
 
     describe('Макрорегионы', () => {
       test('Отображается корректно', async () => {
-        const warehouse = warehousesFixtures.warehouse({ id: 1 })
+        const warehouse = warehousesFixtures.warehouseDetail({ id: 1 })
         mockGetWarehouseSuccess(warehouse.id, { body: warehouse })
 
         renderWithRouter(
@@ -148,7 +148,7 @@ describe('Страница склада', () => {
 
     describe('Договор', () => {
       test('Отображается корректно', async () => {
-        const warehouse = warehousesFixtures.warehouse({ id: 1 })
+        const warehouse = warehousesFixtures.warehouseDetail({ id: 1 })
         mockGetWarehouseSuccess(warehouse.id, { body: warehouse })
 
         renderWithRouter(
@@ -172,7 +172,7 @@ describe('Страница склада', () => {
 
     describe('Прочие данные', () => {
       test('Отображается корректно', async () => {
-        const warehouse = warehousesFixtures.warehouse({ id: 1 })
+        const warehouse = warehousesFixtures.warehouseDetail({ id: 1 })
         mockGetWarehouseSuccess(warehouse.id, { body: warehouse })
 
         renderWithRouter(

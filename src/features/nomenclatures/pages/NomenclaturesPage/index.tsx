@@ -363,7 +363,7 @@ const NomenclaturesPage: FC = () => {
 
   return (
     <>
-      <Space data-testid='nomenclature-list-page' $block direction='vertical' size='middle'>
+      <Space data-testid='nomenclatureDetail-list-page' $block direction='vertical' size='middle'>
         <Space size='middle'>
           <Search
             placeholder='Поиск номенклатуры'

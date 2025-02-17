@@ -17,7 +17,7 @@ const InventorizationTable = forwardRef<HTMLDivElement, InventorizationTableProp
     )
 
     return (
-      <div data-testid='inventorization-table' ref={ref} style={tableWrapperStyles}>
+      <div data-testid='inventorizationDetail-table' ref={ref} style={tableWrapperStyles}>
         <ParentSizedTable<InventorizationTableItem>
           {...props}
           rowKey='id'

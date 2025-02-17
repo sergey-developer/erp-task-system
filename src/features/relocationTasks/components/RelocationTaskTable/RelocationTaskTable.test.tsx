@@ -16,7 +16,7 @@ import {
   relocationTaskListItem,
 } from '_tests_/features/warehouses/components/RelocationTaskTable/constants'
 import { relocationTaskTableTestUtils } from '_tests_/features/warehouses/components/RelocationTaskTable/testUtils'
-import warehousesFixtures from '_tests_/fixtures/warehouse'
+import relocationTasksFixtures from '_tests_/fixtures/relocationTasks'
 import { render, tableTestUtils } from '_tests_/helpers'
 
 import RelocationTaskTable from './index'
@@ -45,7 +45,7 @@ describe.skip('Таблица заявок на перемещение обор�
   })
 
   test('Пагинация работает', async () => {
-    const relocationTasks = warehousesFixtures.relocationTasks(11)
+    const relocationTasks = relocationTasksFixtures.relocationTasks(11)
 
     const { user } = render(<RelocationTaskTable {...props} dataSource={relocationTasks} />)
 
@@ -306,7 +306,7 @@ describe.skip('Таблица заявок на перемещение обор�
     })
 
     test('Отображаются исполнители если нет того кто завершил заявку', () => {
-      const relocationTaskListItem = warehousesFixtures.relocationTaskListItem({
+      const relocationTaskListItem = relocationTasksFixtures.relocationTask({
         completedBy: null,
       })
 

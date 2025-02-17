@@ -136,7 +136,7 @@ const CreateInventorizationRequestModal: FC<CreateInventorizationRequestModalPro
   return (
     <BaseModal
       {...props}
-      data-testid='create-inventorization-request-modal'
+      data-testid='create-inventorizationDetail-request-modal'
       title='Создать поручение на инвентаризацию'
       okText={CREATE_TEXT}
       onOk={form.submit}

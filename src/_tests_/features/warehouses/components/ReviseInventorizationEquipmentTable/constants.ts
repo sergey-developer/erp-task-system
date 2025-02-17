@@ -1,9 +1,8 @@
 import { ReviseInventorizationEquipmentTableProps } from 'features/inventorizations/components/ReviseInventorizationEquipmentTable/types'
 
-import warehousesFixtures from '_tests_/fixtures/warehouse/index'
+import inventorizationsFixtures from '_tests_/fixtures/inventorizations'
 
-export const inventorizationEquipmentListItem =
-  warehousesFixtures.inventorizationEquipmentListItem()
+export const inventorizationEquipmentListItem = inventorizationsFixtures.inventorizationEquipment()
 
 export const props: ReviseInventorizationEquipmentTableProps = {
   dataSource: [inventorizationEquipmentListItem],
