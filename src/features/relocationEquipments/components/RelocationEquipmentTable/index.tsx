@@ -9,7 +9,7 @@ const RelocationEquipmentTable: FC<RelocationEquipmentTableProps> = ({
   ...props
 }) => {
   return (
-    <Flex data-testid='relocation-equipment-table'>
+    <Flex data-testid='relocation-equipmentDetail-table'>
       <Table<RelocationEquipmentTableItem>
         {...props}
         rowKey='id'

@@ -1,1 +1,1 @@
-export * from './subTaskTemplate'
+export * from './subTaskTemplates'

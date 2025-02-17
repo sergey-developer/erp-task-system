@@ -60,7 +60,7 @@ const EquipmentNomenclaturesPage: FC = () => {
   )
 
   return (
-    <div data-testid='equipment-nomenclature-list-page'>
+    <div data-testid='equipmentDetail-nomenclature-list-page'>
       <EquipmentNomenclatureTable
         dataSource={extractPaginationResults(equipmentNomenclatures)}
         pagination={extractPaginationParams(equipmentNomenclatures)}

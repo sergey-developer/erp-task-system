@@ -5,10 +5,10 @@ import {
 } from 'features/tasks/api/constants'
 import { SubTaskProps } from 'features/tasks/components/SubTasks/SubTask'
 
-import taskFixtures from '_tests_/fixtures/tasks/index'
+import tasksFixtures from '_tests_/fixtures/tasks/index'
 
-const task = taskFixtures.task()
-const subTask = taskFixtures.subTask()
+const task = tasksFixtures.taskDetail()
+const subTask = tasksFixtures.subTask()
 
 export const props: Readonly<SubTaskProps> = {
   title: subTask.title,

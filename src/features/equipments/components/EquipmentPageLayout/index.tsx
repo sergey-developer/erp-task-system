@@ -115,7 +115,7 @@ const EquipmentPageLayout: FC = () => {
 
   return (
     <>
-      <Row data-testid='equipment-page-layout' gutter={[16, 16]}>
+      <Row data-testid='equipmentDetail-page-layout' gutter={[16, 16]}>
         <Col span={24}>
           <Row justify='space-between'>
             <Col>

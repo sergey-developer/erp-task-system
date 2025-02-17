@@ -1,8 +1,9 @@
 import { props } from '_tests_/features/warehouses/components/WarehouseListFilter/constants'
 import { warehouseListFilterTestUtils } from '_tests_/features/warehouses/components/WarehouseListFilter/testUtils'
-import warehouseFixtures from '_tests_/fixtures/warehouse'
-import { mockGetLegalEntitiesSuccess, mockGetWarehousesSuccess } from '_tests_/mocks/api'
+import catalogsFixtures from '_tests_/fixtures/catalogs'
+import warehousesFixtures from '_tests_/fixtures/warehouse'
 import { fakeWord, render, setupApiTests } from '_tests_/helpers'
+import { mockGetLegalEntitiesSuccess, mockGetWarehousesSuccess } from '_tests_/mocks/api'
 
 import WarehousesFilter from './index'
 
@@ -73,11 +74,11 @@ describe('Фильтр списка складов', () => {
     })
 
     test('Сбрасывает значения полей', async () => {
-      const warehouseListItem = warehouseFixtures.warehouseListItem()
+      const warehouseListItem = warehousesFixtures.warehouseListItem()
       mockGetWarehousesSuccess({ body: [warehouseListItem] })
 
-      const legalEntityListItem = warehouseFixtures.legalEntityListItem()
-      mockGetLegalEntitiesSuccess({ body: [legalEntityListItem] })
+      const legalEntityCatalogItem = catalogsFixtures.legalEntityCatalogItem()
+      mockGetLegalEntitiesSuccess({ body: [legalEntityCatalogItem] })
 
       const titleValue = fakeWord()
       const addressValue = fakeWord()
@@ -89,7 +90,7 @@ describe('Фильтр списка складов', () => {
             title: titleValue,
             address: addressValue,
             parent: warehouseListItem.id,
-            legalEntity: legalEntityListItem.id,
+            legalEntity: legalEntityCatalogItem.id,
           }}
         />,
       )
@@ -176,45 +177,47 @@ describe('Фильтр списка складов', () => {
     })
 
     test('Можно установить значение', async () => {
-      const legalEntityListItem = warehouseFixtures.legalEntityListItem()
-      mockGetLegalEntitiesSuccess({ body: [legalEntityListItem] })
+      const legalEntityCatalogItem = catalogsFixtures.legalEntityCatalogItem()
+      mockGetLegalEntitiesSuccess({ body: [legalEntityCatalogItem] })
       mockGetWarehousesSuccess()
 
       const { user } = render(<WarehousesFilter {...props} />)
 
       await warehouseListFilterTestUtils.expectLegalEntityLoadingFinished()
       await warehouseListFilterTestUtils.openLegalEntitySelect(user)
-      await warehouseListFilterTestUtils.setLegalEntity(user, legalEntityListItem.title)
+      await warehouseListFilterTestUtils.setLegalEntity(user, legalEntityCatalogItem.title)
       const selectedLegalEntity = warehouseListFilterTestUtils.getSelectedLegalEntity()
 
       expect(selectedLegalEntity).toBeInTheDocument()
-      expect(selectedLegalEntity).toHaveTextContent(legalEntityListItem.title)
+      expect(selectedLegalEntity).toHaveTextContent(legalEntityCatalogItem.title)
     })
 
     test('Можно установить значение по умолчанию', async () => {
-      const legalEntityListItem = warehouseFixtures.legalEntityListItem()
-      mockGetLegalEntitiesSuccess({ body: [legalEntityListItem] })
+      const legalEntityCatalogItem = catalogsFixtures.legalEntityCatalogItem()
+      mockGetLegalEntitiesSuccess({ body: [legalEntityCatalogItem] })
       mockGetWarehousesSuccess()
 
-      render(<WarehousesFilter {...props} formValues={{ legalEntity: legalEntityListItem.id }} />)
+      render(
+        <WarehousesFilter {...props} formValues={{ legalEntity: legalEntityCatalogItem.id }} />,
+      )
 
       await warehouseListFilterTestUtils.expectLegalEntityLoadingFinished()
       const selectedLegalEntity = warehouseListFilterTestUtils.getSelectedLegalEntity()
 
       expect(selectedLegalEntity).toBeInTheDocument()
-      expect(selectedLegalEntity).toHaveTextContent(legalEntityListItem.title)
+      expect(selectedLegalEntity).toHaveTextContent(legalEntityCatalogItem.title)
     })
 
     test('Можно сбросить значение', async () => {
-      const legalEntityListItem = warehouseFixtures.legalEntityListItem()
-      mockGetLegalEntitiesSuccess({ body: [legalEntityListItem] })
+      const legalEntityCatalogItem = catalogsFixtures.legalEntityCatalogItem()
+      mockGetLegalEntitiesSuccess({ body: [legalEntityCatalogItem] })
       mockGetWarehousesSuccess()
 
       const { user } = render(<WarehousesFilter {...props} />)
 
       await warehouseListFilterTestUtils.expectLegalEntityLoadingFinished()
       await warehouseListFilterTestUtils.openLegalEntitySelect(user)
-      await warehouseListFilterTestUtils.setLegalEntity(user, legalEntityListItem.title)
+      await warehouseListFilterTestUtils.setLegalEntity(user, legalEntityCatalogItem.title)
       await warehouseListFilterTestUtils.resetLegalEntity(user)
       const selectedLegalEntity = warehouseListFilterTestUtils.getSelectedLegalEntity()
 
@@ -295,7 +298,7 @@ describe('Фильтр списка складов', () => {
     })
 
     test('Можно установить значение', async () => {
-      const warehouseListItem = warehouseFixtures.warehouseListItem()
+      const warehouseListItem = warehousesFixtures.warehouseListItem()
       mockGetWarehousesSuccess({ body: [warehouseListItem] })
       mockGetLegalEntitiesSuccess()
 
@@ -311,7 +314,7 @@ describe('Фильтр списка складов', () => {
     })
 
     test('Можно установить значение по умолчанию', async () => {
-      const warehouseListItem = warehouseFixtures.warehouseListItem()
+      const warehouseListItem = warehousesFixtures.warehouseListItem()
       mockGetWarehousesSuccess({ body: [warehouseListItem] })
       mockGetLegalEntitiesSuccess()
 
@@ -325,7 +328,7 @@ describe('Фильтр списка складов', () => {
     })
 
     test('Можно сбросить значение', async () => {
-      const warehouseListItem = warehouseFixtures.warehouseListItem()
+      const warehouseListItem = warehousesFixtures.warehouseListItem()
       mockGetWarehousesSuccess({ body: [warehouseListItem] })
       mockGetLegalEntitiesSuccess()
 

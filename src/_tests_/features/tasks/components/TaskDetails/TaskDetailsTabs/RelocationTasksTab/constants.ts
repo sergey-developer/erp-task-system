@@ -1,9 +1,9 @@
 import { RelocationTasksTabProps } from 'features/tasks/components/TaskDetails/TaskDetailsTabs/RelocationTasksTab/types'
 
-import taskFixtures from '_tests_/fixtures/tasks/index'
+import tasksFixtures from '_tests_/fixtures/tasks/index'
 
 export const props: RelocationTasksTabProps = {
-  task: taskFixtures.task(),
+  task: tasksFixtures.taskDetail(),
 }
 
 export enum TestIdsEnum {

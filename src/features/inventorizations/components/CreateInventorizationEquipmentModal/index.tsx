@@ -62,7 +62,7 @@ const CreateInventorizationEquipmentModal: FC<CreateInventorizationEquipmentModa
 
   return (
     <BaseModal
-      data-testid='create-inventorization-equipment-modal'
+      data-testid='create-inventorization-equipmentDetail-modal'
       title='Добавление оборудования'
       confirmLoading={isLoading}
       onOk={form.submit}
@@ -75,7 +75,7 @@ const CreateInventorizationEquipmentModal: FC<CreateInventorizationEquipmentModa
         onFinish={onFinish}
       >
         <Form.Item
-          data-testid='equipment-form-item'
+          data-testid='equipmentDetail-form-item'
           name='equipment'
           label='Оборудование'
           rules={onlyRequiredRules}
@@ -84,7 +84,7 @@ const CreateInventorizationEquipmentModal: FC<CreateInventorizationEquipmentModa
             open={equipmentSelectOpened}
             onDropdownVisibleChange={setEquipmentSelectOpened}
             dropdownRender={(menu) => (
-              <Space data-testid='equipment-dropdown' $block direction='vertical'>
+              <Space data-testid='equipmentDetail-dropdown' $block direction='vertical'>
                 <SelectOptionButton
                   type='link'
                   onClick={

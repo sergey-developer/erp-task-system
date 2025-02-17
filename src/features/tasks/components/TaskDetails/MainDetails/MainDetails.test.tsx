@@ -1,7 +1,7 @@
 import { props } from '_tests_/features/tasks/components/TaskDetails/MainDetails/constants'
 import { mainDetailsTestUtils } from '_tests_/features/tasks/components/TaskDetails/MainDetails/testUtils'
 import { taskStatusTestUtils } from '_tests_/features/tasks/components/TaskStatus/testUtils'
-import taskFixtures from '_tests_/fixtures/tasks'
+import tasksFixtures from '_tests_/fixtures/tasks'
 import userFixtures from '_tests_/fixtures/users'
 import {
   fakeAddress,
@@ -58,7 +58,7 @@ describe('Блок детальной информации заявки', () => 
 
   describe('Срок реакции', () => {
     test('Отображается если условия соблюдены', () => {
-      const fakeResponseTime = taskFixtures.taskResponseTime()
+      const fakeResponseTime = tasksFixtures.taskResponseTime()
 
       render(
         <MainDetails {...props} responseTime={fakeResponseTime} workGroup={null} assignee={null} />,
@@ -90,8 +90,8 @@ describe('Блок детальной информации заявки', () => 
         render(
           <MainDetails
             {...props}
-            responseTime={taskFixtures.taskResponseTime()}
-            workGroup={taskFixtures.workGroup()}
+            responseTime={tasksFixtures.taskResponseTime()}
+            workGroup={tasksFixtures.taskWorkGroup()}
           />,
           {
             store: getStoreWithAuth(undefined, undefined, undefined, {
@@ -107,9 +107,9 @@ describe('Блок детальной информации заявки', () => 
         render(
           <MainDetails
             {...props}
-            responseTime={taskFixtures.taskResponseTime()}
-            workGroup={taskFixtures.workGroup()}
-            assignee={taskFixtures.assignee()}
+            responseTime={tasksFixtures.taskResponseTime()}
+            workGroup={tasksFixtures.taskWorkGroup()}
+            assignee={tasksFixtures.taskAssignee()}
           />,
           {
             store: getStoreWithAuth(undefined, undefined, undefined, {

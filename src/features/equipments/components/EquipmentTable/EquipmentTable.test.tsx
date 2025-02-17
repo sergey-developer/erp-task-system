@@ -13,7 +13,7 @@ import {
   props,
 } from '_tests_/features/warehouses/components/EquipmentTable/constants'
 import { equipmentTableTestUtils } from '_tests_/features/warehouses/components/EquipmentTable/testUtils'
-import warehouseFixtures from '_tests_/fixtures/warehouse'
+import equipmentsFixtures from '_tests_/fixtures/equipments'
 import { render, tableTestUtils } from '_tests_/helpers'
 
 import EquipmentTable from './index'
@@ -42,7 +42,7 @@ describe('Таблица оборудования', () => {
   })
 
   test('Пагинация работает', async () => {
-    const equipments = warehouseFixtures.equipments(11)
+    const equipments = equipmentsFixtures.equipments(11)
 
     const { user } = render(<EquipmentTable {...props} dataSource={equipments} />)
 

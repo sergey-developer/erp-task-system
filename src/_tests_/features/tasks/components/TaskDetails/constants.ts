@@ -4,8 +4,8 @@ import { UserPermissionsEnum } from 'features/users/api/constants/index'
 
 import { WorkTypeActionsEnum } from 'shared/catalogs/workTypes/api/constants'
 
+import catalogsFixtures from '_tests_/fixtures/catalogs'
 import infrastructuresFixtures from '_tests_/fixtures/infrastructures/index'
-import warehouseFixtures from '_tests_/fixtures/warehouse/index'
 import { fakeId } from '_tests_/helpers'
 
 export const props: TaskDetailsProps = {
@@ -22,7 +22,7 @@ export const showChangeInfrastructureButton: {
   task: Pick<TaskDetailDTO, 'infrastructureProject' | 'workType'>
 } = {
   task: {
-    workType: warehouseFixtures.workType({
+    workType: catalogsFixtures.workTypeDetail({
       actions: [WorkTypeActionsEnum.CreateInfrastructureProject],
     }),
     infrastructureProject: infrastructuresFixtures.infrastructure(),

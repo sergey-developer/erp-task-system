@@ -10,7 +10,7 @@ import {
   fakeWord,
 } from '_tests_/helpers'
 
-import taskFixtures from '../tasks'
+import tasksFixtures from '../tasks'
 import userFixtures from '../users'
 
 export const fiscalAccumulatorTask = (
@@ -35,5 +35,5 @@ export const fiscalAccumulatorTask = (
     macroregion: { id: fakeId(), title: fakeWord() },
   },
   assignee: pick(userFixtures.userDetail(), 'id', 'firstName', 'lastName', 'middleName'),
-  comment: pick(taskFixtures.comment(), 'id', 'text'),
+  comment: pick(tasksFixtures.taskComment(), 'id', 'text'),
 })

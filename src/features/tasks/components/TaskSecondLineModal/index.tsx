@@ -46,9 +46,9 @@ const TaskSecondLineModal: FC<TaskSecondLineModalProps> = ({
     if (!workGroups.length) return
 
     const workGroup = workGroups.find(
-      (workGroup) =>
-        isEqual(workGroup.priority?.type, WorkGroupTypeEnum.AssociatedWithSapId) ||
-        isEqual(workGroup.priority?.type, WorkGroupTypeEnum.DefaultForSupportGroup),
+      (wg) =>
+        isEqual(wg.priority?.type, WorkGroupTypeEnum.AssociatedWithSapId) ||
+        isEqual(wg.priority?.type, WorkGroupTypeEnum.DefaultForSupportGroup),
     )
 
     if (workGroup) {
@@ -136,7 +136,7 @@ const TaskSecondLineModal: FC<TaskSecondLineModalProps> = ({
             />
           </Form.Item>
 
-          <Form.Item data-testid='comment-form-item' label='Комментарий' name='comment'>
+          <Form.Item data-testid='taskComment-form-item' label='Комментарий' name='comment'>
             <TextArea placeholder='Добавьте комментарий' disabled={isLoading} />
           </Form.Item>
         </Form>

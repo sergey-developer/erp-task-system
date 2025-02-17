@@ -7,9 +7,9 @@ import { DATE_PICKER_FORMAT } from 'lib/antd/constants/dateTimePicker'
 import { UPDATE_TEXT } from 'shared/constants/common'
 import { validationMessages } from 'shared/constants/validation'
 
-import warehouseFixtures from '_tests_/fixtures/warehouse'
 import { buttonTestUtils, render, selectTestUtils } from '_tests_/helpers'
 
+import equipmentsFixtures from '../../../../_tests_/fixtures/equipments'
 import HistoryNomenclatureOperationsReportForm from './index'
 import { HistoryNomenclatureOperationsReportFormProps } from './types'
 
@@ -94,7 +94,7 @@ export const testUtils = {
 describe('Форма отчета истории операций по номенклатуре', () => {
   describe('Поле номенклатуры', () => {
     test('Можно установить значение', async () => {
-      const equipmentNomenclatureListItem = warehouseFixtures.equipmentNomenclatureListItem()
+      const equipmentNomenclatureListItem = equipmentsFixtures.equipmentNomenclatureListItem()
 
       const { user } = render(
         <HistoryNomenclatureOperationsReportForm

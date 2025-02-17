@@ -8,7 +8,7 @@ import { EquipmentNomenclatureTableItem, EquipmentNomenclatureTableProps } from 
 
 const EquipmentNomenclatureTable: FC<EquipmentNomenclatureTableProps> = (props) => {
   return (
-    <Flex data-testid='equipment-nomenclature-table'>
+    <Flex data-testid='equipmentDetail-nomenclature-table'>
       <ParentSizedTable<EquipmentNomenclatureTableItem> {...props} rowKey='id' columns={columns} />
     </Flex>
   )

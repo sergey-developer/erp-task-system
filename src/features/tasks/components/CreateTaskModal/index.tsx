@@ -191,7 +191,7 @@ const CreateTaskModal: FC<CreateTaskModalProps> = ({
               <Flex vertical gap='small'>
                 <Form.Item
                   style={formItemNoMarginBottom}
-                  data-testid='assignee-form-item'
+                  data-testid='taskAssignee-form-item'
                   label='Исполнитель'
                   name='assignee'
                   rules={workGroupFormValue ? undefined : onlyRequiredRules}

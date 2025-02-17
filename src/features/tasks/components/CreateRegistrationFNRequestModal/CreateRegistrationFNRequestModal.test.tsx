@@ -50,7 +50,7 @@ describe('Модалка создания запроса на регистрац
 
   describe('Тип замены ФН', () => {
     test('Можно выбрать значение', async () => {
-      const changeType = catalogsFixtures.faChangeType()
+      const changeType = catalogsFixtures.faChangeTypeCatalogItem()
 
       const { user } = render(
         <CreateRegistrationFNRequestModal {...props} changeTypes={[changeType]} />,

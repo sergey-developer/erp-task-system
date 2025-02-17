@@ -3,7 +3,7 @@ import { UserStatusCatalogItemDTO } from 'shared/catalogs/userStatuses/api/dto'
 
 import { fakeColor, fakeId, fakeWord } from '_tests_/helpers'
 
-export const userStatus = (
+export const userStatusCatalogItem = (
   props?: Partial<Pick<UserStatusCatalogItemDTO, 'code'>>,
 ): UserStatusCatalogItemDTO => ({
   code: props?.code || UserStatusCodeEnum.Online,

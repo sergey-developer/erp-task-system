@@ -1,7 +1,7 @@
 import { EquipmentFilterProps } from 'features/equipments/components/EquipmentFilter/types'
 
 import catalogsFixtures from '_tests_/fixtures/catalogs/index'
-import warehouseFixtures from '_tests_/fixtures/warehouse/index'
+import equipmentsFixtures from '_tests_/fixtures/equipments'
 
 export const props: Readonly<EquipmentFilterProps> = {
   visible: true,
@@ -12,10 +12,10 @@ export const props: Readonly<EquipmentFilterProps> = {
   locations: catalogsFixtures.locationsCatalog(2),
   locationsIsLoading: false,
 
-  categories: warehouseFixtures.equipmentCategories(2),
+  categories: equipmentsFixtures.equipmentCategories(2),
   categoriesIsLoading: false,
 
-  owners: warehouseFixtures.customers(2),
+  owners: catalogsFixtures.customersCatalog(2),
   ownersIsLoading: false,
 
   onClose: jest.fn(),

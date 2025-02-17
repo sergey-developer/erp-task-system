@@ -5,7 +5,7 @@ import {
 } from 'features/tasks/api/constants'
 import { WorkGroupBlockProps } from 'features/tasks/components/TaskDetails/WorkGroupBlock/index'
 
-import taskFixtures from '_tests_/fixtures/tasks/index'
+import tasksFixtures from '_tests_/fixtures/tasks/index'
 import userFixtures from '_tests_/fixtures/users/index'
 import { fakeId, fakeIdStr } from '_tests_/helpers'
 
@@ -23,7 +23,7 @@ export const props: Readonly<WorkGroupBlockProps> = {
 
 // first line button
 export const showFirstLineButtonProps: Pick<WorkGroupBlockProps, 'workGroup' | 'status'> = {
-  workGroup: taskFixtures.workGroup(),
+  workGroup: tasksFixtures.taskWorkGroup(),
   status: TaskStatusEnum.New,
 }
 

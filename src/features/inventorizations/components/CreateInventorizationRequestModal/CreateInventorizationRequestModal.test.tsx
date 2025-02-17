@@ -6,7 +6,7 @@ import { validationMessages } from 'shared/constants/validation'
 
 import { props } from '_tests_/features/warehouses/components/CreateInventorizationRequestModal/constants'
 import { createInventorizationRequestModalTestUtils as testUtils } from '_tests_/features/warehouses/components/CreateInventorizationRequestModal/testUtils'
-import warehouseFixtures from '_tests_/fixtures/warehouse'
+import equipmentsFixtures from '_tests_/fixtures/equipments'
 import { fakeWord, iconTestUtils, render, selectTestUtils } from '_tests_/helpers'
 
 import CreateInventorizationRequestModal, { nomenclaturesPopoverContent } from './index'
@@ -105,8 +105,8 @@ describe('Модалка создания запроса на инвентари
 
   describe('Поле номенклатуры', () => {
     test('Можно выбрать несколько значений', async () => {
-      const equipmentNomenclatureListItem1 = warehouseFixtures.equipmentNomenclatureListItem()
-      const equipmentNomenclatureListItem2 = warehouseFixtures.equipmentNomenclatureListItem()
+      const equipmentNomenclatureListItem1 = equipmentsFixtures.equipmentNomenclatureListItem()
+      const equipmentNomenclatureListItem2 = equipmentsFixtures.equipmentNomenclatureListItem()
 
       const { user } = render(
         <CreateInventorizationRequestModal
@@ -126,8 +126,8 @@ describe('Модалка создания запроса на инвентари
     })
 
     test('Можно выбрать все значения и сбросить их', async () => {
-      const equipmentNomenclatureListItem1 = warehouseFixtures.equipmentNomenclatureListItem()
-      const equipmentNomenclatureListItem2 = warehouseFixtures.equipmentNomenclatureListItem()
+      const equipmentNomenclatureListItem1 = equipmentsFixtures.equipmentNomenclatureListItem()
+      const equipmentNomenclatureListItem2 = equipmentsFixtures.equipmentNomenclatureListItem()
 
       const { user } = render(
         <CreateInventorizationRequestModal

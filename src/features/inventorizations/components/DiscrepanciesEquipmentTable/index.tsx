@@ -12,7 +12,7 @@ const DiscrepanciesEquipmentTable: FC<DiscrepanciesEquipmentTableProps> = ({ sor
   )
 
   return (
-    <Flex data-testid='discrepancies-equipment-table'>
+    <Flex data-testid='discrepancies-equipmentDetail-table'>
       <Table<DiscrepanciesEquipmentTableItem>
         {...props}
         rowKey='id'

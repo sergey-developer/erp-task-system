@@ -1,8 +1,8 @@
 import { RelocationTaskTableProps } from 'features/relocationTasks/components/RelocationTaskTable/types'
 
-import warehouseFixtures from '_tests_/fixtures/warehouse/index'
+import warehousesFixtures from '_tests_/fixtures/warehouse/index'
 
-export const relocationTaskListItem = warehouseFixtures.relocationTaskListItem()
+export const relocationTaskListItem = warehousesFixtures.relocationTaskListItem()
 
 export const props: Readonly<RelocationTaskTableProps> = {
   dataSource: [relocationTaskListItem],

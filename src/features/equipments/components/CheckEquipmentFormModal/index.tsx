@@ -131,7 +131,7 @@ const CheckEquipmentFormModal: FC<CheckEquipmentFormModalProps> = ({
   return (
     <BaseModal
       {...props}
-      data-testid='check-equipment-form-modal'
+      data-testid='check-equipmentDetail-form-modal'
       confirmLoading={isLoading}
       okText={SAVE_TEXT}
       onOk={form.submit}
@@ -393,7 +393,7 @@ const CheckEquipmentFormModal: FC<CheckEquipmentFormModalProps> = ({
                 />
               </Form.Item>
 
-              <Form.Item data-testid='comment-form-item' label='Комментарий' name='comment'>
+              <Form.Item data-testid='taskComment-form-item' label='Комментарий' name='comment'>
                 <TextArea placeholder='Добавьте комментарий' disabled={isLoading} />
               </Form.Item>
             </>

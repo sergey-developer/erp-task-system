@@ -2,7 +2,7 @@ import { TaskStatusEnum } from 'features/tasks/api/constants'
 import { AdditionalInfoProps } from 'features/tasks/components/TaskDetails/AdditionalInfo/index'
 import pick from 'lodash/pick'
 
-import taskFixtures from '_tests_/fixtures/tasks/index'
+import tasksFixtures from '_tests_/fixtures/tasks/index'
 import { fakeWord } from '_tests_/helpers'
 
 export const props: Readonly<
@@ -20,9 +20,9 @@ export const props: Readonly<
   productClassifier2: fakeWord(),
   productClassifier3: fakeWord(),
   status: TaskStatusEnum.New,
-  workGroup: taskFixtures.workGroup(),
+  workGroup: tasksFixtures.taskWorkGroup(),
 
-  parentTask: pick(taskFixtures.task(), 'id', 'recordId'),
+  parentTask: pick(tasksFixtures.taskDetail(), 'id', 'recordId'),
   openParentTask: jest.fn(),
 
   address: null,

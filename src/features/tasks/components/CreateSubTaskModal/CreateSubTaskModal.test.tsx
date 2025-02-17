@@ -68,7 +68,7 @@ describe('Модалка создания задачи заявки', () => {
         const fakeSupportGroupListItem = supportGroupsFixtures.supportGroup()
         mockGetSupportGroupsSuccess({ body: [fakeSupportGroupListItem] })
 
-        const fakeTemplate = catalogsFixtures.subTaskTemplate()
+        const fakeTemplate = catalogsFixtures.subTaskTemplateCatalogItem()
         mockGetSubTaskTemplatesSuccess({ body: [fakeTemplate] })
 
         mockCreateSubTaskSuccess(props.task.id)
@@ -188,7 +188,7 @@ describe('Модалка создания задачи заявки', () => {
         const fakeSupportGroupListItem = supportGroupsFixtures.supportGroup()
         mockGetSupportGroupsSuccess({ body: [fakeSupportGroupListItem] })
 
-        const fakeTemplate = catalogsFixtures.subTaskTemplate()
+        const fakeTemplate = catalogsFixtures.subTaskTemplateCatalogItem()
         mockGetSubTaskTemplatesSuccess({ body: [fakeTemplate] })
 
         mockCreateSubTaskSuccess(props.task.id)
@@ -215,7 +215,7 @@ describe('Модалка создания задачи заявки', () => {
         mockGetSupportGroupsSuccess({ body: [fakeSupportGroupListItem] })
 
         mockGetSubTaskTemplatesSuccess({
-          body: [catalogsFixtures.subTaskTemplate()],
+          body: [catalogsFixtures.subTaskTemplateCatalogItem()],
         })
 
         const { user } = render(<CreateSubTaskModal {...props} />)
@@ -248,7 +248,7 @@ describe('Модалка создания задачи заявки', () => {
         const fakeSupportGroupListItem = supportGroupsFixtures.supportGroup()
         mockGetSupportGroupsSuccess({ body: [fakeSupportGroupListItem] })
 
-        const fakeTemplateList = [catalogsFixtures.subTaskTemplate()]
+        const fakeTemplateList = [catalogsFixtures.subTaskTemplateCatalogItem()]
         mockGetSubTaskTemplatesSuccess({ body: fakeTemplateList })
 
         const { user } = render(<CreateSubTaskModal {...props} />)
@@ -269,7 +269,7 @@ describe('Модалка создания задачи заявки', () => {
         const fakeSupportGroupListItem = supportGroupsFixtures.supportGroup()
         mockGetSupportGroupsSuccess({ body: [fakeSupportGroupListItem] })
 
-        const fakeTemplateList = [catalogsFixtures.subTaskTemplate()]
+        const fakeTemplateList = [catalogsFixtures.subTaskTemplateCatalogItem()]
         mockGetSubTaskTemplatesSuccess({ body: fakeTemplateList })
 
         const { user } = render(<CreateSubTaskModal {...props} />)
@@ -290,7 +290,7 @@ describe('Модалка создания задачи заявки', () => {
         const fakeSupportGroupListItem = supportGroupsFixtures.supportGroup()
         mockGetSupportGroupsSuccess({ body: [fakeSupportGroupListItem] })
 
-        const fakeTemplate = catalogsFixtures.subTaskTemplate()
+        const fakeTemplate = catalogsFixtures.subTaskTemplateCatalogItem()
         mockGetSubTaskTemplatesSuccess({ body: [fakeTemplate] })
 
         const { user } = render(<CreateSubTaskModal {...props} />)
@@ -494,7 +494,7 @@ describe('Модалка создания задачи заявки', () => {
       const fakeSupportGroupListItem = supportGroupsFixtures.supportGroup()
       mockGetSupportGroupsSuccess({ body: [fakeSupportGroupListItem] })
 
-      const fakeTemplate = catalogsFixtures.subTaskTemplate()
+      const fakeTemplate = catalogsFixtures.subTaskTemplateCatalogItem()
       mockGetSubTaskTemplatesSuccess({ body: [fakeTemplate] })
 
       mockCreateSubTaskSuccess(props.task.id)
@@ -543,7 +543,7 @@ describe('Модалка создания задачи заявки', () => {
         const fakeSupportGroupListItem = supportGroupsFixtures.supportGroup()
         mockGetSupportGroupsSuccess({ body: [fakeSupportGroupListItem] })
 
-        const fakeTemplate = catalogsFixtures.subTaskTemplate()
+        const fakeTemplate = catalogsFixtures.subTaskTemplateCatalogItem()
         mockGetSubTaskTemplatesSuccess({ body: [fakeTemplate] })
 
         mockCreateSubTaskSuccess(props.task.id)
@@ -573,7 +573,7 @@ describe('Модалка создания задачи заявки', () => {
         const fakeSupportGroupListItem = supportGroupsFixtures.supportGroup()
         mockGetSupportGroupsSuccess({ body: [fakeSupportGroupListItem] })
 
-        const fakeTemplate = catalogsFixtures.subTaskTemplate()
+        const fakeTemplate = catalogsFixtures.subTaskTemplateCatalogItem()
         mockGetSubTaskTemplatesSuccess({ body: [fakeTemplate] })
 
         const badRequestResponse: Required<CreateSubTaskFormErrors> = {
@@ -621,7 +621,7 @@ describe('Модалка создания задачи заявки', () => {
         const fakeSupportGroupListItem = supportGroupsFixtures.supportGroup()
         mockGetSupportGroupsSuccess({ body: [fakeSupportGroupListItem] })
 
-        const fakeTemplate = catalogsFixtures.subTaskTemplate()
+        const fakeTemplate = catalogsFixtures.subTaskTemplateCatalogItem()
         mockGetSubTaskTemplatesSuccess({ body: [fakeTemplate] })
 
         mockCreateSubTaskServerError(props.task.id)

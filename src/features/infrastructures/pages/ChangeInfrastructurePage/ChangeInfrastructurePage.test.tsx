@@ -23,9 +23,9 @@ import { taskDetailsTestUtils } from '_tests_/features/tasks/components/TaskDeta
 import { taskTableTestUtils } from '_tests_/features/tasks/components/TaskTable/testUtils'
 import { tasksPageTestUtils } from '_tests_/features/tasks/pages/TasksPage/testUtils'
 import commonFixtures from '_tests_/fixtures/common'
+import { fakeUseLocationResult } from '_tests_/fixtures/common/hooks/useLocation'
 import infrastructuresFixtures from '_tests_/fixtures/infrastructures'
-import taskFixtures from '_tests_/fixtures/tasks'
-import { fakeUseLocationResult } from '_tests_/fixtures/useLocation'
+import tasksFixtures from '_tests_/fixtures/tasks'
 import userFixtures from '_tests_/fixtures/users'
 import {
   fakeDateString,
@@ -65,7 +65,7 @@ describe('Страница изменения инфраструктуры за�
   test('Заголовок и recordId заявки отображаются', async () => {
     jest.spyOn(reactRouterDom, 'useParams').mockReturnValue({ id: String(infrastructureId) })
 
-    const locationState = getChangeInfrastructurePageLocationState(taskFixtures.task())
+    const locationState = getChangeInfrastructurePageLocationState(tasksFixtures.taskDetail())
     jest
       .spyOn(reactRouterDom, 'useLocation')
       .mockReturnValue(fakeUseLocationResult({ state: locationState }))
@@ -95,7 +95,7 @@ describe('Страница изменения инфраструктуры за�
   test('Исполнитель отображается', async () => {
     jest.spyOn(reactRouterDom, 'useParams').mockReturnValue({ id: String(infrastructureId) })
 
-    const locationState = getChangeInfrastructurePageLocationState(taskFixtures.task())
+    const locationState = getChangeInfrastructurePageLocationState(tasksFixtures.taskDetail())
     jest
       .spyOn(reactRouterDom, 'useLocation')
       .mockReturnValue(fakeUseLocationResult({ state: locationState }))
@@ -126,7 +126,7 @@ describe('Страница изменения инфраструктуры за�
     test('Отображается если он есть', async () => {
       jest.spyOn(reactRouterDom, 'useParams').mockReturnValue({ id: String(infrastructureId) })
 
-      const locationState = getChangeInfrastructurePageLocationState(taskFixtures.task())
+      const locationState = getChangeInfrastructurePageLocationState(tasksFixtures.taskDetail())
       jest
         .spyOn(reactRouterDom, 'useLocation')
         .mockReturnValue(fakeUseLocationResult({ state: locationState }))
@@ -156,7 +156,7 @@ describe('Страница изменения инфраструктуры за�
     test('Соответствующий текст отображается если нет менеджера', async () => {
       jest.spyOn(reactRouterDom, 'useParams').mockReturnValue({ id: String(infrastructureId) })
 
-      const locationState = getChangeInfrastructurePageLocationState(taskFixtures.task())
+      const locationState = getChangeInfrastructurePageLocationState(tasksFixtures.taskDetail())
       jest
         .spyOn(reactRouterDom, 'useLocation')
         .mockReturnValue(fakeUseLocationResult({ state: locationState }))
@@ -184,7 +184,7 @@ describe('Страница изменения инфраструктуры за�
       test(`Отображается если есть права ${UserPermissionsEnum.InfrastructureProjectLeading}`, async () => {
         jest.spyOn(reactRouterDom, 'useParams').mockReturnValue({ id: String(infrastructureId) })
 
-        const locationState = getChangeInfrastructurePageLocationState(taskFixtures.task())
+        const locationState = getChangeInfrastructurePageLocationState(tasksFixtures.taskDetail())
         jest
           .spyOn(reactRouterDom, 'useLocation')
           .mockReturnValue(fakeUseLocationResult({ state: locationState }))
@@ -212,7 +212,7 @@ describe('Страница изменения инфраструктуры за�
       test(`Не отображается если нет прав ${UserPermissionsEnum.InfrastructureProjectLeading}`, async () => {
         jest.spyOn(reactRouterDom, 'useParams').mockReturnValue({ id: String(infrastructureId) })
 
-        const locationState = getChangeInfrastructurePageLocationState(taskFixtures.task())
+        const locationState = getChangeInfrastructurePageLocationState(tasksFixtures.taskDetail())
         jest
           .spyOn(reactRouterDom, 'useLocation')
           .mockReturnValue(fakeUseLocationResult({ state: locationState }))
@@ -238,7 +238,7 @@ describe('Страница изменения инфраструктуры за�
       test('После назначения отображает нового менеджера', async () => {
         jest.spyOn(reactRouterDom, 'useParams').mockReturnValue({ id: String(infrastructureId) })
 
-        const locationState = getChangeInfrastructurePageLocationState(taskFixtures.task())
+        const locationState = getChangeInfrastructurePageLocationState(tasksFixtures.taskDetail())
         jest
           .spyOn(reactRouterDom, 'useLocation')
           .mockReturnValue(fakeUseLocationResult({ state: locationState }))
@@ -281,7 +281,7 @@ describe('Страница изменения инфраструктуры за�
     test('Отображается', async () => {
       jest.spyOn(reactRouterDom, 'useParams').mockReturnValue({ id: String(infrastructureId) })
 
-      const locationState = getChangeInfrastructurePageLocationState(taskFixtures.task())
+      const locationState = getChangeInfrastructurePageLocationState(tasksFixtures.taskDetail())
       jest
         .spyOn(reactRouterDom, 'useLocation')
         .mockReturnValue(fakeUseLocationResult({ state: locationState }))
@@ -315,7 +315,7 @@ describe('Страница изменения инфраструктуры за�
     test('После изменения статуса он отображается в карточке вместе с датой изменения', async () => {
       jest.spyOn(reactRouterDom, 'useParams').mockReturnValue({ id: String(infrastructureId) })
 
-      const locationState = getChangeInfrastructurePageLocationState(taskFixtures.task())
+      const locationState = getChangeInfrastructurePageLocationState(tasksFixtures.taskDetail())
       jest
         .spyOn(reactRouterDom, 'useLocation')
         .mockReturnValue(fakeUseLocationResult({ state: locationState }))
@@ -361,7 +361,7 @@ describe('Страница изменения инфраструктуры за�
     test('Модалка просмотра истории изменения статуса открывается и закрывается', async () => {
       jest.spyOn(reactRouterDom, 'useParams').mockReturnValue({ id: String(infrastructureId) })
 
-      const locationState = getChangeInfrastructurePageLocationState(taskFixtures.task())
+      const locationState = getChangeInfrastructurePageLocationState(tasksFixtures.taskDetail())
       jest
         .spyOn(reactRouterDom, 'useLocation')
         .mockReturnValue(fakeUseLocationResult({ state: locationState }))
@@ -392,7 +392,7 @@ describe('Страница изменения инфраструктуры за�
     test('Отображается и активна', async () => {
       jest.spyOn(reactRouterDom, 'useParams').mockReturnValue({ id: String(infrastructureId) })
 
-      const locationState = getChangeInfrastructurePageLocationState(taskFixtures.task())
+      const locationState = getChangeInfrastructurePageLocationState(tasksFixtures.taskDetail())
       jest
         .spyOn(reactRouterDom, 'useLocation')
         .mockReturnValue(fakeUseLocationResult({ state: locationState }))
@@ -419,7 +419,7 @@ describe('Страница изменения инфраструктуры за�
     test.skip('При клике возвращается на предыдущую страницу', async () => {
       jest.spyOn(reactRouterDom, 'useParams').mockReturnValue({ id: String(infrastructureId) })
 
-      const locationState = getChangeInfrastructurePageLocationState(taskFixtures.task())
+      const locationState = getChangeInfrastructurePageLocationState(tasksFixtures.taskDetail())
       jest
         .spyOn(reactRouterDom, 'useLocation')
         .mockReturnValue(fakeUseLocationResult({ state: locationState }))
@@ -428,7 +428,7 @@ describe('Страница изменения инфраструктуры за�
       mockGetInfrastructureSuccess({ infrastructureId }, { body: infrastructure })
       mockGetInfrastructureOrdersFormsSuccess({ body: [] })
 
-      const taskListItem = taskFixtures.taskListItem()
+      const taskListItem = tasksFixtures.task()
       mockGetTasksSuccess({
         body: commonFixtures.paginatedListResponse([taskListItem]),
         once: false,
@@ -436,7 +436,7 @@ describe('Страница изменения инфраструктуры за�
       mockGetTaskCountersSuccess({ once: false })
 
       mockGetTaskSuccess(taskListItem.id, {
-        body: taskFixtures.task({ ...showChangeInfrastructureButton.task }),
+        body: tasksFixtures.taskDetail({ ...showChangeInfrastructureButton.task }),
       })
 
       const currentUser = userFixtures.userDetail({

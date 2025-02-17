@@ -6,7 +6,7 @@ import { InventorizationDetailDTO } from 'features/inventorizations/api/dto'
 import pick from 'lodash/pick'
 
 import userFixtures from '_tests_/fixtures/users'
-import warehouseFixtures from '_tests_/fixtures/warehouse'
+import warehousesFixtures from '_tests_/fixtures/warehouse'
 import { fakeDateString, fakeId, fakeInteger, fakeUrl, fakeWord } from '_tests_/helpers'
 
 export const inventorization = (
@@ -17,15 +17,15 @@ export const inventorization = (
 
   id: fakeId(),
   warehouses: [
-    pick(warehouseFixtures.warehouse(), 'id', 'title'),
-    pick(warehouseFixtures.warehouse(), 'id', 'title'),
+    pick(warehousesFixtures.warehouse(), 'id', 'title'),
+    pick(warehousesFixtures.warehouse(), 'id', 'title'),
   ],
   createdAt: fakeDateString(),
   createdBy: pick(userFixtures.userDetail(), 'id', 'fullName'),
   type: InventorizationTypeEnum.Internal,
   deadlineAt: fakeDateString(),
   completedAt: fakeDateString(),
-  nomenclatures: [pick(warehouseFixtures.nomenclature(), 'id', 'title', 'group')],
+  nomenclatures: [pick(warehousesFixtures.nomenclature(), 'id', 'title', 'group')],
   description: fakeWord(),
 
   // todo: использовать фикстуру когда она будет готова

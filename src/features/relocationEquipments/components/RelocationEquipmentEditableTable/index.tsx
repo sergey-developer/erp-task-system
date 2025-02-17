@@ -242,9 +242,9 @@ const RelocationEquipmentEditableTable: FC<RelocationEquipmentEditableTableProps
   ]
 
   return (
-    <div data-testid='relocation-equipment-editable-table-container'>
+    <div data-testid='relocation-equipmentDetail-editable-table-container'>
       <EditableProTable<RelocationEquipmentRow>
-        data-testid='relocation-equipment-editable-table'
+        data-testid='relocation-equipmentDetail-editable-table'
         virtual={!env.isTest}
         rowKey='rowId'
         name={name}

@@ -1,7 +1,7 @@
 import { TaskTypeEnum } from 'features/tasks/api/constants'
 import { ResolutionTabProps } from 'features/tasks/components/TaskDetails/TaskDetailsTabs/ResolutionTab'
 
-import taskFixtures from '_tests_/fixtures/tasks/index'
+import tasksFixtures from '_tests_/fixtures/tasks/index'
 import { fakeWord } from '_tests_/helpers'
 
 export const props: Readonly<
@@ -11,7 +11,7 @@ export const props: Readonly<
   title: fakeWord(),
   techResolution: null,
   userResolution: null,
-  attachments: [taskFixtures.attachment()],
+  attachments: [tasksFixtures.taskAttachment()],
 }
 
 export enum TestIdsEnum {

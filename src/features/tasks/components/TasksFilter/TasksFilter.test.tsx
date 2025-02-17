@@ -6,10 +6,9 @@ import moment from 'moment-timezone'
 
 import { props } from '_tests_/features/tasks/components/TasksFilter/constants'
 import { tasksFilterTestUtils } from '_tests_/features/tasks/components/TasksFilter/testUtils'
-import macroregionFixtures from '_tests_/fixtures/macroregions'
+import catalogsFixtures from '_tests_/fixtures/catalogs'
 import supportGroupsFixtures from '_tests_/fixtures/supportGroups'
 import userFixtures from '_tests_/fixtures/users'
-import warehouseFixtures from '_tests_/fixtures/warehouse'
 import workGroupFixtures from '_tests_/fixtures/workGroup'
 import {
   checkboxTestUtils,
@@ -91,8 +90,8 @@ describe('Расширенный фильтр', () => {
   describe('Группа поддержки', () => {
     describe('Клиенты', () => {
       test('Отображается корректно', async () => {
-        const customerList = warehouseFixtures.customers()
-        const { user } = render(<TasksFilter {...props} customers={customerList} />)
+        const customersCatalog = catalogsFixtures.customersCatalog()
+        const { user } = render(<TasksFilter {...props} customers={customersCatalog} />)
 
         const field = tasksFilterTestUtils.getCustomersSelect()
         const selectedOption = tasksFilterTestUtils.getSelectedCustomer()
@@ -101,36 +100,36 @@ describe('Расширенный фильтр', () => {
         expect(field).toBeInTheDocument()
         expect(field).toBeEnabled()
         expect(selectedOption).not.toBeInTheDocument()
-        customerList.forEach((item) => {
+        customersCatalog.forEach((item) => {
           const option = selectTestUtils.getSelectOption(item.title)
           expect(option).toBeInTheDocument()
         })
       })
 
       test('Значение устанавливается', async () => {
-        const customerListItem = warehouseFixtures.customerListItem()
-        const { user } = render(<TasksFilter {...props} customers={[customerListItem]} />)
+        const customerCatalogItem = catalogsFixtures.customerCatalogItem()
+        const { user } = render(<TasksFilter {...props} customers={[customerCatalogItem]} />)
 
         await tasksFilterTestUtils.openCustomersSelect(user)
-        await tasksFilterTestUtils.setCustomer(user, customerListItem.title)
+        await tasksFilterTestUtils.setCustomer(user, customerCatalogItem.title)
 
         const selectedOption = tasksFilterTestUtils.getSelectedCustomer()
         expect(selectedOption).toBeInTheDocument()
-        expect(selectedOption).toHaveTextContent(customerListItem.title)
+        expect(selectedOption).toHaveTextContent(customerCatalogItem.title)
         expect(props.onChangeCustomers).toBeCalledTimes(1)
-        expect(props.onChangeCustomers).toBeCalledWith([customerListItem.id])
+        expect(props.onChangeCustomers).toBeCalledWith([customerCatalogItem.id])
       })
 
       test('Переданное значение устанавливается', () => {
-        const customerListItem = warehouseFixtures.customerListItem()
+        const customerCatalogItem = catalogsFixtures.customerCatalogItem()
 
         render(
           <TasksFilter
             {...props}
-            customers={[customerListItem]}
+            customers={[customerCatalogItem]}
             formValues={{
               ...props.formValues,
-              customers: [customerListItem.id],
+              customers: [customerCatalogItem.id],
             }}
           />,
         )
@@ -138,18 +137,18 @@ describe('Расширенный фильтр', () => {
         const selectedOption = tasksFilterTestUtils.getSelectedCustomer()
 
         expect(selectedOption).toBeInTheDocument()
-        expect(selectedOption).toHaveTextContent(customerListItem.title)
+        expect(selectedOption).toHaveTextContent(customerCatalogItem.title)
       })
 
       test.todo('Сбрасывает выбранные макрорегионы и группы поддержки')
 
       test('Кнопка "Сбросить" сбрасывает значение', async () => {
-        const customerListItem = warehouseFixtures.customerListItem()
+        const customerCatalogItem = catalogsFixtures.customerCatalogItem()
 
-        const { user } = render(<TasksFilter {...props} customers={[customerListItem]} />)
+        const { user } = render(<TasksFilter {...props} customers={[customerCatalogItem]} />)
 
         await tasksFilterTestUtils.openCustomersSelect(user)
-        await tasksFilterTestUtils.setCustomer(user, customerListItem.title)
+        await tasksFilterTestUtils.setCustomer(user, customerCatalogItem.title)
         const block = tasksFilterTestUtils.getSupportGroupBlock()
         await tasksFilterTestUtils.clickResetButtonIn(user, block)
         const selectedOption = tasksFilterTestUtils.getSelectedCustomer()
@@ -160,12 +159,12 @@ describe('Расширенный фильтр', () => {
       })
 
       test('Кнопка "Сбросить всё" сбрасывает значение', async () => {
-        const customerListItem = warehouseFixtures.customerListItem()
+        const customerCatalogItem = catalogsFixtures.customerCatalogItem()
 
-        const { user } = render(<TasksFilter {...props} customers={[customerListItem]} />)
+        const { user } = render(<TasksFilter {...props} customers={[customerCatalogItem]} />)
 
         await tasksFilterTestUtils.openCustomersSelect(user)
-        await tasksFilterTestUtils.setCustomer(user, customerListItem.title)
+        await tasksFilterTestUtils.setCustomer(user, customerCatalogItem.title)
         await tasksFilterTestUtils.clickResetAllButton(user)
         const selectedOption = tasksFilterTestUtils.getSelectedCustomer()
         expect(props.onChangeCustomers).toBeCalled()
@@ -177,8 +176,8 @@ describe('Расширенный фильтр', () => {
 
     describe('Макрорегионы', () => {
       test('Отображается корректно', async () => {
-        const macroregionList = macroregionFixtures.macroregions()
-        const { user } = render(<TasksFilter {...props} macroregions={macroregionList} />)
+        const macroregionsCatalog = catalogsFixtures.macroregionsCatalog()
+        const { user } = render(<TasksFilter {...props} macroregions={macroregionsCatalog} />)
 
         const field = tasksFilterTestUtils.getMacroregionsSelect()
         const selectedOption = tasksFilterTestUtils.getSelectedMacroregion()
@@ -187,14 +186,14 @@ describe('Расширенный фильтр', () => {
         expect(field).toBeInTheDocument()
         expect(field).toBeEnabled()
         expect(selectedOption).not.toBeInTheDocument()
-        macroregionList.forEach((item) => {
+        macroregionsCatalog.forEach((item) => {
           const option = selectTestUtils.getSelectOption(item.title)
           expect(option).toBeInTheDocument()
         })
       })
 
       test('Можно установить значение', async () => {
-        const macroregion = macroregionFixtures.macroregion()
+        const macroregion = catalogsFixtures.macroregionCatalogItem()
 
         const { user } = render(<TasksFilter {...props} macroregions={[macroregion]} />)
 
@@ -209,7 +208,7 @@ describe('Расширенный фильтр', () => {
       })
 
       test('Переданное значение устанавливается', () => {
-        const macroregion = macroregionFixtures.macroregion()
+        const macroregion = catalogsFixtures.macroregionCatalogItem()
 
         render(
           <TasksFilter
@@ -231,7 +230,7 @@ describe('Расширенный фильтр', () => {
       test.todo('Сбрасывает выбранные группы поддержки')
 
       test('Кнопка "Сбросить" сбрасывает значение', async () => {
-        const macroregion = macroregionFixtures.macroregion()
+        const macroregion = catalogsFixtures.macroregionCatalogItem()
 
         const { user } = render(<TasksFilter {...props} macroregions={[macroregion]} />)
 
@@ -247,7 +246,7 @@ describe('Расширенный фильтр', () => {
       })
 
       test('Кнопка "Сбросить всё" сбрасывает значение', async () => {
-        const macroregion = macroregionFixtures.macroregion()
+        const macroregion = catalogsFixtures.macroregionCatalogItem()
 
         const { user } = render(<TasksFilter {...props} macroregions={[macroregion]} />)
 

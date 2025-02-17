@@ -2,7 +2,7 @@ import { screen, within } from '@testing-library/react'
 
 import { prettyBytes } from 'shared/utils/file'
 
-import taskFixtures from '_tests_/fixtures/tasks'
+import tasksFixtures from '_tests_/fixtures/tasks'
 import {
   fakeDateString,
   fakeId,
@@ -76,7 +76,7 @@ describe('Список вложений', () => {
   })
 
   test('Текст "Не передано в Х5" отображается если у вложения нет externalId', () => {
-    render(<AttachmentList {...props} data={[taskFixtures.attachment({ externalId: '' })]} />)
+    render(<AttachmentList {...props} data={[tasksFixtures.taskAttachment({ externalId: '' })]} />)
 
     const externalIdText = testUtils.getChildByText('Не передано в Х5')
     expect(externalIdText).toBeInTheDocument()

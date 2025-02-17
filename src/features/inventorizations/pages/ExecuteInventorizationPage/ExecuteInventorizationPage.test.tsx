@@ -19,9 +19,9 @@ import * as downloadFileUtils from 'shared/utils/file/downloadFile'
 
 import { inventorizationDetailsTestUtils } from '_tests_/features/warehouses/components/InventorizationDetails/testUtils'
 import { executeInventorizationPageTestUtils } from '_tests_/features/warehouses/pages/ExecuteInventorizationPage/testUtils'
-import { fakeUseLocationResult } from '_tests_/fixtures/useLocation'
+import { fakeUseLocationResult } from '_tests_/fixtures/common/hooks/useLocation'
 import userFixtures from '_tests_/fixtures/users'
-import warehouseFixtures from '_tests_/fixtures/warehouse'
+import warehousesFixtures from '_tests_/fixtures/warehouse'
 import {
   fakeWord,
   getStoreWithAuth,
@@ -52,7 +52,7 @@ setupApiTests()
 
 describe('Страница проведения инвентаризации', () => {
   test('Информации об инвентаризации отображается', () => {
-    const inventorization = warehouseFixtures.inventorization()
+    const inventorization = warehousesFixtures.inventorization()
     const inventorizationState = makeExecuteInventorizationPageLocationState(inventorization)
 
     jest.spyOn(reactRouterDom, 'useParams').mockReturnValue({ id: String(inventorization.id) })
@@ -123,7 +123,7 @@ describe('Страница проведения инвентаризации', (
 
   describe('Кнопка завершения инвентаризации', () => {
     test('Отображается и активна', () => {
-      const inventorization = warehouseFixtures.inventorization()
+      const inventorization = warehousesFixtures.inventorization()
       const inventorizationState = makeExecuteInventorizationPageLocationState(inventorization)
 
       jest.spyOn(reactRouterDom, 'useParams').mockReturnValue({ id: String(inventorization.id) })
@@ -149,7 +149,7 @@ describe('Страница проведения инвентаризации', (
     })
 
     test.skip('По завершению возвращается на страницу списка инвентаризаций и открывает карточку инвентаризации', async () => {
-      const inventorization = warehouseFixtures.inventorization()
+      const inventorization = warehousesFixtures.inventorization()
       const inventorizationState = makeExecuteInventorizationPageLocationState(inventorization)
 
       jest.spyOn(reactRouterDom, 'useParams').mockReturnValue({ id: String(inventorization.id) })
@@ -193,7 +193,7 @@ describe('Страница проведения инвентаризации', (
 
   describe('Кнопка возврата в карточку', () => {
     test('Отображается и активна', () => {
-      const inventorization = warehouseFixtures.inventorization()
+      const inventorization = warehousesFixtures.inventorization()
       const inventorizationState = makeExecuteInventorizationPageLocationState(inventorization)
 
       jest.spyOn(reactRouterDom, 'useParams').mockReturnValue({ id: String(inventorization.id) })
@@ -219,7 +219,7 @@ describe('Страница проведения инвентаризации', (
     })
 
     test('При клике возвращается на страницу списка инвентаризаций и открывает карточку инвентаризации', async () => {
-      const inventorization = warehouseFixtures.inventorization()
+      const inventorization = warehousesFixtures.inventorization()
       const inventorizationState = makeExecuteInventorizationPageLocationState(inventorization)
 
       jest.spyOn(reactRouterDom, 'useParams').mockReturnValue({ id: String(inventorization.id) })
@@ -268,7 +268,7 @@ describe('Страница проведения инвентаризации', (
       const fakeArrayBuffer = new Uint8Array()
       base64ToBytes.mockReturnValueOnce(fakeArrayBuffer)
 
-      const inventorization = warehouseFixtures.inventorization()
+      const inventorization = warehousesFixtures.inventorization()
       const inventorizationState = makeExecuteInventorizationPageLocationState(inventorization)
 
       jest.spyOn(reactRouterDom, 'useParams').mockReturnValue({ id: String(inventorization.id) })
@@ -303,7 +303,7 @@ describe('Страница проведения инвентаризации', (
   })
 
   test('Вкладка "Сверка" отображается по умолчанию', () => {
-    const inventorization = warehouseFixtures.inventorization()
+    const inventorization = warehousesFixtures.inventorization()
     const inventorizationState = makeExecuteInventorizationPageLocationState(inventorization)
 
     jest.spyOn(reactRouterDom, 'useParams').mockReturnValue({ id: String(inventorization.id) })
@@ -330,7 +330,7 @@ describe('Страница проведения инвентаризации', (
   })
 
   test.skip('Все вкладки открываются', async () => {
-    const inventorization = warehouseFixtures.inventorization()
+    const inventorization = warehousesFixtures.inventorization()
     const inventorizationState = makeExecuteInventorizationPageLocationState(inventorization)
 
     jest.spyOn(reactRouterDom, 'useParams').mockReturnValue({ id: String(inventorization.id) })

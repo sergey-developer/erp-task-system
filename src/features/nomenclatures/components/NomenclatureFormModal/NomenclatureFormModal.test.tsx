@@ -7,7 +7,7 @@ import {
   props,
 } from '_tests_/features/warehouses/components/NomenclatureFormModal/constants'
 import { nomenclatureFormModalTestUtils } from '_tests_/features/warehouses/components/NomenclatureFormModal/testUtils'
-import warehouseFixtures from '_tests_/fixtures/warehouse'
+import warehousesFixtures from '_tests_/fixtures/warehouse'
 import { fakeWord, render } from '_tests_/helpers'
 
 import NomenclatureFormModal from './index'
@@ -110,7 +110,7 @@ describe('Модалка создания и редактирования ном
     })
 
     test('Можно установить значение по умолчанию', () => {
-      const nomenclature = warehouseFixtures.nomenclature()
+      const nomenclature = warehousesFixtures.nomenclature()
 
       render(<NomenclatureFormModal {...props} nomenclature={nomenclature} />)
 
@@ -151,7 +151,7 @@ describe('Модалка создания и редактирования ном
     })
 
     test('Можно установить значение по умолчанию', () => {
-      const nomenclature = warehouseFixtures.nomenclature()
+      const nomenclature = warehousesFixtures.nomenclature()
 
       render(<NomenclatureFormModal {...props} nomenclature={nomenclature} />)
 
@@ -201,7 +201,7 @@ describe('Модалка создания и редактирования ном
     })
 
     test('Можно установить значение по умолчанию', async () => {
-      const nomenclature = warehouseFixtures.nomenclature()
+      const nomenclature = warehousesFixtures.nomenclature()
 
       render(<NomenclatureFormModal {...props} nomenclature={nomenclature} />)
 
@@ -245,7 +245,7 @@ describe('Модалка создания и редактирования ном
     })
 
     test('Можно установить значение по умолчанию', () => {
-      const nomenclature = warehouseFixtures.nomenclature()
+      const nomenclature = warehousesFixtures.nomenclature()
 
       render(<NomenclatureFormModal {...props} nomenclature={nomenclature} />)
 
@@ -299,7 +299,7 @@ describe('Модалка создания и редактирования ном
     })
 
     test('Можно установить значение по умолчанию', () => {
-      const nomenclature = warehouseFixtures.nomenclature()
+      const nomenclature = warehousesFixtures.nomenclature()
 
       render(<NomenclatureFormModal {...props} nomenclature={nomenclature} />)
 
@@ -355,7 +355,7 @@ describe('Модалка создания и редактирования ном
     })
 
     test('Можно установить значение по умолчанию', () => {
-      const nomenclature = warehouseFixtures.nomenclature()
+      const nomenclature = warehousesFixtures.nomenclature()
 
       render(<NomenclatureFormModal {...props} nomenclature={nomenclature} />)
 

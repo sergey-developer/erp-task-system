@@ -1,8 +1,8 @@
 import { RelocationEquipmentTableProps } from 'features/relocationEquipments/components/RelocationEquipmentTable/types'
 
-import warehouseFixtures from '_tests_/fixtures/warehouse/index'
+import warehousesFixtures from '_tests_/fixtures/warehouse/index'
 
-export const relocationEquipmentListItem = warehouseFixtures.relocationEquipmentListItem()
+export const relocationEquipmentListItem = warehousesFixtures.relocationEquipmentListItem()
 
 export const props: Readonly<RelocationEquipmentTableProps> = {
   dataSource: [relocationEquipmentListItem],

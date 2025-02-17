@@ -1,8 +1,8 @@
 import { EquipmentTableProps } from 'features/equipments/components/EquipmentTable/types'
 
-import warehouseFixtures from '_tests_/fixtures/warehouse/index'
+import equipmentsFixtures from '_tests_/fixtures/equipments'
 
-export const equipmentListItem = warehouseFixtures.equipmentListItem()
+export const equipmentListItem = equipmentsFixtures.equipment()
 
 export const props: Readonly<EquipmentTableProps> = {
   dataSource: [equipmentListItem],

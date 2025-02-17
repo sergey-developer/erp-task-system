@@ -11,7 +11,7 @@ import {
   props,
 } from '_tests_/features/warehouses/components/DiscrepanciesEquipmentTable/constants'
 import { discrepanciesEquipmentTableTestUtils } from '_tests_/features/warehouses/components/DiscrepanciesEquipmentTable/testUtils'
-import warehouseFixtures from '_tests_/fixtures/warehouse'
+import warehousesFixtures from '_tests_/fixtures/warehouse'
 import { render, tableTestUtils } from '_tests_/helpers'
 
 import DiscrepanciesEquipmentTable from './index'
@@ -37,7 +37,7 @@ describe('Таблица инвентаризаций', () => {
   })
 
   test('Пагинация работает', async () => {
-    const inventorizationEquipments = warehouseFixtures.inventorizationEquipments(11)
+    const inventorizationEquipments = warehousesFixtures.inventorizationEquipments(11)
 
     const { user } = render(
       <DiscrepanciesEquipmentTable {...props} dataSource={inventorizationEquipments} />,

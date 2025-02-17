@@ -91,7 +91,7 @@ describe('Таблица добавления работ к бланк-зака�
     })
 
     test('При установлении значения вызывается обработчик', async () => {
-      const infrastructureWorkType = catalogsFixtures.infrastructureWorkType()
+      const infrastructureWorkType = catalogsFixtures.infrastructureWorkTypeCatalogItem()
 
       const { user } = render(
         <Form>
@@ -168,7 +168,7 @@ describe('Таблица добавления работ к бланк-зака�
     })
 
     test('Активно, если выбрано наименование работ', async () => {
-      const infrastructureWorkType = catalogsFixtures.infrastructureWorkType()
+      const infrastructureWorkType = catalogsFixtures.infrastructureWorkTypeCatalogItem()
 
       const { user } = render(
         <Form>
@@ -196,7 +196,7 @@ describe('Таблица добавления работ к бланк-зака�
     })
 
     test('При установлении значения вызывается обработчик', async () => {
-      const infrastructureWorkType = catalogsFixtures.infrastructureWorkType()
+      const infrastructureWorkType = catalogsFixtures.infrastructureWorkTypeCatalogItem()
 
       const { user } = render(
         <Form>

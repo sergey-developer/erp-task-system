@@ -1,8 +1,8 @@
 import { TasksFromMapProps } from 'features/tasks/components/TasksFromMap/types'
 
-import taskFixtures from '_tests_/fixtures/tasks/index'
+import tasksFixtures from '_tests_/fixtures/tasks/index'
 
-export const taskListItem = taskFixtures.taskListItem()
+export const taskListItem = tasksFixtures.task()
 
 export const props: Readonly<TasksFromMapProps> = {
   tasks: [taskListItem],

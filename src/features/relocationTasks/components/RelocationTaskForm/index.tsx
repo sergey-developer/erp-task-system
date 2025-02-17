@@ -226,7 +226,7 @@ const RelocationTaskForm = <FormFields extends BaseRelocationTaskFormFields>({
 
       <Col span={6}>
         <Form.Item
-          data-testid='comment-form-item'
+          data-testid='taskComment-form-item'
           label='Комментарий'
           name='comment'
           rules={onlyNotEmptyStringRules}

@@ -32,7 +32,7 @@ const AmountEquipmentSpentReportForm: FC<AmountEquipmentSpentReportFormProps> = 
 
   return (
     <Form<AmountEquipmentSpentReportFormFields>
-      data-testid='amount-equipment-spent-report-form'
+      data-testid='amount-equipmentDetail-spent-report-form'
       form={form}
       onFinish={onSubmit}
     >

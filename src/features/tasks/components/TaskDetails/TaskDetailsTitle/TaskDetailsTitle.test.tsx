@@ -17,7 +17,7 @@ import {
   showRequestReclassificationItemProps,
 } from '_tests_/features/tasks/components/TaskDetails/TaskDetailsTitle/constants'
 import { taskDetailsTitleTestUtils } from '_tests_/features/tasks/components/TaskDetails/TaskDetailsTitle/testUtils'
-import taskFixtures from '_tests_/fixtures/tasks'
+import tasksFixtures from '_tests_/fixtures/tasks'
 import userFixtures from '_tests_/fixtures/users'
 import { getStoreWithAuth, menuTestUtils, render } from '_tests_/helpers'
 import { getUserMeQueryMock } from '_tests_/mocks/store/users'
@@ -392,7 +392,9 @@ describe('Заголовок карточки заявки', () => {
               {...props}
               {...showRequestReclassificationItemProps}
               {...activeRequestReclassificationItemProps}
-              suspendRequest={taskFixtures.suspendRequest({ status: SuspendRequestStatusEnum.New })}
+              suspendRequest={tasksFixtures.taskSuspendRequest({
+                status: SuspendRequestStatusEnum.New,
+              })}
             />,
             {
               store: getStoreWithAuth(undefined, undefined, undefined, {
@@ -413,7 +415,7 @@ describe('Заголовок карточки заявки', () => {
               {...props}
               {...showRequestReclassificationItemProps}
               {...activeRequestReclassificationItemProps}
-              suspendRequest={taskFixtures.suspendRequest({
+              suspendRequest={tasksFixtures.taskSuspendRequest({
                 status: SuspendRequestStatusEnum.InProgress,
               })}
             />,
@@ -558,7 +560,9 @@ describe('Заголовок карточки заявки', () => {
             <TaskDetailsTitle
               {...props}
               {...activeRequestSuspendItemProps}
-              suspendRequest={taskFixtures.suspendRequest({ status: SuspendRequestStatusEnum.New })}
+              suspendRequest={tasksFixtures.taskSuspendRequest({
+                status: SuspendRequestStatusEnum.New,
+              })}
             />,
             {
               store: getStoreWithAuth(undefined, undefined, undefined, {
@@ -576,7 +580,7 @@ describe('Заголовок карточки заявки', () => {
             <TaskDetailsTitle
               {...props}
               {...activeRequestSuspendItemProps}
-              suspendRequest={taskFixtures.suspendRequest({
+              suspendRequest={tasksFixtures.taskSuspendRequest({
                 status: SuspendRequestStatusEnum.InProgress,
               })}
             />,

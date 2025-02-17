@@ -10,7 +10,7 @@ import { equipmentListPageTestUtils } from '_tests_/features/warehouses/pages/Eq
 import { equipmentNomenclatureListPageTestUtils } from '_tests_/features/warehouses/pages/EquipmentNomenclatureListPage/testUtils'
 import catalogsFixtures from '_tests_/fixtures/catalogs'
 import commonFixtures from '_tests_/fixtures/common'
-import warehouseFixtures from '_tests_/fixtures/warehouse'
+import equipmentsFixtures from '_tests_/fixtures/equipments'
 import { fakeWord, render, renderWithRouter, setupApiTests } from '_tests_/helpers'
 import {
   mockGetCustomersSuccess,
@@ -87,7 +87,7 @@ describe('Layout номенклатуры оборудования', () => {
       mockGetCustomersSuccess()
       mockGetLocationsCatalogSuccess({ body: catalogsFixtures.locationsCatalog() })
       mockGetEquipmentCategoriesSuccess({
-        body: warehouseFixtures.equipmentCategories(),
+        body: equipmentsFixtures.equipmentCategories(),
       })
       mockGetEquipmentNomenclaturesSuccess()
 
@@ -108,7 +108,7 @@ describe('Layout номенклатуры оборудования', () => {
       const locationCatalogItem = catalogsFixtures.locationCatalogItem()
       mockGetLocationsCatalogSuccess({ body: [locationCatalogItem] })
 
-      mockGetEquipmentCategoriesSuccess({ body: warehouseFixtures.equipmentCategories() })
+      mockGetEquipmentCategoriesSuccess({ body: equipmentsFixtures.equipmentCategories() })
       mockGetEquipmentNomenclaturesSuccess({ once: false })
 
       const { user } = renderWithRouter(
@@ -143,9 +143,9 @@ describe('Layout номенклатуры оборудования', () => {
     test('После применения переходит на страницу списка номенклатуры оборудования', async () => {
       mockGetCustomersSuccess()
       mockGetLocationsCatalogSuccess({ body: catalogsFixtures.locationsCatalog() })
-      mockGetEquipmentCategoriesSuccess({ body: warehouseFixtures.equipmentCategories() })
+      mockGetEquipmentCategoriesSuccess({ body: equipmentsFixtures.equipmentCategories() })
 
-      const equipmentNomenclatureListItem = warehouseFixtures.equipmentNomenclatureListItem()
+      const equipmentNomenclatureListItem = equipmentsFixtures.equipmentNomenclatureListItem()
       mockGetEquipmentNomenclaturesSuccess({
         body: commonFixtures.paginatedListResponse([equipmentNomenclatureListItem]),
         once: false,
@@ -214,7 +214,7 @@ describe('Layout номенклатуры оборудования', () => {
     })
 
     test('После применения переходит на страницу списка номенклатуры оборудования', async () => {
-      const equipmentNomenclatureListItem = warehouseFixtures.equipmentNomenclatureListItem()
+      const equipmentNomenclatureListItem = equipmentsFixtures.equipmentNomenclatureListItem()
       mockGetEquipmentNomenclaturesSuccess({
         body: commonFixtures.paginatedListResponse([equipmentNomenclatureListItem]),
         once: false,
@@ -260,7 +260,7 @@ describe('Layout номенклатуры оборудования', () => {
   describe('Карточка просмотра оборудования', () => {
     // describe('При не успешном запросе', () => {
     //   test('Обрабатывается ошибка 403', async () => {
-    //     const equipmentListItem = warehouseFixtures.equipmentListItem()
+    //     const equipmentListItem = equipmentsFixtures.equipment()
     //     mockGetEquipmentsSuccess({
     //       body: commonFixtures.paginatedListResponse([equipmentListItem]),
     //     })
@@ -285,7 +285,7 @@ describe('Layout номенклатуры оборудования', () => {
     //   })
     //
     //   test('Обрабатывается ошибка 404', async () => {
-    //     const equipmentListItem = warehouseFixtures.equipmentListItem()
+    //     const equipmentListItem = equipmentsFixtures.equipment()
     //     mockGetEquipmentsSuccess({
     //       body: commonFixtures.paginatedListResponse([equipmentListItem]),
     //     })
@@ -310,7 +310,7 @@ describe('Layout номенклатуры оборудования', () => {
     //   })
     //
     //   test('Обрабатывается ошибка 500', async () => {
-    //     const equipmentListItem = warehouseFixtures.equipmentListItem()
+    //     const equipmentListItem = equipmentsFixtures.equipment()
     //     mockGetEquipmentsSuccess({
     //       body: commonFixtures.paginatedListResponse([equipmentListItem]),
     //     })

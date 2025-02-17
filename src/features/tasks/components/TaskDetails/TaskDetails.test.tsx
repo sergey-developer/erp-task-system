@@ -44,12 +44,11 @@ import { taskDetailsTestUtils } from '_tests_/features/tasks/components/TaskDeta
 import { taskReclassificationRequestTestUtils } from '_tests_/features/tasks/components/TaskReclassificationRequest/testUtils'
 import { taskSuspendRequestTestUtils } from '_tests_/features/tasks/components/TaskSuspendRequest/testUtils'
 import catalogsFixtures from '_tests_/fixtures/catalogs'
+import { fakeUseLocationResult } from '_tests_/fixtures/common/hooks/useLocation'
 import infrastructuresFixtures from '_tests_/fixtures/infrastructures'
 import systemFixtures from '_tests_/fixtures/system'
-import taskFixtures from '_tests_/fixtures/tasks'
-import { fakeUseLocationResult } from '_tests_/fixtures/useLocation'
+import tasksFixtures from '_tests_/fixtures/tasks'
 import userFixtures from '_tests_/fixtures/users'
-import warehouseFixtures from '_tests_/fixtures/warehouse'
 import {
   fakeId,
   fakeWord,
@@ -98,7 +97,7 @@ notificationTestUtils.setupNotifications()
 
 describe('Карточка заявки', () => {
   test('Блок информации о рабочей группе отображается', async () => {
-    const task = taskFixtures.task({ id: props.taskId })
+    const task = tasksFixtures.taskDetail({ id: props.taskId })
     mockGetTaskSuccess(props.taskId, { body: task })
 
     const userId = fakeId()
@@ -117,7 +116,7 @@ describe('Карточка заявки', () => {
   })
 
   test('Блок информации о исполнителе отображается', async () => {
-    const task = taskFixtures.task({ id: props.taskId })
+    const task = tasksFixtures.taskDetail({ id: props.taskId })
     mockGetTaskSuccess(props.taskId, { body: task })
 
     const userId = fakeId()
@@ -137,7 +136,7 @@ describe('Карточка заявки', () => {
 
   describe('Выполнить заявку', () => {
     test('Кнопка активная если userActions содержит id заявки', async () => {
-      const task = taskFixtures.task({ id: props.taskId })
+      const task = tasksFixtures.taskDetail({ id: props.taskId })
       mockGetTaskSuccess(props.taskId, { body: task })
 
       const currentUser = userFixtures.userDetail()
@@ -165,7 +164,7 @@ describe('Карточка заявки', () => {
     })
 
     test('Кнопка не активна если userActions не содержит id заявки', async () => {
-      const task = taskFixtures.task({ id: props.taskId })
+      const task = tasksFixtures.taskDetail({ id: props.taskId })
       mockGetTaskSuccess(task.id, { body: task })
 
       const currentUser = userFixtures.userDetail()
@@ -192,7 +191,7 @@ describe('Карточка заявки', () => {
     })
 
     test.skip('Модалка выполнения заявки открывается после показа всех предупреждений', async () => {
-      const task = taskFixtures.task({
+      const task = tasksFixtures.taskDetail({
         id: props.taskId,
         hasRelocationTasks: false,
         fiscalAccumulator: {
@@ -237,7 +236,7 @@ describe('Карточка заявки', () => {
     })
 
     test.skip('После успешного запроса закрывается модалка и вызывается обработчик закрытия карточки заявки', async () => {
-      const task = taskFixtures.task({
+      const task = tasksFixtures.taskDetail({
         id: props.taskId,
         hasRelocationTasks: true,
       })
@@ -274,14 +273,14 @@ describe('Карточка заявки', () => {
 
   describe('Зарегистрировать ФН', () => {
     test.skip('После успешного запроса закрывается модалка', async () => {
-      const task = taskFixtures.task({ id: props.taskId, ...canRegisterFNItemProps })
+      const task = tasksFixtures.taskDetail({ id: props.taskId, ...canRegisterFNItemProps })
       mockGetTaskSuccess(props.taskId, { body: task, once: false })
 
-      const faChangeTypeListItem = catalogsFixtures.faChangeType()
+      const faChangeTypeListItem = catalogsFixtures.faChangeTypeCatalogItem()
       mockGetFaChangeTypesSuccess({ body: [faChangeTypeListItem] })
 
       mockGetTaskRegistrationRequestRecipientsFNSuccess(props.taskId, {
-        body: taskFixtures.registrationRequestRecipientsFN(),
+        body: tasksFixtures.taskRegistrationRequestRecipientsFN(),
       })
 
       mockCreateTaskAttachmentSuccess(props.taskId)
@@ -317,14 +316,14 @@ describe('Карточка заявки', () => {
     describe.skip('Отмена запроса', () => {
       test('После подтверждения отмены перезапрашивается заявка и закрывается модалка подтверждения', async () => {
         mockGetTaskSuccess(props.taskId, {
-          body: taskFixtures.task({
+          body: tasksFixtures.taskDetail({
             id: props.taskId,
             extendedStatus: TaskExtendedStatusEnum.InReclassification,
           }),
           once: false,
         })
 
-        const reclassificationRequest = taskFixtures.reclassificationRequest()
+        const reclassificationRequest = tasksFixtures.taskReclassificationRequest()
         mockGetTaskReclassificationRequestSuccess(props.taskId, { body: reclassificationRequest })
 
         const currentUser = userFixtures.userDetail()
@@ -364,13 +363,15 @@ describe('Карточка заявки', () => {
         test.skip('Созданный запрос отображается', async () => {
           mockGetWorkGroupsSuccess({ body: [] })
 
-          const task = taskFixtures.task({
+          const task = tasksFixtures.taskDetail({
             id: props.taskId,
             ...activeRequestSuspendItemProps,
           })
           mockGetTaskSuccess(task.id, { body: task })
 
-          mockCreateTaskSuspendRequestSuccess(props.taskId, { body: taskFixtures.suspendRequest() })
+          mockCreateTaskSuspendRequestSuccess(props.taskId, {
+            body: tasksFixtures.taskSuspendRequest(),
+          })
 
           const currentUser = userFixtures.userDetail({ id: task.assignee!.id })
           mockGetUserActionsSuccess(currentUser.id, {
@@ -411,7 +412,7 @@ describe('Карточка заявки', () => {
         test('Обрабатывается ошибка 404', async () => {
           mockGetWorkGroupsSuccess({ body: [] })
 
-          const task = taskFixtures.task({
+          const task = tasksFixtures.taskDetail({
             id: props.taskId,
             ...activeRequestSuspendItemProps,
           })
@@ -460,7 +461,7 @@ describe('Карточка заявки', () => {
         test('Обрабатывается ошибка 400', async () => {
           mockGetWorkGroupsSuccess({ body: [] })
 
-          const task = taskFixtures.task({
+          const task = tasksFixtures.taskDetail({
             id: props.taskId,
             ...activeRequestSuspendItemProps,
           })
@@ -537,7 +538,7 @@ describe('Карточка заявки', () => {
         test('Обрабатывается неизвестная ошибка', async () => {
           mockGetWorkGroupsSuccess({ body: [] })
 
-          const task = taskFixtures.task({
+          const task = tasksFixtures.taskDetail({
             id: props.taskId,
             ...activeRequestSuspendItemProps,
           })
@@ -589,9 +590,9 @@ describe('Карточка заявки', () => {
           mockGetWorkGroupsSuccess({ body: [] })
 
           mockGetTaskSuccess(props.taskId, {
-            body: taskFixtures.task({
+            body: tasksFixtures.taskDetail({
               id: props.taskId,
-              suspendRequest: taskFixtures.suspendRequest({
+              suspendRequest: tasksFixtures.taskSuspendRequest({
                 status: SuspendRequestStatusEnum.New,
               }),
             }),
@@ -629,9 +630,9 @@ describe('Карточка заявки', () => {
           mockGetWorkGroupsSuccess({ body: [] })
 
           mockGetTaskSuccess(props.taskId, {
-            body: taskFixtures.task({
+            body: tasksFixtures.taskDetail({
               id: props.taskId,
-              suspendRequest: taskFixtures.suspendRequest({
+              suspendRequest: tasksFixtures.taskSuspendRequest({
                 status: SuspendRequestStatusEnum.New,
               }),
             }),
@@ -673,9 +674,9 @@ describe('Карточка заявки', () => {
           mockGetWorkGroupsSuccess({ body: [] })
 
           mockGetTaskSuccess(props.taskId, {
-            body: taskFixtures.task({
+            body: tasksFixtures.taskDetail({
               id: props.taskId,
-              suspendRequest: taskFixtures.suspendRequest({
+              suspendRequest: tasksFixtures.taskSuspendRequest({
                 status: SuspendRequestStatusEnum.New,
               }),
             }),
@@ -715,9 +716,9 @@ describe('Карточка заявки', () => {
           mockGetWorkGroupsSuccess({ body: [] })
 
           mockGetTaskSuccess(props.taskId, {
-            body: taskFixtures.task({
+            body: tasksFixtures.taskDetail({
               id: props.taskId,
-              suspendRequest: taskFixtures.suspendRequest({
+              suspendRequest: tasksFixtures.taskSuspendRequest({
                 status: SuspendRequestStatusEnum.New,
               }),
             }),
@@ -760,9 +761,9 @@ describe('Карточка заявки', () => {
           mockGetWorkGroupsSuccess({ body: [] })
 
           mockGetTaskSuccess(props.taskId, {
-            body: taskFixtures.task({
+            body: tasksFixtures.taskDetail({
               id: props.taskId,
-              suspendRequest: taskFixtures.suspendRequest({
+              suspendRequest: tasksFixtures.taskSuspendRequest({
                 status: SuspendRequestStatusEnum.Approved,
               }),
             }),
@@ -801,9 +802,9 @@ describe('Карточка заявки', () => {
           mockGetWorkGroupsSuccess({ body: [] })
 
           mockGetTaskSuccess(props.taskId, {
-            body: taskFixtures.task({
+            body: tasksFixtures.taskDetail({
               id: props.taskId,
-              suspendRequest: taskFixtures.suspendRequest({
+              suspendRequest: tasksFixtures.taskSuspendRequest({
                 status: SuspendRequestStatusEnum.Approved,
               }),
             }),
@@ -842,7 +843,7 @@ describe('Карточка заявки', () => {
 
   describe('Изменение инфраструктуры', () => {
     test(`Кнопка отображается если есть infrastructureProject и workType.actions содержит права ${WorkTypeActionsEnum.CreateInfrastructureProject}`, async () => {
-      const task = taskFixtures.task({
+      const task = tasksFixtures.taskDetail({
         id: props.taskId,
         ...showChangeInfrastructureButton.task,
       })
@@ -865,10 +866,10 @@ describe('Карточка заявки', () => {
     })
 
     test(`Кнопка не отображается если есть infrastructureProject но workType.actions не содержит права ${WorkTypeActionsEnum.CreateInfrastructureProject}`, async () => {
-      const task = taskFixtures.task({
+      const task = tasksFixtures.taskDetail({
         id: props.taskId,
         ...showChangeInfrastructureButton.task,
-        workType: warehouseFixtures.workType({ actions: [] }),
+        workType: catalogsFixtures.workTypeDetail({ actions: [] }),
       })
 
       mockGetTaskSuccess(props.taskId, { body: task })
@@ -889,7 +890,7 @@ describe('Карточка заявки', () => {
     })
 
     test(`Кнопка не отображается если workType.actions содержит права ${WorkTypeActionsEnum.CreateInfrastructureProject} но нет infrastructureProject`, async () => {
-      const task = taskFixtures.task({
+      const task = tasksFixtures.taskDetail({
         id: props.taskId,
         ...showChangeInfrastructureButton.task,
         infrastructureProject: null,
@@ -913,7 +914,7 @@ describe('Карточка заявки', () => {
     })
 
     test(`Кнопка активна если есть права ${UserPermissionsEnum.InfrastructureProjectRead}`, async () => {
-      const task = taskFixtures.task({
+      const task = tasksFixtures.taskDetail({
         id: props.taskId,
         ...showChangeInfrastructureButton.task,
       })
@@ -938,7 +939,7 @@ describe('Карточка заявки', () => {
     })
 
     test(`Кнопка активна если есть права ${UserPermissionsEnum.AnyStatusInfrastructureProjectRead}`, async () => {
-      const task = taskFixtures.task({
+      const task = tasksFixtures.taskDetail({
         id: props.taskId,
         ...showChangeInfrastructureButton.task,
       })
@@ -963,7 +964,7 @@ describe('Карточка заявки', () => {
     })
 
     test(`Кнопка не активна если нет прав ${UserPermissionsEnum.InfrastructureProjectRead} и ${UserPermissionsEnum.AnyStatusInfrastructureProjectRead}`, async () => {
-      const task = taskFixtures.task({
+      const task = tasksFixtures.taskDetail({
         id: props.taskId,
         ...showChangeInfrastructureButton.task,
       })
@@ -988,12 +989,12 @@ describe('Карточка заявки', () => {
     test('При нажатии переходит на страницу изменения инфраструктуры', async () => {
       jest.spyOn(reactRouterDom, 'useParams').mockReturnValue({ id: String(fakeId()) })
 
-      const locationState = getChangeInfrastructurePageLocationState(taskFixtures.task())
+      const locationState = getChangeInfrastructurePageLocationState(tasksFixtures.taskDetail())
       jest
         .spyOn(reactRouterDom, 'useLocation')
         .mockReturnValue(fakeUseLocationResult({ state: locationState }))
 
-      const task = taskFixtures.task({
+      const task = tasksFixtures.taskDetail({
         id: props.taskId,
         ...showChangeInfrastructureButton.task,
       })
@@ -1034,7 +1035,7 @@ describe('Карточка заявки', () => {
 
   describe('Менеджер по сопровождению', () => {
     test('Отображается если есть менеджер в infrastructureProject', async () => {
-      const task = taskFixtures.task({
+      const task = tasksFixtures.taskDetail({
         id: props.taskId,
         infrastructureProject: infrastructuresFixtures.infrastructure(),
       })
@@ -1063,7 +1064,7 @@ describe('Карточка заявки', () => {
     })
 
     test('Соответствующий текст отображается если нет менеджера в infrastructureProject', async () => {
-      const task = taskFixtures.task({
+      const task = tasksFixtures.taskDetail({
         id: props.taskId,
         infrastructureProject: infrastructuresFixtures.infrastructure({ manager: null }),
       })
@@ -1089,7 +1090,7 @@ describe('Карточка заявки', () => {
 
     describe('Кнопка назначить на себя', () => {
       test(`Отображается если есть права ${UserPermissionsEnum.InfrastructureProjectLeading}`, async () => {
-        const task = taskFixtures.task({
+        const task = tasksFixtures.taskDetail({
           id: props.taskId,
           infrastructureProject: infrastructuresFixtures.infrastructure(),
         })
@@ -1114,7 +1115,7 @@ describe('Карточка заявки', () => {
       })
 
       test(`Не отображается если нет прав ${UserPermissionsEnum.InfrastructureProjectLeading}`, async () => {
-        const task = taskFixtures.task({
+        const task = tasksFixtures.taskDetail({
           id: props.taskId,
           infrastructureProject: infrastructuresFixtures.infrastructure(),
         })
@@ -1138,7 +1139,10 @@ describe('Карточка заявки', () => {
 
       test('После назначения отображает нового менеджера', async () => {
         const infrastructure = infrastructuresFixtures.infrastructure()
-        const task = taskFixtures.task({ id: props.taskId, infrastructureProject: infrastructure })
+        const task = tasksFixtures.taskDetail({
+          id: props.taskId,
+          infrastructureProject: infrastructure,
+        })
 
         mockGetTaskSuccess(props.taskId, { body: task })
 

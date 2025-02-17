@@ -1,8 +1,8 @@
 import { CheckInventorizationEquipmentsTableProps } from 'features/inventorizations/components/CheckInventorizationEquipmentsTable/types'
 
-import warehouseFixtures from '_tests_/fixtures/warehouse'
+import warehousesFixtures from '_tests_/fixtures/warehouse'
 
-export const tableRow = warehouseFixtures.checkInventorizationEquipmentsTableRow()
+export const tableRow = warehousesFixtures.checkInventorizationEquipmentsTableRow()
 
 export const props: Readonly<CheckInventorizationEquipmentsTableProps> = {
   dataSource: [tableRow],

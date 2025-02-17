@@ -3,8 +3,9 @@ import { UserEvent } from '@testing-library/user-event/setup/setup'
 import { testUtils as mtsrReportFormTestUtils } from 'features/reports/components/MtsrReportForm/MtsrReportForm.test'
 import { testUtils as mtsrReportTableTestUtils } from 'features/reports/components/MtsrReportTable/MtsrReportTable.test'
 
+import catalogsFixtures from '_tests_/fixtures/catalogs'
 import reportsFixtures from '_tests_/fixtures/reports'
-import warehouseFixtures from '_tests_/fixtures/warehouse'
+import { radioButtonTestUtils, render, setupApiTests } from '_tests_/helpers'
 import {
   mockGetCustomersSuccess,
   mockGetMacroregionsMtsrReportSuccess,
@@ -12,7 +13,6 @@ import {
   mockGetUsersMtsrReportSuccess,
   mockGetWorkGroupsMtsrReportSuccess,
 } from '_tests_/mocks/api'
-import { radioButtonTestUtils, render, setupApiTests } from '_tests_/helpers'
 
 import { mtsrReportLevelDict, MtsrReportLevelEnum } from './constants'
 import MtsrReportPage from './index'
@@ -41,15 +41,15 @@ describe('Страница отчета MTSR', () => {
     const mtsrReport = [reportsFixtures.getMtsrReportItem()]
     mockGetMacroregionsMtsrReportSuccess({ once: false, body: mtsrReport })
 
-    const customerListItem = warehouseFixtures.customerListItem()
-    mockGetCustomersSuccess({ body: [customerListItem] })
+    const customerCatalogItem = catalogsFixtures.customerCatalogItem()
+    mockGetCustomersSuccess({ body: [customerCatalogItem] })
 
     const { user } = render(<MtsrReportPage />)
 
     await mtsrReportTableTestUtils.expectLoadingFinished()
     await mtsrReportFormTestUtils.expectCustomersLoadingFinished()
     await mtsrReportFormTestUtils.openCustomersSelect(user)
-    await mtsrReportFormTestUtils.setCustomer(user, customerListItem.title)
+    await mtsrReportFormTestUtils.setCustomer(user, customerCatalogItem.title)
     await mtsrReportFormTestUtils.setPeriod(user)
     await mtsrReportFormTestUtils.clickSubmitButton(user)
     await mtsrReportTableTestUtils.expectLoadingStarted()

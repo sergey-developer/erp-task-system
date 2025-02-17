@@ -1,13 +1,12 @@
 import { Checkbox, Col, Flex, Form, Input, Popover, Row, Select, Upload } from 'antd'
 import { CheckboxChangeEvent } from 'antd/lib/checkbox/Checkbox'
-import stubFalse from 'lodash/stubFalse'
-import React, { FC } from 'react'
-
 import {
   formItemNoMarginBottom,
   overlayInnerStyle,
 } from 'features/tasks/components/CreateTaskModal/styles'
 import { titleRules } from 'features/tasks/components/CreateTaskModal/validation'
+import stubFalse from 'lodash/stubFalse'
+import React, { FC } from 'react'
 
 import UploadButton from 'components/Buttons/UploadButton'
 import DatePicker from 'components/DatePicker'
@@ -148,7 +147,7 @@ const CreateInternalTaskModal: FC<CreateInternalTaskModalProps> = ({
               <Flex vertical gap='small'>
                 <Form.Item
                   style={formItemNoMarginBottom}
-                  data-testid='assignee-form-item'
+                  data-testid='taskAssignee-form-item'
                   label='Исполнитель'
                   name='assignee'
                   rules={workGroupFormValue ? undefined : onlyRequiredRules}

@@ -7,7 +7,7 @@ import { DATE_PICKER_FORMAT } from 'lib/antd/constants/dateTimePicker'
 import { UPDATE_TEXT } from 'shared/constants/common'
 import { validationMessages } from 'shared/constants/validation'
 
-import warehouseFixtures from '_tests_/fixtures/warehouse'
+import catalogsFixtures from '_tests_/fixtures/catalogs'
 import { buttonTestUtils, render, selectTestUtils } from '_tests_/helpers'
 
 import MtsrReportForm from './index'
@@ -99,12 +99,12 @@ export const testUtils = {
 describe('Форма отчета MTSR', () => {
   describe('Клиенты', () => {
     test('Отображается корректно', async () => {
-      const customerListItem = warehouseFixtures.customerListItem()
-      const customers = [customerListItem]
+      const customerCatalogItem = catalogsFixtures.customerCatalogItem()
+      const customers = [customerCatalogItem]
       const { user } = render(<MtsrReportForm {...props} customers={customers} />)
 
       const field = testUtils.getCustomersSelect()
-      const selectedOption = testUtils.querySelectedCustomer(customerListItem.title)
+      const selectedOption = testUtils.querySelectedCustomer(customerCatalogItem.title)
       await testUtils.openCustomersSelect(user)
 
       expect(field).toBeInTheDocument()
@@ -117,8 +117,8 @@ describe('Форма отчета MTSR', () => {
     })
 
     test('Можно выбрать несколько вариантов', async () => {
-      const customerListItem1 = warehouseFixtures.customerListItem()
-      const customerListItem2 = warehouseFixtures.customerListItem()
+      const customerListItem1 = catalogsFixtures.customerCatalogItem()
+      const customerListItem2 = catalogsFixtures.customerCatalogItem()
       const { user } = render(
         <MtsrReportForm {...props} customers={[customerListItem1, customerListItem2]} />,
       )
@@ -137,20 +137,20 @@ describe('Форма отчета MTSR', () => {
     })
 
     test('Значение по умолчанию устанавливается', () => {
-      const customerListItem = warehouseFixtures.customerListItem()
+      const customerCatalogItem = catalogsFixtures.customerCatalogItem()
 
       render(
         <MtsrReportForm
           {...props}
-          customers={[customerListItem]}
-          initialValues={{ customers: [customerListItem.id] }}
+          customers={[customerCatalogItem]}
+          initialValues={{ customers: [customerCatalogItem.id] }}
         />,
       )
 
-      const selectedOption = testUtils.getSelectedCustomer(customerListItem.title)
+      const selectedOption = testUtils.getSelectedCustomer(customerCatalogItem.title)
 
       expect(selectedOption).toBeInTheDocument()
-      expect(selectedOption).toHaveTextContent(customerListItem.title)
+      expect(selectedOption).toHaveTextContent(customerCatalogItem.title)
     })
   })
 

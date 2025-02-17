@@ -19,7 +19,7 @@ export const testUtils = {
 
 describe('Список вложений', () => {
   test('Отображается корректно', () => {
-    render(<AttachmentImages {...props} data-testid='attachment-images' />)
+    render(<AttachmentImages {...props} data-testid='taskAttachment-images' />)
 
     const container = screen.getByTestId('attachment-images')
     props.data.forEach((item) => {

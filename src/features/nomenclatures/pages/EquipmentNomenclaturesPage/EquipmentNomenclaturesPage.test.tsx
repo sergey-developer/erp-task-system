@@ -3,12 +3,7 @@ import { WarehousesRoutesEnum } from 'features/warehouses/routes/routes'
 
 import { equipmentNomenclatureTableTestUtils } from '_tests_/features/warehouses/components/EquipmentNomenclatureTable/testUtils'
 import commonFixtures from '_tests_/fixtures/common'
-import warehouseFixtures from '_tests_/fixtures/warehouse'
-import {
-  mockGetEquipmentNomenclaturesForbiddenError,
-  mockGetEquipmentNomenclaturesServerError,
-  mockGetEquipmentNomenclaturesSuccess,
-} from '_tests_/mocks/api'
+import equipmentsFixtures from '_tests_/fixtures/equipments'
 import {
   fakeWord,
   notificationTestUtils,
@@ -16,6 +11,11 @@ import {
   setupApiTests,
   tableTestUtils,
 } from '_tests_/helpers'
+import {
+  mockGetEquipmentNomenclaturesForbiddenError,
+  mockGetEquipmentNomenclaturesServerError,
+  mockGetEquipmentNomenclaturesSuccess,
+} from '_tests_/mocks/api'
 
 import EquipmentNomenclaturesPage from './index'
 
@@ -25,7 +25,7 @@ notificationTestUtils.setupNotifications()
 describe('Страница списка номенклатуры оборудования', () => {
   describe('Список номенклатуры оборудования', () => {
     test('При успешном запросе отображается верное количество', async () => {
-      const equipmentNomenclatures = [warehouseFixtures.equipmentNomenclatureListItem()]
+      const equipmentNomenclatures = [equipmentsFixtures.equipmentNomenclatureListItem()]
 
       mockGetEquipmentNomenclaturesSuccess({
         body: commonFixtures.paginatedListResponse(equipmentNomenclatures),
@@ -95,7 +95,7 @@ describe('Страница списка номенклатуры оборудо�
     })
 
     test.skip('Пагинация работает', async () => {
-      const equipmentNomenclatures = warehouseFixtures.equipmentNomenclatures(11)
+      const equipmentNomenclatures = equipmentsFixtures.equipmentNomenclatures(11)
 
       mockGetEquipmentNomenclaturesSuccess({
         body: commonFixtures.paginatedListResponse(equipmentNomenclatures),

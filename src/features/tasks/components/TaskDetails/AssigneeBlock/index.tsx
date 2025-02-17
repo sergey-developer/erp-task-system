@@ -18,7 +18,7 @@ import { DropdownSelectWrapperStyled, SelectStyled } from './styles'
 const { Text } = Typography
 
 export type AssigneeBlockProps = Pick<TaskDetailDTO, 'id' | 'assignee' | 'workGroup'> & {
-  updateAssignee: (assignee: TaskAssigneeDTO['id']) => Promise<void>
+  updateAssignee: (taskAssignee: TaskAssigneeDTO['id']) => Promise<void>
   updateAssigneeIsLoading: boolean
 
   takeTask: () => Promise<void>
@@ -80,7 +80,7 @@ const AssigneeBlock: FC<AssigneeBlockProps> = ({
   }
 
   return (
-    <Space data-testid='task-assignee-block' direction='vertical' $block>
+    <Space data-testid='task-taskAssignee-block' direction='vertical' $block>
       <Row justify='space-between'>
         <Col>
           <Text type='secondary'>Исполнитель</Text>

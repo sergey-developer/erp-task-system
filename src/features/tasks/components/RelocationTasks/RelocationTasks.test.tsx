@@ -13,7 +13,7 @@ import {
 import { relocationTasksTestUtils } from '_tests_/features/tasks/components/RelocationTasks/testUtils'
 import { taskAssigneeTestUtils } from '_tests_/features/tasks/components/TaskAssignee/testUtils'
 import userFixtures from '_tests_/fixtures/users'
-import warehouseFixtures from '_tests_/fixtures/warehouse'
+import warehousesFixtures from '_tests_/fixtures/warehouse'
 import { render, setupApiTests } from '_tests_/helpers'
 
 import RelocationTasks from './index'
@@ -134,7 +134,7 @@ describe('Список заявок на перемещение', () => {
     test('Отображаются исполнители если нет того кто завершил заявку', () => {
       const executor1 = pick(userFixtures.userDetail(), 'id', 'fullName', 'phone')
       const executor2 = pick(userFixtures.userDetail(), 'id', 'fullName', 'phone')
-      const relocationTaskListItem = warehouseFixtures.relocationTaskListItem({
+      const relocationTaskListItem = warehousesFixtures.relocationTaskListItem({
         completedBy: null,
         executors: [executor1, executor2],
       })

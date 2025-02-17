@@ -5,10 +5,10 @@ import {
 } from 'features/tasks/api/constants'
 import { SubTasksProps } from 'features/tasks/components/SubTasks'
 
-import taskFixtures from '_tests_/fixtures/tasks/index'
+import tasksFixtures from '_tests_/fixtures/tasks/index'
 
 export const props: Readonly<SubTasksProps> = {
-  list: taskFixtures.subTaskList(),
+  list: tasksFixtures.subTaskList(),
   isError: false,
   taskStatus: TaskStatusEnum.New,
   taskExtendedStatus: TaskExtendedStatusEnum.New,

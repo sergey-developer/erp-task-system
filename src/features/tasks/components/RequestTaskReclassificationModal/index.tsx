@@ -70,7 +70,12 @@ const RequestTaskReclassificationModal: FC<RequestTaskReclassificationModalProps
           </Radio.Group>
         </Form.Item>
 
-        <Form.Item data-testid='comment' label='Комментарий' name='comment' rules={commentRules}>
+        <Form.Item
+          data-testid='taskComment'
+          label='Комментарий'
+          name='comment'
+          rules={commentRules}
+        >
           <TextArea placeholder='Опишите ситуацию' disabled={isLoading} />
         </Form.Item>
       </Form>

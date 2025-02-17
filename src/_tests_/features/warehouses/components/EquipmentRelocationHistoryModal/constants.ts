@@ -1,8 +1,8 @@
 import { EquipmentRelocationHistoryModalProps } from 'features/equipments/components/EquipmentRelocationHistoryModal/types'
 
-import warehouseFixtures from '_tests_/fixtures/warehouse/index'
+import equipmentsFixtures from '_tests_/fixtures/equipments'
 
-export const equipmentRelocationHistoryItem = warehouseFixtures.equipmentRelocationHistoryItem()
+export const equipmentRelocationHistoryItem = equipmentsFixtures.equipmentRelocationHistoryItem()
 
 export const props: EquipmentRelocationHistoryModalProps = {
   open: true,

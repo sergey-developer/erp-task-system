@@ -15,7 +15,7 @@ import { createDocumentsPackagePageTestUtils } from '_tests_/features/warehouses
 import { createRelocationTaskSimplifiedPageTestUtils } from '_tests_/features/warehouses/pages/CreateRelocationTaskSimplifiedPage/testUtils'
 import commonFixtures from '_tests_/fixtures/common'
 import userFixtures from '_tests_/fixtures/users'
-import warehouseFixtures from '_tests_/fixtures/warehouse'
+import warehousesFixtures from '_tests_/fixtures/warehouse'
 import {
   fakeId,
   fakeWord,
@@ -46,7 +46,7 @@ notificationTestUtils.setupNotifications()
 
 describe('Вкладка списка заявок на перемещение', () => {
   test('Заголовок отображается со счётчиком', async () => {
-    const relocationTasks = warehouseFixtures.relocationTasks()
+    const relocationTasks = warehousesFixtures.relocationTasks()
     mockGetRelocationTasksSuccess({
       body: commonFixtures.paginatedListResponse(relocationTasks),
     })
@@ -212,7 +212,7 @@ describe('Вкладка списка заявок на перемещение',
 
   describe('Список заявок', () => {
     test('При успешном запросе отображается корректно', async () => {
-      const relocationTasks = warehouseFixtures.relocationTasks()
+      const relocationTasks = warehousesFixtures.relocationTasks()
       mockGetRelocationTasksSuccess({
         body: commonFixtures.paginatedListResponse(relocationTasks),
       })
@@ -267,7 +267,7 @@ describe('Вкладка списка заявок на перемещение',
     })
 
     test('При клике на заявку переходит на страницу реестра заявок на перемещение и открывает её карточку', async () => {
-      const relocationTaskListItem = warehouseFixtures.relocationTaskListItem()
+      const relocationTaskListItem = warehousesFixtures.relocationTaskListItem()
       mockGetRelocationTasksSuccess({
         body: commonFixtures.paginatedListResponse([relocationTaskListItem]),
         once: false,

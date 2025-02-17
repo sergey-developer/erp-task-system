@@ -15,9 +15,9 @@ import { relocationTaskDetailsTestUtils } from '_tests_/features/warehouses/comp
 import { historyNomenclatureOperationsReportPageTestUtils } from '_tests_/features/warehouses/pages/HistoryNomenclatureOperationsReportPage/testUtils'
 import catalogsFixtures from '_tests_/fixtures/catalogs'
 import commonFixtures from '_tests_/fixtures/common'
+import equipmentsFixtures from '_tests_/fixtures/equipments'
 import reportsFixtures from '_tests_/fixtures/reports'
 import userFixtures from '_tests_/fixtures/users'
-import warehouseFixtures from '_tests_/fixtures/warehouse'
 import { fakeWord, getStoreWithAuth, render, setupApiTests } from '_tests_/helpers'
 import {
   mockGetCustomersSuccess,
@@ -39,7 +39,7 @@ setupApiTests()
 describe('Страница отчета истории операций по номенклатуре', () => {
   describe('Таблица отчета', () => {
     test('При клике на оборудование открывается карточка оборудования', async () => {
-      const equipmentNomenclatureListItem = warehouseFixtures.equipmentNomenclatureListItem()
+      const equipmentNomenclatureListItem = equipmentsFixtures.equipmentNomenclatureListItem()
       mockGetEquipmentNomenclaturesSuccess({
         body: commonFixtures.paginatedListResponse([equipmentNomenclatureListItem]),
       })
@@ -80,7 +80,7 @@ describe('Страница отчета истории операций по н�
     })
 
     test('При клике на перемещение открывается карточка заявки на перемещение', async () => {
-      const equipmentNomenclatureListItem = warehouseFixtures.equipmentNomenclatureListItem()
+      const equipmentNomenclatureListItem = equipmentsFixtures.equipmentNomenclatureListItem()
       mockGetEquipmentNomenclaturesSuccess({
         body: commonFixtures.paginatedListResponse([equipmentNomenclatureListItem]),
       })
@@ -125,7 +125,7 @@ describe('Страница отчета истории операций по н�
 
   describe('Фильтры', () => {
     test('После применения отображается отчет', async () => {
-      const equipmentNomenclatureListItem = warehouseFixtures.equipmentNomenclatureListItem()
+      const equipmentNomenclatureListItem = equipmentsFixtures.equipmentNomenclatureListItem()
       mockGetEquipmentNomenclaturesSuccess({
         body: commonFixtures.paginatedListResponse([equipmentNomenclatureListItem]),
       })
@@ -174,7 +174,7 @@ describe('Страница отчета истории операций по н�
       const fakeArrayBuffer = new Uint8Array()
       base64ToBytes.mockReturnValueOnce(fakeArrayBuffer)
 
-      const equipmentNomenclatureListItem = warehouseFixtures.equipmentNomenclatureListItem()
+      const equipmentNomenclatureListItem = equipmentsFixtures.equipmentNomenclatureListItem()
       mockGetEquipmentNomenclaturesSuccess({
         body: commonFixtures.paginatedListResponse([equipmentNomenclatureListItem]),
       })

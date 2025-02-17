@@ -143,7 +143,7 @@ const EquipmentFormModal: FC<EquipmentFormModalProps> = ({
   return (
     <BaseModal
       {...props}
-      data-testid='equipment-form-modal'
+      data-testid='equipmentDetail-form-modal'
       okButtonProps={okButtonProps}
       onOk={form.submit}
     >
@@ -422,7 +422,7 @@ const EquipmentFormModal: FC<EquipmentFormModalProps> = ({
                 />
               </Form.Item>
 
-              <Form.Item data-testid='comment-form-item' label='Комментарий' name='comment'>
+              <Form.Item data-testid='taskComment-form-item' label='Комментарий' name='comment'>
                 <TextArea placeholder='Добавьте комментарий' disabled={isLoading} />
               </Form.Item>
 

@@ -350,7 +350,7 @@ describe('Хэдер авторизованного пользователя', (
       mockGetSystemSettingsSuccess()
       mockGetTimeZonesSuccess()
 
-      const fakeUserStatus = catalogsFixtures.userStatus()
+      const fakeUserStatus = catalogsFixtures.userStatusCatalogItem()
       mockGetUserStatusesSuccess({ body: [fakeUserStatus] })
 
       mockGetUserMeSuccess({
@@ -375,8 +375,8 @@ describe('Хэдер авторизованного пользователя', (
           mockGetSystemSettingsSuccess()
           mockGetTimeZonesSuccess()
 
-          const fakeUserStatus1 = catalogsFixtures.userStatus()
-          const fakeUserStatus2 = catalogsFixtures.userStatus()
+          const fakeUserStatus1 = catalogsFixtures.userStatusCatalogItem()
+          const fakeUserStatus2 = catalogsFixtures.userStatusCatalogItem()
           mockGetUserStatusesSuccess({
             body: [fakeUserStatus1, fakeUserStatus2],
           })
@@ -409,7 +409,7 @@ describe('Хэдер авторизованного пользователя', (
           mockGetSystemSettingsSuccess()
           mockGetTimeZonesSuccess()
 
-          const userStatus = catalogsFixtures.userStatus({
+          const userStatus = catalogsFixtures.userStatusCatalogItem({
             code: UserStatusCodeEnum.Offline,
           })
           mockGetUserStatusesSuccess({ body: [userStatus] })
@@ -444,8 +444,8 @@ describe('Хэдер авторизованного пользователя', (
           mockGetSystemSettingsSuccess()
           mockGetTimeZonesSuccess()
 
-          const fakeUserStatus1 = catalogsFixtures.userStatus()
-          const fakeUserStatus2 = catalogsFixtures.userStatus()
+          const fakeUserStatus1 = catalogsFixtures.userStatusCatalogItem()
+          const fakeUserStatus2 = catalogsFixtures.userStatusCatalogItem()
           mockGetUserStatusesSuccess({
             body: [fakeUserStatus1, fakeUserStatus2],
           })
@@ -482,8 +482,8 @@ describe('Хэдер авторизованного пользователя', (
           mockGetSystemSettingsSuccess()
           mockGetTimeZonesSuccess()
 
-          const fakeUserStatus1 = catalogsFixtures.userStatus()
-          const fakeUserStatus2 = catalogsFixtures.userStatus()
+          const fakeUserStatus1 = catalogsFixtures.userStatusCatalogItem()
+          const fakeUserStatus2 = catalogsFixtures.userStatusCatalogItem()
           mockGetUserStatusesSuccess({
             body: [fakeUserStatus1, fakeUserStatus2],
           })
@@ -522,8 +522,8 @@ describe('Хэдер авторизованного пользователя', (
           mockGetSystemSettingsSuccess()
           mockGetTimeZonesSuccess()
 
-          const fakeUserStatus1 = catalogsFixtures.userStatus()
-          const fakeUserStatus2 = catalogsFixtures.userStatus()
+          const fakeUserStatus1 = catalogsFixtures.userStatusCatalogItem()
+          const fakeUserStatus2 = catalogsFixtures.userStatusCatalogItem()
           mockGetUserStatusesSuccess({
             body: [fakeUserStatus1, fakeUserStatus2],
           })
@@ -560,8 +560,8 @@ describe('Хэдер авторизованного пользователя', (
           mockGetSystemSettingsSuccess()
           mockGetTimeZonesSuccess()
 
-          const fakeUserStatus1 = catalogsFixtures.userStatus()
-          const fakeUserStatus2 = catalogsFixtures.userStatus()
+          const fakeUserStatus1 = catalogsFixtures.userStatusCatalogItem()
+          const fakeUserStatus2 = catalogsFixtures.userStatusCatalogItem()
           mockGetUserStatusesSuccess({
             body: [fakeUserStatus1, fakeUserStatus2],
           })

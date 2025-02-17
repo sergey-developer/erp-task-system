@@ -9,7 +9,7 @@ export const userDetail = (
   id: props?.id || fakeInteger(),
   timezone: props?.timezone || fakeWord(),
   isStaff: props?.isStaff || false,
-  status: props?.status || catalogsFixtures.userStatus(),
+  status: props?.status || catalogsFixtures.userStatusCatalogItem(),
   permissions: props?.permissions || [],
 
   avatar: fakeUrl(),

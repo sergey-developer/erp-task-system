@@ -5,8 +5,8 @@ import { ariaSortAttrAscValue, ariaSortAttrName } from '_tests_/constants/compon
 import { equipmentDetailsTestUtils } from '_tests_/features/warehouses/components/EquipmentDetails/testUtils'
 import { equipmentTableTestUtils } from '_tests_/features/warehouses/components/EquipmentTable/testUtils'
 import commonFixtures from '_tests_/fixtures/common'
+import equipmentsFixtures from '_tests_/fixtures/equipments'
 import userFixtures from '_tests_/fixtures/users'
-import warehouseFixtures from '_tests_/fixtures/warehouse'
 import {
   fakeWord,
   getStoreWithAuth,
@@ -31,7 +31,7 @@ notificationTestUtils.setupNotifications()
 describe.skip('Страница списка оборудования', () => {
   describe('Список оборудования', () => {
     test('При успешном запросе отображается корректно', async () => {
-      const equipments = [warehouseFixtures.equipmentListItem()]
+      const equipments = [equipmentsFixtures.equipment()]
       mockGetEquipmentsSuccess({
         body: commonFixtures.paginatedListResponse(equipments),
       })
@@ -71,7 +71,7 @@ describe.skip('Страница списка оборудования', () => {
     })
 
     test('Пагинация работает', async () => {
-      const equipments = warehouseFixtures.equipments(11)
+      const equipments = equipmentsFixtures.equipments(11)
       mockGetEquipmentsSuccess({
         body: commonFixtures.paginatedListResponse(equipments),
         once: false,
@@ -92,7 +92,7 @@ describe.skip('Страница списка оборудования', () => {
 
     test('Установлена сортировка по умолчанию', async () => {
       mockGetEquipmentsSuccess({
-        body: commonFixtures.paginatedListResponse(warehouseFixtures.equipments()),
+        body: commonFixtures.paginatedListResponse(equipmentsFixtures.equipments()),
         once: false,
       })
 
@@ -105,7 +105,7 @@ describe.skip('Страница списка оборудования', () => {
     })
 
     test('Сортировка работает корректно', async () => {
-      const equipments = warehouseFixtures.equipments()
+      const equipments = equipmentsFixtures.equipments()
       mockGetEquipmentsSuccess({
         body: commonFixtures.paginatedListResponse(equipments),
         once: false,
@@ -129,13 +129,13 @@ describe.skip('Страница списка оборудования', () => {
 
   describe('Карточка просмотра оборудования', () => {
     test('Открывается по клику на строку таблицы', async () => {
-      const equipmentListItem = warehouseFixtures.equipmentListItem()
+      const equipmentListItem = equipmentsFixtures.equipment()
       mockGetEquipmentsSuccess({
         body: commonFixtures.paginatedListResponse([equipmentListItem]),
       })
 
       mockGetEquipmentSuccess(equipmentListItem.id, {
-        body: warehouseFixtures.equipment({ id: equipmentListItem.id }),
+        body: equipmentsFixtures.equipmentDetail({ id: equipmentListItem.id }),
       })
 
       const { user } = render(<EquipmentsPage />, {
@@ -169,13 +169,13 @@ describe.skip('Страница списка оборудования', () => {
     })
 
     test('Закрывается', async () => {
-      const equipmentListItem = warehouseFixtures.equipmentListItem()
+      const equipmentListItem = equipmentsFixtures.equipment()
       mockGetEquipmentsSuccess({
         body: commonFixtures.paginatedListResponse([equipmentListItem]),
       })
 
       mockGetEquipmentSuccess(equipmentListItem.id, {
-        body: warehouseFixtures.equipment({ id: equipmentListItem.id }),
+        body: equipmentsFixtures.equipmentDetail({ id: equipmentListItem.id }),
       })
 
       const { user } = render(<EquipmentsPage />, {

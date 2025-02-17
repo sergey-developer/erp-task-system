@@ -1,13 +1,13 @@
 import { CommentProps } from 'features/tasks/components/TaskDetails/TaskDetailsTabs/CommentsTab/Comments/Comment/index'
 
-import taskFixtures from '_tests_/fixtures/tasks/index'
+import tasksFixtures from '_tests_/fixtures/tasks/index'
 import { fakeWord } from '_tests_/helpers'
 
 export const props: Readonly<CommentProps> = {
   text: fakeWord(),
   author: fakeWord(),
   createdAt: fakeWord(),
-  attachments: [taskFixtures.attachment()],
+  attachments: [tasksFixtures.taskAttachment()],
 }
 
 export enum TestIdsEnum {

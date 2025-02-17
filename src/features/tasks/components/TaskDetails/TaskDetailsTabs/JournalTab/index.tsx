@@ -63,8 +63,8 @@ const JournalTab: FC<JournalTabProps> = ({ taskId }) => {
   }
 
   return (
-    <LoadingArea data-testid='task-journal-loading' isLoading={journalIsFetching}>
-      <Space data-testid='task-journal' direction='vertical' size='middle' $block>
+    <LoadingArea data-testid='task-taskJournal-loading' isLoading={journalIsFetching}>
+      <Space data-testid='task-taskJournal' direction='vertical' size='middle' $block>
         <Row justify='space-between' align='middle' gutter={[16, 8]}>
           <Col>
             <Row gutter={[16, 8]}>
@@ -103,11 +103,11 @@ const JournalTab: FC<JournalTabProps> = ({ taskId }) => {
             <Space>
               {!isEmpty(journal) && (
                 <Button
-                  data-testid='journal-btn-download'
+                  data-testid='taskJournal-btn-download'
                   type='link'
                   onClick={handleGetJournalCsv}
                   loading={journalCsvIsFetching}
-                  icon={<DownloadIcon data-testid='journal-icon-download' $color='black' />}
+                  icon={<DownloadIcon data-testid='taskJournal-icon-download' $color='black' />}
                 />
               )}
 

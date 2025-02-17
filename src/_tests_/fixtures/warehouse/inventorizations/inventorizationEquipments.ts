@@ -7,7 +7,7 @@ import pick from 'lodash/pick'
 import times from 'lodash/times'
 
 import catalogsFixtures from '_tests_/fixtures/catalogs'
-import warehouseFixtures from '_tests_/fixtures/warehouse'
+import equipmentsFixtures from '_tests_/fixtures/equipments'
 import { fakeId, fakeIdStr, fakeInteger, fakeWord } from '_tests_/helpers'
 
 export const inventorizationEquipmentListItem = (
@@ -35,7 +35,7 @@ export const inventorizationEquipmentListItem = (
         title: fakeWord(),
         serialNumber: fakeIdStr(),
         inventoryNumber: fakeIdStr(),
-        category: pick(warehouseFixtures.equipmentCategory(), 'id', 'title', 'code'),
+        category: pick(equipmentsFixtures.equipmentCategory(), 'id', 'title', 'code'),
       }
     : props!.equipment,
   locationFact: isUndefined(props?.locationFact)

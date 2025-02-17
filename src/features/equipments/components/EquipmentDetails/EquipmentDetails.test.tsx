@@ -25,8 +25,9 @@ import { equipmentRelocationHistoryModalTestUtils } from '_tests_/features/wareh
 import { relocationTaskDetailsTestUtils } from '_tests_/features/warehouses/components/RelocationTaskDetails/testUtils'
 import attachmentsFixtures from '_tests_/fixtures/attachments'
 import commonFixtures from '_tests_/fixtures/common'
+import equipmentsFixtures from '_tests_/fixtures/equipments'
 import userFixtures from '_tests_/fixtures/users'
-import warehouseFixtures from '_tests_/fixtures/warehouse'
+import warehousesFixtures from '_tests_/fixtures/warehouse'
 import {
   buttonTestUtils,
   fakeWord,
@@ -91,7 +92,7 @@ describe('Информация об оборудовании', () => {
 
   describe('При успешном запросе', () => {
     test('Наименование отображается', async () => {
-      const equipment = warehouseFixtures.equipment()
+      const equipment = equipmentsFixtures.equipmentDetail()
       mockGetEquipmentSuccess(props.equipmentId, { body: equipment })
       mockGetEquipmentAttachmentsSuccess(props.equipmentId)
 
@@ -111,7 +112,7 @@ describe('Информация об оборудовании', () => {
     })
 
     test('Категория отображается', async () => {
-      const equipment = warehouseFixtures.equipment()
+      const equipment = equipmentsFixtures.equipmentDetail()
       mockGetEquipmentSuccess(props.equipmentId, { body: equipment })
       mockGetEquipmentAttachmentsSuccess(props.equipmentId)
 
@@ -131,7 +132,7 @@ describe('Информация об оборудовании', () => {
     })
 
     test('Номенклатура отображается', async () => {
-      const equipment = warehouseFixtures.equipment()
+      const equipment = equipmentsFixtures.equipmentDetail()
       mockGetEquipmentSuccess(props.equipmentId, { body: equipment })
       mockGetEquipmentAttachmentsSuccess(props.equipmentId)
 
@@ -152,7 +153,7 @@ describe('Информация об оборудовании', () => {
 
     describe('Инвентарный номер', () => {
       test('Отображается если нет в списке скрытых', async () => {
-        const equipment = warehouseFixtures.equipment()
+        const equipment = equipmentsFixtures.equipmentDetail()
         mockGetEquipmentSuccess(props.equipmentId, { body: equipment })
         mockGetEquipmentAttachmentsSuccess(props.equipmentId)
 
@@ -172,8 +173,10 @@ describe('Информация об оборудовании', () => {
       })
 
       test('Не отображается если категория расходный материал', async () => {
-        const equipment = warehouseFixtures.equipment({
-          category: warehouseFixtures.equipmentCategory({ code: EquipmentCategoryEnum.Consumable }),
+        const equipment = equipmentsFixtures.equipmentDetail({
+          category: equipmentsFixtures.equipmentCategory({
+            code: EquipmentCategoryEnum.Consumable,
+          }),
         })
         mockGetEquipmentSuccess(props.equipmentId, { body: equipment })
         mockGetEquipmentAttachmentsSuccess(props.equipmentId)
@@ -192,9 +195,11 @@ describe('Информация об оборудовании', () => {
 
     describe('Серийный номер', () => {
       test('Отображается если у оборудования он есть', async () => {
-        const equipment = warehouseFixtures.equipment({
-          nomenclature: warehouseFixtures.nomenclature({ equipmentHasSerialNumber: true }),
-          category: warehouseFixtures.equipmentCategory({ code: EquipmentCategoryEnum.Consumable }),
+        const equipment = equipmentsFixtures.equipmentDetail({
+          nomenclature: warehousesFixtures.nomenclature({ equipmentHasSerialNumber: true }),
+          category: equipmentsFixtures.equipmentCategory({
+            code: EquipmentCategoryEnum.Consumable,
+          }),
         })
         mockGetEquipmentSuccess(props.equipmentId, { body: equipment })
         mockGetEquipmentAttachmentsSuccess(props.equipmentId)
@@ -215,9 +220,11 @@ describe('Информация об оборудовании', () => {
       })
 
       test('Не отображается если у оборудования его нет', async () => {
-        const equipment = warehouseFixtures.equipment({
-          nomenclature: warehouseFixtures.nomenclature({ equipmentHasSerialNumber: false }),
-          category: warehouseFixtures.equipmentCategory({ code: EquipmentCategoryEnum.Consumable }),
+        const equipment = equipmentsFixtures.equipmentDetail({
+          nomenclature: warehousesFixtures.nomenclature({ equipmentHasSerialNumber: false }),
+          category: equipmentsFixtures.equipmentCategory({
+            code: EquipmentCategoryEnum.Consumable,
+          }),
         })
         mockGetEquipmentSuccess(props.equipmentId, { body: equipment })
         mockGetEquipmentAttachmentsSuccess(props.equipmentId)
@@ -236,7 +243,7 @@ describe('Информация об оборудовании', () => {
     })
 
     test('Местонахождение отображается', async () => {
-      const equipment = warehouseFixtures.equipment()
+      const equipment = equipmentsFixtures.equipmentDetail()
       mockGetEquipmentSuccess(props.equipmentId, { body: equipment })
       mockGetEquipmentAttachmentsSuccess(props.equipmentId)
 
@@ -256,7 +263,7 @@ describe('Информация об оборудовании', () => {
     })
 
     test('Оприходовано отображается', async () => {
-      const equipment = warehouseFixtures.equipment()
+      const equipment = equipmentsFixtures.equipmentDetail()
       mockGetEquipmentSuccess(props.equipmentId, { body: equipment })
       mockGetEquipmentAttachmentsSuccess(props.equipmentId)
 
@@ -279,7 +286,7 @@ describe('Информация об оборудовании', () => {
     })
 
     test('Состояние отображается', async () => {
-      const equipment = warehouseFixtures.equipment()
+      const equipment = equipmentsFixtures.equipmentDetail()
       mockGetEquipmentSuccess(props.equipmentId, { body: equipment })
       mockGetEquipmentAttachmentsSuccess(props.equipmentId)
 
@@ -302,7 +309,7 @@ describe('Информация об оборудовании', () => {
     })
 
     test('Дата оприходования отображается', async () => {
-      const equipment = warehouseFixtures.equipment()
+      const equipment = equipmentsFixtures.equipmentDetail()
       mockGetEquipmentSuccess(props.equipmentId, { body: equipment })
       mockGetEquipmentAttachmentsSuccess(props.equipmentId)
 
@@ -325,7 +332,7 @@ describe('Информация об оборудовании', () => {
     })
 
     test('Кем оприходовано отображается', async () => {
-      const equipment = warehouseFixtures.equipment()
+      const equipment = equipmentsFixtures.equipmentDetail()
       mockGetEquipmentSuccess(props.equipmentId, { body: equipment })
       mockGetEquipmentAttachmentsSuccess(props.equipmentId)
 
@@ -345,7 +352,7 @@ describe('Информация об оборудовании', () => {
     })
 
     test('Количество отображается', async () => {
-      const equipment = warehouseFixtures.equipment()
+      const equipment = equipmentsFixtures.equipmentDetail()
       mockGetEquipmentSuccess(props.equipmentId, { body: equipment })
       mockGetEquipmentAttachmentsSuccess(props.equipmentId)
 
@@ -372,7 +379,7 @@ describe('Информация об оборудовании', () => {
     })
 
     test('Стоимость отображается', async () => {
-      const equipment = warehouseFixtures.equipment()
+      const equipment = equipmentsFixtures.equipmentDetail()
       mockGetEquipmentSuccess(props.equipmentId, { body: equipment })
       mockGetEquipmentAttachmentsSuccess(props.equipmentId)
 
@@ -400,7 +407,7 @@ describe('Информация об оборудовании', () => {
 
     describe('Новое', () => {
       test('Отображается если нет в списке скрытых', async () => {
-        const equipment = warehouseFixtures.equipment()
+        const equipment = equipmentsFixtures.equipmentDetail()
         mockGetEquipmentSuccess(props.equipmentId, { body: equipment })
         mockGetEquipmentAttachmentsSuccess(props.equipmentId)
 
@@ -420,8 +427,10 @@ describe('Информация об оборудовании', () => {
       })
 
       test('Не отображается если категория расходный материал', async () => {
-        const equipment = warehouseFixtures.equipment({
-          category: warehouseFixtures.equipmentCategory({ code: EquipmentCategoryEnum.Consumable }),
+        const equipment = equipmentsFixtures.equipmentDetail({
+          category: equipmentsFixtures.equipmentCategory({
+            code: EquipmentCategoryEnum.Consumable,
+          }),
         })
         mockGetEquipmentSuccess(props.equipmentId, { body: equipment })
         mockGetEquipmentAttachmentsSuccess(props.equipmentId)
@@ -440,7 +449,7 @@ describe('Информация об оборудовании', () => {
 
     describe('На гарантии', () => {
       test('Отображается если нет в списке скрытых', async () => {
-        const equipment = warehouseFixtures.equipment()
+        const equipment = equipmentsFixtures.equipmentDetail()
         mockGetEquipmentSuccess(props.equipmentId, { body: equipment })
         mockGetEquipmentAttachmentsSuccess(props.equipmentId)
 
@@ -463,8 +472,10 @@ describe('Информация об оборудовании', () => {
       })
 
       test('Не отображается если категория расходный материал', async () => {
-        const equipment = warehouseFixtures.equipment({
-          category: warehouseFixtures.equipmentCategory({ code: EquipmentCategoryEnum.Consumable }),
+        const equipment = equipmentsFixtures.equipmentDetail({
+          category: equipmentsFixtures.equipmentCategory({
+            code: EquipmentCategoryEnum.Consumable,
+          }),
         })
         mockGetEquipmentSuccess(props.equipmentId, { body: equipment })
         mockGetEquipmentAttachmentsSuccess(props.equipmentId)
@@ -483,7 +494,7 @@ describe('Информация об оборудовании', () => {
 
     describe('Отремонтированное', () => {
       test('Отображается если нет в списке скрытых', async () => {
-        const equipment = warehouseFixtures.equipment()
+        const equipment = equipmentsFixtures.equipmentDetail()
         mockGetEquipmentSuccess(props.equipmentId, { body: equipment })
         mockGetEquipmentAttachmentsSuccess(props.equipmentId)
 
@@ -506,8 +517,10 @@ describe('Информация об оборудовании', () => {
       })
 
       test('Не отображается если категория расходный материал', async () => {
-        const equipment = warehouseFixtures.equipment({
-          category: warehouseFixtures.equipmentCategory({ code: EquipmentCategoryEnum.Consumable }),
+        const equipment = equipmentsFixtures.equipmentDetail({
+          category: equipmentsFixtures.equipmentCategory({
+            code: EquipmentCategoryEnum.Consumable,
+          }),
         })
         mockGetEquipmentSuccess(props.equipmentId, { body: equipment })
         mockGetEquipmentAttachmentsSuccess(props.equipmentId)
@@ -526,7 +539,7 @@ describe('Информация об оборудовании', () => {
 
     describe('Счётчик пробега текущий', () => {
       test('Отображается если нет в списке скрытых', async () => {
-        const equipment = warehouseFixtures.equipment()
+        const equipment = equipmentsFixtures.equipmentDetail()
         mockGetEquipmentSuccess(props.equipmentId, { body: equipment })
         mockGetEquipmentAttachmentsSuccess(props.equipmentId)
 
@@ -546,8 +559,10 @@ describe('Информация об оборудовании', () => {
       })
 
       test('Не отображается если категория расходный материал', async () => {
-        const equipment = warehouseFixtures.equipment({
-          category: warehouseFixtures.equipmentCategory({ code: EquipmentCategoryEnum.Consumable }),
+        const equipment = equipmentsFixtures.equipmentDetail({
+          category: equipmentsFixtures.equipmentCategory({
+            code: EquipmentCategoryEnum.Consumable,
+          }),
         })
         mockGetEquipmentSuccess(props.equipmentId, { body: equipment })
         mockGetEquipmentAttachmentsSuccess(props.equipmentId)
@@ -566,7 +581,7 @@ describe('Информация об оборудовании', () => {
 
     describe('Владелец оборудования', () => {
       test('Отображается вместе с макрорегионом если нет в списке скрытых', async () => {
-        const equipment = warehouseFixtures.equipment()
+        const equipment = equipmentsFixtures.equipmentDetail()
         mockGetEquipmentSuccess(props.equipmentId, { body: equipment })
         mockGetEquipmentAttachmentsSuccess(props.equipmentId)
 
@@ -589,7 +604,7 @@ describe('Информация об оборудовании', () => {
       })
 
       test('Отображается значение по умолчанию', async () => {
-        const equipment = warehouseFixtures.equipment({ owner: null })
+        const equipment = equipmentsFixtures.equipmentDetail({ owner: null })
         mockGetEquipmentSuccess(props.equipmentId, { body: equipment })
         mockGetEquipmentAttachmentsSuccess(props.equipmentId)
 
@@ -609,8 +624,10 @@ describe('Информация об оборудовании', () => {
       })
 
       test('Не отображается если категория расходный материал', async () => {
-        const equipment = warehouseFixtures.equipment({
-          category: warehouseFixtures.equipmentCategory({ code: EquipmentCategoryEnum.Consumable }),
+        const equipment = equipmentsFixtures.equipmentDetail({
+          category: equipmentsFixtures.equipmentCategory({
+            code: EquipmentCategoryEnum.Consumable,
+          }),
         })
         mockGetEquipmentSuccess(props.equipmentId, { body: equipment })
         mockGetEquipmentAttachmentsSuccess(props.equipmentId)
@@ -628,7 +645,7 @@ describe('Информация об оборудовании', () => {
     })
 
     test('Назначение оборудования отображается', async () => {
-      const equipment = warehouseFixtures.equipment()
+      const equipment = equipmentsFixtures.equipmentDetail()
       mockGetEquipmentSuccess(props.equipmentId, { body: equipment })
       mockGetEquipmentAttachmentsSuccess(props.equipmentId)
 
@@ -648,7 +665,7 @@ describe('Информация об оборудовании', () => {
     })
 
     test('Комментарий отображается', async () => {
-      const equipment = warehouseFixtures.equipment()
+      const equipment = equipmentsFixtures.equipmentDetail()
       mockGetEquipmentSuccess(props.equipmentId, { body: equipment })
       mockGetEquipmentAttachmentsSuccess(props.equipmentId)
 
@@ -669,7 +686,7 @@ describe('Информация об оборудовании', () => {
 
     describe('Изображения оборудования', () => {
       test('При успешном запросе отображаются корректно', async () => {
-        mockGetEquipmentSuccess(props.equipmentId, { body: warehouseFixtures.equipment() })
+        mockGetEquipmentSuccess(props.equipmentId, { body: equipmentsFixtures.equipmentDetail() })
 
         const attachmentList = attachmentsFixtures.attachments()
         mockGetEquipmentAttachmentsSuccess(props.equipmentId, {
@@ -698,7 +715,7 @@ describe('Информация об оборудовании', () => {
 
       describe('При не успешном запросе', () => {
         test('Обрабатывается ошибка 403', async () => {
-          mockGetEquipmentSuccess(props.equipmentId, { body: warehouseFixtures.equipment() })
+          mockGetEquipmentSuccess(props.equipmentId, { body: equipmentsFixtures.equipmentDetail() })
 
           const errorMsg = fakeWord()
           mockGetEquipmentAttachmentsForbiddenError(props.equipmentId, {
@@ -719,7 +736,7 @@ describe('Информация об оборудовании', () => {
         })
 
         test('Обрабатывается ошибка 404', async () => {
-          mockGetEquipmentSuccess(props.equipmentId, { body: warehouseFixtures.equipment() })
+          mockGetEquipmentSuccess(props.equipmentId, { body: equipmentsFixtures.equipmentDetail() })
 
           const errorMsg = fakeWord()
           mockGetEquipmentAttachmentsNotFoundError(props.equipmentId, {
@@ -740,7 +757,7 @@ describe('Информация об оборудовании', () => {
         })
 
         test('Обрабатывается ошибка 500', async () => {
-          mockGetEquipmentSuccess(props.equipmentId, { body: warehouseFixtures.equipment() })
+          mockGetEquipmentSuccess(props.equipmentId, { body: equipmentsFixtures.equipmentDetail() })
           mockGetEquipmentAttachmentsServerError(props.equipmentId)
 
           render(<EquipmentDetails {...props} />, {
@@ -761,7 +778,7 @@ describe('Информация об оборудовании', () => {
 
       describe('Просмотр всех изображений', () => {
         test('Кнопка отображается корректно', async () => {
-          mockGetEquipmentSuccess(props.equipmentId, { body: warehouseFixtures.equipment() })
+          mockGetEquipmentSuccess(props.equipmentId, { body: equipmentsFixtures.equipmentDetail() })
 
           const attachmentListResponse = commonFixtures.paginatedListResponse(
             attachmentsFixtures.attachments(),
@@ -787,7 +804,7 @@ describe('Информация об оборудовании', () => {
         })
 
         test('Модалка отображается корректно', async () => {
-          mockGetEquipmentSuccess(props.equipmentId, { body: warehouseFixtures.equipment() })
+          mockGetEquipmentSuccess(props.equipmentId, { body: equipmentsFixtures.equipmentDetail() })
 
           const attachmentList = attachmentsFixtures.attachments()
           mockGetEquipmentAttachmentsSuccess(props.equipmentId, {
@@ -819,7 +836,7 @@ describe('Информация об оборудовании', () => {
 
     describe('QR код', () => {
       test('Отображается корректно', async () => {
-        const equipment = warehouseFixtures.equipment()
+        const equipment = equipmentsFixtures.equipmentDetail()
         mockGetEquipmentSuccess(props.equipmentId, { body: equipment })
         mockGetEquipmentAttachmentsSuccess(props.equipmentId)
 
@@ -842,7 +859,7 @@ describe('Информация об оборудовании', () => {
 
       describe('Кнопка печать', () => {
         test('Отображается корректно', async () => {
-          const equipment = warehouseFixtures.equipment()
+          const equipment = equipmentsFixtures.equipmentDetail()
           mockGetEquipmentSuccess(props.equipmentId, { body: equipment })
           mockGetEquipmentAttachmentsSuccess(props.equipmentId)
 
@@ -863,7 +880,7 @@ describe('Информация об оборудовании', () => {
         test('При клике обработчик вызывается корректно', async () => {
           const printImageSpy = jest.spyOn(commonUtils, 'printImage')
 
-          const equipment = warehouseFixtures.equipment()
+          const equipment = equipmentsFixtures.equipmentDetail()
           mockGetEquipmentSuccess(props.equipmentId, { body: equipment })
           mockGetEquipmentAttachmentsSuccess(props.equipmentId)
 
@@ -939,7 +956,7 @@ describe('Информация об оборудовании', () => {
 
   describe('История перемещений', () => {
     test('Кнопка отображается', async () => {
-      mockGetEquipmentSuccess(props.equipmentId, { body: warehouseFixtures.equipment() })
+      mockGetEquipmentSuccess(props.equipmentId, { body: equipmentsFixtures.equipmentDetail() })
       mockGetEquipmentAttachmentsSuccess(props.equipmentId)
 
       const { user } = render(<EquipmentDetails {...props} />, {
@@ -956,7 +973,7 @@ describe('Информация об оборудовании', () => {
     })
 
     test('Кнопка активна если условия соблюдены', async () => {
-      mockGetEquipmentSuccess(props.equipmentId, { body: warehouseFixtures.equipment() })
+      mockGetEquipmentSuccess(props.equipmentId, { body: equipmentsFixtures.equipmentDetail() })
       mockGetEquipmentAttachmentsSuccess(props.equipmentId)
 
       const { user } = render(<EquipmentDetails {...props} />, {
@@ -980,7 +997,7 @@ describe('Информация об оборудовании', () => {
     })
 
     test('Кнопка не активна если условия соблюдены, но нет прав на чтение оборудования', async () => {
-      mockGetEquipmentSuccess(props.equipmentId, { body: warehouseFixtures.equipment() })
+      mockGetEquipmentSuccess(props.equipmentId, { body: equipmentsFixtures.equipmentDetail() })
       mockGetEquipmentAttachmentsSuccess(props.equipmentId)
 
       const { user } = render(<EquipmentDetails {...props} />, {
@@ -999,7 +1016,7 @@ describe('Информация об оборудовании', () => {
     })
 
     test('Кнопка не активна если условия соблюдены, но нет прав на чтение заявок на перемещение', async () => {
-      mockGetEquipmentSuccess(props.equipmentId, { body: warehouseFixtures.equipment() })
+      mockGetEquipmentSuccess(props.equipmentId, { body: equipmentsFixtures.equipmentDetail() })
       mockGetEquipmentAttachmentsSuccess(props.equipmentId)
 
       const { user } = render(<EquipmentDetails {...props} />, {
@@ -1018,7 +1035,7 @@ describe('Информация об оборудовании', () => {
     })
 
     test('При клике на кнопку открывается модалка', async () => {
-      mockGetEquipmentSuccess(props.equipmentId, { body: warehouseFixtures.equipment() })
+      mockGetEquipmentSuccess(props.equipmentId, { body: equipmentsFixtures.equipmentDetail() })
       mockGetEquipmentRelocationHistorySuccess(props.equipmentId)
       mockGetEquipmentAttachmentsSuccess(props.equipmentId)
 
@@ -1044,10 +1061,10 @@ describe('Информация об оборудовании', () => {
     })
 
     test('При успешном запросе данные отображаются', async () => {
-      mockGetEquipmentSuccess(props.equipmentId, { body: warehouseFixtures.equipment() })
+      mockGetEquipmentSuccess(props.equipmentId, { body: equipmentsFixtures.equipmentDetail() })
       mockGetEquipmentAttachmentsSuccess(props.equipmentId)
 
-      const equipmentRelocationHistory = warehouseFixtures.equipmentRelocationHistory()
+      const equipmentRelocationHistory = equipmentsFixtures.equipmentRelocationHistory()
       mockGetEquipmentRelocationHistorySuccess(props.equipmentId, {
         body: equipmentRelocationHistory,
       })
@@ -1079,7 +1096,7 @@ describe('Информация об оборудовании', () => {
 
     describe('При не успешном запросе', () => {
       test('Обрабатывается ошибка 403', async () => {
-        mockGetEquipmentSuccess(props.equipmentId, { body: warehouseFixtures.equipment() })
+        mockGetEquipmentSuccess(props.equipmentId, { body: equipmentsFixtures.equipmentDetail() })
         mockGetEquipmentAttachmentsSuccess(props.equipmentId)
 
         const errorMsg = fakeWord()
@@ -1110,7 +1127,7 @@ describe('Информация об оборудовании', () => {
       })
 
       test('Обрабатывается ошибка 404', async () => {
-        mockGetEquipmentSuccess(props.equipmentId, { body: warehouseFixtures.equipment() })
+        mockGetEquipmentSuccess(props.equipmentId, { body: equipmentsFixtures.equipmentDetail() })
         mockGetEquipmentAttachmentsSuccess(props.equipmentId)
 
         const errorMsg = fakeWord()
@@ -1141,7 +1158,7 @@ describe('Информация об оборудовании', () => {
       })
 
       test('Обрабатывается ошибка 500', async () => {
-        mockGetEquipmentSuccess(props.equipmentId, { body: warehouseFixtures.equipment() })
+        mockGetEquipmentSuccess(props.equipmentId, { body: equipmentsFixtures.equipmentDetail() })
         mockGetEquipmentRelocationHistoryServerError(props.equipmentId)
         mockGetEquipmentAttachmentsSuccess(props.equipmentId)
 
@@ -1171,10 +1188,10 @@ describe('Информация об оборудовании', () => {
     })
 
     test('При клике на строку истории открывается карточка заявки на перемещение', async () => {
-      mockGetEquipmentSuccess(props.equipmentId, { body: warehouseFixtures.equipment() })
+      mockGetEquipmentSuccess(props.equipmentId, { body: equipmentsFixtures.equipmentDetail() })
       mockGetEquipmentAttachmentsSuccess(props.equipmentId)
 
-      const equipmentRelocationHistoryItem = warehouseFixtures.equipmentRelocationHistoryItem()
+      const equipmentRelocationHistoryItem = equipmentsFixtures.equipmentRelocationHistoryItem()
       mockGetEquipmentRelocationHistorySuccess(props.equipmentId, {
         body: [equipmentRelocationHistoryItem],
       })
@@ -1212,7 +1229,7 @@ describe('Информация об оборудовании', () => {
 
   describe('Редактирование', () => {
     test('Элемент в меню отображается и активен', async () => {
-      const equipment = warehouseFixtures.equipment({ id: props.equipmentId })
+      const equipment = equipmentsFixtures.equipmentDetail({ id: props.equipmentId })
       mockGetEquipmentSuccess(equipment.id, { body: equipment })
       mockGetEquipmentAttachmentsSuccess(props.equipmentId)
 
@@ -1231,7 +1248,7 @@ describe('Информация об оборудовании', () => {
     })
 
     test('Модалка открывается', async () => {
-      const equipment = warehouseFixtures.equipment({ id: props.equipmentId })
+      const equipment = equipmentsFixtures.equipmentDetail({ id: props.equipmentId })
       mockGetEquipmentSuccess(equipment.id, { body: equipment })
       mockGetEquipmentAttachmentsSuccess(props.equipmentId)
       mockGetWarehousesSuccess()
@@ -1259,7 +1276,7 @@ describe('Информация об оборудовании', () => {
 
   describe('История АТЭ', () => {
     test('Элемент в меню отображается и активен', async () => {
-      const equipment = warehouseFixtures.equipment({ id: props.equipmentId })
+      const equipment = equipmentsFixtures.equipmentDetail({ id: props.equipmentId })
       mockGetEquipmentSuccess(equipment.id, { body: equipment })
       mockGetEquipmentAttachmentsSuccess(props.equipmentId)
 
@@ -1278,7 +1295,7 @@ describe('Информация об оборудовании', () => {
     })
 
     test('Модалка открывается', async () => {
-      const equipment = warehouseFixtures.equipment({ id: props.equipmentId })
+      const equipment = equipmentsFixtures.equipmentDetail({ id: props.equipmentId })
       mockGetEquipmentSuccess(equipment.id, { body: equipment })
       mockGetEquipmentAttachmentsSuccess(props.equipmentId)
       mockGetTechnicalExaminationsSuccess()
@@ -1300,7 +1317,7 @@ describe('Информация об оборудовании', () => {
 
   describe('Сформировать АТЭ', () => {
     test('Элемент в меню отображается', async () => {
-      const equipment = warehouseFixtures.equipment({ id: props.equipmentId })
+      const equipment = equipmentsFixtures.equipmentDetail({ id: props.equipmentId })
       mockGetEquipmentSuccess(equipment.id, { body: equipment })
       mockGetEquipmentAttachmentsSuccess(props.equipmentId)
 
@@ -1317,7 +1334,7 @@ describe('Информация об оборудовании', () => {
     })
 
     test(`Элемент в меню активен если есть права ${UserPermissionsEnum.EquipmentsRead}, состояние оборудования ${EquipmentConditionEnum.Broken}`, async () => {
-      const equipment = warehouseFixtures.equipment({
+      const equipment = equipmentsFixtures.equipmentDetail({
         id: props.equipmentId,
         condition: EquipmentConditionEnum.Broken,
       })
@@ -1342,7 +1359,7 @@ describe('Информация об оборудовании', () => {
     })
 
     test(`Элемент в меню активен если есть права ${UserPermissionsEnum.EquipmentsRead}, состояние оборудования ${EquipmentConditionEnum.NonRepairable}`, async () => {
-      const equipment = warehouseFixtures.equipment({
+      const equipment = equipmentsFixtures.equipmentDetail({
         id: props.equipmentId,
         condition: EquipmentConditionEnum.NonRepairable,
       })
@@ -1367,7 +1384,7 @@ describe('Информация об оборудовании', () => {
     })
 
     test(`Элемент в меню не активен если есть права ${UserPermissionsEnum.EquipmentsRead}, но состояние оборудования не ${EquipmentConditionEnum.Broken} или ${EquipmentConditionEnum.NonRepairable}`, async () => {
-      const equipment = warehouseFixtures.equipment({
+      const equipment = equipmentsFixtures.equipmentDetail({
         id: props.equipmentId,
         condition: EquipmentConditionEnum.Working,
       })
@@ -1392,7 +1409,7 @@ describe('Информация об оборудовании', () => {
     })
 
     test(`Элемент в меню не активен если нет прав ${UserPermissionsEnum.EquipmentsRead}, состояние оборудования ${EquipmentConditionEnum.Broken}`, async () => {
-      const equipment = warehouseFixtures.equipment({
+      const equipment = equipmentsFixtures.equipmentDetail({
         id: props.equipmentId,
         condition: EquipmentConditionEnum.Broken,
       })
@@ -1413,7 +1430,7 @@ describe('Информация об оборудовании', () => {
     })
 
     test(`Элемент в меню не активен если нет прав ${UserPermissionsEnum.EquipmentsRead}, состояние оборудования ${EquipmentConditionEnum.NonRepairable}`, async () => {
-      const equipment = warehouseFixtures.equipment({
+      const equipment = equipmentsFixtures.equipmentDetail({
         id: props.equipmentId,
         condition: EquipmentConditionEnum.NonRepairable,
       })
@@ -1434,7 +1451,7 @@ describe('Информация об оборудовании', () => {
     })
 
     test('Модалка открывается', async () => {
-      const equipment = warehouseFixtures.equipment({
+      const equipment = equipmentsFixtures.equipmentDetail({
         id: props.equipmentId,
         condition: EquipmentConditionEnum.NonRepairable,
       })

@@ -15,14 +15,14 @@ import {
   ariaSortAttrName,
   columnWithSortingClass,
 } from '_tests_/constants/components'
-import warehouseFixtures from '_tests_/fixtures/warehouse'
+import warehousesFixtures from '_tests_/fixtures/warehouse'
 import { render, tableTestUtils } from '_tests_/helpers'
 
 import ExecuteInventorizationRelocationTaskTable from './index'
 import { ExecuteInventorizationRelocationTaskTableProps } from './types'
 
 const relocationTaskListItem = pick(
-  warehouseFixtures.relocationTaskListItem(),
+  warehousesFixtures.relocationTaskListItem(),
   'id',
   'type',
   'relocateFrom',
@@ -105,7 +105,7 @@ describe('Таблица заявок на перемещение оборудо
   })
 
   test('Пагинация работает', async () => {
-    const relocationTasks = warehouseFixtures.relocationTasks(11)
+    const relocationTasks = warehousesFixtures.relocationTasks(11)
 
     const { user } = render(
       <ExecuteInventorizationRelocationTaskTable {...props} dataSource={relocationTasks} />,

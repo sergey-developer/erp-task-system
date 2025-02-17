@@ -50,7 +50,7 @@ import { returnRelocationTaskToReworkModalTestUtils } from '_tests_/features/war
 import { createDocumentsPackagePageTestUtils } from '_tests_/features/warehouses/pages/CreateDocumentsPackagePage/testUtils'
 import { editRelocationTaskDraftPageTestUtils } from '_tests_/features/warehouses/pages/EditRelocationTaskDraftPage/testUtils'
 import userFixtures from '_tests_/fixtures/users'
-import warehouseFixtures from '_tests_/fixtures/warehouse'
+import warehousesFixtures from '_tests_/fixtures/warehouse'
 import {
   fakeWord,
   getStoreWithAuth,
@@ -119,7 +119,7 @@ notificationTestUtils.setupNotifications()
 describe('Информация о заявке о перемещении', () => {
   describe('При успешном запросе', () => {
     test('Заголовок отображается', async () => {
-      const relocationTask = warehouseFixtures.relocationTask()
+      const relocationTask = warehousesFixtures.relocationTask()
       mockGetRelocationTaskSuccess(
         { relocationTaskId: props.relocationTaskId },
         { body: relocationTask },
@@ -141,7 +141,7 @@ describe('Информация о заявке о перемещении', () =>
     })
 
     test('Тип заявки отображается', async () => {
-      const relocationTask = warehouseFixtures.relocationTask()
+      const relocationTask = warehousesFixtures.relocationTask()
       mockGetRelocationTaskSuccess(
         { relocationTaskId: props.relocationTaskId },
         { body: relocationTask },
@@ -167,7 +167,7 @@ describe('Информация о заявке о перемещении', () =>
     })
 
     test('Срок выполнения отображается', async () => {
-      const relocationTask = warehouseFixtures.relocationTask()
+      const relocationTask = warehousesFixtures.relocationTask()
       mockGetRelocationTaskSuccess(
         { relocationTaskId: props.relocationTaskId },
         { body: relocationTask },
@@ -193,7 +193,7 @@ describe('Информация о заявке о перемещении', () =>
     })
 
     test('Объект выбытия отображается', async () => {
-      const relocationTask = warehouseFixtures.relocationTask()
+      const relocationTask = warehousesFixtures.relocationTask()
       mockGetRelocationTaskSuccess(
         { relocationTaskId: props.relocationTaskId },
         { body: relocationTask },
@@ -219,7 +219,7 @@ describe('Информация о заявке о перемещении', () =>
     })
 
     test('Объект прибытия отображается', async () => {
-      const relocationTask = warehouseFixtures.relocationTask()
+      const relocationTask = warehousesFixtures.relocationTask()
       mockGetRelocationTaskSuccess(
         { relocationTaskId: props.relocationTaskId },
         { body: relocationTask },
@@ -246,7 +246,7 @@ describe('Информация о заявке о перемещении', () =>
 
     describe('Исполнитель', () => {
       test('Отображается кто завершил заявку если он есть, вместо исполнителей', async () => {
-        const relocationTask = warehouseFixtures.relocationTask()
+        const relocationTask = warehousesFixtures.relocationTask()
         mockGetRelocationTaskSuccess(
           { relocationTaskId: props.relocationTaskId },
           { body: relocationTask },
@@ -272,7 +272,7 @@ describe('Информация о заявке о перемещении', () =>
       })
 
       test('Отображаются исполнители если нет того кто завершил заявку', async () => {
-        const relocationTask = warehouseFixtures.relocationTask({ completedBy: null })
+        const relocationTask = warehousesFixtures.relocationTask({ completedBy: null })
         mockGetRelocationTaskSuccess(
           { relocationTaskId: props.relocationTaskId },
           { body: relocationTask },
@@ -298,7 +298,7 @@ describe('Информация о заявке о перемещении', () =>
     })
 
     test('Контролер отображается', async () => {
-      const relocationTask = warehouseFixtures.relocationTask()
+      const relocationTask = warehousesFixtures.relocationTask()
       mockGetRelocationTaskSuccess(
         { relocationTaskId: props.relocationTaskId },
         { body: relocationTask },
@@ -324,7 +324,7 @@ describe('Информация о заявке о перемещении', () =>
     })
 
     test('Статус отображается', async () => {
-      const relocationTask = warehouseFixtures.relocationTask()
+      const relocationTask = warehousesFixtures.relocationTask()
       mockGetRelocationTaskSuccess(
         { relocationTaskId: props.relocationTaskId },
         { body: relocationTask },
@@ -350,7 +350,7 @@ describe('Информация о заявке о перемещении', () =>
     })
 
     test('Причина возврата отображается корректно', async () => {
-      const relocationTask = warehouseFixtures.relocationTask()
+      const relocationTask = warehousesFixtures.relocationTask()
       mockGetRelocationTaskSuccess(
         { relocationTaskId: props.relocationTaskId },
         { body: relocationTask },
@@ -389,7 +389,7 @@ describe('Информация о заявке о перемещении', () =>
     })
 
     test('Инициатор отображается', async () => {
-      const relocationTask = warehouseFixtures.relocationTask()
+      const relocationTask = warehousesFixtures.relocationTask()
       mockGetRelocationTaskSuccess(
         { relocationTaskId: props.relocationTaskId },
         { body: relocationTask },
@@ -415,7 +415,7 @@ describe('Информация о заявке о перемещении', () =>
     })
 
     test('Создано отображается', async () => {
-      const relocationTask = warehouseFixtures.relocationTask()
+      const relocationTask = warehousesFixtures.relocationTask()
       mockGetRelocationTaskSuccess(
         { relocationTaskId: props.relocationTaskId },
         { body: relocationTask },
@@ -442,7 +442,7 @@ describe('Информация о заявке о перемещении', () =>
 
     describe('Заявка ITSM', () => {
       test('Отображается корректно', async () => {
-        const relocationTask = warehouseFixtures.relocationTask()
+        const relocationTask = warehousesFixtures.relocationTask()
         mockGetRelocationTaskSuccess(
           { relocationTaskId: props.relocationTaskId },
           { body: relocationTask },
@@ -472,7 +472,7 @@ describe('Информация о заявке о перемещении', () =>
       })
 
       test('При клике переходит на страницу реестра заявок и открывает карточку заявки', async () => {
-        const relocationTask = warehouseFixtures.relocationTask()
+        const relocationTask = warehousesFixtures.relocationTask()
         mockGetRelocationTaskSuccess(
           { relocationTaskId: props.relocationTaskId },
           { body: relocationTask },
@@ -517,7 +517,7 @@ describe('Информация о заявке о перемещении', () =>
     })
 
     test('Комментарий отображается', async () => {
-      const relocationTask = warehouseFixtures.relocationTask()
+      const relocationTask = warehousesFixtures.relocationTask()
       mockGetRelocationTaskSuccess(
         { relocationTaskId: props.relocationTaskId },
         { body: relocationTask },
@@ -541,7 +541,7 @@ describe('Информация о заявке о перемещении', () =>
 
     describe('Документы', () => {
       test('Отображаются', async () => {
-        const relocationTask = warehouseFixtures.relocationTask()
+        const relocationTask = warehousesFixtures.relocationTask()
         mockGetRelocationTaskSuccess(
           { relocationTaskId: props.relocationTaskId },
           { body: relocationTask },
@@ -568,7 +568,7 @@ describe('Информация о заявке о перемещении', () =>
 
     describe('Кнопка добавления', () => {
       test('Отображается', async () => {
-        const relocationTask = warehouseFixtures.relocationTask()
+        const relocationTask = warehousesFixtures.relocationTask()
         mockGetRelocationTaskSuccess(
           { relocationTaskId: props.relocationTaskId },
           { body: relocationTask },
@@ -589,7 +589,7 @@ describe('Информация о заявке о перемещении', () =>
       })
 
       test('Загруженный документ отображается', async () => {
-        const relocationTask = warehouseFixtures.relocationTask()
+        const relocationTask = warehousesFixtures.relocationTask()
         mockGetRelocationTaskSuccess(
           { relocationTaskId: props.relocationTaskId },
           { body: relocationTask },
@@ -685,7 +685,7 @@ describe('Информация о заявке о перемещении', () =>
   describe('Перечень оборудования', () => {
     test('При успешном запросе отображается', async () => {
       mockGetRelocationTaskSuccess({ relocationTaskId: props.relocationTaskId })
-      const relocationEquipmentList = warehouseFixtures.relocationEquipments()
+      const relocationEquipmentList = warehousesFixtures.relocationEquipments()
       mockGetRelocationEquipmentsSuccess(
         { relocationTaskId: props.relocationTaskId },
         {
@@ -774,7 +774,7 @@ describe('Информация о заявке о перемещении', () =>
     describe('Изображения оборудования', () => {
       test('При успешном запросе отображаются', async () => {
         mockGetRelocationTaskSuccess({ relocationTaskId: props.relocationTaskId })
-        const relocationEquipmentListItem = warehouseFixtures.relocationEquipmentListItem()
+        const relocationEquipmentListItem = warehousesFixtures.relocationEquipmentListItem()
         const relocationEquipmentList = [relocationEquipmentListItem]
         mockGetRelocationEquipmentsSuccess(
           { relocationTaskId: props.relocationTaskId },
@@ -783,7 +783,7 @@ describe('Информация о заявке о перемещении', () =>
           },
         )
 
-        const relocationEquipmentAttachments = warehouseFixtures.relocationEquipmentAttachments()
+        const relocationEquipmentAttachments = warehousesFixtures.relocationEquipmentAttachments()
         mockGetRelocationEquipmentAttachmentsSuccess(
           relocationEquipmentListItem.relocationEquipmentId,
           { body: relocationEquipmentAttachments },
@@ -815,7 +815,7 @@ describe('Информация о заявке о перемещении', () =>
       describe('При не успешном запросе', () => {
         test('Обрабатывает ошибку 403', async () => {
           mockGetRelocationTaskSuccess({ relocationTaskId: props.relocationTaskId })
-          const relocationEquipmentListItem = warehouseFixtures.relocationEquipmentListItem()
+          const relocationEquipmentListItem = warehousesFixtures.relocationEquipmentListItem()
           mockGetRelocationEquipmentsSuccess(
             { relocationTaskId: props.relocationTaskId },
             {
@@ -851,7 +851,7 @@ describe('Информация о заявке о перемещении', () =>
 
         test('Обрабатывает ошибку 404', async () => {
           mockGetRelocationTaskSuccess({ relocationTaskId: props.relocationTaskId })
-          const relocationEquipmentListItem = warehouseFixtures.relocationEquipmentListItem()
+          const relocationEquipmentListItem = warehousesFixtures.relocationEquipmentListItem()
           mockGetRelocationEquipmentsSuccess(
             { relocationTaskId: props.relocationTaskId },
             {
@@ -887,7 +887,7 @@ describe('Информация о заявке о перемещении', () =>
 
         test('Обрабатывает ошибку 500', async () => {
           mockGetRelocationTaskSuccess({ relocationTaskId: props.relocationTaskId })
-          const relocationEquipmentListItem = warehouseFixtures.relocationEquipmentListItem()
+          const relocationEquipmentListItem = warehousesFixtures.relocationEquipmentListItem()
           mockGetRelocationEquipmentsSuccess(
             { relocationTaskId: props.relocationTaskId },
             {
@@ -1121,7 +1121,7 @@ describe('Информация о заявке о перемещении', () =>
     })
 
     test('Пункт меню активен если условия соблюдены', async () => {
-      const relocationTask = warehouseFixtures.relocationTask({
+      const relocationTask = warehousesFixtures.relocationTask({
         id: props.relocationTaskId,
         status: RelocationTaskStatusEnum.New,
       })
@@ -1150,7 +1150,7 @@ describe('Информация о заявке о перемещении', () =>
 
     describe('Пункт меню не активен', () => {
       test('Если условия соблюдены, но нет прав', async () => {
-        const relocationTask = warehouseFixtures.relocationTask({
+        const relocationTask = warehousesFixtures.relocationTask({
           id: props.relocationTaskId,
           status: RelocationTaskStatusEnum.New,
         })
@@ -1176,7 +1176,7 @@ describe('Информация о заявке о перемещении', () =>
       })
 
       test('Если условия соблюдены, но создатель заявки не авторизованный пользователь', async () => {
-        const relocationTask = warehouseFixtures.relocationTask({
+        const relocationTask = warehousesFixtures.relocationTask({
           id: props.relocationTaskId,
           status: RelocationTaskStatusEnum.New,
         })
@@ -1204,7 +1204,7 @@ describe('Информация о заявке о перемещении', () =>
       })
 
       test('Если условия соблюдены, но заявка отменена', async () => {
-        const relocationTask = warehouseFixtures.relocationTask({
+        const relocationTask = warehousesFixtures.relocationTask({
           id: props.relocationTaskId,
           status: RelocationTaskStatusEnum.Canceled,
         })
@@ -1234,7 +1234,7 @@ describe('Информация о заявке о перемещении', () =>
       })
 
       test('Если условия соблюдены, но заявка закрыта', async () => {
-        const relocationTask = warehouseFixtures.relocationTask({
+        const relocationTask = warehousesFixtures.relocationTask({
           id: props.relocationTaskId,
           status: RelocationTaskStatusEnum.Closed,
         })
@@ -1264,7 +1264,7 @@ describe('Информация о заявке о перемещении', () =>
       })
 
       test('Если условия соблюдены, но заявка завершена', async () => {
-        const relocationTask = warehouseFixtures.relocationTask({
+        const relocationTask = warehousesFixtures.relocationTask({
           id: props.relocationTaskId,
           status: RelocationTaskStatusEnum.Completed,
         })
@@ -1315,7 +1315,7 @@ describe('Информация о заявке о перемещении', () =>
     })
 
     test('Пункт меню активен если: есть права на обновление заявки, заявка не завершена, не закрыта и не отменена, пользователь является исполнителем заявки', async () => {
-      const relocationTask = warehouseFixtures.relocationTask({
+      const relocationTask = warehousesFixtures.relocationTask({
         id: props.relocationTaskId,
         ...canExecuteRelocationTaskProps.relocationTask,
       })
@@ -1343,7 +1343,7 @@ describe('Информация о заявке о перемещении', () =>
     })
 
     test('Пункт меню активен если: есть права на обновление заявки, заявка не завершена, не закрыта и не отменена, пользователем является завершивший заявку', async () => {
-      const relocationTask = warehouseFixtures.relocationTask({
+      const relocationTask = warehousesFixtures.relocationTask({
         id: props.relocationTaskId,
         ...canExecuteRelocationTaskProps.relocationTask,
       })
@@ -1372,7 +1372,7 @@ describe('Информация о заявке о перемещении', () =>
 
     describe('Пункт меню не активен', () => {
       test('Если условия соблюдены, но нет прав', async () => {
-        const relocationTask = warehouseFixtures.relocationTask({
+        const relocationTask = warehousesFixtures.relocationTask({
           id: props.relocationTaskId,
           ...canExecuteRelocationTaskProps.relocationTask,
         })
@@ -1398,7 +1398,7 @@ describe('Информация о заявке о перемещении', () =>
       })
 
       test('Если условия соблюдены, но исполнитель заявки или её завершивший не авторизованный пользователь', async () => {
-        const relocationTask = warehouseFixtures.relocationTask({
+        const relocationTask = warehousesFixtures.relocationTask({
           id: props.relocationTaskId,
           ...canExecuteRelocationTaskProps.relocationTask,
         })
@@ -1426,7 +1426,7 @@ describe('Информация о заявке о перемещении', () =>
       })
 
       test('Если условия соблюдены, но заявка отменена', async () => {
-        const relocationTask = warehouseFixtures.relocationTask({
+        const relocationTask = warehousesFixtures.relocationTask({
           id: props.relocationTaskId,
           ...canExecuteRelocationTaskProps.relocationTask,
           status: RelocationTaskStatusEnum.Canceled,
@@ -1455,7 +1455,7 @@ describe('Информация о заявке о перемещении', () =>
       })
 
       test('Если условия соблюдены, но заявка закрыта', async () => {
-        const relocationTask = warehouseFixtures.relocationTask({
+        const relocationTask = warehousesFixtures.relocationTask({
           id: props.relocationTaskId,
           ...canExecuteRelocationTaskProps.relocationTask,
           status: RelocationTaskStatusEnum.Closed,
@@ -1484,7 +1484,7 @@ describe('Информация о заявке о перемещении', () =>
       })
 
       test('Если условия соблюдены, но заявка завершена', async () => {
-        const relocationTask = warehouseFixtures.relocationTask({
+        const relocationTask = warehousesFixtures.relocationTask({
           id: props.relocationTaskId,
           ...canExecuteRelocationTaskProps.relocationTask,
           status: RelocationTaskStatusEnum.Completed,
@@ -1515,7 +1515,7 @@ describe('Информация о заявке о перемещении', () =>
 
     describe('При успешном запросе', () => {
       test.skip('Закрывается модалка и заявка загружается снова', async () => {
-        const relocationTask = warehouseFixtures.relocationTask({
+        const relocationTask = warehousesFixtures.relocationTask({
           id: props.relocationTaskId,
           status: RelocationTaskStatusEnum.New,
         })
@@ -1555,7 +1555,7 @@ describe('Информация о заявке о перемещении', () =>
 
     describe('При не успешном запросе', () => {
       test.skip('Обрабатывается ошибка 400', async () => {
-        const relocationTask = warehouseFixtures.relocationTask({
+        const relocationTask = warehousesFixtures.relocationTask({
           id: props.relocationTaskId,
           status: RelocationTaskStatusEnum.New,
         })
@@ -1605,7 +1605,7 @@ describe('Информация о заявке о перемещении', () =>
       })
 
       test('Обрабатывается ошибка 403', async () => {
-        const relocationTask = warehouseFixtures.relocationTask({
+        const relocationTask = warehousesFixtures.relocationTask({
           id: props.relocationTaskId,
           status: RelocationTaskStatusEnum.New,
         })
@@ -1646,7 +1646,7 @@ describe('Информация о заявке о перемещении', () =>
       })
 
       test('Обрабатывается ошибка 404', async () => {
-        const relocationTask = warehouseFixtures.relocationTask({
+        const relocationTask = warehousesFixtures.relocationTask({
           id: props.relocationTaskId,
           status: RelocationTaskStatusEnum.New,
         })
@@ -1687,7 +1687,7 @@ describe('Информация о заявке о перемещении', () =>
       })
 
       test('Обрабатывается ошибка 500', async () => {
-        const relocationTask = warehouseFixtures.relocationTask({
+        const relocationTask = warehousesFixtures.relocationTask({
           id: props.relocationTaskId,
           status: RelocationTaskStatusEnum.New,
         })
@@ -1747,7 +1747,7 @@ describe('Информация о заявке о перемещении', () =>
     })
 
     test('Пункт меню активен если условия соблюдены', async () => {
-      const relocationTask = warehouseFixtures.relocationTask({
+      const relocationTask = warehousesFixtures.relocationTask({
         id: props.relocationTaskId,
         status: RelocationTaskStatusEnum.Completed,
       })
@@ -1778,7 +1778,7 @@ describe('Информация о заявке о перемещении', () =>
 
     describe('Пункт меню не активен', () => {
       test('Если условия соблюдены, но нет прав', async () => {
-        const relocationTask = warehouseFixtures.relocationTask({
+        const relocationTask = warehousesFixtures.relocationTask({
           id: props.relocationTaskId,
           status: RelocationTaskStatusEnum.Completed,
         })
@@ -1804,7 +1804,7 @@ describe('Информация о заявке о перемещении', () =>
       })
 
       test('Если условия соблюдены, но контролер заявки не авторизованный пользователь', async () => {
-        const relocationTask = warehouseFixtures.relocationTask({
+        const relocationTask = warehousesFixtures.relocationTask({
           id: props.relocationTaskId,
           status: RelocationTaskStatusEnum.Completed,
         })
@@ -1834,7 +1834,7 @@ describe('Информация о заявке о перемещении', () =>
       })
 
       test('Если условия соблюдены, но заявка не в статусе завершена', async () => {
-        const relocationTask = warehouseFixtures.relocationTask({
+        const relocationTask = warehousesFixtures.relocationTask({
           id: props.relocationTaskId,
           status: RelocationTaskStatusEnum.New,
         })
@@ -1866,7 +1866,7 @@ describe('Информация о заявке о перемещении', () =>
 
     describe('При успешном запросе', () => {
       test('Закрывается модалка и заявка загружается снова', async () => {
-        const relocationTask = warehouseFixtures.relocationTask({
+        const relocationTask = warehousesFixtures.relocationTask({
           id: props.relocationTaskId,
           status: RelocationTaskStatusEnum.Completed,
         })
@@ -1906,7 +1906,7 @@ describe('Информация о заявке о перемещении', () =>
 
     describe('При не успешном запросе', () => {
       test.skip('Обрабатывается ошибка 400', async () => {
-        const relocationTask = warehouseFixtures.relocationTask({
+        const relocationTask = warehousesFixtures.relocationTask({
           id: props.relocationTaskId,
           status: RelocationTaskStatusEnum.Completed,
         })
@@ -1953,7 +1953,7 @@ describe('Информация о заявке о перемещении', () =>
       })
 
       test('Обрабатывается ошибка 403', async () => {
-        const relocationTask = warehouseFixtures.relocationTask({
+        const relocationTask = warehousesFixtures.relocationTask({
           id: props.relocationTaskId,
           status: RelocationTaskStatusEnum.Completed,
         })
@@ -1994,7 +1994,7 @@ describe('Информация о заявке о перемещении', () =>
       })
 
       test('Обрабатывается ошибка 404', async () => {
-        const relocationTask = warehouseFixtures.relocationTask({
+        const relocationTask = warehousesFixtures.relocationTask({
           id: props.relocationTaskId,
           status: RelocationTaskStatusEnum.Completed,
         })
@@ -2035,7 +2035,7 @@ describe('Информация о заявке о перемещении', () =>
       })
 
       test('Обрабатывается ошибка 500', async () => {
-        const relocationTask = warehouseFixtures.relocationTask({
+        const relocationTask = warehousesFixtures.relocationTask({
           id: props.relocationTaskId,
           status: RelocationTaskStatusEnum.Completed,
         })
@@ -2099,7 +2099,7 @@ describe('Информация о заявке о перемещении', () =>
     })
 
     test('Пункт меню активен если условия соблюдены', async () => {
-      const relocationTask = warehouseFixtures.relocationTask({
+      const relocationTask = warehousesFixtures.relocationTask({
         id: props.relocationTaskId,
         status: RelocationTaskStatusEnum.New,
       })
@@ -2130,7 +2130,7 @@ describe('Информация о заявке о перемещении', () =>
 
     describe('Пункт меню не активен', () => {
       test('Если условия соблюдены, но нет прав', async () => {
-        const relocationTask = warehouseFixtures.relocationTask({
+        const relocationTask = warehousesFixtures.relocationTask({
           id: props.relocationTaskId,
           status: RelocationTaskStatusEnum.New,
         })
@@ -2156,7 +2156,7 @@ describe('Информация о заявке о перемещении', () =>
       })
 
       test('Если условия соблюдены, но создатель заявки не авторизованный пользователь', async () => {
-        const relocationTask = warehouseFixtures.relocationTask({
+        const relocationTask = warehousesFixtures.relocationTask({
           id: props.relocationTaskId,
           status: RelocationTaskStatusEnum.New,
         })
@@ -2186,7 +2186,7 @@ describe('Информация о заявке о перемещении', () =>
       })
 
       test('Если условия соблюдены, но заявка отменена', async () => {
-        const relocationTask = warehouseFixtures.relocationTask({
+        const relocationTask = warehousesFixtures.relocationTask({
           id: props.relocationTaskId,
           status: RelocationTaskStatusEnum.Canceled,
         })
@@ -2216,7 +2216,7 @@ describe('Информация о заявке о перемещении', () =>
       })
 
       test('Если условия соблюдены, но заявка закрыта', async () => {
-        const relocationTask = warehouseFixtures.relocationTask({
+        const relocationTask = warehousesFixtures.relocationTask({
           id: props.relocationTaskId,
           status: RelocationTaskStatusEnum.Closed,
         })
@@ -2246,7 +2246,7 @@ describe('Информация о заявке о перемещении', () =>
       })
 
       test('Если условия соблюдены, но заявка завершена', async () => {
-        const relocationTask = warehouseFixtures.relocationTask({
+        const relocationTask = warehousesFixtures.relocationTask({
           id: props.relocationTaskId,
           status: RelocationTaskStatusEnum.Completed,
         })
@@ -2278,7 +2278,7 @@ describe('Информация о заявке о перемещении', () =>
 
     describe('При успешном запросе', () => {
       test('Закрывается модалка и меняется статус заявки', async () => {
-        const relocationTask = warehouseFixtures.relocationTask({
+        const relocationTask = warehousesFixtures.relocationTask({
           id: props.relocationTaskId,
           status: RelocationTaskStatusEnum.New,
         })
@@ -2324,7 +2324,7 @@ describe('Информация о заявке о перемещении', () =>
 
     describe('При не успешном запросе', () => {
       test('Обрабатывается ошибка 400', async () => {
-        const relocationTask = warehouseFixtures.relocationTask({
+        const relocationTask = warehousesFixtures.relocationTask({
           id: props.relocationTaskId,
           status: RelocationTaskStatusEnum.New,
         })
@@ -2363,7 +2363,7 @@ describe('Информация о заявке о перемещении', () =>
       })
 
       test('Обрабатывается ошибка 403', async () => {
-        const relocationTask = warehouseFixtures.relocationTask({
+        const relocationTask = warehousesFixtures.relocationTask({
           id: props.relocationTaskId,
           status: RelocationTaskStatusEnum.New,
         })
@@ -2402,7 +2402,7 @@ describe('Информация о заявке о перемещении', () =>
       })
 
       test('Обрабатывается ошибка 404', async () => {
-        const relocationTask = warehouseFixtures.relocationTask({
+        const relocationTask = warehousesFixtures.relocationTask({
           id: props.relocationTaskId,
           status: RelocationTaskStatusEnum.New,
         })
@@ -2441,7 +2441,7 @@ describe('Информация о заявке о перемещении', () =>
       })
 
       test('Обрабатывается ошибка 500', async () => {
-        const relocationTask = warehouseFixtures.relocationTask({
+        const relocationTask = warehousesFixtures.relocationTask({
           id: props.relocationTaskId,
           status: RelocationTaskStatusEnum.New,
         })
@@ -2499,7 +2499,7 @@ describe('Информация о заявке о перемещении', () =>
     })
 
     test('Пункт меню активен если условия соблюдены', async () => {
-      const relocationTask = warehouseFixtures.relocationTask({
+      const relocationTask = warehousesFixtures.relocationTask({
         id: props.relocationTaskId,
         status: RelocationTaskStatusEnum.Completed,
       })
@@ -2530,7 +2530,7 @@ describe('Информация о заявке о перемещении', () =>
 
     describe('Пункт меню не активен', () => {
       test('Если условия соблюдены, но нет прав', async () => {
-        const relocationTask = warehouseFixtures.relocationTask({
+        const relocationTask = warehousesFixtures.relocationTask({
           id: props.relocationTaskId,
           status: RelocationTaskStatusEnum.Completed,
         })
@@ -2556,7 +2556,7 @@ describe('Информация о заявке о перемещении', () =>
       })
 
       test('Если условия соблюдены, но контролер заявки не авторизованный пользователь', async () => {
-        const relocationTask = warehouseFixtures.relocationTask({
+        const relocationTask = warehousesFixtures.relocationTask({
           id: props.relocationTaskId,
           status: RelocationTaskStatusEnum.Completed,
         })
@@ -2586,7 +2586,7 @@ describe('Информация о заявке о перемещении', () =>
       })
 
       test('Если условия соблюдены, но заявка не завершена', async () => {
-        const relocationTask = warehouseFixtures.relocationTask({
+        const relocationTask = warehousesFixtures.relocationTask({
           id: props.relocationTaskId,
           status: RelocationTaskStatusEnum.New,
         })
@@ -2618,7 +2618,7 @@ describe('Информация о заявке о перемещении', () =>
 
     describe('При успешном запросе', () => {
       test('Закрывается модалка и меняется статус заявки', async () => {
-        const relocationTask = warehouseFixtures.relocationTask({
+        const relocationTask = warehousesFixtures.relocationTask({
           id: props.relocationTaskId,
           status: RelocationTaskStatusEnum.Completed,
         })
@@ -2664,7 +2664,7 @@ describe('Информация о заявке о перемещении', () =>
 
     describe('При не успешном запросе', () => {
       test('Обрабатывается ошибка 400', async () => {
-        const relocationTask = warehouseFixtures.relocationTask({
+        const relocationTask = warehousesFixtures.relocationTask({
           id: props.relocationTaskId,
           status: RelocationTaskStatusEnum.Completed,
         })
@@ -2703,7 +2703,7 @@ describe('Информация о заявке о перемещении', () =>
       })
 
       test('Обрабатывается ошибка 403', async () => {
-        const relocationTask = warehouseFixtures.relocationTask({
+        const relocationTask = warehousesFixtures.relocationTask({
           id: props.relocationTaskId,
           status: RelocationTaskStatusEnum.Completed,
         })
@@ -2742,7 +2742,7 @@ describe('Информация о заявке о перемещении', () =>
       })
 
       test('Обрабатывается ошибка 404', async () => {
-        const relocationTask = warehouseFixtures.relocationTask({
+        const relocationTask = warehousesFixtures.relocationTask({
           id: props.relocationTaskId,
           status: RelocationTaskStatusEnum.Completed,
         })
@@ -2781,7 +2781,7 @@ describe('Информация о заявке о перемещении', () =>
       })
 
       test('Обрабатывается ошибка 500', async () => {
-        const relocationTask = warehouseFixtures.relocationTask({
+        const relocationTask = warehousesFixtures.relocationTask({
           id: props.relocationTaskId,
           status: RelocationTaskStatusEnum.Completed,
         })
@@ -2873,7 +2873,7 @@ describe('Информация о заявке о перемещении', () =>
 
   describe('Изменить черновик', () => {
     test('Пункт меню отображается если заявка черновик', async () => {
-      const relocationTask = warehouseFixtures.relocationTask({
+      const relocationTask = warehousesFixtures.relocationTask({
         id: props.relocationTaskId,
         status: RelocationTaskStatusEnum.Draft,
       })
@@ -2896,7 +2896,7 @@ describe('Информация о заявке о перемещении', () =>
     })
 
     test(`Пункт меню активен если есть права ${UserPermissionsEnum.RelocationTasksUpdate}, ${UserPermissionsEnum.InventorizationUpdate}, исполнитель инвентаризации текущий пользователь`, async () => {
-      const relocationTask = warehouseFixtures.relocationTask({
+      const relocationTask = warehousesFixtures.relocationTask({
         id: props.relocationTaskId,
         status: RelocationTaskStatusEnum.Draft,
       })
@@ -2912,7 +2912,7 @@ describe('Информация о заявке о перемещении', () =>
           UserPermissionsEnum.InventorizationUpdate,
         ],
       })
-      const inventorization = warehouseFixtures.inventorization({ executor: currentUser })
+      const inventorization = warehousesFixtures.inventorization({ executor: currentUser })
 
       const { user } = render(
         <RelocationTaskDetails {...props} inventorization={inventorization} />,
@@ -2929,7 +2929,7 @@ describe('Информация о заявке о перемещении', () =>
     })
 
     test(`Пункт меню не активен если есть права ${UserPermissionsEnum.RelocationTasksUpdate}, ${UserPermissionsEnum.InventorizationUpdate}, но исполнитель инвентаризации не текущий пользователь`, async () => {
-      const relocationTask = warehouseFixtures.relocationTask({
+      const relocationTask = warehousesFixtures.relocationTask({
         id: props.relocationTaskId,
         status: RelocationTaskStatusEnum.Draft,
       })
@@ -2945,7 +2945,7 @@ describe('Информация о заявке о перемещении', () =>
           UserPermissionsEnum.InventorizationUpdate,
         ],
       })
-      const inventorization = warehouseFixtures.inventorization()
+      const inventorization = warehousesFixtures.inventorization()
 
       const { user } = render(
         <RelocationTaskDetails {...props} inventorization={inventorization} />,
@@ -2962,7 +2962,7 @@ describe('Информация о заявке о перемещении', () =>
     })
 
     test(`Пункт меню не активен если есть права ${UserPermissionsEnum.RelocationTasksUpdate}, исполнитель инвентаризации текущий пользователь, но нет прав ${UserPermissionsEnum.InventorizationUpdate}`, async () => {
-      const relocationTask = warehouseFixtures.relocationTask({
+      const relocationTask = warehousesFixtures.relocationTask({
         id: props.relocationTaskId,
         status: RelocationTaskStatusEnum.Draft,
       })
@@ -2975,7 +2975,7 @@ describe('Информация о заявке о перемещении', () =>
       const currentUser = userFixtures.userDetail({
         permissions: [UserPermissionsEnum.RelocationTasksUpdate],
       })
-      const inventorization = warehouseFixtures.inventorization({ executor: currentUser })
+      const inventorization = warehousesFixtures.inventorization({ executor: currentUser })
 
       const { user } = render(
         <RelocationTaskDetails {...props} inventorization={inventorization} />,
@@ -2992,7 +2992,7 @@ describe('Информация о заявке о перемещении', () =>
     })
 
     test(`Пункт меню не активен если есть права ${UserPermissionsEnum.InventorizationUpdate}, исполнитель инвентаризации текущий пользователь, но нет прав ${UserPermissionsEnum.RelocationTasksUpdate}`, async () => {
-      const relocationTask = warehouseFixtures.relocationTask({
+      const relocationTask = warehousesFixtures.relocationTask({
         id: props.relocationTaskId,
         status: RelocationTaskStatusEnum.Draft,
       })
@@ -3005,7 +3005,7 @@ describe('Информация о заявке о перемещении', () =>
       const currentUser = userFixtures.userDetail({
         permissions: [UserPermissionsEnum.InventorizationUpdate],
       })
-      const inventorization = warehouseFixtures.inventorization({ executor: currentUser })
+      const inventorization = warehousesFixtures.inventorization({ executor: currentUser })
 
       const { user } = render(
         <RelocationTaskDetails {...props} inventorization={inventorization} />,
@@ -3022,7 +3022,7 @@ describe('Информация о заявке о перемещении', () =>
     })
 
     test('При клике переходит на страницу редактирования черновика заявки на перемещение', async () => {
-      const relocationTask = warehouseFixtures.relocationTask({
+      const relocationTask = warehousesFixtures.relocationTask({
         id: props.relocationTaskId,
         status: RelocationTaskStatusEnum.Draft,
       })
@@ -3038,7 +3038,7 @@ describe('Информация о заявке о перемещении', () =>
           UserPermissionsEnum.InventorizationUpdate,
         ],
       })
-      const inventorization = warehouseFixtures.inventorization({ executor: currentUser })
+      const inventorization = warehousesFixtures.inventorization({ executor: currentUser })
       mockGetUsersSuccess({ once: false })
       mockGetUsersGroupsSuccess({ once: false })
       mockGetInventorizationEquipmentsSuccess({ inventorizationId: inventorization.id })
@@ -3075,7 +3075,7 @@ describe('Информация о заявке о перемещении', () =>
       const currentUser = userFixtures.userDetail({
         permissions: [UserPermissionsEnum.RelocationTasksUpdate],
       })
-      const relocationTask = warehouseFixtures.relocationTask({
+      const relocationTask = warehousesFixtures.relocationTask({
         id: props.relocationTaskId,
         status: RelocationTaskStatusEnum.Draft,
         createdBy: currentUser,
@@ -3105,7 +3105,7 @@ describe('Информация о заявке о перемещении', () =>
     describe('Пункт меню не отображается', () => {
       test(`Если заявка в статусе ${RelocationTaskStatusEnum.Draft}, создатель заявки текущий пользователь но нет прав ${UserPermissionsEnum.RelocationTasksUpdate}`, async () => {
         const currentUser = userFixtures.userDetail({ permissions: [] })
-        const relocationTask = warehouseFixtures.relocationTask({
+        const relocationTask = warehousesFixtures.relocationTask({
           id: props.relocationTaskId,
           status: RelocationTaskStatusEnum.Draft,
           createdBy: currentUser,
@@ -3135,7 +3135,7 @@ describe('Информация о заявке о перемещении', () =>
         const currentUser = userFixtures.userDetail({
           permissions: [UserPermissionsEnum.RelocationTasksUpdate],
         })
-        const relocationTask = warehouseFixtures.relocationTask({
+        const relocationTask = warehousesFixtures.relocationTask({
           id: props.relocationTaskId,
           status: RelocationTaskStatusEnum.Draft,
         })
@@ -3164,7 +3164,7 @@ describe('Информация о заявке о перемещении', () =>
         const currentUser = userFixtures.userDetail({
           permissions: [UserPermissionsEnum.RelocationTasksUpdate],
         })
-        const relocationTask = warehouseFixtures.relocationTask({
+        const relocationTask = warehousesFixtures.relocationTask({
           id: props.relocationTaskId,
           status: RelocationTaskStatusEnum.New,
           createdBy: currentUser,
@@ -3195,7 +3195,7 @@ describe('Информация о заявке о перемещении', () =>
       const currentUser = userFixtures.userDetail({
         permissions: [UserPermissionsEnum.RelocationTasksUpdate],
       })
-      const relocationTask = warehouseFixtures.relocationTask({
+      const relocationTask = warehousesFixtures.relocationTask({
         id: props.relocationTaskId,
         status: RelocationTaskStatusEnum.Draft,
         createdBy: currentUser,
@@ -3226,7 +3226,7 @@ describe('Информация о заявке о перемещении', () =>
       const currentUser = userFixtures.userDetail({
         permissions: [UserPermissionsEnum.RelocationTasksUpdate],
       })
-      const relocationTask = warehouseFixtures.relocationTask({
+      const relocationTask = warehousesFixtures.relocationTask({
         id: props.relocationTaskId,
         status: RelocationTaskStatusEnum.Draft,
         createdBy: currentUser,
@@ -3237,7 +3237,7 @@ describe('Информация о заявке о перемещении', () =>
       )
       mockGetRelocationEquipmentsSuccess({ relocationTaskId: relocationTask.id })
 
-      const updatedRelocationTask = warehouseFixtures.relocationTask({
+      const updatedRelocationTask = warehousesFixtures.relocationTask({
         status: RelocationTaskStatusEnum.New,
       })
       mockMoveRelocationTaskDraftToWorkSuccess(
@@ -3271,7 +3271,7 @@ describe('Информация о заявке о перемещении', () =>
 
   describe('Посмотреть общие фото', () => {
     test('Кнопка отображается', async () => {
-      const relocationTask = warehouseFixtures.relocationTask()
+      const relocationTask = warehousesFixtures.relocationTask()
       mockGetRelocationTaskSuccess(
         { relocationTaskId: props.relocationTaskId },
         { body: relocationTask },
@@ -3291,7 +3291,7 @@ describe('Информация о заявке о перемещении', () =>
     })
 
     test('При нажатии открывается модалка просмотра изображений', async () => {
-      const relocationTask = warehouseFixtures.relocationTask()
+      const relocationTask = warehousesFixtures.relocationTask()
       mockGetRelocationTaskSuccess(
         { relocationTaskId: props.relocationTaskId },
         { body: relocationTask },

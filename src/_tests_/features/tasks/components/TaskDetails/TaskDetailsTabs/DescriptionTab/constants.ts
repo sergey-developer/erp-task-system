@@ -1,6 +1,6 @@
 import { DescriptionTabProps } from 'features/tasks/components/TaskDetails/TaskDetailsTabs/DescriptionTab/index'
 
-import taskFixtures from '_tests_/fixtures/tasks/index'
+import tasksFixtures from '_tests_/fixtures/tasks/index'
 import { fakeWord } from '_tests_/helpers'
 
 export const props: Readonly<DescriptionTabProps> = {
@@ -10,7 +10,7 @@ export const props: Readonly<DescriptionTabProps> = {
   description: fakeWord(),
   previousDescription: fakeWord(),
   isDescriptionChanged: false,
-  attachments: [taskFixtures.attachment()],
+  attachments: [tasksFixtures.taskAttachment()],
 }
 
 export enum TestIdsEnum {

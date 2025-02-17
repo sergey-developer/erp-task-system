@@ -4,7 +4,6 @@ import { EquipmentConditionEnum } from 'features/equipments/api/constants'
 import { equipmentConditionDict } from 'features/equipments/constants'
 
 import catalogsFixtures from '_tests_/fixtures/catalogs'
-import warehouseFixtures from '_tests_/fixtures/warehouse'
 import { buttonTestUtils, render, selectTestUtils } from '_tests_/helpers'
 
 import HistoryNomenclatureOperationsReportFilter from './index'
@@ -19,7 +18,7 @@ const props: Readonly<HistoryNomenclatureOperationsReportFilterProps> = {
   locations: catalogsFixtures.locationsCatalog(2),
   locationsIsLoading: false,
 
-  owners: warehouseFixtures.customers(2),
+  owners: catalogsFixtures.customersCatalog(2),
   ownersIsLoading: false,
 
   onClose: jest.fn(),

@@ -6,10 +6,10 @@ import { WorkGroupTypeEnum } from 'shared/workGroups/api/constants'
 
 import { props } from '_tests_/features/tasks/components/TaskSecondLineModal/constants'
 import { taskSecondLineModalTestUtils } from '_tests_/features/tasks/components/TaskSecondLineModal/testUtils'
-import warehouseFixtures from '_tests_/fixtures/warehouse'
+import catalogsFixtures from '_tests_/fixtures/catalogs'
 import workGroupFixtures from '_tests_/fixtures/workGroup'
-import { mockGetWorkGroupsSuccess, mockGetWorkTypesSuccess } from '_tests_/mocks/api'
 import { fakeWord, render, selectTestUtils, setupApiTests } from '_tests_/helpers'
+import { mockGetWorkGroupsSuccess, mockGetWorkTypesSuccess } from '_tests_/mocks/api'
 
 import TaskSecondLineModal from './index'
 
@@ -306,8 +306,8 @@ describe('Модалка перевода заявки на 2-ю линию', ()
     test('Отображается', async () => {
       mockGetWorkGroupsSuccess({ body: [] })
 
-      const workTypeListItem = warehouseFixtures.workTypeListItem()
-      const workTypes = [workTypeListItem]
+      const workTypeCatalogItem = catalogsFixtures.workTypeCatalogItem()
+      const workTypes = [workTypeCatalogItem]
       mockGetWorkTypesSuccess({ body: workTypes })
 
       const { user } = render(
@@ -318,7 +318,7 @@ describe('Модалка перевода заявки на 2-ю линию', ()
       const input = taskSecondLineModalTestUtils.getWorkTypeSelectInput()
       await taskSecondLineModalTestUtils.openWorkTypeSelect(user)
       const selectedWorkType = taskSecondLineModalTestUtils.querySelectedWorkType(
-        workTypeListItem.title,
+        workTypeCatalogItem.title,
       )
 
       expect(input).toBeInTheDocument()
@@ -353,8 +353,8 @@ describe('Модалка перевода заявки на 2-ю линию', ()
     test('Можно выбрать значение', async () => {
       mockGetWorkGroupsSuccess({ body: [] })
 
-      const workTypeListItem = warehouseFixtures.workTypeListItem()
-      mockGetWorkTypesSuccess({ body: [workTypeListItem] })
+      const workTypeCatalogItem = catalogsFixtures.workTypeCatalogItem()
+      mockGetWorkTypesSuccess({ body: [workTypeCatalogItem] })
 
       const { user } = render(
         <TaskSecondLineModal {...props} permissions={{ classificationOfWorkTypes: true }} />,
@@ -362,9 +362,9 @@ describe('Модалка перевода заявки на 2-ю линию', ()
 
       await taskSecondLineModalTestUtils.expectWorkTypeLoadingFinished()
       await taskSecondLineModalTestUtils.openWorkTypeSelect(user)
-      await taskSecondLineModalTestUtils.setWorkType(user, workTypeListItem.title)
+      await taskSecondLineModalTestUtils.setWorkType(user, workTypeCatalogItem.title)
       const selectedWorkType = taskSecondLineModalTestUtils.getSelectedWorkType(
-        workTypeListItem.title,
+        workTypeCatalogItem.title,
       )
 
       expect(selectedWorkType).toBeInTheDocument()

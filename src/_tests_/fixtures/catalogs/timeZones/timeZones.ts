@@ -7,11 +7,11 @@ import {
 
 import { fakeWord } from '_tests_/helpers'
 
-export const timeZone = (): TimeZoneCatalogItemDTO => ({
+export const timeZoneCatalogItem = (): TimeZoneCatalogItemDTO => ({
   name: fakeWord(),
   label: fakeWord(),
   value: fakeWord(),
 })
 
-export const timeZones = (length: number = 1): TimeZonesCatalogDTO =>
-  times(length, () => timeZone())
+export const timeZonesCatalog = (length: number = 1): TimeZonesCatalogDTO =>
+  times(length, () => timeZoneCatalogItem())

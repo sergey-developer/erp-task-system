@@ -6,7 +6,7 @@ import {
 } from 'features/tasks/api/constants'
 import { TaskDetailTabsProps } from 'features/tasks/components/TaskDetails/TaskDetailsTabs'
 
-import taskFixtures from '_tests_/fixtures/tasks/index'
+import tasksFixtures from '_tests_/fixtures/tasks/index'
 import userFixtures from '_tests_/fixtures/users/index'
 import { fakeDateString, fakeId, fakeIdStr, fakeWord } from '_tests_/helpers'
 
@@ -18,19 +18,19 @@ export const props: Readonly<TaskDetailTabsProps> = {
     description: fakeWord(),
     userResolution: fakeWord(),
     techResolution: fakeWord(),
-    attachments: [taskFixtures.attachment()],
+    attachments: [tasksFixtures.taskAttachment()],
     resolution: {
       attachments: [],
     },
     status: TaskStatusEnum.New,
     extendedStatus: TaskExtendedStatusEnum.New,
     recordId: fakeIdStr(),
-    suspendRequest: taskFixtures.suspendRequest(),
+    suspendRequest: tasksFixtures.taskSuspendRequest(),
     assignee: null,
     olaNextBreachTime: fakeDateString(),
     olaEstimatedTime: Date.now(),
     olaStatus: TaskOlaStatusEnum.NotExpired,
-    shop: taskFixtures.task().shop,
+    shop: tasksFixtures.taskDetail().shop,
     isDescriptionChanged: false,
     previousDescription: fakeWord(),
   },

@@ -14,12 +14,12 @@ import {
 import { subTaskTestUtils } from '_tests_/features/tasks/components/SubTasks/SubTask/testUtils'
 import { taskAssigneeTestUtils } from '_tests_/features/tasks/components/TaskAssignee/testUtils'
 import { taskStatusTestUtils } from '_tests_/features/tasks/components/TaskStatus/testUtils'
-import taskFixtures from '_tests_/fixtures/tasks'
+import tasksFixtures from '_tests_/fixtures/tasks'
 import { render } from '_tests_/helpers'
 
 import SubTask from './SubTask'
 
-const subTask = taskFixtures.subTask()
+const subTask = tasksFixtures.subTask()
 
 describe('Задание', () => {
   test('Отображает recordId', () => {

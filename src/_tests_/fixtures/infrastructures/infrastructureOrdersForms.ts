@@ -11,6 +11,6 @@ export const infrastructureOrderForm = (
 
   id: fakeId(),
   number: fakeWord(),
-  urgencyRateType: catalogsFixtures.urgencyRateType(),
+  urgencyRateType: catalogsFixtures.urgencyRateTypeCatalogItem(),
   attachments: [],
 })

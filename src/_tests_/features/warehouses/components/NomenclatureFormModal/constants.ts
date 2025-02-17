@@ -1,8 +1,9 @@
 import { NomenclatureFormModalProps } from 'features/nomenclatures/components/NomenclatureFormModal/types'
 
-import countriesFixtures from '_tests_/fixtures/countries/index'
-import warehouseFixtures from '_tests_/fixtures/warehouse/index'
+import warehousesFixtures from '_tests_/fixtures/warehouse/index'
 import { fakeWord } from '_tests_/helpers'
+
+import catalogsFixtures from '../../../../fixtures/catalogs'
 
 export const props: Readonly<NomenclatureFormModalProps> = {
   open: true,
@@ -12,13 +13,13 @@ export const props: Readonly<NomenclatureFormModalProps> = {
   nomenclature: undefined,
   nomenclatureIsLoading: false,
 
-  groups: [warehouseFixtures.nomenclatureGroupListItem()],
+  groups: [warehousesFixtures.nomenclatureGroupListItem()],
   groupsIsLoading: false,
 
-  countries: [countriesFixtures.country()],
+  countries: [catalogsFixtures.countryCatalogItem()],
   countriesIsLoading: false,
 
-  measurementUnits: [warehouseFixtures.measurementUnitListItem()],
+  measurementUnits: [catalogsFixtures.measurementUnitCatalogItem()],
   measurementUnitsIsLoading: false,
   title: fakeWord(),
   okText: fakeWord(),

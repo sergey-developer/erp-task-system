@@ -207,7 +207,7 @@ const RelocationEquipmentDraftEditableTable: FC<RelocationEquipmentDraftEditable
   ]
 
   return (
-    <div data-testid='relocation-equipment-draft-editable-table-container'>
+    <div data-testid='relocation-equipmentDetail-draft-editable-table-container'>
       <EditableProTable<InventorizationEquipmentTableRow>
         virtual={!env.isTest}
         rowKey='rowId'

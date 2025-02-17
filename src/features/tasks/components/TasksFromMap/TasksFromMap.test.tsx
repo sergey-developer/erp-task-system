@@ -7,7 +7,7 @@ import theme from 'styles/theme'
 
 import { props, taskListItem } from '_tests_/features/tasks/components/TasksFromMap/constants'
 import { tasksFromMapTestUtils } from '_tests_/features/tasks/components/TasksFromMap/testUtils'
-import taskFixtures from '_tests_/fixtures/tasks'
+import tasksFixtures from '_tests_/fixtures/tasks'
 import { render } from '_tests_/helpers'
 
 import TasksFromMap, { taskTypeText } from './index'
@@ -35,7 +35,7 @@ describe('Список заявок', () => {
     })
 
     test(`Задний фон и текст для типа ${TaskTypeEnum.Incident} отображается корректно`, () => {
-      const taskListItem = taskFixtures.taskListItem({
+      const taskListItem = tasksFixtures.task({
         type: TaskTypeEnum.Incident,
       })
 
@@ -52,7 +52,7 @@ describe('Список заявок', () => {
     })
 
     test(`Задний фон и текст для типа ${TaskTypeEnum.IncidentTask} отображается корректно`, () => {
-      const taskListItem = taskFixtures.taskListItem({
+      const taskListItem = tasksFixtures.task({
         type: TaskTypeEnum.IncidentTask,
       })
 
@@ -69,7 +69,7 @@ describe('Список заявок', () => {
     })
 
     test(`Задний фон и текст для типа ${TaskTypeEnum.Request} отображается корректно`, () => {
-      const taskListItem = taskFixtures.taskListItem({
+      const taskListItem = tasksFixtures.task({
         type: TaskTypeEnum.Request,
       })
 
@@ -86,7 +86,7 @@ describe('Список заявок', () => {
     })
 
     test(`Задний фон и текст для типа ${TaskTypeEnum.RequestTask} отображается корректно`, () => {
-      const taskListItem = taskFixtures.taskListItem({
+      const taskListItem = tasksFixtures.task({
         type: TaskTypeEnum.RequestTask,
       })
 

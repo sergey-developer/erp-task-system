@@ -7,7 +7,7 @@ import { RelocationTaskDetailDTO } from 'features/relocationTasks/api/dto'
 import isUndefined from 'lodash/isUndefined'
 import pick from 'lodash/pick'
 
-import taskFixtures from '_tests_/fixtures/tasks'
+import tasksFixtures from '_tests_/fixtures/tasks'
 import userFixtures from '_tests_/fixtures/users'
 import { fakeDateString, fakeId, fakeIdStr, fakeWord } from '_tests_/helpers'
 
@@ -45,7 +45,7 @@ export const relocationTask = (
     createdAt: fakeDateString(),
     user: pick(userFixtures.userDetail(), 'id', 'fullName', 'phone'),
   },
-  task: pick(taskFixtures.task(), 'id', 'recordId'),
+  task: pick(tasksFixtures.taskDetail(), 'id', 'recordId'),
   externalRelocation: {
     id: fakeId(),
     number: fakeIdStr(),

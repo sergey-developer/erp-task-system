@@ -3,8 +3,8 @@ import { RelocationEquipmentDTO } from 'features/relocationTasks/api/dto'
 import pick from 'lodash/pick'
 import times from 'lodash/times'
 
-import currencyFixtures from '_tests_/fixtures/currencies'
-import warehouseFixtures from '_tests_/fixtures/warehouse'
+import catalogsFixtures from '_tests_/fixtures/catalogs'
+import equipmentsFixtures from '_tests_/fixtures/equipments'
 import { fakeId, fakeInteger, fakeWord } from '_tests_/helpers'
 
 export const relocationEquipmentListItem = (): RelocationEquipmentDTO => ({
@@ -15,9 +15,9 @@ export const relocationEquipmentListItem = (): RelocationEquipmentDTO => ({
   quantity: fakeInteger(),
   condition: EquipmentConditionEnum.Working,
   serialNumber: fakeWord(),
-  currency: currencyFixtures.currency(),
+  currency: catalogsFixtures.currencyCatalogItem(),
   price: fakeInteger(),
-  category: pick(warehouseFixtures.equipmentCategory(), 'id', 'title', 'code'),
+  category: pick(equipmentsFixtures.equipmentCategory(), 'id', 'title', 'code'),
 })
 
 export const relocationEquipments = (length: number = 1) =>

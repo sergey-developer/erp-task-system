@@ -4,7 +4,7 @@ import { makeString } from 'shared/utils/string'
 
 import { props } from '_tests_/features/warehouses/components/RelocationEquipmentDraftEditableTable/constants'
 import { relocationEquipmentDraftEditableTableTestUtils } from '_tests_/features/warehouses/components/RelocationEquipmentDraftEditableTable/testUtils'
-import warehouseFixtures from '_tests_/fixtures/warehouse'
+import warehousesFixtures from '_tests_/fixtures/warehouse'
 import { render, tableTestUtils } from '_tests_/helpers'
 
 import RelocationEquipmentEditableTable from './index'
@@ -153,7 +153,7 @@ describe('Таблица добавления оборудования для п
 
   describe('Кнопка изображения', () => {
     test('Отображается. Активна если выбрано оборудование', async () => {
-      const inventorizationEquipmentListItem = warehouseFixtures.inventorizationEquipmentListItem()
+      const inventorizationEquipmentListItem = warehousesFixtures.inventorizationEquipmentListItem()
 
       const { user } = render(
         <Form>
@@ -197,7 +197,7 @@ describe('Таблица добавления оборудования для п
     })
 
     test('При клике вызывается обработчик', async () => {
-      const inventorizationEquipmentListItem = warehouseFixtures.inventorizationEquipmentListItem()
+      const inventorizationEquipmentListItem = warehousesFixtures.inventorizationEquipmentListItem()
 
       const { user } = render(
         <Form>

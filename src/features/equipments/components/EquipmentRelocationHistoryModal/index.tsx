@@ -16,14 +16,14 @@ const EquipmentRelocationHistoryModal: FC<EquipmentRelocationHistoryModalProps> 
 }) => {
   return (
     <BaseModal
-      data-testid='equipment-relocation-history-modal'
+      data-testid='equipmentDetail-relocation-history-modal'
       footer={null}
       width='90%'
       open={open}
       onCancel={onCancel}
       title='История заявок на перемещение'
     >
-      <Flex data-testid='equipment-relocation-history-table'>
+      <Flex data-testid='equipmentDetail-relocation-history-table'>
         <ParentSizedTable<EquipmentRelocationHistoryTableItem>
           loading={loading}
           dataSource={dataSource}

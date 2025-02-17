@@ -1,8 +1,9 @@
 import { DiscrepanciesEquipmentTableProps } from 'features/inventorizations/components/DiscrepanciesEquipmentTable/types'
 
-import warehouseFixtures from '_tests_/fixtures/warehouse/index'
+import warehousesFixtures from '_tests_/fixtures/warehouse/index'
 
-export const inventorizationEquipmentListItem = warehouseFixtures.inventorizationEquipmentListItem()
+export const inventorizationEquipmentListItem =
+  warehousesFixtures.inventorizationEquipmentListItem()
 
 export const props: Readonly<DiscrepanciesEquipmentTableProps> = {
   dataSource: [inventorizationEquipmentListItem],

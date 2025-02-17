@@ -29,7 +29,7 @@ const HistoryNomenclatureOperationsReportForm: FC<HistoryNomenclatureOperationsR
 
   return (
     <Form<HistoryNomenclatureOperationsReportFormFields>
-      data-testid='spent-equipment-amount-report-form'
+      data-testid='spent-equipmentDetail-amount-report-form'
       form={form}
       onFinish={onSubmit}
     >

@@ -8,9 +8,9 @@ import {
 } from '_tests_/features/warehouses/components/EquipmentNomenclatureTable/constants'
 import { equipmentNomenclatureTableTestUtils } from '_tests_/features/warehouses/components/EquipmentNomenclatureTable/testUtils'
 import { equipmentListPageTestUtils } from '_tests_/features/warehouses/pages/EquipmentListPage/testUtils'
-import warehouseFixtures from '_tests_/fixtures/warehouse'
-import { mockGetEquipmentsSuccess } from '_tests_/mocks/api'
+import equipmentsFixtures from '_tests_/fixtures/equipments'
 import { renderWithRouter, setupApiTests, tableTestUtils } from '_tests_/helpers'
+import { mockGetEquipmentsSuccess } from '_tests_/mocks/api'
 
 import EquipmentNomenclatureTable from './index'
 
@@ -45,7 +45,7 @@ describe('Таблица номенклатуры оборудования', () 
   })
 
   test('Пагинация работает', async () => {
-    const equipmentNomenclatures = warehouseFixtures.equipmentNomenclatures(11)
+    const equipmentNomenclatures = equipmentsFixtures.equipmentNomenclatures(11)
 
     const { user } = renderWithRouter(
       [

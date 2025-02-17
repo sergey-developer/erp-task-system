@@ -4,7 +4,7 @@ import { UserPermissionsEnum } from 'features/users/api/constants/index'
 
 import { SetNonNullable } from 'shared/types/utils'
 
-import taskFixtures from '_tests_/fixtures/tasks/index'
+import tasksFixtures from '_tests_/fixtures/tasks/index'
 import userFixtures from '_tests_/fixtures/users/index'
 import { fakeId } from '_tests_/helpers'
 
@@ -15,8 +15,8 @@ export const props: Readonly<SetNonNullable<AssigneeBlockProps>> = {
   takeTaskIsLoading: false,
   updateAssignee: jest.fn(),
   updateAssigneeIsLoading: false,
-  assignee: taskFixtures.assignee(),
-  workGroup: taskFixtures.workGroup(),
+  assignee: tasksFixtures.taskAssignee(),
+  workGroup: tasksFixtures.taskWorkGroup(),
 }
 
 export const activeTakeTaskButtonProps: Readonly<Pick<AssigneeBlockProps, 'userActions'>> = {
@@ -46,7 +46,7 @@ export const activeAssignOnMeButtonProps: Readonly<
 export const showRefuseTaskButtonProps: Readonly<
   SetNonNullable<Pick<AssigneeBlockProps, 'assignee'>>
 > = {
-  assignee: taskFixtures.assignee(),
+  assignee: tasksFixtures.taskAssignee(),
 }
 
 export const activeRefuseTaskButtonProps: Readonly<Pick<AssigneeBlockProps, 'userActions'>> = {

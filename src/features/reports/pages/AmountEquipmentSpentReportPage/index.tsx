@@ -156,7 +156,7 @@ const AmountEquipmentSpentReportPage: FC = () => {
 
   return (
     <>
-      <Row data-testid='amount-equipment-spent-report-page' gutter={[0, 16]}>
+      <Row data-testid='amount-equipmentDetail-spent-report-page' gutter={[0, 16]}>
         <Col span={7}>
           <AmountEquipmentSpentReportForm
             nomenclatures={extractPaginationResults(equipmentNomenclatures)}

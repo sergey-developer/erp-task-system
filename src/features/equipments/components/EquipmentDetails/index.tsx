@@ -506,7 +506,7 @@ const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) 
     <>
       <Drawer
         {...props}
-        data-testid='equipment-details'
+        data-testid='equipmentDetail-details'
         width={500}
         extra={
           <Dropdown menu={dropdownMenuItems}>
@@ -515,7 +515,7 @@ const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) 
         }
         title={equipment?.title}
       >
-        <LoadingArea data-testid='equipment-details-loading' isLoading={equipmentIsFetching}>
+        <LoadingArea data-testid='equipmentDetail-details-loading' isLoading={equipmentIsFetching}>
           {equipment && (
             <Space $block direction='vertical' size='middle'>
               <Row data-testid='title'>
@@ -712,7 +712,7 @@ const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) 
                 <Col span={16}>{equipment.purpose.title}</Col>
               </Row>
 
-              <Row data-testid='comment'>
+              <Row data-testid='taskComment'>
                 <Col span={8}>
                   <Text type='secondary'>Комментарий:</Text>
                 </Col>
@@ -727,13 +727,13 @@ const EquipmentDetails: FC<EquipmentDetailsProps> = ({ equipmentId, ...props }) 
 
                 <Col span={24}>
                   <LoadingArea
-                    data-testid='equipment-images-loading'
+                    data-testid='equipmentDetail-images-loading'
                     isLoading={equipmentAttachmentListIsFetching}
                     tip='Загрузка изображений...'
                   >
                     <Space $block direction='vertical'>
                       <AttachmentImages
-                        data-testid='equipment-images'
+                        data-testid='equipmentDetail-images'
                         data={extractPaginationResults(equipmentAttachmentList)}
                       />
 

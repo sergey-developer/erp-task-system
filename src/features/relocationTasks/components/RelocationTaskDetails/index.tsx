@@ -671,7 +671,7 @@ const RelocationTaskDetails: FC<RelocationTaskDetailsProps> = ({
                   />
 
                   <ReadonlyField
-                    data-testid='comment'
+                    data-testid='taskComment'
                     label='Комментарий:'
                     value={valueOr(relocationTask.comment)}
                   />

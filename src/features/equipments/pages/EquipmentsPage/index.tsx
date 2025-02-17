@@ -121,7 +121,7 @@ const EquipmentsPage: FC = () => {
   )
 
   return (
-    <div data-testid='equipment-list-page'>
+    <div data-testid='equipmentDetail-list-page'>
       <EquipmentTable
         dataSource={extractPaginationResults(equipments)}
         pagination={extractPaginationParams(equipments)}

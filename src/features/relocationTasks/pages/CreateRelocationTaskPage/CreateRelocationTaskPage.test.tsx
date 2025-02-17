@@ -15,8 +15,8 @@ import { relocationEquipmentEditableTableTestUtils } from '_tests_/features/ware
 import { relocationTaskFormTestUtils } from '_tests_/features/warehouses/components/RelocationTaskForm/testUtils'
 import { createRelocationTaskPageTestUtils } from '_tests_/features/warehouses/pages/CreateRelocationTaskPage/testUtils'
 import catalogsFixtures from '_tests_/fixtures/catalogs'
+import equipmentsFixtures from '_tests_/fixtures/equipments'
 import userFixtures from '_tests_/fixtures/users'
-import warehouseFixtures from '_tests_/fixtures/warehouse'
 import {
   fakeWord,
   getStoreWithAuth,
@@ -69,7 +69,7 @@ describe('Страница создания заявки на перемещен
       mockGetLocationsCatalogSuccess({ body: [], once: false })
       mockGetCurrenciesSuccess({ body: [] })
       mockGetEquipmentsCatalogSuccess({
-        body: warehouseFixtures.equipmentsCatalog(),
+        body: equipmentsFixtures.equipmentsCatalog(),
         once: false,
       })
 
@@ -104,7 +104,7 @@ describe('Страница создания заявки на перемещен
       mockGetLocationsCatalogSuccess({ body: [], once: false })
       mockGetCurrenciesSuccess({ body: [] })
       mockGetEquipmentsCatalogSuccess({
-        body: warehouseFixtures.equipmentsCatalog(),
+        body: equipmentsFixtures.equipmentsCatalog(),
         once: false,
       })
 
@@ -413,7 +413,7 @@ describe('Страница создания заявки на перемещен
 
       mockGetEquipmentsCatalogSuccess({ body: [] })
       mockGetCurrenciesSuccess({ body: [] })
-      mockImportEquipmentsByFileSuccess({ body: [warehouseFixtures.importedEquipmentByFile()] })
+      mockImportEquipmentsByFileSuccess({ body: [equipmentsFixtures.importedEquipmentByFile()] })
 
       const { user } = render(<CreateRelocationTaskPage />, {
         store: getStoreWithAuth(undefined, undefined, undefined, {

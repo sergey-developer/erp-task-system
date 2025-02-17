@@ -1,1 +1,1 @@
-export * from './locationsCatalog'
+export * from './locations'

@@ -46,7 +46,7 @@ const AmountEquipmentSpentReportFilter: FC<AmountEquipmentSpentReportFilterProps
   return (
     <DrawerFilter
       {...props}
-      data-testid='amount-equipment-spent-report-filter'
+      data-testid='amount-equipmentDetail-spent-report-filter'
       onReset={resetFields()}
       onApply={form.submit}
     >

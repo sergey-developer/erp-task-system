@@ -16,7 +16,7 @@ const DocumentsPackageRelocationEquipmentTable: FC<
   )
 
   return (
-    <Flex data-testid='documents-package-relocation-equipment-table'>
+    <Flex data-testid='documents-package-relocation-equipmentDetail-table'>
       <Table<DocumentsPackageRelocationEquipmentTableItem>
         {...props}
         rowKey='id'

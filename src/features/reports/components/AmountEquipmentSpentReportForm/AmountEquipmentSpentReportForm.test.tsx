@@ -8,7 +8,7 @@ import { UPDATE_TEXT } from 'shared/constants/common'
 import { validationMessages } from 'shared/constants/validation'
 
 import catalogsFixtures from '_tests_/fixtures/catalogs'
-import warehouseFixtures from '_tests_/fixtures/warehouse'
+import equipmentsFixtures from '_tests_/fixtures/equipments'
 import { buttonTestUtils, render, selectTestUtils } from '_tests_/helpers'
 
 import AmountEquipmentSpentReportForm from './index'
@@ -162,7 +162,7 @@ export const testUtils = {
 describe('Форма отчета количества потраченного оборудования', () => {
   describe('Поле номенклатуры', () => {
     test('Можно установить значение', async () => {
-      const equipmentNomenclatureListItem = warehouseFixtures.equipmentNomenclatureListItem()
+      const equipmentNomenclatureListItem = equipmentsFixtures.equipmentNomenclatureListItem()
 
       const { user } = render(
         <AmountEquipmentSpentReportForm

@@ -78,7 +78,7 @@ const EquipmentFilter: FC<EquipmentFilterProps> = ({
 
   return (
     <DrawerFilter
-      data-testid='equipment-filter'
+      data-testid='equipmentDetail-filter'
       open={visible}
       onClose={onClose}
       onReset={resetFields()}

@@ -12,7 +12,7 @@ import {
 import { workGroupBlockTestUtils } from '_tests_/features/tasks/components/TaskDetails/WorkGroupBlock/testUtils'
 import { taskFirstLineModalTestUtils } from '_tests_/features/tasks/components/TaskFirstLineModal/testUtils'
 import { taskSecondLineModalTestUtils } from '_tests_/features/tasks/components/TaskSecondLineModal/testUtils'
-import taskFixtures from '_tests_/fixtures/tasks'
+import tasksFixtures from '_tests_/fixtures/tasks'
 import userFixtures from '_tests_/fixtures/users'
 import workGroupFixtures from '_tests_/fixtures/workGroup'
 import { fakeWord, getStoreWithAuth, render, setupApiTests } from '_tests_/helpers'
@@ -37,7 +37,7 @@ describe('Блок рабочей группы', () => {
   describe('Рабочая группа', () => {
     describe('Если установлена', () => {
       test('Отображается корректно', () => {
-        const workGroup = taskFixtures.workGroup()
+        const workGroup = tasksFixtures.taskWorkGroup()
 
         render(<WorkGroupBlock {...props} workGroup={workGroup} />, {
           store: getStoreWithAuth(undefined, undefined, undefined, {
@@ -49,7 +49,7 @@ describe('Блок рабочей группы', () => {
       })
 
       test('Информация о рабочей группе отображается при наведении', async () => {
-        const workGroup = taskFixtures.workGroup()
+        const workGroup = tasksFixtures.taskWorkGroup()
 
         const { user } = render(<WorkGroupBlock {...props} workGroup={workGroup} />, {
           store: getStoreWithAuth(undefined, undefined, undefined, {
@@ -133,7 +133,7 @@ describe('Блок рабочей группы', () => {
           <WorkGroupBlock
             {...props}
             {...showSecondLineButtonProps}
-            workGroup={taskFixtures.workGroup()}
+            workGroup={tasksFixtures.taskWorkGroup()}
           />,
           {
             store: getStoreWithAuth(undefined, undefined, undefined, {

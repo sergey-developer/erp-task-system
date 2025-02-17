@@ -1,8 +1,8 @@
 import { InventorizationTableProps } from 'features/inventorizations/components/InventorizationTable/types'
 
-import warehouseFixtures from '_tests_/fixtures/warehouse/index'
+import warehousesFixtures from '_tests_/fixtures/warehouse/index'
 
-export const inventorizationListItem = warehouseFixtures.inventorizationListItem()
+export const inventorizationListItem = warehousesFixtures.inventorizationListItem()
 
 export const props: Readonly<InventorizationTableProps> = {
   dataSource: [inventorizationListItem],

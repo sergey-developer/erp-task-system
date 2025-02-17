@@ -740,7 +740,7 @@ const CreateRelocationTaskSimplifiedPage: FC = () => {
               </Col>
 
               <Col span={8}>
-                <Form.Item data-testid='comment-form-item' label='Комментарий' name='comment'>
+                <Form.Item data-testid='taskComment-form-item' label='Комментарий' name='comment'>
                   <TextArea placeholder='Добавьте комментарий' disabled={createTaskIsLoading} />
                 </Form.Item>
               </Col>

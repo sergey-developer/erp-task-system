@@ -15,7 +15,7 @@ import { inventorizationsFilterTestUtils } from '_tests_/features/warehouses/com
 import { inventorizationsPageTestUtils } from '_tests_/features/warehouses/pages/InventorizationsPage/testUtils'
 import commonFixtures from '_tests_/fixtures/common'
 import userFixtures from '_tests_/fixtures/users'
-import warehouseFixtures from '_tests_/fixtures/warehouse'
+import warehousesFixtures from '_tests_/fixtures/warehouse'
 import {
   fakeWord,
   getStoreWithAuth,
@@ -40,7 +40,7 @@ notificationTestUtils.setupNotifications()
 describe('Страница списка инвентаризаций', () => {
   describe.skip('Список инвентаризаций', () => {
     test('При успешном запросе отображается', async () => {
-      const inventorizations = warehouseFixtures.inventorizations()
+      const inventorizations = warehousesFixtures.inventorizations()
       mockGetInventorizationsSuccess({
         body: commonFixtures.paginatedListResponse(inventorizations),
       })
@@ -95,7 +95,7 @@ describe('Страница списка инвентаризаций', () => {
     })
 
     test('Пагинация работает', async () => {
-      const inventorizations = warehouseFixtures.inventorizations(11)
+      const inventorizations = warehousesFixtures.inventorizations(11)
       mockGetInventorizationsSuccess({
         body: commonFixtures.paginatedListResponse(inventorizations),
         once: false,
@@ -120,7 +120,7 @@ describe('Страница списка инвентаризаций', () => {
 
     test('Установлена сортировка по умолчанию', async () => {
       mockGetInventorizationsSuccess({
-        body: commonFixtures.paginatedListResponse(warehouseFixtures.inventorizations()),
+        body: commonFixtures.paginatedListResponse(warehousesFixtures.inventorizations()),
         once: false,
       })
 
@@ -137,7 +137,7 @@ describe('Страница списка инвентаризаций', () => {
     })
 
     test('Сортировка работает корректно', async () => {
-      const inventorizations = warehouseFixtures.inventorizations()
+      const inventorizations = warehousesFixtures.inventorizations()
       mockGetInventorizationsSuccess({
         body: commonFixtures.paginatedListResponse(inventorizations),
         once: false,
@@ -223,7 +223,7 @@ describe('Страница списка инвентаризаций', () => {
     })
 
     test.skip('После применения список отображается', async () => {
-      const inventorizations = warehouseFixtures.inventorizations()
+      const inventorizations = warehousesFixtures.inventorizations()
       mockGetInventorizationsSuccess({
         body: commonFixtures.paginatedListResponse(inventorizations),
         once: false,
@@ -259,7 +259,7 @@ describe('Страница списка инвентаризаций', () => {
 
   describe('Карточка инвентаризации', () => {
     test.skip('Открывается при клике на строку', async () => {
-      const inventorizationListItem = warehouseFixtures.inventorizationListItem()
+      const inventorizationListItem = warehousesFixtures.inventorizationListItem()
       mockGetInventorizationsSuccess({
         body: commonFixtures.paginatedListResponse([inventorizationListItem]),
       })

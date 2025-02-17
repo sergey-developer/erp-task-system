@@ -6,9 +6,9 @@ import { validationMessages } from 'shared/constants/validation'
 
 import { props } from '_tests_/features/equipments/components/CheckEquipmentFormModal/constants'
 import { checkEquipmentFormModalTestUtils as testUtils } from '_tests_/features/equipments/components/CheckEquipmentFormModal/utils'
-import currencyFixtures from '_tests_/fixtures/currencies'
-import macroregionFixtures from '_tests_/fixtures/macroregions'
-import warehouseFixtures from '_tests_/fixtures/warehouse'
+import catalogsFixtures from '_tests_/fixtures/catalogs'
+import equipmentsFixtures from '_tests_/fixtures/equipments'
+import warehousesFixtures from '_tests_/fixtures/warehouse'
 import { fakeInteger, fakeWord, render } from '_tests_/helpers'
 
 import { equipmentConditionDict } from '../../constants'
@@ -28,7 +28,7 @@ describe('Модалка проверки оборудования', () => {
     })
 
     test('Можно установить значение', async () => {
-      const category = warehouseFixtures.equipmentCategoryListItem()
+      const category = equipmentsFixtures.equipmentCategoryListItem()
       const { user } = render(<CheckEquipmentFormModal {...props} categories={[category]} />)
 
       await testUtils.openCategorySelect(user)
@@ -61,7 +61,7 @@ describe('Модалка проверки оборудования', () => {
     })
 
     test('Можно установить значение', async () => {
-      const nomenclature = warehouseFixtures.nomenclatureListItem()
+      const nomenclature = warehousesFixtures.nomenclatureListItem()
       const { user } = render(<CheckEquipmentFormModal {...props} nomenclatures={[nomenclature]} />)
 
       await testUtils.openNomenclatureSelect(user)
@@ -104,7 +104,7 @@ describe('Модалка проверки оборудования', () => {
     })
 
     test('Не активно если категория расходный материал', () => {
-      const category = warehouseFixtures.equipmentCategoryListItem({
+      const category = equipmentsFixtures.equipmentCategoryListItem({
         code: EquipmentCategoryEnum.Consumable,
       })
 
@@ -138,7 +138,7 @@ describe('Модалка проверки оборудования', () => {
     })
 
     test('Не отображается если категория расходный материал', () => {
-      const category = warehouseFixtures.equipmentCategoryListItem({
+      const category = equipmentsFixtures.equipmentCategoryListItem({
         code: EquipmentCategoryEnum.Consumable,
       })
 
@@ -160,7 +160,7 @@ describe('Модалка проверки оборудования', () => {
 
   describe('Серийный номер', () => {
     test('Отображается если условия соблюдены', () => {
-      const nomenclature = warehouseFixtures.nomenclature({ equipmentHasSerialNumber: true })
+      const nomenclature = warehousesFixtures.nomenclature({ equipmentHasSerialNumber: true })
 
       render(<CheckEquipmentFormModal {...props} nomenclature={nomenclature} />)
 
@@ -181,7 +181,7 @@ describe('Модалка проверки оборудования', () => {
     })
 
     test('Можно установить значение', async () => {
-      const nomenclature = warehouseFixtures.nomenclature({ equipmentHasSerialNumber: true })
+      const nomenclature = warehousesFixtures.nomenclature({ equipmentHasSerialNumber: true })
 
       const { user } = render(<CheckEquipmentFormModal {...props} nomenclature={nomenclature} />)
 
@@ -192,7 +192,7 @@ describe('Модалка проверки оборудования', () => {
     })
 
     test('Показывается ошибка если поле не заполнено', async () => {
-      const nomenclature = warehouseFixtures.nomenclature({ equipmentHasSerialNumber: true })
+      const nomenclature = warehousesFixtures.nomenclature({ equipmentHasSerialNumber: true })
 
       const { user } = render(<CheckEquipmentFormModal {...props} nomenclature={nomenclature} />)
 
@@ -240,7 +240,7 @@ describe('Модалка проверки оборудования', () => {
 
   describe('Количество', () => {
     test('Отображается если категория расходный материал', () => {
-      const category = warehouseFixtures.equipmentCategoryListItem({
+      const category = equipmentsFixtures.equipmentCategoryListItem({
         code: EquipmentCategoryEnum.Consumable,
       })
 
@@ -263,7 +263,7 @@ describe('Модалка проверки оборудования', () => {
     })
 
     test('Можно установить значение', async () => {
-      const category = warehouseFixtures.equipmentCategoryListItem({
+      const category = equipmentsFixtures.equipmentCategoryListItem({
         code: EquipmentCategoryEnum.Consumable,
       })
 
@@ -276,7 +276,7 @@ describe('Модалка проверки оборудования', () => {
     })
 
     test('Показывается ошибка если поле не заполнено', async () => {
-      const category = warehouseFixtures.equipmentCategoryListItem({
+      const category = equipmentsFixtures.equipmentCategoryListItem({
         code: EquipmentCategoryEnum.Consumable,
       })
 
@@ -291,7 +291,7 @@ describe('Модалка проверки оборудования', () => {
 
   describe('Ед.измерения', () => {
     test('Отображается если категория расходный материал', () => {
-      const category = warehouseFixtures.equipmentCategoryListItem({
+      const category = equipmentsFixtures.equipmentCategoryListItem({
         code: EquipmentCategoryEnum.Consumable,
       })
 
@@ -345,7 +345,7 @@ describe('Модалка проверки оборудования', () => {
     })
 
     test('Можно установить значение', async () => {
-      const currency = currencyFixtures.currency()
+      const currency = catalogsFixtures.currencyCatalogItem()
 
       const { user } = render(<CheckEquipmentFormModal {...props} currencies={[currency]} />)
 
@@ -370,7 +370,7 @@ describe('Модалка проверки оборудования', () => {
     })
 
     test('Не отображается если категория расходный материал', () => {
-      const category = warehouseFixtures.equipmentCategoryListItem({
+      const category = equipmentsFixtures.equipmentCategoryListItem({
         code: EquipmentCategoryEnum.Consumable,
       })
 
@@ -410,7 +410,7 @@ describe('Модалка проверки оборудования', () => {
     })
 
     test('Не отображается если категория расходный материал', () => {
-      const category = warehouseFixtures.equipmentCategoryListItem({
+      const category = equipmentsFixtures.equipmentCategoryListItem({
         code: EquipmentCategoryEnum.Consumable,
       })
 
@@ -450,7 +450,7 @@ describe('Модалка проверки оборудования', () => {
     })
 
     test('Не отображается если категория расходный материал', () => {
-      const category = warehouseFixtures.equipmentCategoryListItem({
+      const category = equipmentsFixtures.equipmentCategoryListItem({
         code: EquipmentCategoryEnum.Consumable,
       })
 
@@ -491,7 +491,7 @@ describe('Модалка проверки оборудования', () => {
     })
 
     test('Не отображается если категория расходный материал', () => {
-      const category = warehouseFixtures.equipmentCategoryListItem({
+      const category = equipmentsFixtures.equipmentCategoryListItem({
         code: EquipmentCategoryEnum.Consumable,
       })
       render(<CheckEquipmentFormModal {...props} category={category} />)
@@ -523,7 +523,7 @@ describe('Модалка проверки оборудования', () => {
     })
 
     test('Отображается если категория не расходный материал', () => {
-      const categoryListItem = warehouseFixtures.equipmentCategoryListItem({
+      const categoryListItem = equipmentsFixtures.equipmentCategoryListItem({
         code: EquipmentCategoryEnum.Equipment,
       })
       render(<CheckEquipmentFormModal {...props} category={categoryListItem} />)
@@ -537,7 +537,7 @@ describe('Модалка проверки оборудования', () => {
     })
 
     test('Не отображается если категория расходный материал', () => {
-      const category = warehouseFixtures.equipmentCategoryListItem({
+      const category = equipmentsFixtures.equipmentCategoryListItem({
         code: EquipmentCategoryEnum.Consumable,
       })
       render(<CheckEquipmentFormModal {...props} category={category} />)
@@ -547,7 +547,7 @@ describe('Модалка проверки оборудования', () => {
     })
 
     test('Можно установить значение', async () => {
-      const owner = warehouseFixtures.customerListItem()
+      const owner = catalogsFixtures.customerCatalogItem()
       const { user } = render(<CheckEquipmentFormModal {...props} owners={[owner]} />)
 
       await testUtils.openOwnerSelect(user)
@@ -560,7 +560,7 @@ describe('Модалка проверки оборудования', () => {
 
   describe('Макрорегион', () => {
     test('Отображается если выбран владелец оборудования', async () => {
-      const owner = warehouseFixtures.customerListItem()
+      const owner = catalogsFixtures.customerCatalogItem()
       const { user } = render(<CheckEquipmentFormModal {...props} owners={[owner]} />)
 
       await testUtils.openOwnerSelect(user)
@@ -580,8 +580,8 @@ describe('Модалка проверки оборудования', () => {
     })
 
     test('Можно установить значение', async () => {
-      const owner = warehouseFixtures.customerListItem()
-      const macroregion = macroregionFixtures.macroregion()
+      const owner = catalogsFixtures.customerCatalogItem()
+      const macroregion = catalogsFixtures.macroregionCatalogItem()
 
       const { user } = render(
         <CheckEquipmentFormModal {...props} macroregions={[macroregion]} owners={[owner]} />,
@@ -611,7 +611,7 @@ describe('Модалка проверки оборудования', () => {
     })
 
     test('Можно установить значение', async () => {
-      const workType = warehouseFixtures.workTypeListItem()
+      const workType = catalogsFixtures.workTypeCatalogItem()
       const { user } = render(<CheckEquipmentFormModal {...props} workTypes={[workType]} />)
 
       await testUtils.openPurposeSelect(user)

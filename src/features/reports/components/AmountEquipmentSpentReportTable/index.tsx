@@ -17,7 +17,7 @@ const AmountEquipmentSpentReportTable: FC<AmountEquipmentSpentReportTableProps> 
   )
 
   return (
-    <Flex data-testid='amount-equipment-spent-report-table'>
+    <Flex data-testid='amount-equipmentDetail-spent-report-table'>
       <ParentSizedTable<AmountEquipmentSpentReportTableItem>
         {...props}
         rowKey='id'

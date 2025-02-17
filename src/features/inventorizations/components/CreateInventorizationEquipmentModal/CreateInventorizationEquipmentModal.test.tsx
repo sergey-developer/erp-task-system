@@ -5,7 +5,8 @@ import { makeString } from 'shared/utils/string'
 
 import { props } from '_tests_/features/warehouses/components/CreateInventorizationEquipmentModal/constants'
 import { createInventorizationEquipmentModalTestUtils } from '_tests_/features/warehouses/components/CreateInventorizationEquipmentModal/testUtils'
-import warehouseFixtures from '_tests_/fixtures/warehouse'
+import equipmentsFixtures from '_tests_/fixtures/equipments'
+import warehousesFixtures from '_tests_/fixtures/warehouse'
 import { render } from '_tests_/helpers'
 
 import CreateInventorizationEquipmentModal from './index'
@@ -27,8 +28,8 @@ describe('Модалка создания оборудования для инв
     })
 
     test('При заполнении обязательных полей и клике вызывается обработчик', async () => {
-      const warehouseListItem = warehouseFixtures.warehouseListItem()
-      const equipmentCatalogListItem = warehouseFixtures.equipmentCatalogListItem()
+      const warehouseListItem = warehousesFixtures.warehouseListItem()
+      const equipmentCatalogListItem = equipmentsFixtures.equipmentCatalogListItem()
 
       const { user } = render(
         <CreateInventorizationEquipmentModal
@@ -92,7 +93,7 @@ describe('Модалка создания оборудования для инв
     })
 
     test('Можно выбрать значение', async () => {
-      const equipmentCatalogListItem = warehouseFixtures.equipmentCatalogListItem()
+      const equipmentCatalogListItem = equipmentsFixtures.equipmentCatalogListItem()
 
       const { user } = render(
         <CreateInventorizationEquipmentModal {...props} equipments={[equipmentCatalogListItem]} />,
@@ -125,7 +126,7 @@ describe('Модалка создания оборудования для инв
 
   describe('Поле "Плановое местонахождение"', () => {
     test('Отображается, не активно, имеет значение из переданного оборудования', () => {
-      const equipment = warehouseFixtures.equipment()
+      const equipment = equipmentsFixtures.equipmentDetail()
       render(<CreateInventorizationEquipmentModal {...props} equipment={equipment} />)
 
       const selectInput = createInventorizationEquipmentModalTestUtils.getLocationPlanSelectInput()
@@ -153,7 +154,7 @@ describe('Модалка создания оборудования для инв
     })
 
     test('Можно выбрать значение', async () => {
-      const warehouseListItem = warehouseFixtures.warehouseListItem()
+      const warehouseListItem = warehousesFixtures.warehouseListItem()
 
       const { user } = render(
         <CreateInventorizationEquipmentModal {...props} warehouses={[warehouseListItem]} />,

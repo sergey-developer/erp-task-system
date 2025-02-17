@@ -11,7 +11,7 @@ import { relocationTaskDetailsTestUtils } from '_tests_/features/warehouses/comp
 import { createRelocationTaskDraftPageTestUtils } from '_tests_/features/warehouses/pages/CreateRelocationTaskDraftPage/testUtils'
 import commonFixtures from '_tests_/fixtures/common'
 import userFixtures from '_tests_/fixtures/users'
-import warehouseFixtures from '_tests_/fixtures/warehouse'
+import warehousesFixtures from '_tests_/fixtures/warehouse'
 import { getStoreWithAuth, render, renderWithRouter, tableTestUtils } from '_tests_/helpers'
 import {
   mockGetRelocationEquipmentsSuccess,
@@ -24,7 +24,7 @@ import ExecuteInventorizationRelocationsTab from './index'
 
 describe('Вкладка списка заявок на перемещение оборудования', () => {
   test('Отображает заголовок и таблицу с элементами и пагинацией', async () => {
-    const relocationTasks = warehouseFixtures.relocationTasks()
+    const relocationTasks = warehousesFixtures.relocationTasks()
     mockGetRelocationTasksSuccess({ body: commonFixtures.paginatedListResponse(relocationTasks) })
 
     render(<ExecuteInventorizationRelocationsTab {...props} />)
@@ -41,7 +41,7 @@ describe('Вкладка списка заявок на перемещение �
   })
 
   test('Можно открыть и закрыть карточку заявки', async () => {
-    const relocationTaskListItem = warehouseFixtures.relocationTaskListItem()
+    const relocationTaskListItem = warehousesFixtures.relocationTaskListItem()
     mockGetRelocationTasksSuccess({
       body: commonFixtures.paginatedListResponse([relocationTaskListItem]),
     })

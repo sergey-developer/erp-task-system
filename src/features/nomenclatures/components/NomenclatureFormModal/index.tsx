@@ -161,7 +161,7 @@ const NomenclatureFormModal: FC<NomenclatureFormModalProps> = ({
         </Form.Item>
 
         <Form.Item
-          data-testid='equipment-has-serial-number-form-item'
+          data-testid='equipmentDetail-has-serial-number-form-item'
           name='equipmentHasSerialNumber'
         >
           <Checkbox

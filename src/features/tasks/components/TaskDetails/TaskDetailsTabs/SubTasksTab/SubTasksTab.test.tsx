@@ -24,7 +24,7 @@ import { subTaskListTabTestUtils } from '_tests_/features/tasks/components/TaskD
 import { taskStatusTestUtils } from '_tests_/features/tasks/components/TaskStatus/testUtils'
 import catalogsFixtures from '_tests_/fixtures/catalogs'
 import supportGroupsFixtures from '_tests_/fixtures/supportGroups'
-import taskFixtures from '_tests_/fixtures/tasks'
+import tasksFixtures from '_tests_/fixtures/tasks'
 import userFixtures from '_tests_/fixtures/users'
 import {
   fakeWord,
@@ -153,7 +153,7 @@ describe('Вкладка списка заданий заявки', () => {
               task={{
                 ...props.task,
                 ...activeCreateSubTaskButtonTaskProps.task,
-                suspendRequest: taskFixtures.suspendRequest(),
+                suspendRequest: tasksFixtures.taskSuspendRequest(),
               }}
             />,
           )
@@ -191,7 +191,7 @@ describe('Вкладка списка заданий заявки', () => {
           const fakeSupportGroupListItem = supportGroupsFixtures.supportGroup()
           mockGetSupportGroupsSuccess({ body: [fakeSupportGroupListItem] })
 
-          const templateListItem = catalogsFixtures.subTaskTemplate()
+          const templateListItem = catalogsFixtures.subTaskTemplateCatalogItem()
           mockGetSubTaskTemplatesSuccess({ body: [templateListItem] })
 
           mockCreateSubTaskSuccess(props.task.id)
@@ -223,16 +223,16 @@ describe('Вкладка списка заданий заявки', () => {
         })
 
         test('В список добавляется новое задание', async () => {
-          const subTaskList = taskFixtures.subTaskList()
+          const subTaskList = tasksFixtures.subTaskList()
           mockGetSubTaskListSuccess(props.task.id, { body: subTaskList })
 
           const fakeSupportGroupListItem = supportGroupsFixtures.supportGroup()
           mockGetSupportGroupsSuccess({ body: [fakeSupportGroupListItem] })
 
-          const templateListItem = catalogsFixtures.subTaskTemplate()
+          const templateListItem = catalogsFixtures.subTaskTemplateCatalogItem()
           mockGetSubTaskTemplatesSuccess({ body: [templateListItem] })
 
-          mockCreateSubTaskSuccess(props.task.id, { body: taskFixtures.subTask() })
+          mockCreateSubTaskSuccess(props.task.id, { body: tasksFixtures.subTask() })
 
           const { user } = render(
             <SubTasksTab
@@ -268,7 +268,7 @@ describe('Вкладка списка заданий заявки', () => {
   describe('Список заданий', () => {
     test('Отображается', async () => {
       mockGetSubTaskListSuccess(props.task.id, {
-        body: taskFixtures.subTaskList(),
+        body: tasksFixtures.subTaskList(),
       })
 
       render(<SubTasksTab {...props} />, {
@@ -281,7 +281,7 @@ describe('Вкладка списка заданий заявки', () => {
 
     describe('При успешном получении', () => {
       test('Отображает верное количество заданий', async () => {
-        const subTaskList = taskFixtures.subTaskList()
+        const subTaskList = tasksFixtures.subTaskList()
         mockGetSubTaskListSuccess(props.task.id, { body: subTaskList })
 
         render(
@@ -354,7 +354,7 @@ describe('Вкладка списка заданий заявки', () => {
 
   describe('Модалка отправки задания на доработку', () => {
     test('Открывается', async () => {
-      const subTask = taskFixtures.subTask({
+      const subTask = tasksFixtures.subTask({
         status: showReworkButtonProps.status,
       })
       mockGetSubTaskListSuccess(props.task.id, { body: [subTask] })
@@ -378,7 +378,7 @@ describe('Вкладка списка заданий заявки', () => {
     })
 
     test('Закрывается', async () => {
-      const subTask = taskFixtures.subTask({
+      const subTask = tasksFixtures.subTask({
         status: showReworkButtonProps.status,
       })
       mockGetSubTaskListSuccess(props.task.id, { body: [subTask] })
@@ -405,7 +405,7 @@ describe('Вкладка списка заданий заявки', () => {
     })
 
     test('Отображает состояние загрузки', async () => {
-      const subTask = taskFixtures.subTask({
+      const subTask = tasksFixtures.subTask({
         status: showReworkButtonProps.status,
       })
       mockGetSubTaskListSuccess(props.task.id, { body: [subTask] })
@@ -434,7 +434,7 @@ describe('Вкладка списка заданий заявки', () => {
 
     describe('При успешной отправке данных', () => {
       test('Модалка закрывается', async () => {
-        const subTask = taskFixtures.subTask({
+        const subTask = tasksFixtures.subTask({
           status: showReworkButtonProps.status,
         })
         mockGetSubTaskListSuccess(props.task.id, { body: [subTask] })
@@ -465,7 +465,7 @@ describe('Вкладка списка заданий заявки', () => {
       })
 
       test('Статус задачи меняется на "В процессе"', async () => {
-        const subTask = taskFixtures.subTask({
+        const subTask = tasksFixtures.subTask({
           status: showReworkButtonProps.status,
         })
         mockGetSubTaskListSuccess(props.task.id, { body: [subTask] })
@@ -511,7 +511,7 @@ describe('Вкладка списка заданий заявки', () => {
       })
 
       test('Кнопка отправки на доработку не отображается', async () => {
-        const subTask = taskFixtures.subTask({
+        const subTask = tasksFixtures.subTask({
           status: showReworkButtonProps.status,
         })
         mockGetSubTaskListSuccess(props.task.id, { body: [subTask] })
@@ -546,7 +546,7 @@ describe('Вкладка списка заданий заявки', () => {
 
     describe('При не успешной отправке данных', () => {
       test('Обрабатывается ошибка 400', async () => {
-        const subTask = taskFixtures.subTask({
+        const subTask = tasksFixtures.subTask({
           status: showReworkButtonProps.status,
         })
         mockGetSubTaskListSuccess(props.task.id, { body: [subTask] })
@@ -587,7 +587,7 @@ describe('Вкладка списка заданий заявки', () => {
       })
 
       test('Обрабатывается ошибка 500', async () => {
-        const subTask = taskFixtures.subTask({
+        const subTask = tasksFixtures.subTask({
           status: showReworkButtonProps.status,
         })
         mockGetSubTaskListSuccess(props.task.id, { body: [subTask] })
@@ -623,7 +623,7 @@ describe('Вкладка списка заданий заявки', () => {
 
   describe('Модалка отмены задания', () => {
     test('Открывается', async () => {
-      const subTask = taskFixtures.subTask({
+      const subTask = tasksFixtures.subTask({
         status: showCancelButtonProps.status,
       })
       mockGetSubTaskListSuccess(props.task.id, { body: [subTask] })
@@ -647,7 +647,7 @@ describe('Вкладка списка заданий заявки', () => {
     })
 
     test('Закрывается', async () => {
-      const subTask = taskFixtures.subTask({
+      const subTask = tasksFixtures.subTask({
         status: showCancelButtonProps.status,
       })
       mockGetSubTaskListSuccess(props.task.id, { body: [subTask] })
@@ -674,7 +674,7 @@ describe('Вкладка списка заданий заявки', () => {
     })
 
     test('Отображает состояние загрузки', async () => {
-      const subTask = taskFixtures.subTask({
+      const subTask = tasksFixtures.subTask({
         status: showCancelButtonProps.status,
       })
       mockGetSubTaskListSuccess(props.task.id, { body: [subTask] })
@@ -703,7 +703,7 @@ describe('Вкладка списка заданий заявки', () => {
 
     describe('При успешной отправке данных', () => {
       test('Модалка закрывается', async () => {
-        const subTask = taskFixtures.subTask({
+        const subTask = tasksFixtures.subTask({
           status: showCancelButtonProps.status,
         })
         mockGetSubTaskListSuccess(props.task.id, { body: [subTask] })
@@ -734,7 +734,7 @@ describe('Вкладка списка заданий заявки', () => {
       })
 
       test('Статус задачи меняется на "Закрыта"', async () => {
-        const subTask = taskFixtures.subTask({
+        const subTask = tasksFixtures.subTask({
           status: showCancelButtonProps.status,
         })
         mockGetSubTaskListSuccess(props.task.id, { body: [subTask] })
@@ -780,7 +780,7 @@ describe('Вкладка списка заданий заявки', () => {
       })
 
       test('Кнопка отмены не отображается', async () => {
-        const subTask = taskFixtures.subTask({
+        const subTask = tasksFixtures.subTask({
           status: showCancelButtonProps.status,
         })
         mockGetSubTaskListSuccess(props.task.id, { body: [subTask] })
@@ -814,7 +814,7 @@ describe('Вкладка списка заданий заявки', () => {
 
     describe('При не успешной отправке данных', () => {
       test('Обрабатывается ошибка 400', async () => {
-        const subTask = taskFixtures.subTask({
+        const subTask = tasksFixtures.subTask({
           status: showCancelButtonProps.status,
         })
         mockGetSubTaskListSuccess(props.task.id, { body: [subTask] })
@@ -853,7 +853,7 @@ describe('Вкладка списка заданий заявки', () => {
       })
 
       test('Обрабатывается ошибка 500', async () => {
-        const subTask = taskFixtures.subTask({
+        const subTask = tasksFixtures.subTask({
           status: showCancelButtonProps.status,
         })
         mockGetSubTaskListSuccess(props.task.id, { body: [subTask] })

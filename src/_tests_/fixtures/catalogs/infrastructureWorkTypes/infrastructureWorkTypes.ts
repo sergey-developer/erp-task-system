@@ -2,7 +2,7 @@ import { InfrastructureWorkTypesCatalogItemDTO } from 'shared/catalogs/infrastru
 
 import { fakeId, fakeWord } from '_tests_/helpers'
 
-export const infrastructureWorkType = (): InfrastructureWorkTypesCatalogItemDTO => ({
+export const infrastructureWorkTypeCatalogItem = (): InfrastructureWorkTypesCatalogItemDTO => ({
   id: fakeId(),
   title: fakeWord(),
 })

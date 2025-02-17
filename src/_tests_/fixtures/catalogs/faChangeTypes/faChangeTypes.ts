@@ -4,7 +4,7 @@ import { FaChangeTypeCatalogItemDTO } from 'shared/catalogs/faChangeTypes/api/dt
 
 import { fakeId, fakeWord } from '_tests_/helpers'
 
-export const faChangeType = (
+export const faChangeTypeCatalogItem = (
   props?: Partial<Pick<FaChangeTypeCatalogItemDTO, 'isDefault'>>,
 ): FaChangeTypeCatalogItemDTO => ({
   isDefault: isUndefined(props?.isDefault) ? false : props!.isDefault,

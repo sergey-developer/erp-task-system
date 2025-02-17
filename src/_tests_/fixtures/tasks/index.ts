@@ -1,29 +1,33 @@
-import * as assignee from './assignee'
-import * as attachment from './attachment'
-import * as comment from './comment'
-import * as counters from './counters'
-import * as journal from './journal'
-import * as reclassificationRequest from './reclassificationRequest'
-import * as registrationRequestRecipientsFN from './registrationRequestRecipientsFN'
 import * as subTask from './subTask'
-import * as supportGroup from './supportGroup'
-import * as suspendRequest from './suspendRequest'
 import * as task from './task'
-import * as workGroup from './workGroup'
+import * as taskAssignee from './taskAssignee'
+import * as taskAttachment from './taskAttachment'
+import * as taskComment from './taskComment'
+import * as taskCounters from './taskCounters'
+import * as taskJournal from './taskJournal'
+import * as taskReclassificationRequest from './taskReclassificationRequest'
+import * as taskRegistrationRequestRecipientsFN from './taskRegistrationRequestRecipientsFN'
+import * as taskSupportGroup from './taskSupportGroup'
+import * as taskSuspendRequest from './taskSuspendRequest'
+import * as taskWorkGroup from './taskWorkGroup'
+import * as tasks from './tasks'
+import * as tasksTable from './tasksTable'
 
-const taskFixtures = {
+const tasksFixtures = {
   ...task,
-  ...counters,
+  ...tasks,
+  ...tasksTable,
+  ...taskCounters,
   ...subTask,
-  ...comment,
-  ...attachment,
-  ...assignee,
-  ...workGroup,
-  ...journal,
-  ...reclassificationRequest,
-  ...suspendRequest,
-  ...supportGroup,
-  ...registrationRequestRecipientsFN,
+  ...taskComment,
+  ...taskAttachment,
+  ...taskAssignee,
+  ...taskWorkGroup,
+  ...taskJournal,
+  ...taskReclassificationRequest,
+  ...taskSuspendRequest,
+  ...taskSupportGroup,
+  ...taskRegistrationRequestRecipientsFN,
 } as const
 
-export default taskFixtures
+export default tasksFixtures

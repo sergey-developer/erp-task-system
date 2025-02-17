@@ -15,9 +15,10 @@ import { editRelocationTaskDraftPageTestUtils as testUtils } from '_tests_/featu
 import { executeInventorizationPageTestUtils } from '_tests_/features/warehouses/pages/ExecuteInventorizationPage/testUtils'
 import catalogsFixtures from '_tests_/fixtures/catalogs'
 import commonFixtures from '_tests_/fixtures/common'
-import { fakeUseLocationResult } from '_tests_/fixtures/useLocation'
+import { fakeUseLocationResult } from '_tests_/fixtures/common/hooks/useLocation'
+import equipmentsFixtures from '_tests_/fixtures/equipments'
 import userFixtures from '_tests_/fixtures/users'
-import warehouseFixtures from '_tests_/fixtures/warehouse'
+import warehousesFixtures from '_tests_/fixtures/warehouse'
 import {
   getStoreWithAuth,
   notificationTestUtils,
@@ -53,7 +54,7 @@ describe('Страница создания черновика заявки на
   describe('Форма', () => {
     test('Отображается', () => {
       const locationStateMock = makeCreateRelocationTaskDraftPageLocationState({
-        inventorization: warehouseFixtures.inventorization(),
+        inventorization: warehousesFixtures.inventorization(),
       })
 
       jest
@@ -81,7 +82,7 @@ describe('Страница создания черновика заявки на
 
     test('Контроллером нельзя выбрать текущего пользователя', async () => {
       const locationStateMock = makeCreateRelocationTaskDraftPageLocationState({
-        inventorization: warehouseFixtures.inventorization(),
+        inventorization: warehousesFixtures.inventorization(),
       })
 
       jest
@@ -95,7 +96,7 @@ describe('Страница создания черновика заявки на
       mockGetLocationsCatalogSuccess({ body: [], once: false })
       mockGetCurrenciesSuccess({ body: [] })
       mockGetEquipmentsCatalogSuccess({
-        body: warehouseFixtures.equipmentsCatalog(),
+        body: equipmentsFixtures.equipmentsCatalog(),
         once: false,
       })
       mockGetUsersGroupsSuccess({ body: [] })
@@ -129,7 +130,7 @@ describe('Страница создания черновика заявки на
 
     test('Исполнителем нельзя выбрать контроллера', async () => {
       const locationStateMock = makeCreateRelocationTaskDraftPageLocationState({
-        inventorization: warehouseFixtures.inventorization(),
+        inventorization: warehousesFixtures.inventorization(),
       })
 
       jest
@@ -142,7 +143,7 @@ describe('Страница создания черновика заявки на
       mockGetLocationsCatalogSuccess({ body: [], once: false })
       mockGetCurrenciesSuccess({ body: [] })
       mockGetEquipmentsCatalogSuccess({
-        body: warehouseFixtures.equipmentsCatalog(),
+        body: equipmentsFixtures.equipmentsCatalog(),
         once: false,
       })
       mockGetUsersGroupsSuccess({ body: [] })
@@ -174,7 +175,7 @@ describe('Страница создания черновика заявки на
   describe('Перечень оборудования', () => {
     test('Отображается', () => {
       const locationStateMock = makeCreateRelocationTaskDraftPageLocationState({
-        inventorization: warehouseFixtures.inventorization(),
+        inventorization: warehousesFixtures.inventorization(),
       })
 
       jest
@@ -206,7 +207,7 @@ describe('Страница создания черновика заявки на
 
   test('При нажатии кнопки отмены возвращается на страницу выполнения инвентаризации во вкладку перемещений', async () => {
     const locationStateMock = makeCreateRelocationTaskDraftPageLocationState({
-      inventorization: warehouseFixtures.inventorization(),
+      inventorization: warehousesFixtures.inventorization(),
     })
 
     jest
@@ -252,7 +253,7 @@ describe('Страница создания черновика заявки на
 
   test('При успешном создании возвращается на страницу выполнения инвентаризации во вкладку перемещений и открывает карточку', async () => {
     const locationStateMock = makeCreateRelocationTaskDraftPageLocationState({
-      inventorization: warehouseFixtures.inventorization(),
+      inventorization: warehousesFixtures.inventorization(),
     })
 
     jest
@@ -272,7 +273,7 @@ describe('Страница создания черновика заявки на
     mockGetCurrenciesSuccess({ body: [] })
     mockGetUsersGroupsSuccess({ body: [] })
 
-    const inventorizationEquipmentListItem = warehouseFixtures.inventorizationEquipmentListItem()
+    const inventorizationEquipmentListItem = warehousesFixtures.inventorizationEquipmentListItem()
     mockGetInventorizationEquipmentsSuccess(
       { inventorizationId: locationStateMock.inventorization.id },
       {
@@ -285,10 +286,10 @@ describe('Страница создания черновика заявки на
       {
         equipmentId: inventorizationEquipmentListItem.equipment.id,
       },
-      { body: warehouseFixtures.inventorizationEquipment() },
+      { body: warehousesFixtures.inventorizationEquipment() },
     )
 
-    const relocationTask = warehouseFixtures.relocationTask()
+    const relocationTask = warehousesFixtures.relocationTask()
     mockCreateRelocationTaskSuccess({ body: relocationTask })
 
     mockGetRelocationTaskSuccess({ relocationTaskId: relocationTask.id })

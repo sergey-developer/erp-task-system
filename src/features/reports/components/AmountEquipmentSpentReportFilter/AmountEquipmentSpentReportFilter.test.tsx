@@ -1,7 +1,7 @@
 import { screen, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 
-import warehouseFixtures from '_tests_/fixtures/warehouse'
+import equipmentsFixtures from '_tests_/fixtures/equipments'
 import { buttonTestUtils, render, selectTestUtils } from '_tests_/helpers'
 
 import AmountEquipmentSpentReportFilter from './index'
@@ -13,7 +13,7 @@ const props: Readonly<AmountEquipmentSpentReportFilterProps> = {
   values: {},
   initialValues: {},
 
-  categories: warehouseFixtures.equipmentCategories(2),
+  categories: equipmentsFixtures.equipmentCategories(2),
   categoriesIsLoading: false,
 
   onClose: jest.fn(),

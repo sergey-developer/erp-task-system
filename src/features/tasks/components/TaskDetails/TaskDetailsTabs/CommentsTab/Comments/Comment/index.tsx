@@ -16,7 +16,7 @@ export type CommentProps = Pick<TaskCommentDTO, 'createdAt' | 'text' | 'attachme
 
 const Comment: FC<CommentProps> = ({ text, createdAt, author, attachments }) => {
   return (
-    <Space data-testid='task-comment' direction='vertical' $block>
+    <Space data-testid='task-taskComment' direction='vertical' $block>
       <SeparatedText>
         <Text type='secondary'>{author}</Text>
         <Text type='secondary'>{createdAt}</Text>

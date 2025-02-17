@@ -9,10 +9,11 @@ import * as downloadFileUtils from 'shared/utils/file/downloadFile'
 
 import { relocationEquipmentSimplifiedEditableTableTestUtils } from '_tests_/features/warehouses/components/RelocationEquipmentSimplifiedEditableTable/testUtils'
 import { createRelocationTaskSimplifiedPageTestUtils } from '_tests_/features/warehouses/pages/CreateRelocationTaskSimplifiedPage/testUtils'
-import taskFixtures from '_tests_/fixtures/tasks'
-import { fakeUseLocationResult } from '_tests_/fixtures/useLocation'
+import { fakeUseLocationResult } from '_tests_/fixtures/common/hooks/useLocation'
+import equipmentsFixtures from '_tests_/fixtures/equipments'
+import tasksFixtures from '_tests_/fixtures/tasks'
 import userFixtures from '_tests_/fixtures/users'
-import warehouseFixtures from '_tests_/fixtures/warehouse'
+import warehousesFixtures from '_tests_/fixtures/warehouse'
 import {
   fakeWord,
   getStoreWithAuth,
@@ -45,7 +46,7 @@ notificationTestUtils.setupNotifications()
 describe('Упрощенная страница создания заявки на перемещение', () => {
   describe('Форма', () => {
     test('Контроллером нельзя выбрать исполнителя заявки и текущего пользователя', async () => {
-      const locationStateTask = taskFixtures.task()
+      const locationStateTask = tasksFixtures.taskDetail()
       jest
         .spyOn(reactRouterDom, 'useLocation')
         .mockReturnValue(fakeUseLocationResult({ state: { task: locationStateTask } }))
@@ -57,11 +58,11 @@ describe('Упрощенная страница создания заявки н
       mockGetEquipmentsCatalogSuccess()
       mockGetCurrenciesSuccess()
       mockGetEquipmentsCatalogSuccess({
-        body: warehouseFixtures.equipmentsCatalog(),
+        body: equipmentsFixtures.equipmentsCatalog(),
         once: false,
       })
 
-      const warehouseMSI = warehouseFixtures.warehouse()
+      const warehouseMSI = warehousesFixtures.warehouse()
       mockGetWarehouseMSISuccess(locationStateTask.assignee!.id, { body: warehouseMSI })
 
       const { user } = render(<CreateRelocationTaskSimplifiedPage />, {

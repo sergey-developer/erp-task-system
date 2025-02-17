@@ -19,9 +19,9 @@ import { formatDate } from 'shared/utils/date'
 import { props } from '_tests_/features/warehouses/components/InventorizationDetails/constants'
 import { inventorizationDetailsTestUtils } from '_tests_/features/warehouses/components/InventorizationDetails/testUtils'
 import { executeInventorizationPageTestUtils } from '_tests_/features/warehouses/pages/ExecuteInventorizationPage/testUtils'
-import { fakeUseLocationResult } from '_tests_/fixtures/useLocation'
+import { fakeUseLocationResult } from '_tests_/fixtures/common/hooks/useLocation'
 import userFixtures from '_tests_/fixtures/users'
-import warehouseFixtures from '_tests_/fixtures/warehouse'
+import warehousesFixtures from '_tests_/fixtures/warehouse'
 import { getStoreWithAuth, render, renderWithRouter, setupApiTests } from '_tests_/helpers'
 import { mockGetInventorizationSuccess } from '_tests_/mocks/api'
 import { getUserMeQueryMock } from '_tests_/mocks/store/users'
@@ -52,7 +52,7 @@ describe('Карточка инвентаризации', () => {
   })
 
   test('При успешном запросе отображается информация', async () => {
-    const inventorization = warehouseFixtures.inventorization()
+    const inventorization = warehousesFixtures.inventorization()
     mockGetInventorizationSuccess(
       { inventorizationId: props.inventorizationId },
       { body: inventorization },
@@ -154,7 +154,7 @@ describe('Карточка инвентаризации', () => {
     })
 
     test('Кнопка активная если условия соблюдены', async () => {
-      const inventorization = warehouseFixtures.inventorization({
+      const inventorization = warehousesFixtures.inventorization({
         status: InventorizationStatusEnum.New,
       })
       mockGetInventorizationSuccess(
@@ -178,7 +178,7 @@ describe('Карточка инвентаризации', () => {
 
     describe('Кнопка не активна если условия соблюдены', () => {
       test(`Но статус не ${InventorizationStatusEnum.New} или ${InventorizationStatusEnum.InProgress}`, async () => {
-        const inventorization = warehouseFixtures.inventorization({
+        const inventorization = warehousesFixtures.inventorization({
           status: InventorizationStatusEnum.Closed,
         })
         mockGetInventorizationSuccess(
@@ -201,7 +201,7 @@ describe('Карточка инвентаризации', () => {
       })
 
       test('Но исполнитель не текущий пользователь', async () => {
-        const inventorization = warehouseFixtures.inventorization({
+        const inventorization = warehousesFixtures.inventorization({
           status: InventorizationStatusEnum.New,
         })
         mockGetInventorizationSuccess(
@@ -224,7 +224,7 @@ describe('Карточка инвентаризации', () => {
       })
 
       test(`Но нет прав ${UserPermissionsEnum.InventorizationUpdate}`, async () => {
-        const inventorization = warehouseFixtures.inventorization({
+        const inventorization = warehousesFixtures.inventorization({
           status: InventorizationStatusEnum.New,
         })
         mockGetInventorizationSuccess(
@@ -246,7 +246,7 @@ describe('Карточка инвентаризации', () => {
     })
 
     test('При клике переходил на страницу выполнения инвентаризации', async () => {
-      const inventorization = warehouseFixtures.inventorization({
+      const inventorization = warehousesFixtures.inventorization({
         status: InventorizationStatusEnum.New,
       })
       mockGetInventorizationSuccess(

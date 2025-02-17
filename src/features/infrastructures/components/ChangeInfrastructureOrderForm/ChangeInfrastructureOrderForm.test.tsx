@@ -42,7 +42,7 @@ describe('Форма добавления работ к бланк-заказу'
   describe('Таблица добавления работ к бланк-заказу', () => {
     describe.skip('Изменение работ', () => {
       test('При выборе наименования работ устанавливаются значения для зависимых полей', async () => {
-        const infrastructureWorkType = catalogsFixtures.infrastructureWorkType()
+        const infrastructureWorkType = catalogsFixtures.infrastructureWorkTypeCatalogItem()
 
         const infrastructureWorkTypeCost = infrastructuresFixtures.infrastructureWorkTypeCost()
         mockGetInfrastructureOrderFormWorkTypeCostSuccess({ body: infrastructureWorkTypeCost })
@@ -93,7 +93,7 @@ describe('Форма добавления работ к бланк-заказу'
       })
 
       test('При выборе наименования работ и указании количества единиц, устаналиваются значения для зависимых полей', async () => {
-        const infrastructureWorkType = catalogsFixtures.infrastructureWorkType()
+        const infrastructureWorkType = catalogsFixtures.infrastructureWorkTypeCatalogItem()
 
         const infrastructureWorkTypeCost = infrastructuresFixtures.infrastructureWorkTypeCost()
         mockGetInfrastructureOrderFormWorkTypeCostSuccess({ body: infrastructureWorkTypeCost })

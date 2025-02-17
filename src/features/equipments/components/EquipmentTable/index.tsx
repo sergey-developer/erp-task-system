@@ -14,7 +14,7 @@ const EquipmentTable: FC<EquipmentTableProps> = ({ sort, ...props }) => {
   )
 
   return (
-    <Flex data-testid='equipment-table'>
+    <Flex data-testid='equipmentDetail-table'>
       <ParentSizedTable<EquipmentTableItem>
         {...props}
         rowKey='id'

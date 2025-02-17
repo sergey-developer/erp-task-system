@@ -187,7 +187,7 @@ const RequestTaskSuspendModal: FC<RequestTaskSuspendModalProps> = ({
         </Form.Item>
 
         <Form.Item
-          data-testid='comment-form-item'
+          data-testid='taskComment-form-item'
           label='Комментарий'
           name='comment'
           rules={commentRules}

@@ -1,6 +1,7 @@
 import { CheckEquipmentFormModalProps } from 'features/equipments/components/CheckEquipmentFormModal/types'
 
-import warehouseFixtures from '_tests_/fixtures/warehouse'
+import equipmentsFixtures from '_tests_/fixtures/equipments'
+import warehousesFixtures from '_tests_/fixtures/warehouse'
 import { fakeWord } from '_tests_/helpers'
 
 export const props: Readonly<CheckEquipmentFormModalProps> = {
@@ -11,7 +12,7 @@ export const props: Readonly<CheckEquipmentFormModalProps> = {
   onSubmit: jest.fn(),
   isCredited: false,
 
-  nomenclature: warehouseFixtures.nomenclature(),
+  nomenclature: warehousesFixtures.nomenclature(),
   nomenclatureIsLoading: false,
 
   nomenclatures: [],
@@ -23,7 +24,7 @@ export const props: Readonly<CheckEquipmentFormModalProps> = {
 
   categories: [],
   categoriesIsLoading: false,
-  category: warehouseFixtures.equipmentCategoryListItem(),
+  category: equipmentsFixtures.equipmentCategoryListItem(),
   onChangeCategory: jest.fn(),
 
   currencies: [],

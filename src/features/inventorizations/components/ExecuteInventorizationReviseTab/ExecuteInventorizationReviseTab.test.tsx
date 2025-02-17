@@ -21,8 +21,9 @@ import { equipmentFormModalTestUtils } from '_tests_/features/warehouses/compone
 import { reviseEquipmentTableTestUtils } from '_tests_/features/warehouses/components/ReviseInventorizationEquipmentTable/testUtils'
 import catalogsFixtures from '_tests_/fixtures/catalogs'
 import commonFixtures from '_tests_/fixtures/common'
+import equipmentsFixtures from '_tests_/fixtures/equipments'
 import userFixtures from '_tests_/fixtures/users'
-import warehouseFixtures from '_tests_/fixtures/warehouse'
+import warehousesFixtures from '_tests_/fixtures/warehouse'
 import { fakeInteger, fakeWord, getStoreWithAuth, render, setupApiTests } from '_tests_/helpers'
 import {
   mockCheckInventorizationEquipmentsBadRequestError,
@@ -117,7 +118,7 @@ describe('Вкладка списка оборудования с расхожд
       mockGetLocationsCatalogSuccess({ body: [] })
       mockGetEquipmentCategoriesSuccess({ body: [] })
 
-      const equipmentCatalogListItem = warehouseFixtures.equipmentCatalogListItem()
+      const equipmentCatalogListItem = equipmentsFixtures.equipmentCatalogListItem()
       mockGetEquipmentsCatalogSuccess({ body: [equipmentCatalogListItem] })
 
       mockGetEquipmentSuccess(equipmentCatalogListItem.id)
@@ -163,22 +164,22 @@ describe('Вкладка списка оборудования с расхожд
 
       mockGetLocationsCatalogSuccess({ body: [] })
 
-      const equipmentCategoryListItem = warehouseFixtures.equipmentCategoryListItem({
+      const equipmentCategoryListItem = equipmentsFixtures.equipmentCategoryListItem({
         code: EquipmentCategoryEnum.Consumable,
       })
       mockGetEquipmentCategoriesSuccess({ body: [equipmentCategoryListItem] })
       mockGetCurrenciesSuccess()
 
-      const nomenclatureListItem = warehouseFixtures.nomenclatureListItem()
+      const nomenclatureListItem = warehousesFixtures.nomenclatureListItem()
       mockGetNomenclaturesSuccess({
         body: commonFixtures.paginatedListResponse([nomenclatureListItem]),
       })
       mockGetNomenclatureSuccess(nomenclatureListItem.id, {
-        body: warehouseFixtures.nomenclature(),
+        body: warehousesFixtures.nomenclature(),
       })
 
-      const workTypeListItem = warehouseFixtures.workTypeListItem()
-      mockGetWorkTypesSuccess({ body: [workTypeListItem] })
+      const workTypeCatalogItem = catalogsFixtures.workTypeCatalogItem()
+      mockGetWorkTypesSuccess({ body: [workTypeCatalogItem] })
       mockGetEquipmentsCatalogSuccess({ body: [], once: false })
       mockCreateEquipmentSuccess()
       mockCreateInventorizationEquipmentSuccess({ inventorizationId: props.inventorization.id })
@@ -218,7 +219,7 @@ describe('Вкладка списка оборудования с расхожд
       )
       await equipmentFormModalTestUtils.setQuantity(user, fakeInteger())
       await equipmentFormModalTestUtils.openPurposeSelect(user)
-      await equipmentFormModalTestUtils.setPurpose(user, workTypeListItem.title)
+      await equipmentFormModalTestUtils.setPurpose(user, workTypeCatalogItem.title)
       await equipmentFormModalTestUtils.clickAddButton(user)
       await waitFor(() => expect(equipmentFormModal).not.toBeInTheDocument())
       await waitFor(() => expect(createInventorizationEquipmentModal).not.toBeInTheDocument())
@@ -229,7 +230,7 @@ describe('Вкладка списка оборудования с расхожд
 
   describe('Скачать шаблон', () => {
     test(`Кнопка отображается и активна если есть права ${UserPermissionsEnum.InventorizationUpdate} и статус инвентаризации ${InventorizationStatusEnum.New} и текущий пользователь является исполнителем инвентаризации`, () => {
-      const inventorization = warehouseFixtures.inventorization({
+      const inventorization = warehousesFixtures.inventorization({
         status: InventorizationStatusEnum.New,
       })
       mockGetInventorizationEquipmentsSuccess({ inventorizationId: inventorization.id })
@@ -252,7 +253,7 @@ describe('Вкладка списка оборудования с расхожд
     })
 
     test(`Кнопка отображается если есть права ${UserPermissionsEnum.InventorizationUpdate} и статус инвентаризации ${InventorizationStatusEnum.InProgress} и текущий пользователь является исполнителем инвентаризации`, async () => {
-      const inventorization = warehouseFixtures.inventorization({
+      const inventorization = warehousesFixtures.inventorization({
         status: InventorizationStatusEnum.InProgress,
       })
       mockGetInventorizationEquipmentsSuccess({ inventorizationId: inventorization.id })
@@ -276,7 +277,7 @@ describe('Вкладка списка оборудования с расхожд
 
     describe('Кнопка не отображается', () => {
       test(`Если есть права ${UserPermissionsEnum.InventorizationUpdate} и статус инвентаризации ${InventorizationStatusEnum.New} но текущий пользователь не является исполнителем инвентаризации`, () => {
-        const inventorization = warehouseFixtures.inventorization({
+        const inventorization = warehousesFixtures.inventorization({
           status: InventorizationStatusEnum.New,
         })
         mockGetInventorizationEquipmentsSuccess({ inventorizationId: inventorization.id })
@@ -297,7 +298,7 @@ describe('Вкладка списка оборудования с расхожд
       })
 
       test(`Если есть права ${UserPermissionsEnum.InventorizationUpdate} и текущий пользователь является исполнителем инвентаризации но статус инвентаризации не ${InventorizationStatusEnum.New} или ${InventorizationStatusEnum.InProgress}`, () => {
-        const inventorization = warehouseFixtures.inventorization({
+        const inventorization = warehousesFixtures.inventorization({
           status: InventorizationStatusEnum.Closed,
         })
         mockGetInventorizationEquipmentsSuccess({ inventorizationId: inventorization.id })
@@ -319,7 +320,7 @@ describe('Вкладка списка оборудования с расхожд
       })
 
       test(`Если статус инвентаризации ${InventorizationStatusEnum.New} и текущий пользователь является исполнителем инвентаризации но нет прав ${UserPermissionsEnum.InventorizationUpdate}`, () => {
-        const inventorization = warehouseFixtures.inventorization({
+        const inventorization = warehousesFixtures.inventorization({
           status: InventorizationStatusEnum.InProgress,
         })
         mockGetInventorizationEquipmentsSuccess({ inventorizationId: inventorization.id })
@@ -342,7 +343,7 @@ describe('Вкладка списка оборудования с расхожд
     })
 
     test('При успешном запросе вызывается функция открытия окна скачивания', async () => {
-      const inventorization = warehouseFixtures.inventorization({
+      const inventorization = warehousesFixtures.inventorization({
         status: InventorizationStatusEnum.New,
       })
 
@@ -384,7 +385,7 @@ describe('Вкладка списка оборудования с расхожд
 
   describe('Сверить оборудование из Excel', () => {
     test(`Кнопка отображается и активна если есть права ${UserPermissionsEnum.InventorizationUpdate} и статус инвентаризации ${InventorizationStatusEnum.New} и текущий пользователь является исполнителем инвентаризации`, () => {
-      const inventorization = warehouseFixtures.inventorization({
+      const inventorization = warehousesFixtures.inventorization({
         status: InventorizationStatusEnum.New,
       })
       mockGetInventorizationEquipmentsSuccess({ inventorizationId: inventorization.id })
@@ -407,7 +408,7 @@ describe('Вкладка списка оборудования с расхожд
     })
 
     test(`Кнопка отображается если есть права ${UserPermissionsEnum.InventorizationUpdate} и статус инвентаризации ${InventorizationStatusEnum.InProgress} и текущий пользователь является исполнителем инвентаризации`, async () => {
-      const inventorization = warehouseFixtures.inventorization({
+      const inventorization = warehousesFixtures.inventorization({
         status: InventorizationStatusEnum.InProgress,
       })
       mockGetInventorizationEquipmentsSuccess({ inventorizationId: inventorization.id })
@@ -431,7 +432,7 @@ describe('Вкладка списка оборудования с расхожд
 
     describe('Кнопка не отображается', () => {
       test(`Если есть права ${UserPermissionsEnum.InventorizationUpdate} и статус инвентаризации ${InventorizationStatusEnum.New} но текущий пользователь не является исполнителем инвентаризации`, () => {
-        const inventorization = warehouseFixtures.inventorization({
+        const inventorization = warehousesFixtures.inventorization({
           status: InventorizationStatusEnum.New,
         })
         mockGetInventorizationEquipmentsSuccess({ inventorizationId: inventorization.id })
@@ -452,7 +453,7 @@ describe('Вкладка списка оборудования с расхожд
       })
 
       test(`Если есть права ${UserPermissionsEnum.InventorizationUpdate} и текущий пользователь является исполнителем инвентаризации но статус инвентаризации не ${InventorizationStatusEnum.New} или ${InventorizationStatusEnum.InProgress}`, () => {
-        const inventorization = warehouseFixtures.inventorization({
+        const inventorization = warehousesFixtures.inventorization({
           status: InventorizationStatusEnum.Closed,
         })
         mockGetInventorizationEquipmentsSuccess({ inventorizationId: inventorization.id })
@@ -474,7 +475,7 @@ describe('Вкладка списка оборудования с расхожд
       })
 
       test(`Если статус инвентаризации ${InventorizationStatusEnum.New} и текущий пользователь является исполнителем инвентаризации но нет прав ${UserPermissionsEnum.InventorizationUpdate}`, () => {
-        const inventorization = warehouseFixtures.inventorization({
+        const inventorization = warehousesFixtures.inventorization({
           status: InventorizationStatusEnum.InProgress,
         })
         mockGetInventorizationEquipmentsSuccess({ inventorizationId: inventorization.id })
@@ -497,7 +498,7 @@ describe('Вкладка списка оборудования с расхожд
     })
 
     test('При успешном запросе открывается модалка с результатами сверки', async () => {
-      const inventorization = warehouseFixtures.inventorization({
+      const inventorization = warehousesFixtures.inventorization({
         status: InventorizationStatusEnum.New,
       })
 
@@ -525,7 +526,7 @@ describe('Вкладка списка оборудования с расхожд
     })
 
     test('При 400 ошибке показываются ошибки сверки', async () => {
-      const inventorization = warehouseFixtures.inventorization({
+      const inventorization = warehousesFixtures.inventorization({
         status: InventorizationStatusEnum.New,
       })
 
@@ -564,7 +565,7 @@ describe('Вкладка списка оборудования с расхожд
 
   describe('Результат сверки оборудования из Excel', () => {
     test('При нажатии на кнопку редактирования, вместо иконки восклицательного знака отображается иконка галочки', async () => {
-      const inventorization = warehouseFixtures.inventorization({
+      const inventorization = warehousesFixtures.inventorization({
         status: InventorizationStatusEnum.New,
       })
 
@@ -574,7 +575,7 @@ describe('Вкладка списка оборудования с расхожд
       })
 
       const checkedInventorizationEquipmentsTemplateListItem =
-        warehouseFixtures.checkedInventorizationEquipmentsTemplateListItem({ isCredited: false })
+        warehousesFixtures.checkedInventorizationEquipmentsTemplateListItem({ isCredited: false })
 
       mockCheckInventorizationEquipmentsTemplateSuccess({
         body: [checkedInventorizationEquipmentsTemplateListItem],
@@ -618,7 +619,7 @@ describe('Вкладка списка оборудования с расхожд
 
     // todo: доделать
     test.skip('После редактирования оборудования с категорией расходный материал, значения полей в строке таблицы меняются', async () => {
-      const inventorization = warehouseFixtures.inventorization({
+      const inventorization = warehousesFixtures.inventorization({
         status: InventorizationStatusEnum.New,
       })
 
@@ -627,12 +628,12 @@ describe('Вкладка списка оборудования с расхожд
         permissions: [UserPermissionsEnum.InventorizationUpdate],
       })
 
-      const equipmentCategoryListItem = warehouseFixtures.equipmentCategoryListItem({
+      const equipmentCategoryListItem = equipmentsFixtures.equipmentCategoryListItem({
         code: EquipmentCategoryEnum.Consumable,
       })
 
       const checkedInventorizationEquipmentsTemplateListItem =
-        warehouseFixtures.checkedInventorizationEquipmentsTemplateListItem({
+        warehousesFixtures.checkedInventorizationEquipmentsTemplateListItem({
           isCredited: false,
           category: equipmentCategoryListItem,
         })
@@ -658,7 +659,7 @@ describe('Вкладка списка оборудования с расхожд
         ]),
       })
 
-      const nomenclature = warehouseFixtures.nomenclature({
+      const nomenclature = warehousesFixtures.nomenclature({
         ...checkedInventorizationEquipmentsTemplateListItem.nomenclature!,
       })
       mockGetNomenclatureSuccess(nomenclature.id, { body: nomenclature })
@@ -723,7 +724,7 @@ describe('Вкладка списка оборудования с расхожд
     })
 
     test('При успешной сверке закрывается модалка и перезапрашивается перечень оборудования для сверки', async () => {
-      const inventorization = warehouseFixtures.inventorization({
+      const inventorization = warehousesFixtures.inventorization({
         status: InventorizationStatusEnum.New,
       })
 
@@ -733,7 +734,7 @@ describe('Вкладка списка оборудования с расхожд
       })
 
       const checkedInventorizationEquipmentsTemplateListItem =
-        warehouseFixtures.checkedInventorizationEquipmentsTemplateListItem({ isCredited: false })
+        warehousesFixtures.checkedInventorizationEquipmentsTemplateListItem({ isCredited: false })
 
       mockCheckInventorizationEquipmentsTemplateSuccess({
         body: [checkedInventorizationEquipmentsTemplateListItem],
@@ -775,7 +776,7 @@ describe('Вкладка списка оборудования с расхожд
     })
 
     test('При 400 ошибке показываются ошибки сверки', async () => {
-      const inventorization = warehouseFixtures.inventorization({
+      const inventorization = warehousesFixtures.inventorization({
         status: InventorizationStatusEnum.New,
       })
 
@@ -785,7 +786,7 @@ describe('Вкладка списка оборудования с расхожд
       })
 
       const checkedInventorizationEquipmentsTemplateListItem =
-        warehouseFixtures.checkedInventorizationEquipmentsTemplateListItem({ isCredited: false })
+        warehousesFixtures.checkedInventorizationEquipmentsTemplateListItem({ isCredited: false })
 
       mockCheckInventorizationEquipmentsTemplateSuccess({
         body: [checkedInventorizationEquipmentsTemplateListItem],

@@ -1,8 +1,8 @@
 import { NomenclatureTableProps } from 'features/nomenclatures/components/NomenclatureTable/types'
 
-import warehouseFixtures from '_tests_/fixtures/warehouse/index'
+import warehousesFixtures from '_tests_/fixtures/warehouse/index'
 
-export const nomenclatureListItem = warehouseFixtures.nomenclatureListItem()
+export const nomenclatureListItem = warehousesFixtures.nomenclatureListItem()
 
 export const props: Readonly<NomenclatureTableProps> = {
   dataSource: [nomenclatureListItem],

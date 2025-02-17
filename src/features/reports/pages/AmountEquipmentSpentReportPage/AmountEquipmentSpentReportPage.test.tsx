@@ -15,11 +15,12 @@ import { relocationTaskDetailsTestUtils } from '_tests_/features/warehouses/comp
 import { amountEquipmentSpentReportPageTestUtils } from '_tests_/features/warehouses/pages/AmountEquipmentSpentReportPage/testUtils'
 import catalogsFixtures from '_tests_/fixtures/catalogs'
 import commonFixtures from '_tests_/fixtures/common'
+import { fakeUseLocationResult } from '_tests_/fixtures/common/hooks/useLocation'
+import equipmentsFixtures from '_tests_/fixtures/equipments'
 import reportsFixtures from '_tests_/fixtures/reports'
-import taskFixtures from '_tests_/fixtures/tasks'
-import { fakeUseLocationResult } from '_tests_/fixtures/useLocation'
+import tasksFixtures from '_tests_/fixtures/tasks'
 import userFixtures from '_tests_/fixtures/users'
-import warehouseFixtures from '_tests_/fixtures/warehouse'
+import warehousesFixtures from '_tests_/fixtures/warehouse'
 import { fakeId, fakeWord, getStoreWithAuth, render, setupApiTests } from '_tests_/helpers'
 import {
   mockGetAmountEquipmentSpentReportSuccess,
@@ -54,7 +55,7 @@ describe('Страница отчета количества потраченн�
     test('При клике на оборудование открывается карточка оборудования', async () => {
       jest.spyOn(reactRouterDom, 'useParams').mockReturnValue({ id: String(fakeId()) })
 
-      const locationState = getChangeInfrastructurePageLocationState(taskFixtures.task())
+      const locationState = getChangeInfrastructurePageLocationState(tasksFixtures.taskDetail())
       jest
         .spyOn(reactRouterDom, 'useLocation')
         .mockReturnValue(fakeUseLocationResult({ state: locationState }))
@@ -64,7 +65,7 @@ describe('Страница отчета количества потраченн�
         body: commonFixtures.paginatedListResponse([reportListItem]),
       })
 
-      const equipmentNomenclatureListItem = warehouseFixtures.equipmentNomenclatureListItem()
+      const equipmentNomenclatureListItem = equipmentsFixtures.equipmentNomenclatureListItem()
       mockGetEquipmentNomenclaturesSuccess({
         body: commonFixtures.paginatedListResponse([equipmentNomenclatureListItem]),
       })
@@ -72,7 +73,7 @@ describe('Страница отчета количества потраченн�
       const locationCatalogItem = catalogsFixtures.locationCatalogItem()
       mockGetLocationsCatalogSuccess({ body: [locationCatalogItem] })
 
-      const equipment = warehouseFixtures.equipment()
+      const equipment = equipmentsFixtures.equipmentDetail()
       mockGetEquipmentSuccess(reportListItem.equipment.id, { body: equipment })
       mockGetEquipmentAttachmentsSuccess(reportListItem.equipment.id)
 
@@ -107,7 +108,7 @@ describe('Страница отчета количества потраченн�
     test('При клике на перемещение открывается карточка заявки на перемещение', async () => {
       jest.spyOn(reactRouterDom, 'useParams').mockReturnValue({ id: String(fakeId()) })
 
-      const locationState = getChangeInfrastructurePageLocationState(taskFixtures.task())
+      const locationState = getChangeInfrastructurePageLocationState(tasksFixtures.taskDetail())
       jest
         .spyOn(reactRouterDom, 'useLocation')
         .mockReturnValue(fakeUseLocationResult({ state: locationState }))
@@ -117,7 +118,7 @@ describe('Страница отчета количества потраченн�
         body: commonFixtures.paginatedListResponse([reportListItem]),
       })
 
-      const equipmentNomenclatureListItem = warehouseFixtures.equipmentNomenclatureListItem()
+      const equipmentNomenclatureListItem = equipmentsFixtures.equipmentNomenclatureListItem()
       mockGetEquipmentNomenclaturesSuccess({
         body: commonFixtures.paginatedListResponse([equipmentNomenclatureListItem]),
       })
@@ -165,7 +166,7 @@ describe('Страница отчета количества потраченн�
         once: false,
       })
 
-      const equipmentNomenclatureListItem = warehouseFixtures.equipmentNomenclatureListItem()
+      const equipmentNomenclatureListItem = equipmentsFixtures.equipmentNomenclatureListItem()
       mockGetEquipmentNomenclaturesSuccess({
         body: commonFixtures.paginatedListResponse([equipmentNomenclatureListItem]),
         once: false,
@@ -174,7 +175,7 @@ describe('Страница отчета количества потраченн�
       const locationCatalogItem = catalogsFixtures.locationCatalogItem()
       mockGetLocationsCatalogSuccess({ body: [locationCatalogItem] })
 
-      const equipmentCategoryListItem = warehouseFixtures.equipmentCategoryListItem()
+      const equipmentCategoryListItem = equipmentsFixtures.equipmentCategoryListItem()
       mockGetEquipmentCategoriesSuccess({ body: [equipmentCategoryListItem] })
 
       const { user } = render(<AmountEquipmentSpentReportPage />)
@@ -218,7 +219,7 @@ describe('Страница отчета количества потраченн�
         body: commonFixtures.paginatedListResponse([reportListItem]),
       })
 
-      const equipmentNomenclatureListItem = warehouseFixtures.equipmentNomenclatureListItem()
+      const equipmentNomenclatureListItem = equipmentsFixtures.equipmentNomenclatureListItem()
       mockGetEquipmentNomenclaturesSuccess({
         body: commonFixtures.paginatedListResponse([equipmentNomenclatureListItem]),
       })

@@ -1,8 +1,8 @@
 import { EquipmentNomenclatureTableProps } from 'features/nomenclatures/components/EquipmentNomenclatureTable/types'
 
-import warehouseFixtures from '_tests_/fixtures/warehouse/index'
+import equipmentsFixtures from '_tests_/fixtures/equipments'
 
-export const equipmentNomenclatureListItem = warehouseFixtures.equipmentNomenclatureListItem()
+export const equipmentNomenclatureListItem = equipmentsFixtures.equipmentNomenclatureListItem()
 
 export const props: Readonly<EquipmentNomenclatureTableProps> = {
   dataSource: [equipmentNomenclatureListItem],

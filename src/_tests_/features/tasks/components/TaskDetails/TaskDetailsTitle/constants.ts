@@ -9,7 +9,7 @@ import { TaskDetailsTitleProps } from 'features/tasks/components/TaskDetails/Tas
 
 import { SystemEnum } from 'shared/constants/enums'
 
-import taskFixtures from '_tests_/fixtures/tasks/index'
+import tasksFixtures from '_tests_/fixtures/tasks/index'
 import userFixtures from '_tests_/fixtures/users/index'
 import { fakeId } from '_tests_/helpers'
 
@@ -92,8 +92,8 @@ export const canRegisterFNItemProps: Readonly<
 > = {
   status: TaskStatusEnum.InProgress,
   type: TaskTypeEnum.Request,
-  workGroup: taskFixtures.workGroup(),
-  assignee: taskFixtures.assignee(),
+  workGroup: tasksFixtures.taskWorkGroup(),
+  assignee: tasksFixtures.taskAssignee(),
 }
 
 export enum TestIdsEnum {

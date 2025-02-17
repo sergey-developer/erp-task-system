@@ -1,11 +1,6 @@
+import { TaskExtendedStatusEnum, TaskStatusEnum } from 'features/tasks/api/constants'
 import { parseResponseTime } from 'features/tasks/components/TaskDetails/MainDetails/utils'
-import {
-  TaskExtendedStatusEnum,
-  TaskStatusEnum,
-} from 'features/tasks/api/constants'
-import {
-  taskStatusDict,
-} from 'features/tasks/constants'
+import { taskStatusDict } from 'features/tasks/constants'
 import { DEFAULT_PAGE_SIZE } from 'features/tasks/pages/TasksPage/constants'
 import { getShortUserName } from 'features/users/helpers'
 
@@ -21,10 +16,10 @@ import { taskStatusTestUtils } from '_tests_/features/tasks/components/TaskStatu
 import {
   paginationProps,
   props,
-  taskTableItem,
+  tasksTableItem,
 } from '_tests_/features/tasks/components/TaskTable/constants'
 import { taskTableTestUtils } from '_tests_/features/tasks/components/TaskTable/testUtils'
-import taskFixtures from '_tests_/fixtures/tasks'
+import tasksFixtures from '_tests_/fixtures/tasks'
 import { render, tableTestUtils } from '_tests_/helpers'
 
 import TaskTable from './index'
@@ -39,7 +34,7 @@ afterEach(() => {
 
 describe('Таблица заявок', () => {
   test('Отображается', () => {
-    const tableItems = taskFixtures.taskTableItems(2)
+    const tableItems = tasksFixtures.tasksTableItems(2)
     render(<TaskTable {...props} dataSource={tableItems} />)
 
     const table = taskTableTestUtils.getContainer()
@@ -60,7 +55,7 @@ describe('Таблица заявок', () => {
             {...props}
             dataSource={[
               {
-                ...taskTableItem,
+                ...tasksTableItem,
                 status: TaskStatusEnum.New,
               },
             ]}
@@ -77,7 +72,7 @@ describe('Таблица заявок', () => {
             {...props}
             dataSource={[
               {
-                ...taskTableItem,
+                ...tasksTableItem,
                 status: TaskStatusEnum.InProgress,
               },
             ]}
@@ -94,7 +89,7 @@ describe('Таблица заявок', () => {
             {...props}
             dataSource={[
               {
-                ...taskTableItem,
+                ...tasksTableItem,
                 status: TaskStatusEnum.Completed,
               },
             ]}
@@ -111,7 +106,7 @@ describe('Таблица заявок', () => {
             {...props}
             dataSource={[
               {
-                ...taskTableItem,
+                ...tasksTableItem,
                 status: TaskStatusEnum.Awaiting,
               },
             ]}
@@ -128,7 +123,7 @@ describe('Таблица заявок', () => {
             {...props}
             dataSource={[
               {
-                ...taskTableItem,
+                ...tasksTableItem,
                 status: TaskStatusEnum.Closed,
               },
             ]}
@@ -147,7 +142,7 @@ describe('Таблица заявок', () => {
             {...props}
             dataSource={[
               {
-                ...taskTableItem,
+                ...tasksTableItem,
                 status: TaskStatusEnum.New,
                 extendedStatus: TaskExtendedStatusEnum.Returned,
               },
@@ -165,7 +160,7 @@ describe('Таблица заявок', () => {
             {...props}
             dataSource={[
               {
-                ...taskTableItem,
+                ...tasksTableItem,
                 status: TaskStatusEnum.New,
                 extendedStatus: TaskExtendedStatusEnum.InReclassification,
               },
@@ -183,7 +178,7 @@ describe('Таблица заявок', () => {
             {...props}
             dataSource={[
               {
-                ...taskTableItem,
+                ...tasksTableItem,
                 status: TaskStatusEnum.New,
                 extendedStatus: TaskExtendedStatusEnum.FirstLineReturned,
               },
@@ -201,7 +196,7 @@ describe('Таблица заявок', () => {
     test('Отображает заголовок и значение', () => {
       render(<TaskTable {...props} />)
       expect(taskTableTestUtils.getColTitle('Заявка')).toBeInTheDocument()
-      expect(taskTableTestUtils.getChildByText(String(taskTableItem.id))).toBeInTheDocument()
+      expect(taskTableTestUtils.getChildByText(String(tasksTableItem.id))).toBeInTheDocument()
     })
 
     test('Сортировка включена', () => {
@@ -244,7 +239,7 @@ describe('Таблица заявок', () => {
     test('Отображает заголовок и значение', () => {
       render(<TaskTable {...props} />)
       expect(taskTableTestUtils.getColTitle('Внеш.номер')).toBeInTheDocument()
-      expect(taskTableTestUtils.getChildByText(taskTableItem.recordId)).toBeInTheDocument()
+      expect(taskTableTestUtils.getChildByText(tasksTableItem.recordId)).toBeInTheDocument()
     })
 
     test('Сортировка включена', () => {
@@ -290,7 +285,7 @@ describe('Таблица заявок', () => {
     test('Отображает заголовок и значение если оно есть', () => {
       render(<TaskTable {...props} />)
       expect(taskTableTestUtils.getColTitle('Объект')).toBeInTheDocument()
-      expect(taskTableTestUtils.getChildByText(taskTableItem.name!)).toBeInTheDocument()
+      expect(taskTableTestUtils.getChildByText(tasksTableItem.name!)).toBeInTheDocument()
     })
 
     test('Сортировка включена', () => {
@@ -334,7 +329,7 @@ describe('Таблица заявок', () => {
     test('Отображает заголовок и значение', () => {
       render(<TaskTable {...props} />)
       expect(taskTableTestUtils.getColTitle('Тема')).toBeInTheDocument()
-      expect(taskTableTestUtils.getChildByText(taskTableItem.title)).toBeInTheDocument()
+      expect(taskTableTestUtils.getChildByText(tasksTableItem.title)).toBeInTheDocument()
     })
 
     test('Сортировка включена', () => {
@@ -380,7 +375,7 @@ describe('Таблица заявок', () => {
 
       expect(taskTableTestUtils.getColTitle('Исполнитель')).toBeInTheDocument()
       expect(
-        taskTableTestUtils.getChildByText(getShortUserName(taskTableItem.assignee!)),
+        taskTableTestUtils.getChildByText(getShortUserName(tasksTableItem.assignee!)),
       ).toBeInTheDocument()
     })
 
@@ -430,7 +425,7 @@ describe('Таблица заявок', () => {
 
     test('Отображает значение если оно присутствует', () => {
       render(<TaskTable {...props} />)
-      expect(taskTableTestUtils.getChildByText(taskTableItem.workGroup!.name)).toBeInTheDocument()
+      expect(taskTableTestUtils.getChildByText(tasksTableItem.workGroup!.name)).toBeInTheDocument()
     })
 
     test('Сортировка включена', () => {
@@ -477,7 +472,7 @@ describe('Таблица заявок', () => {
     test('Отображает значение', () => {
       render(<TaskTable {...props} />)
       expect(
-        taskTableTestUtils.getChildByText(taskTableItem.supportGroup!.name),
+        taskTableTestUtils.getChildByText(tasksTableItem.supportGroup!.name),
       ).toBeInTheDocument()
     })
 
@@ -523,8 +518,8 @@ describe('Таблица заявок', () => {
     })
 
     test('Значение отображается если нет исполнителя и рабочей группы', () => {
-      const fakeTaskTableItem: typeof taskTableItem = {
-        ...taskTableItem,
+      const fakeTaskTableItem: typeof tasksTableItem = {
+        ...tasksTableItem,
         workGroup: null,
         assignee: null,
       }
@@ -540,10 +535,10 @@ describe('Таблица заявок', () => {
 
     describe('Значение не отображается', () => {
       test('Если есть исполнитель и нету рабочей группы', () => {
-        const fakeTaskTableItem: typeof taskTableItem = {
-          ...taskTableItem,
+        const fakeTaskTableItem: typeof tasksTableItem = {
+          ...tasksTableItem,
           workGroup: null,
-          assignee: taskFixtures.assignee(),
+          assignee: tasksFixtures.taskAssignee(),
         }
 
         render(<TaskTable {...props} dataSource={[fakeTaskTableItem]} />)
@@ -557,9 +552,9 @@ describe('Таблица заявок', () => {
       })
 
       test('Если есть рабочая группа и нет исполнителя', () => {
-        const fakeTaskTableItem: typeof taskTableItem = {
-          ...taskTableItem,
-          workGroup: taskFixtures.workGroup(),
+        const fakeTaskTableItem: typeof tasksTableItem = {
+          ...tasksTableItem,
+          workGroup: tasksFixtures.taskWorkGroup(),
           assignee: null,
         }
 
@@ -591,7 +586,7 @@ describe('Таблица заявок', () => {
       render(<TaskTable {...props} />)
 
       expect(
-        taskTableTestUtils.getChildByText(formatDate(taskTableItem.olaNextBreachTime)),
+        taskTableTestUtils.getChildByText(formatDate(tasksTableItem.olaNextBreachTime)),
       ).toBeInTheDocument()
     })
 
@@ -641,7 +636,7 @@ describe('Таблица заявок', () => {
       render(<TaskTable {...props} />)
 
       expect(
-        taskTableTestUtils.getChildByText(taskStatusDict[taskTableItem.status!]),
+        taskTableTestUtils.getChildByText(taskStatusDict[tasksTableItem.status!]),
       ).toBeInTheDocument()
     })
 
@@ -672,7 +667,7 @@ describe('Таблица заявок', () => {
 
       expect(
         taskTableTestUtils.getChildByText(
-          `${taskTableItem.subtasksCounter!.completed}/${taskTableItem.subtasksCounter!.all}`,
+          `${tasksTableItem.subtasksCounter!.completed}/${tasksTableItem.subtasksCounter!.all}`,
         ),
       ).toBeInTheDocument()
     })
@@ -695,7 +690,7 @@ describe('Таблица заявок', () => {
     test('Отображает значение', () => {
       render(<TaskTable {...props} />)
 
-      expect(taskTableTestUtils.getChildByText(taskTableItem.lastComment!)).toBeInTheDocument()
+      expect(taskTableTestUtils.getChildByText(tasksTableItem.lastComment!)).toBeInTheDocument()
     })
 
     test('Сортировка включена', () => {
@@ -747,7 +742,7 @@ describe('Таблица заявок', () => {
       render(<TaskTable {...props} />)
 
       expect(
-        taskTableTestUtils.getChildByText(formatDate(taskTableItem.createdAt)),
+        taskTableTestUtils.getChildByText(formatDate(tasksTableItem.createdAt)),
       ).toBeInTheDocument()
     })
 
@@ -842,9 +837,9 @@ describe('Таблица заявок', () => {
   test('При клике на строку вызывается обработчик', async () => {
     const { user } = render(<TaskTable {...props} />)
 
-    await taskTableTestUtils.clickRow(user, taskTableItem.id)
+    await taskTableTestUtils.clickRow(user, tasksTableItem.id)
 
     expect(props.onRow).toBeCalled()
-    expect(props.onRow).toBeCalledWith(taskTableItem, 0)
+    expect(props.onRow).toBeCalledWith(tasksTableItem, 0)
   })
 })

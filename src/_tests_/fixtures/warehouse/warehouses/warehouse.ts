@@ -2,7 +2,7 @@ import { WarehouseTypeEnum } from 'features/warehouses/api/constants'
 import { WarehouseDetailDTO } from 'features/warehouses/api/dto'
 import pick from 'lodash/pick'
 
-import macroregionFixtures from '_tests_/fixtures/macroregions'
+import catalogsFixtures from '_tests_/fixtures/catalogs'
 import { fakeId, fakeWord } from '_tests_/helpers'
 
 export const warehouse = (
@@ -23,5 +23,5 @@ export const warehouse = (
     id: fakeId(),
     title: fakeWord(),
   },
-  macroregions: [pick(macroregionFixtures.macroregion(), 'id', 'title')],
+  macroregions: [pick(catalogsFixtures.macroregionCatalogItem(), 'id', 'title')],
 })

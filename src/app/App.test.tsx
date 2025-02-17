@@ -28,7 +28,7 @@ describe.skip('Private app', () => {
       test('Отображается состояние загрузки во время загрузки временных зон', async () => {
         mockGetUserMeCodeSuccess()
         mockGetSystemInfoSuccess()
-        mockGetTimeZonesSuccess({ body: [catalogsFixtures.timeZone()] })
+        mockGetTimeZonesSuccess({ body: [catalogsFixtures.timeZoneCatalogItem()] })
         mockGetUserMeSuccess({ body: userFixtures.userDetail() })
 
         render(<App />, { useBrowserRouter: false })
@@ -41,7 +41,7 @@ describe.skip('Private app', () => {
         mockGetUserMeCodeSuccess()
         mockGetSystemInfoSuccess()
 
-        const fakeTimeZoneListItem = catalogsFixtures.timeZone()
+        const fakeTimeZoneListItem = catalogsFixtures.timeZoneCatalogItem()
         mockGetTimeZonesSuccess({ body: [fakeTimeZoneListItem] })
 
         const fakeUser = userFixtures.userDetail()
@@ -63,7 +63,7 @@ describe.skip('Private app', () => {
         mockGetUserMeCodeSuccess()
         mockGetSystemInfoSuccess()
 
-        const fakeTimeZoneListItem = catalogsFixtures.timeZone()
+        const fakeTimeZoneListItem = catalogsFixtures.timeZoneCatalogItem()
         mockGetTimeZonesSuccess({ body: [fakeTimeZoneListItem] })
 
         const fakeUser = userFixtures.userDetail()
@@ -88,7 +88,7 @@ describe.skip('Private app', () => {
         mockGetUserMeCodeSuccess()
         mockGetSystemInfoSuccess()
 
-        const fakeTimeZoneListItem = catalogsFixtures.timeZone()
+        const fakeTimeZoneListItem = catalogsFixtures.timeZoneCatalogItem()
         mockGetTimeZonesSuccess({ body: [fakeTimeZoneListItem] })
 
         const fakeUser = userFixtures.userDetail()
@@ -107,7 +107,7 @@ describe.skip('Private app', () => {
         mockGetUserMeCodeSuccess()
         mockGetSystemInfoSuccess()
 
-        const timeZones = catalogsFixtures.timeZones()
+        const timeZones = catalogsFixtures.timeZonesCatalog()
         mockGetTimeZonesSuccess({ body: timeZones })
 
         const fakeUser = userFixtures.userDetail()
@@ -128,8 +128,8 @@ describe.skip('Private app', () => {
         mockGetUserMeCodeSuccess()
         mockGetSystemInfoSuccess()
 
-        const fakeTimeZoneListItem1 = catalogsFixtures.timeZone()
-        const fakeTimeZoneListItem2 = catalogsFixtures.timeZone()
+        const fakeTimeZoneListItem1 = catalogsFixtures.timeZoneCatalogItem()
+        const fakeTimeZoneListItem2 = catalogsFixtures.timeZoneCatalogItem()
         mockGetTimeZonesSuccess({
           body: [fakeTimeZoneListItem1, fakeTimeZoneListItem2],
         })
@@ -163,7 +163,7 @@ describe.skip('Private app', () => {
         mockGetUserMeCodeSuccess()
         mockGetSystemInfoSuccess()
 
-        const fakeTimeZoneListItem = catalogsFixtures.timeZone()
+        const fakeTimeZoneListItem = catalogsFixtures.timeZoneCatalogItem()
         mockGetTimeZonesSuccess({ body: [fakeTimeZoneListItem] })
 
         const fakeUser = userFixtures.userDetail()

@@ -22,9 +22,9 @@ const CreateCommentForm: FC<CreateCommentFormProps> = ({ onSubmit, isLoading }) 
   }
 
   return (
-    <Space data-testid='create-comment-form' direction='vertical' size='middle' $block>
+    <Space data-testid='create-taskComment-form' direction='vertical' size='middle' $block>
       <Form<CreateCommentFormFields> form={form} layout='vertical' onFinish={onFinish}>
-        <Form.Item data-testid='comment-form-item' name='comment' rules={commentRules}>
+        <Form.Item data-testid='taskComment-form-item' name='comment' rules={commentRules}>
           <TextArea placeholder='Дополните информацию о заявке' disabled={isLoading} />
         </Form.Item>
 

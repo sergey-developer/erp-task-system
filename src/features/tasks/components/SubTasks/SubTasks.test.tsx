@@ -7,7 +7,7 @@ import {
 import { subTaskTestUtils } from '_tests_/features/tasks/components/SubTasks/SubTask/testUtils'
 import { props } from '_tests_/features/tasks/components/SubTasks/constants'
 import { subTaskListTestUtils } from '_tests_/features/tasks/components/SubTasks/testUtils'
-import taskFixtures from '_tests_/fixtures/tasks'
+import tasksFixtures from '_tests_/fixtures/tasks'
 import { render } from '_tests_/helpers'
 
 import SubTasks from './index'
@@ -50,7 +50,7 @@ describe('Список подзадач', () => {
   describe('Отправка задания на доработку', () => {
     test('Обработчик кнопки вызывается корректно', async () => {
       const subTask = {
-        ...taskFixtures.subTask(),
+        ...tasksFixtures.subTask(),
         status: showReworkButtonProps.status,
       }
 
@@ -73,7 +73,7 @@ describe('Список подзадач', () => {
   describe('Отмена задания', () => {
     test('Обработчик кнопки вызывается корректно', async () => {
       const subTask = {
-        ...taskFixtures.subTask(),
+        ...tasksFixtures.subTask(),
         status: showCancelButtonProps.status,
       }
 

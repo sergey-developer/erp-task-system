@@ -7,7 +7,7 @@ import isUndefined from 'lodash/isUndefined'
 import pick from 'lodash/pick'
 import times from 'lodash/times'
 
-import taskFixtures from '_tests_/fixtures/tasks'
+import tasksFixtures from '_tests_/fixtures/tasks'
 import userFixtures from '_tests_/fixtures/users'
 import { fakeDateString, fakeId, fakeWord } from '_tests_/helpers'
 
@@ -30,7 +30,7 @@ export const relocationTaskListItem = (
   controller: pick(userFixtures.userDetail(), 'id', 'fullName'),
   relocateFrom: { id: fakeId(), title: fakeWord() },
   relocateTo: { id: fakeId(), title: fakeWord() },
-  documents: [taskFixtures.attachment()],
+  documents: [tasksFixtures.taskAttachment()],
 })
 
 export const relocationTasks = (length: number = 1) => times(length, () => relocationTaskListItem())

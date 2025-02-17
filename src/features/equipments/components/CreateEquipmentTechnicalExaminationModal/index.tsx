@@ -41,7 +41,7 @@ const CreateEquipmentTechnicalExaminationModal: FC<
   return (
     <BaseModal
       {...props}
-      data-testid='create-equipment-technical-examination-modal'
+      data-testid='create-equipmentDetail-technical-examination-modal'
       title='Данные АТЭ'
       okText='Сформировать'
       onOk={form.submit}

@@ -1,9 +1,9 @@
 import { CommentsProps } from 'features/tasks/components/TaskDetails/TaskDetailsTabs/CommentsTab/Comments/index'
 
-import taskFixtures from '_tests_/fixtures/tasks/index'
+import tasksFixtures from '_tests_/fixtures/tasks/index'
 
 export const props: Readonly<CommentsProps> = {
-  comments: taskFixtures.commentList(),
+  comments: tasksFixtures.taskComments(),
   isLoading: false,
 }
 

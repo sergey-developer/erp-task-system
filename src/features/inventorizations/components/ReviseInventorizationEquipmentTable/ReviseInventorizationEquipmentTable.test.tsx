@@ -12,7 +12,8 @@ import {
 } from '_tests_/features/warehouses/components/ReviseInventorizationEquipmentTable/constants'
 import { reviseEquipmentTableTestUtils as testUtils } from '_tests_/features/warehouses/components/ReviseInventorizationEquipmentTable/testUtils'
 import catalogsFixtures from '_tests_/fixtures/catalogs'
-import warehouseFixtures from '_tests_/fixtures/warehouse'
+import equipmentsFixtures from '_tests_/fixtures/equipments'
+import warehousesFixtures from '_tests_/fixtures/warehouse'
 import {
   fakeId,
   fakeIdStr,
@@ -41,7 +42,7 @@ describe('Таблица сверки оборудования', () => {
   })
 
   test('Пагинация работает', async () => {
-    const inventorizationEquipments = warehouseFixtures.inventorizationEquipments(21)
+    const inventorizationEquipments = warehousesFixtures.inventorizationEquipments(21)
 
     const { user } = render(
       <ReviseInventorizationEquipmentTable {...props} dataSource={inventorizationEquipments} />,
@@ -170,7 +171,7 @@ describe('Таблица сверки оборудования', () => {
     })
 
     test('Подсвечивается зелёным если значение равно количеству', () => {
-      const inventorizationEquipmentListItem = warehouseFixtures.inventorizationEquipmentListItem({
+      const inventorizationEquipmentListItem = warehousesFixtures.inventorizationEquipmentListItem({
         quantity: { plan: 1, fact: 1, diff: fakeInteger() },
       })
 
@@ -188,7 +189,7 @@ describe('Таблица сверки оборудования', () => {
     })
 
     test('Подсвечивается красным если значение не равно количеству', () => {
-      const inventorizationEquipmentListItem = warehouseFixtures.inventorizationEquipmentListItem({
+      const inventorizationEquipmentListItem = warehousesFixtures.inventorizationEquipmentListItem({
         quantity: { plan: 2, fact: 1, diff: fakeInteger() },
       })
 
@@ -226,8 +227,8 @@ describe('Таблица сверки оборудования', () => {
       })
 
       test('Но quantityFact=null', () => {
-        const inventorizationEquipmentListItem = warehouseFixtures.inventorizationEquipmentListItem(
-          {
+        const inventorizationEquipmentListItem =
+          warehousesFixtures.inventorizationEquipmentListItem({
             quantity: { fact: null, diff: fakeInteger(), plan: fakeInteger() },
             equipment: {
               id: fakeId(),
@@ -235,14 +236,13 @@ describe('Таблица сверки оборудования', () => {
               serialNumber: fakeIdStr(),
               inventoryNumber: fakeIdStr(),
               category: pick(
-                warehouseFixtures.equipmentCategory({ code: EquipmentCategoryEnum.Consumable }),
+                equipmentsFixtures.equipmentCategory({ code: EquipmentCategoryEnum.Consumable }),
                 'id',
                 'title',
                 'code',
               ),
             },
-          },
-        )
+          })
 
         render(
           <ReviseInventorizationEquipmentTable
@@ -256,8 +256,8 @@ describe('Таблица сверки оборудования', () => {
       })
 
       test('Категория оборудования расходный материал но quantityPlan не равен 0', () => {
-        const inventorizationEquipmentListItem = warehouseFixtures.inventorizationEquipmentListItem(
-          {
+        const inventorizationEquipmentListItem =
+          warehousesFixtures.inventorizationEquipmentListItem({
             quantity: { fact: fakeInteger(), diff: fakeInteger(), plan: 1 },
             equipment: {
               id: fakeId(),
@@ -265,14 +265,13 @@ describe('Таблица сверки оборудования', () => {
               serialNumber: fakeIdStr(),
               inventoryNumber: fakeIdStr(),
               category: pick(
-                warehouseFixtures.equipmentCategory({ code: EquipmentCategoryEnum.Consumable }),
+                equipmentsFixtures.equipmentCategory({ code: EquipmentCategoryEnum.Consumable }),
                 'id',
                 'title',
                 'code',
               ),
             },
-          },
-        )
+          })
 
         render(
           <ReviseInventorizationEquipmentTable
@@ -288,7 +287,7 @@ describe('Таблица сверки оборудования', () => {
 
     test('Устанавливается значение по умолчанию если оно есть', async () => {
       const locationCatalogItem = catalogsFixtures.locationCatalogItem()
-      const inventorizationEquipmentListItem = warehouseFixtures.inventorizationEquipmentListItem({
+      const inventorizationEquipmentListItem = warehousesFixtures.inventorizationEquipmentListItem({
         locationFact: locationCatalogItem,
       })
 
@@ -309,7 +308,7 @@ describe('Таблица сверки оборудования', () => {
 
     test(`Устанавливается значение по умолчанию "${undefinedSelectOption.label}" если isLocationFactUndefined=true`, async () => {
       const locationCatalogItem = catalogsFixtures.locationCatalogItem()
-      const inventorizationEquipmentListItem = warehouseFixtures.inventorizationEquipmentListItem({
+      const inventorizationEquipmentListItem = warehousesFixtures.inventorizationEquipmentListItem({
         isLocationFactUndefined: true,
       })
 
@@ -351,7 +350,7 @@ describe('Таблица сверки оборудования', () => {
 
     test('Подсвечивается зелёным если значение равно плановому местонахождению', async () => {
       const locationCatalogItem = catalogsFixtures.locationCatalogItem()
-      const inventorizationEquipmentListItem = warehouseFixtures.inventorizationEquipmentListItem({
+      const inventorizationEquipmentListItem = warehousesFixtures.inventorizationEquipmentListItem({
         locationFact: locationCatalogItem,
         locationPlan: locationCatalogItem,
       })
@@ -374,7 +373,7 @@ describe('Таблица сверки оборудования', () => {
     test('Подсвечивается красным если значение не равно плановому местонахождению', () => {
       const locationListItem1 = catalogsFixtures.locationCatalogItem()
       const locationListItem2 = catalogsFixtures.locationCatalogItem()
-      const inventorizationEquipmentListItem = warehouseFixtures.inventorizationEquipmentListItem({
+      const inventorizationEquipmentListItem = warehousesFixtures.inventorizationEquipmentListItem({
         locationFact: locationListItem1,
         locationPlan: locationListItem2,
       })
@@ -398,9 +397,8 @@ describe('Таблица сверки оборудования', () => {
   describe('Индикатор расхождения', () => {
     describe('Иконка восклицательного знака', () => {
       test('Отображается если условия соблюдены', () => {
-        const inventorizationEquipmentListItem = warehouseFixtures.inventorizationEquipmentListItem(
-          { isFilled: true, hasDiff: true },
-        )
+        const inventorizationEquipmentListItem =
+          warehousesFixtures.inventorizationEquipmentListItem({ isFilled: true, hasDiff: true })
 
         render(
           <ReviseInventorizationEquipmentTable
@@ -416,9 +414,8 @@ describe('Таблица сверки оборудования', () => {
       })
 
       test('Не отображается если условия соблюдены но поле isFilled=false', () => {
-        const inventorizationEquipmentListItem = warehouseFixtures.inventorizationEquipmentListItem(
-          { isFilled: false, hasDiff: true },
-        )
+        const inventorizationEquipmentListItem =
+          warehousesFixtures.inventorizationEquipmentListItem({ isFilled: false, hasDiff: true })
 
         render(
           <ReviseInventorizationEquipmentTable
@@ -434,9 +431,8 @@ describe('Таблица сверки оборудования', () => {
       })
 
       test('Не отображается если условия соблюдены но поле hasDiff=null', () => {
-        const inventorizationEquipmentListItem = warehouseFixtures.inventorizationEquipmentListItem(
-          { isFilled: true, hasDiff: null },
-        )
+        const inventorizationEquipmentListItem =
+          warehousesFixtures.inventorizationEquipmentListItem({ isFilled: true, hasDiff: null })
 
         render(
           <ReviseInventorizationEquipmentTable
@@ -454,9 +450,8 @@ describe('Таблица сверки оборудования', () => {
 
     describe('Иконка галочка', () => {
       test('Отображается если условия соблюдены', () => {
-        const inventorizationEquipmentListItem = warehouseFixtures.inventorizationEquipmentListItem(
-          { isFilled: true, hasDiff: false },
-        )
+        const inventorizationEquipmentListItem =
+          warehousesFixtures.inventorizationEquipmentListItem({ isFilled: true, hasDiff: false })
 
         render(
           <ReviseInventorizationEquipmentTable
@@ -472,9 +467,8 @@ describe('Таблица сверки оборудования', () => {
       })
 
       test('Не отображается если условия соблюдены но поле hasDiff=true', () => {
-        const inventorizationEquipmentListItem = warehouseFixtures.inventorizationEquipmentListItem(
-          { isFilled: true, hasDiff: true },
-        )
+        const inventorizationEquipmentListItem =
+          warehousesFixtures.inventorizationEquipmentListItem({ isFilled: true, hasDiff: true })
 
         render(
           <ReviseInventorizationEquipmentTable
@@ -490,9 +484,8 @@ describe('Таблица сверки оборудования', () => {
       })
 
       test('Не отображается если условия соблюдены но поле isFilled=false', () => {
-        const inventorizationEquipmentListItem = warehouseFixtures.inventorizationEquipmentListItem(
-          { isFilled: false, hasDiff: true },
-        )
+        const inventorizationEquipmentListItem =
+          warehousesFixtures.inventorizationEquipmentListItem({ isFilled: false, hasDiff: true })
 
         render(
           <ReviseInventorizationEquipmentTable
@@ -508,9 +501,8 @@ describe('Таблица сверки оборудования', () => {
       })
 
       test('Не отображается если условия соблюдены но поле hasDiff=null', () => {
-        const inventorizationEquipmentListItem = warehouseFixtures.inventorizationEquipmentListItem(
-          { isFilled: true, hasDiff: null },
-        )
+        const inventorizationEquipmentListItem =
+          warehousesFixtures.inventorizationEquipmentListItem({ isFilled: true, hasDiff: null })
 
         render(
           <ReviseInventorizationEquipmentTable
