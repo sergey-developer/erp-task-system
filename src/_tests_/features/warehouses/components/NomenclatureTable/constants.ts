@@ -1,6 +1,6 @@
 import { NomenclatureTableProps } from 'features/nomenclatures/components/NomenclatureTable/types'
 
-import nomenclaturesFixtures from '_tests_/fixtures/nomenclatures'
+import nomenclaturesFixtures from '_tests_/fixtures/api/data/nomenclatures'
 
 export const nomenclatureListItem = nomenclaturesFixtures.nomenclature()
 

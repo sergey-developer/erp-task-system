@@ -1,7 +1,7 @@
 import { screen, within } from '@testing-library/react'
 import { UserEvent } from '@testing-library/user-event/setup/setup'
 
-import equipmentsFixtures from '_tests_/fixtures/equipments'
+import equipmentsFixtures from '_tests_/fixtures/api/data/equipments'
 import { buttonTestUtils, render, selectTestUtils } from '_tests_/helpers'
 
 import AmountEquipmentSpentReportFilter from './index'

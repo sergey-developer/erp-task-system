@@ -7,7 +7,7 @@ import {
   props,
 } from '_tests_/features/warehouses/components/NomenclatureFormModal/constants'
 import { nomenclatureFormModalTestUtils } from '_tests_/features/warehouses/components/NomenclatureFormModal/testUtils'
-import nomenclaturesFixtures from '_tests_/fixtures/nomenclatures'
+import nomenclaturesFixtures from '_tests_/fixtures/api/data/nomenclatures'
 import { fakeWord, render } from '_tests_/helpers'
 
 import NomenclatureFormModal from './index'

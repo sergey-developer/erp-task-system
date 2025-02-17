@@ -6,14 +6,15 @@ import React from 'react'
 import { nomenclatureListPageTestUtils } from '_tests_/features/warehouses/pages/NomenclatureListPage/testUtils'
 import { warehouseCatalogListPageTestUtils } from '_tests_/features/warehouses/pages/WarehouseCatalogListPage/testUtils'
 import { warehouseListPageTestUtils } from '_tests_/features/warehouses/pages/WarehouseListPage/testUtils'
-import userFixtures from '_tests_/fixtures/users'
-import { getStoreWithAuth, renderWithRouter } from '_tests_/helpers'
+import userFixtures from '_tests_/fixtures/api/data/users'
 import {
   mockGetNomenclatureGroupsSuccess,
   mockGetNomenclaturesSuccess,
   mockGetWarehousesSuccess,
 } from '_tests_/mocks/api'
-import { getUserMeQueryMock } from '_tests_/mocks/store/users'
+import { getStoreWithAuth } from '_tests_/fixtures/store/auth'
+import { getUserMeQueryMock } from '_tests_/fixtures/store/users'
+import { renderWithRouter } from '_tests_/helpers'
 
 import WarehousesPage from '../WarehousesPage'
 import WarehousesCatalogPage from './index'

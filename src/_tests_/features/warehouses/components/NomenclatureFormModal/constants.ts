@@ -1,9 +1,9 @@
 import { NomenclatureFormModalProps } from 'features/nomenclatures/components/NomenclatureFormModal/types'
 
-import nomenclaturesFixtures from '_tests_/fixtures/nomenclatures'
+import nomenclaturesFixtures from '_tests_/fixtures/api/data/nomenclatures'
 import { fakeWord } from '_tests_/helpers'
 
-import catalogsFixtures from '../../../../fixtures/catalogs'
+import catalogsFixtures from '../../../../fixtures/api/data/catalogs'
 
 export const props: Readonly<NomenclatureFormModalProps> = {
   open: true,

@@ -1,7 +1,7 @@
 import { ExecuteInventorizationDiscrepanciesProps } from 'features/inventorizations/components/ExecuteInventorizationDiscrepanciesTab/index'
 import pick from 'lodash/pick'
 
-import inventorizationsFixtures from '_tests_/fixtures/inventorizations'
+import inventorizationsFixtures from '_tests_/fixtures/api/data/inventorizations'
 
 export const props: ExecuteInventorizationDiscrepanciesProps = {
   inventorization: pick(inventorizationsFixtures.inventorizationDetail(), 'id'),

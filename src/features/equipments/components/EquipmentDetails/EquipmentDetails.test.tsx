@@ -23,20 +23,11 @@ import { equipmentDetailsTestUtils } from '_tests_/features/warehouses/component
 import { equipmentFormModalTestUtils } from '_tests_/features/warehouses/components/EquipmentFormModal/testUtils'
 import { equipmentRelocationHistoryModalTestUtils } from '_tests_/features/warehouses/components/EquipmentRelocationHistoryModal/testUtils'
 import { relocationTaskDetailsTestUtils } from '_tests_/features/warehouses/components/RelocationTaskDetails/testUtils'
-import attachmentsFixtures from '_tests_/fixtures/attachments'
-import commonFixtures from '_tests_/fixtures/common'
-import equipmentsFixtures from '_tests_/fixtures/equipments'
-import nomenclaturesFixtures from '_tests_/fixtures/nomenclatures'
-import userFixtures from '_tests_/fixtures/users'
-import {
-  buttonTestUtils,
-  fakeWord,
-  getStoreWithAuth,
-  menuTestUtils,
-  notificationTestUtils,
-  render,
-  setupApiTests,
-} from '_tests_/helpers'
+import commonFixtures from '_tests_/fixtures/api/common'
+import attachmentsFixtures from '_tests_/fixtures/api/data/attachments'
+import equipmentsFixtures from '_tests_/fixtures/api/data/equipments'
+import nomenclaturesFixtures from '_tests_/fixtures/api/data/nomenclatures'
+import userFixtures from '_tests_/fixtures/api/data/users'
 import {
   mockGetCurrenciesSuccess,
   mockGetCustomersSuccess,
@@ -61,7 +52,16 @@ import {
   mockGetWarehousesSuccess,
   mockGetWorkTypesSuccess,
 } from '_tests_/mocks/api'
-import { getUserMeQueryMock } from '_tests_/mocks/store/users'
+import { getStoreWithAuth } from '_tests_/fixtures/store/auth'
+import { getUserMeQueryMock } from '_tests_/fixtures/store/users'
+import {
+  buttonTestUtils,
+  fakeWord,
+  menuTestUtils,
+  notificationTestUtils,
+  render,
+  setupApiTests,
+} from '_tests_/helpers'
 
 import { equipmentConditionDict } from '../../constants'
 import EquipmentDetails from './index'

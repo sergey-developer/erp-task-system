@@ -16,7 +16,7 @@ import {
   relocationTaskListItem,
 } from '_tests_/features/warehouses/components/RelocationTaskTable/constants'
 import { relocationTaskTableTestUtils } from '_tests_/features/warehouses/components/RelocationTaskTable/testUtils'
-import relocationTasksFixtures from '_tests_/fixtures/relocationTasks'
+import relocationTasksFixtures from '_tests_/fixtures/api/data/relocationTasks'
 import { render, tableTestUtils } from '_tests_/helpers'
 
 import RelocationTaskTable from './index'

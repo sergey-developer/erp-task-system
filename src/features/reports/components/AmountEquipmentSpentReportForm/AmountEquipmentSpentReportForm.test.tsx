@@ -7,8 +7,8 @@ import { DATE_PICKER_FORMAT } from 'lib/antd/constants/dateTimePicker'
 import { UPDATE_TEXT } from 'shared/constants/common'
 import { validationMessages } from 'shared/constants/validation'
 
-import catalogsFixtures from '_tests_/fixtures/catalogs'
-import equipmentsFixtures from '_tests_/fixtures/equipments'
+import catalogsFixtures from '_tests_/fixtures/api/data/catalogs'
+import equipmentsFixtures from '_tests_/fixtures/api/data/equipments'
 import { buttonTestUtils, render, selectTestUtils } from '_tests_/helpers'
 
 import AmountEquipmentSpentReportForm from './index'

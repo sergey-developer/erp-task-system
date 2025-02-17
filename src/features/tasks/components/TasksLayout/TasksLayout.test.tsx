@@ -8,14 +8,15 @@ import { CommonRoutesEnum } from 'configs/routes'
 import { taskListLayoutTestUtils } from '_tests_/features/tasks/components/TasksLayout/testUtils'
 import { testUtils as taskListMapPageTestUtils } from '_tests_/features/tasks/pages/TasksOnMapPage/testUtils'
 import { tasksPageTestUtils } from '_tests_/features/tasks/pages/TasksPage/testUtils'
-import userFixtures from '_tests_/fixtures/users'
-import { getStoreWithAuth, renderWithRouter, setupApiTests } from '_tests_/helpers'
+import userFixtures from '_tests_/fixtures/api/data/users'
+import { getStoreWithAuth } from '_tests_/fixtures/store/auth'
+import { getUserMeQueryMock } from '_tests_/fixtures/store/users'
+import { renderWithRouter, setupApiTests } from '_tests_/helpers'
 import {
   mockGetTaskCountersSuccess,
-  mockGetTaskListMapSuccess,
+  mockGetTasksMapSuccess,
   mockGetTasksSuccess,
 } from '_tests_/mocks/api'
-import { getUserMeQueryMock } from '_tests_/mocks/store/users'
 
 import TasksLayout from './index'
 
@@ -40,7 +41,7 @@ describe('TasksLayout', () => {
     test('При клике переходит на страницу реестра заявок', async () => {
       mockGetTasksSuccess()
       mockGetTaskCountersSuccess()
-      mockGetTaskListMapSuccess()
+      mockGetTasksMapSuccess()
 
       const { user } = renderWithRouter(
         [
@@ -90,7 +91,7 @@ describe('TasksLayout', () => {
     test('При клике переходит на страницу карты с заявками', async () => {
       mockGetTasksSuccess()
       mockGetTaskCountersSuccess()
-      mockGetTaskListMapSuccess()
+      mockGetTasksMapSuccess()
 
       const { user } = renderWithRouter(
         [

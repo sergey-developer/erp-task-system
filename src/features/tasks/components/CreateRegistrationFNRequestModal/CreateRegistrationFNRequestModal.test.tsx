@@ -4,7 +4,7 @@ import { validationMessages } from 'shared/constants/validation'
 
 import { props } from '_tests_/features/tasks/components/CreateRegistrationFNRequestModal/constants'
 import { createRegistrationFNRequestModalTestUtils } from '_tests_/features/tasks/components/CreateRegistrationFNRequestModal/testUtils'
-import catalogsFixtures from '_tests_/fixtures/catalogs'
+import catalogsFixtures from '_tests_/fixtures/api/data/catalogs'
 import { fakeEmail, render } from '_tests_/helpers'
 
 import CreateRegistrationFNRequestModal from './index'

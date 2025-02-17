@@ -1,6 +1,5 @@
 import { useDispatch as useBaseDispatch } from 'react-redux'
-
-import { store } from 'state/store'
+import { store } from 'store/store'
 
 export type AppDispatch = typeof store.dispatch
 

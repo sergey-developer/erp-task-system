@@ -3,7 +3,7 @@ import { within } from '@testing-library/react'
 import { props } from '_tests_/features/inventorizations/components/CheckInventorizationEquipmentsModal/constants'
 import { checkInventorizationEquipmentsModalTestUtils as testUtils } from '_tests_/features/inventorizations/components/CheckInventorizationEquipmentsModal/testUtils'
 import { checkInventorizationEquipmentsTableTestUtils } from '_tests_/features/inventorizations/components/CheckInventorizationEquipmentsTable/testUtils'
-import inventorizationsFixtures from '_tests_/fixtures/inventorizations'
+import inventorizationsFixtures from '_tests_/fixtures/api/data/inventorizations'
 import { iconTestUtils, render } from '_tests_/helpers'
 
 import CheckInventorizationEquipmentsModal from './index'

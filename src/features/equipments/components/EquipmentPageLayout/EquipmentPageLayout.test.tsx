@@ -8,10 +8,9 @@ import { equipmentNomenclatureTableTestUtils } from '_tests_/features/warehouses
 import { equipmentPageLayoutTestUtils } from '_tests_/features/warehouses/components/EquipmentPageLayout/testUtils'
 import { equipmentListPageTestUtils } from '_tests_/features/warehouses/pages/EquipmentListPage/testUtils'
 import { equipmentNomenclatureListPageTestUtils } from '_tests_/features/warehouses/pages/EquipmentNomenclatureListPage/testUtils'
-import catalogsFixtures from '_tests_/fixtures/catalogs'
-import commonFixtures from '_tests_/fixtures/common'
-import equipmentsFixtures from '_tests_/fixtures/equipments'
-import { fakeWord, render, renderWithRouter, setupApiTests } from '_tests_/helpers'
+import commonFixtures from '_tests_/fixtures/api/common'
+import catalogsFixtures from '_tests_/fixtures/api/data/catalogs'
+import equipmentsFixtures from '_tests_/fixtures/api/data/equipments'
 import {
   mockGetCustomersSuccess,
   mockGetEquipmentCategoriesSuccess,
@@ -19,6 +18,7 @@ import {
   mockGetEquipmentsSuccess,
   mockGetLocationsCatalogSuccess,
 } from '_tests_/mocks/api'
+import { fakeWord, render, renderWithRouter, setupApiTests } from '_tests_/helpers'
 
 import EquipmentPageLayout from './index'
 

@@ -133,6 +133,7 @@ const relocationTasksEndpoints = baseApi
             url: makeExecuteRelocationTaskApiPath(relocationTaskId),
             method: HttpMethodEnum.Post,
             data: formData,
+            headers: { 'Content-Type': 'multipart/form-data' },
           }
         },
       }),
@@ -228,6 +229,7 @@ const relocationTasksEndpoints = baseApi
             url: makeCreateRelocationTaskAttachmentApiPath(relocationTaskId),
             method: HttpMethodEnum.Post,
             data: formData,
+            headers: { 'Content-Type': 'multipart/form-data' },
           }
         },
       }),

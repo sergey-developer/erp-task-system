@@ -23,6 +23,7 @@ const attachmentsEndpoints = baseApi.injectEndpoints({
           url: AttachmentsApiPathsEnum.CreateAttachment,
           method: HttpMethodEnum.Post,
           data: formData,
+          headers: { 'Content-Type': 'multipart/form-data' },
         }
       },
     }),

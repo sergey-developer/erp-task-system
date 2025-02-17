@@ -125,6 +125,7 @@ const infrastructuresEndpoints = baseApi
             url: InfrastructuresApiPathsEnum.CreateInfrastructureOrdersFormAttachment,
             method: HttpMethodEnum.Post,
             data: formData,
+            headers: { 'Content-Type': 'multipart/form-data' },
           }
         },
       }),

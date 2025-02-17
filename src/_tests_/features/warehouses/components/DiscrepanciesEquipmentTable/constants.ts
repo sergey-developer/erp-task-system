@@ -1,6 +1,6 @@
 import { DiscrepanciesEquipmentTableProps } from 'features/inventorizations/components/DiscrepanciesEquipmentTable/types'
 
-import inventorizationsFixtures from '_tests_/fixtures/inventorizations'
+import inventorizationsFixtures from '_tests_/fixtures/api/data/inventorizations'
 
 export const inventorizationEquipmentListItem = inventorizationsFixtures.inventorizationEquipment()
 

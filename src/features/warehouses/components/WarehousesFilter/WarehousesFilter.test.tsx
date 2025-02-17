@@ -1,9 +1,9 @@
 import { props } from '_tests_/features/warehouses/components/WarehouseListFilter/constants'
 import { warehouseListFilterTestUtils } from '_tests_/features/warehouses/components/WarehouseListFilter/testUtils'
-import catalogsFixtures from '_tests_/fixtures/catalogs'
-import warehousesFixtures from '_tests_/fixtures/warehouses'
-import { fakeWord, render, setupApiTests } from '_tests_/helpers'
+import catalogsFixtures from '_tests_/fixtures/api/data/catalogs'
+import warehousesFixtures from '_tests_/fixtures/api/data/warehouses'
 import { mockGetLegalEntitiesSuccess, mockGetWarehousesSuccess } from '_tests_/mocks/api'
+import { fakeWord, render, setupApiTests } from '_tests_/helpers'
 
 import WarehousesFilter from './index'
 

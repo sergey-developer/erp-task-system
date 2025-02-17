@@ -1,6 +1,6 @@
 import { ReviseInventorizationEquipmentTableProps } from 'features/inventorizations/components/ReviseInventorizationEquipmentTable/types'
 
-import inventorizationsFixtures from '_tests_/fixtures/inventorizations'
+import inventorizationsFixtures from '_tests_/fixtures/api/data/inventorizations'
 
 export const inventorizationEquipmentListItem = inventorizationsFixtures.inventorizationEquipment()
 

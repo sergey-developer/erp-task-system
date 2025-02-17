@@ -13,12 +13,13 @@ import { inventorizationDetailsTestUtils } from '_tests_/features/warehouses/com
 import { inventorizationTableTestUtils } from '_tests_/features/warehouses/components/InventorizationTable/testUtils'
 import { inventorizationsFilterTestUtils } from '_tests_/features/warehouses/components/InventorizationsFilter/testUtils'
 import { inventorizationsPageTestUtils } from '_tests_/features/warehouses/pages/InventorizationsPage/testUtils'
-import commonFixtures from '_tests_/fixtures/common'
-import inventorizationsFixtures from '_tests_/fixtures/inventorizations'
-import userFixtures from '_tests_/fixtures/users'
+import commonFixtures from '_tests_/fixtures/api/common'
+import inventorizationsFixtures from '_tests_/fixtures/api/data/inventorizations'
+import userFixtures from '_tests_/fixtures/api/data/users'
+import { getStoreWithAuth } from '_tests_/fixtures/store/auth'
+import { getUserMeQueryMock } from '_tests_/fixtures/store/users'
 import {
   fakeWord,
-  getStoreWithAuth,
   notificationTestUtils,
   render,
   setupApiTests,
@@ -30,7 +31,6 @@ import {
   mockGetInventorizationsSuccess,
   mockGetInventorizationSuccess,
 } from '_tests_/mocks/api'
-import { getUserMeQueryMock } from '_tests_/mocks/store/users'
 
 import InventorizationsPage from './index'
 

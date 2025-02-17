@@ -13,18 +13,9 @@ import { relocationTasksTabTestUtils } from '_tests_/features/tasks/components/T
 import { relocationTaskDetailsTestUtils } from '_tests_/features/warehouses/components/RelocationTaskDetails/testUtils'
 import { createDocumentsPackagePageTestUtils } from '_tests_/features/warehouses/pages/CreateDocumentsPackagePage/testUtils'
 import { createRelocationTaskSimplifiedPageTestUtils } from '_tests_/features/warehouses/pages/CreateRelocationTaskSimplifiedPage/testUtils'
-import commonFixtures from '_tests_/fixtures/common'
-import relocationTasksFixtures from '_tests_/fixtures/relocationTasks'
-import userFixtures from '_tests_/fixtures/users'
-import {
-  fakeId,
-  fakeWord,
-  getStoreWithAuth,
-  notificationTestUtils,
-  render,
-  renderWithRouter,
-  setupApiTests,
-} from '_tests_/helpers'
+import commonFixtures from '_tests_/fixtures/api/common'
+import relocationTasksFixtures from '_tests_/fixtures/api/data/relocationTasks'
+import userFixtures from '_tests_/fixtures/api/data/users'
 import {
   mockGetCurrenciesSuccess,
   mockGetEquipmentsCatalogSuccess,
@@ -37,7 +28,16 @@ import {
   mockGetUsersSuccess,
   mockGetWarehouseMSISuccess,
 } from '_tests_/mocks/api'
-import { getUserMeQueryMock } from '_tests_/mocks/store/users'
+import { getStoreWithAuth } from '_tests_/fixtures/store/auth'
+import { getUserMeQueryMock } from '_tests_/fixtures/store/users'
+import {
+  fakeId,
+  fakeWord,
+  notificationTestUtils,
+  render,
+  renderWithRouter,
+  setupApiTests,
+} from '_tests_/helpers'
 
 import RelocationTasksTab from './index'
 

@@ -14,8 +14,6 @@ export type ErrorDataDetail = string | ValidationErrors
 
 export type ErrorData<T extends object = {}> = FieldsErrors<T> & {
   detail?: ErrorDataDetail
-
-  // todo: вынести FieldsErrors и errorList в одно поле
   errorList?: unknown[]
 }
 

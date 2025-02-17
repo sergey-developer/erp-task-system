@@ -13,12 +13,11 @@ import * as downloadFileUtils from 'shared/utils/file/downloadFile'
 import { equipmentDetailsTestUtils } from '_tests_/features/warehouses/components/EquipmentDetails/testUtils'
 import { relocationTaskDetailsTestUtils } from '_tests_/features/warehouses/components/RelocationTaskDetails/testUtils'
 import { historyNomenclatureOperationsReportPageTestUtils } from '_tests_/features/warehouses/pages/HistoryNomenclatureOperationsReportPage/testUtils'
-import catalogsFixtures from '_tests_/fixtures/catalogs'
-import commonFixtures from '_tests_/fixtures/common'
-import equipmentsFixtures from '_tests_/fixtures/equipments'
-import reportsFixtures from '_tests_/fixtures/reports'
-import userFixtures from '_tests_/fixtures/users'
-import { fakeWord, getStoreWithAuth, render, setupApiTests } from '_tests_/helpers'
+import commonFixtures from '_tests_/fixtures/api/common'
+import catalogsFixtures from '_tests_/fixtures/api/data/catalogs'
+import equipmentsFixtures from '_tests_/fixtures/api/data/equipments'
+import reportsFixtures from '_tests_/fixtures/api/data/reports'
+import userFixtures from '_tests_/fixtures/api/data/users'
 import {
   mockGetCustomersSuccess,
   mockGetEquipmentAttachmentsSuccess,
@@ -30,7 +29,9 @@ import {
   mockGetRelocationEquipmentsSuccess,
   mockGetRelocationTaskSuccess,
 } from '_tests_/mocks/api'
-import { getUserMeQueryMock } from '_tests_/mocks/store/users'
+import { getStoreWithAuth } from '_tests_/fixtures/store/auth'
+import { getUserMeQueryMock } from '_tests_/fixtures/store/users'
+import { fakeWord, render, setupApiTests } from '_tests_/helpers'
 
 import HistoryNomenclatureOperationsReportPage from './index'
 

@@ -9,14 +9,15 @@ import { equipmentNomenclatureListPageTestUtils } from '_tests_/features/warehou
 import { inventorizationsPageTestUtils } from '_tests_/features/warehouses/pages/InventorizationsPage/testUtils'
 import { relocationTasksPageTestUtils } from '_tests_/features/warehouses/pages/RelocationTasksPage/testUtils'
 import { reserveCatalogListPageTestUtils } from '_tests_/features/warehouses/pages/ReserveCatalogListPage/testUtils'
-import userFixtures from '_tests_/fixtures/users'
-import { getStoreWithAuth, renderWithRouter } from '_tests_/helpers'
+import userFixtures from '_tests_/fixtures/api/data/users'
 import {
   mockGetEquipmentNomenclaturesSuccess,
   mockGetInventorizationsSuccess,
   mockGetRelocationTasksSuccess,
 } from '_tests_/mocks/api'
-import { getUserMeQueryMock } from '_tests_/mocks/store/users'
+import { getStoreWithAuth } from '_tests_/fixtures/store/auth'
+import { getUserMeQueryMock } from '_tests_/fixtures/store/users'
+import { renderWithRouter } from '_tests_/helpers'
 
 import ReservesCatalogPage from './index'
 

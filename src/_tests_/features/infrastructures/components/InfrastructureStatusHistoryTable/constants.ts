@@ -4,7 +4,7 @@ import {
   InfrastructureStatusHistoryTableProps,
 } from 'features/infrastructures/components/InfrastructureStatusHistoryTable/types'
 
-import userFixtures from '_tests_/fixtures/users'
+import userFixtures from '_tests_/fixtures/api/data/users'
 import { fakeDateString, fakeId } from '_tests_/helpers'
 
 export const tableRow: InfrastructureStatusHistoryTableItem = {

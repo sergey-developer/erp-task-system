@@ -9,7 +9,7 @@ import { MaybeNull, NumberOrString } from 'shared/types/utils'
 import { getYesNoWord } from 'shared/utils/common'
 import { formatDate } from 'shared/utils/date'
 
-import reportsFixtures from '_tests_/fixtures/reports'
+import reportsFixtures from '_tests_/fixtures/api/data/reports'
 import { render, tableTestUtils } from '_tests_/helpers'
 
 import HistoryNomenclatureOperationsReportTable from './index'

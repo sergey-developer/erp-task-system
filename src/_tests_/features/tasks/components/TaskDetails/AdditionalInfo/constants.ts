@@ -2,7 +2,7 @@ import { TaskStatusEnum } from 'features/tasks/api/constants'
 import { AdditionalInfoProps } from 'features/tasks/components/TaskDetails/AdditionalInfo/index'
 import pick from 'lodash/pick'
 
-import tasksFixtures from '_tests_/fixtures/tasks/index'
+import tasksFixtures from '_tests_/fixtures/api/data/tasks/index'
 import { fakeWord } from '_tests_/helpers'
 
 export const props: Readonly<

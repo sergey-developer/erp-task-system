@@ -13,20 +13,12 @@ import { relocationTaskDetailsTestUtils } from '_tests_/features/warehouses/comp
 import { relocationTaskFormTestUtils } from '_tests_/features/warehouses/components/RelocationTaskForm/testUtils'
 import { editRelocationTaskDraftPageTestUtils as testUtils } from '_tests_/features/warehouses/pages/EditRelocationTaskDraftPage/testUtils'
 import { executeInventorizationPageTestUtils } from '_tests_/features/warehouses/pages/ExecuteInventorizationPage/testUtils'
-import catalogsFixtures from '_tests_/fixtures/catalogs'
-import commonFixtures from '_tests_/fixtures/common'
-import { fakeUseLocationResult } from '_tests_/fixtures/common/hooks/useLocation'
-import equipmentsFixtures from '_tests_/fixtures/equipments'
-import inventorizationsFixtures from '_tests_/fixtures/inventorizations'
-import relocationTasksFixtures from '_tests_/fixtures/relocationTasks'
-import userFixtures from '_tests_/fixtures/users'
-import {
-  getStoreWithAuth,
-  notificationTestUtils,
-  render,
-  renderWithRouter,
-  setupApiTests,
-} from '_tests_/helpers'
+import commonFixtures from '_tests_/fixtures/api/common'
+import catalogsFixtures from '_tests_/fixtures/api/data/catalogs'
+import equipmentsFixtures from '_tests_/fixtures/api/data/equipments'
+import inventorizationsFixtures from '_tests_/fixtures/api/data/inventorizations'
+import relocationTasksFixtures from '_tests_/fixtures/api/data/relocationTasks'
+import userFixtures from '_tests_/fixtures/api/data/users'
 import {
   mockCreateRelocationTaskSuccess,
   mockGetCurrenciesSuccess,
@@ -39,7 +31,10 @@ import {
   mockGetUsersGroupsSuccess,
   mockGetUsersSuccess,
 } from '_tests_/mocks/api'
-import { getUserMeQueryMock } from '_tests_/mocks/store/users'
+import { fakeUseLocationResult } from '_tests_/fixtures/hooks/useLocation'
+import { getStoreWithAuth } from '_tests_/fixtures/store/auth'
+import { getUserMeQueryMock } from '_tests_/fixtures/store/users'
+import { notificationTestUtils, render, renderWithRouter, setupApiTests } from '_tests_/helpers'
 
 import EditRelocationTaskDraftPage from './index'
 

@@ -11,8 +11,8 @@ import {
   getRequestMockFn,
   getServerErrorMockFn,
   getSuccessMockFn,
-} from '_tests_/mocks/request'
-import { ResponseResolverOptions } from '_tests_/mocks/response'
+} from '_tests_/mocks/api/request'
+import { ResponseResolverOptions } from '_tests_/mocks/api/response'
 
 const getEmployeesActionsReportMockFn = (employeeId: IdType) =>
   getRequestMockFn(HttpMethodEnum.Get, makeGetEmployeesActionsReportApiPath(employeeId))

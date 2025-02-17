@@ -5,7 +5,7 @@ import {
 } from 'features/tasks/api/constants'
 import { SubTaskProps } from 'features/tasks/components/SubTasks/SubTask'
 
-import tasksFixtures from '_tests_/fixtures/tasks/index'
+import tasksFixtures from '_tests_/fixtures/api/data/tasks/index'
 
 const task = tasksFixtures.taskDetail()
 const subTask = tasksFixtures.subTask()

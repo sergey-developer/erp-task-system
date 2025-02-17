@@ -10,10 +10,9 @@ import * as downloadFileUtils from 'shared/utils/file/downloadFile'
 import { equipmentDetailsTestUtils } from '_tests_/features/warehouses/components/EquipmentDetails/testUtils'
 import { relocationTaskDetailsTestUtils } from '_tests_/features/warehouses/components/RelocationTaskDetails/testUtils'
 import { employeesActionsReportPageTestUtils } from '_tests_/features/warehouses/pages/EmployeesActionsReportPage/testUtils'
-import commonFixtures from '_tests_/fixtures/common'
-import reportsFixtures from '_tests_/fixtures/reports'
-import userFixtures from '_tests_/fixtures/users'
-import { fakeWord, getStoreWithAuth, render, setupApiTests } from '_tests_/helpers'
+import commonFixtures from '_tests_/fixtures/api/common'
+import reportsFixtures from '_tests_/fixtures/api/data/reports'
+import userFixtures from '_tests_/fixtures/api/data/users'
 import {
   mockGetEmployeesActionsReportSuccess,
   mockGetEmployeesActionsReportXlsxSuccess,
@@ -23,7 +22,9 @@ import {
   mockGetRelocationTaskSuccess,
   mockGetUsersSuccess,
 } from '_tests_/mocks/api'
-import { getUserMeQueryMock } from '_tests_/mocks/store/users'
+import { getStoreWithAuth } from '_tests_/fixtures/store/auth'
+import { getUserMeQueryMock } from '_tests_/fixtures/store/users'
+import { fakeWord, render, setupApiTests } from '_tests_/helpers'
 
 import EmployeesActionsReportPage from './index'
 

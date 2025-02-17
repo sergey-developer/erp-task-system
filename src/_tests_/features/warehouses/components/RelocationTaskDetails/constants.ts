@@ -3,7 +3,7 @@ import { RelocationTaskDetailsProps } from 'features/relocationTasks/components/
 import { UserPermissionsEnum } from 'features/users/api/constants/index'
 import pick from 'lodash/pick'
 
-import relocationTasksFixtures from '_tests_/fixtures/relocationTasks'
+import relocationTasksFixtures from '_tests_/fixtures/api/data/relocationTasks'
 import { fakeId } from '_tests_/helpers'
 
 export const props: RelocationTaskDetailsProps = {

@@ -13,7 +13,7 @@ import {
   props,
 } from '_tests_/features/warehouses/components/EquipmentTable/constants'
 import { equipmentTableTestUtils } from '_tests_/features/warehouses/components/EquipmentTable/testUtils'
-import equipmentsFixtures from '_tests_/fixtures/equipments'
+import equipmentsFixtures from '_tests_/fixtures/api/data/equipments'
 import { render, tableTestUtils } from '_tests_/helpers'
 
 import EquipmentTable from './index'

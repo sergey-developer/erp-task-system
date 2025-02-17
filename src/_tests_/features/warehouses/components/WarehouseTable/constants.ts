@@ -1,6 +1,6 @@
 import { WarehouseTableProps } from 'features/warehouses/components/WarehouseTable/types'
 
-import warehousesFixtures from '_tests_/fixtures/warehouses'
+import warehousesFixtures from '_tests_/fixtures/api/data/warehouses'
 
 export const warehouseListItem = warehousesFixtures.warehouse()
 

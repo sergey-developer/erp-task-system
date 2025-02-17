@@ -1,6 +1,6 @@
 import { RelocationEquipmentTableProps } from 'features/relocationEquipments/components/RelocationEquipmentTable/types'
 
-import relocationEquipmentsFixtures from '_tests_/fixtures/relocationEquipments'
+import relocationEquipmentsFixtures from '_tests_/fixtures/api/data/relocationEquipments'
 
 export const relocationEquipmentListItem = relocationEquipmentsFixtures.relocationEquipment()
 

@@ -1,5 +1,4 @@
-export * from './fakes'
-export * from './auth'
+export * from './fakesGenerators'
 export * from './components'
 export * from './setupApiTests'
 export * from './render'

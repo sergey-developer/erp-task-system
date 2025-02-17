@@ -3,8 +3,8 @@ import { GetEquipmentsTemplateResponse } from 'features/equipments/api/schemas'
 
 import { HttpMethodEnum } from 'shared/constants/http'
 
-import { getRequestMockFn, getServerErrorMockFn, getSuccessMockFn } from '_tests_/mocks/request'
-import { ResponseResolverOptions } from '_tests_/mocks/response'
+import { getRequestMockFn, getServerErrorMockFn, getSuccessMockFn } from '_tests_/mocks/api/request'
+import { ResponseResolverOptions } from '_tests_/mocks/api/response'
 
 const getEquipmentsTemplateMockFn = () =>
   getRequestMockFn(HttpMethodEnum.Get, EquipmentsApiPathsEnum.GetEquipmentsTemplate)

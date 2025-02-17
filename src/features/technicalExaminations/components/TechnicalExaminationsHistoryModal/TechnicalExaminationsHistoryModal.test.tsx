@@ -1,6 +1,6 @@
 import { screen, within } from '@testing-library/react'
 
-import technicalExaminationsFixtures from '_tests_/fixtures/technicalExaminations'
+import technicalExaminationsFixtures from '_tests_/fixtures/api/data/technicalExaminations'
 import { render } from '_tests_/helpers'
 
 import { testUtils as technicalExaminationsHistoryTableTestUtils } from '../TechnicalExaminationsHistoryTable/TechnicalExaminationsHistoryTable.test'

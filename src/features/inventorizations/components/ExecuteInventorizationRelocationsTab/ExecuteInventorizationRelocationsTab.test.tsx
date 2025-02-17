@@ -9,16 +9,17 @@ import { props } from '_tests_/features/warehouses/components/ExecuteInventoriza
 import { executeInventorizationRelocationsTabTestUtils } from '_tests_/features/warehouses/components/ExecuteInventorizationRelocationsTab/testUtils'
 import { relocationTaskDetailsTestUtils } from '_tests_/features/warehouses/components/RelocationTaskDetails/testUtils'
 import { createRelocationTaskDraftPageTestUtils } from '_tests_/features/warehouses/pages/CreateRelocationTaskDraftPage/testUtils'
-import commonFixtures from '_tests_/fixtures/common'
-import relocationTasksFixtures from '_tests_/fixtures/relocationTasks'
-import userFixtures from '_tests_/fixtures/users'
-import { getStoreWithAuth, render, renderWithRouter, tableTestUtils } from '_tests_/helpers'
+import commonFixtures from '_tests_/fixtures/api/common'
+import relocationTasksFixtures from '_tests_/fixtures/api/data/relocationTasks'
+import userFixtures from '_tests_/fixtures/api/data/users'
+import { getStoreWithAuth } from '_tests_/fixtures/store/auth'
+import { getUserMeQueryMock } from '_tests_/fixtures/store/users'
+import { render, renderWithRouter, tableTestUtils } from '_tests_/helpers'
 import {
   mockGetRelocationEquipmentsSuccess,
   mockGetRelocationTasksSuccess,
   mockGetRelocationTaskSuccess,
 } from '_tests_/mocks/api'
-import { getUserMeQueryMock } from '_tests_/mocks/store/users'
 
 import ExecuteInventorizationRelocationsTab from './index'
 

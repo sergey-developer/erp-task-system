@@ -1,6 +1,6 @@
 import { RelocationTasksProps } from 'features/tasks/components/RelocationTasks/types'
 
-import relocationTasksFixtures from '_tests_/fixtures/relocationTasks'
+import relocationTasksFixtures from '_tests_/fixtures/api/data/relocationTasks'
 
 export const relocationTaskListItem = relocationTasksFixtures.relocationTask()
 

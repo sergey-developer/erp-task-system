@@ -12,23 +12,17 @@ import { validationMessages } from 'shared/constants/validation'
 import { formatDate } from 'shared/utils/date'
 
 import { createRelocationTaskPageTestUtils } from '_tests_/features/warehouses/pages/CreateRelocationTaskPage/testUtils'
-import catalogsFixtures from '_tests_/fixtures/catalogs'
-import userFixtures from '_tests_/fixtures/users'
-import {
-  buttonTestUtils,
-  fakeWord,
-  getStoreWithAuth,
-  render,
-  selectTestUtils,
-  setupApiTests,
-} from '_tests_/helpers'
+import catalogsFixtures from '_tests_/fixtures/api/data/catalogs'
+import userFixtures from '_tests_/fixtures/api/data/users'
+import { getStoreWithAuth } from '_tests_/fixtures/store/auth'
+import { getUserMeQueryMock } from '_tests_/fixtures/store/users'
+import { buttonTestUtils, fakeWord, render, selectTestUtils, setupApiTests } from '_tests_/helpers'
 import {
   mockGetCurrenciesSuccess,
   mockGetEquipmentsCatalogSuccess,
   mockGetLocationsCatalogSuccess,
   mockGetUsersSuccess,
 } from '_tests_/mocks/api'
-import { getUserMeQueryMock } from '_tests_/mocks/store/users'
 
 import RelocationTaskForm from './index'
 import { RelocationTaskFormProps } from './types'

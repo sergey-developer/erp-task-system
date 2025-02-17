@@ -3,7 +3,7 @@ import ChangeInfrastructureOrderFormTable from 'features/infrastructures/compone
 
 import { props } from '_tests_/features/infrastructures/components/ChangeInfrastructureOrderFormTable/constants'
 import { changeInfrastructureOrderFormTableTestUtils } from '_tests_/features/infrastructures/components/ChangeInfrastructureOrderFormTable/testUtils'
-import catalogsFixtures from '_tests_/fixtures/catalogs'
+import catalogsFixtures from '_tests_/fixtures/api/data/catalogs'
 import { buttonTestUtils, fakeInteger, render, tableTestUtils } from '_tests_/helpers'
 
 describe('Таблица добавления работ к бланк-заказу', () => {

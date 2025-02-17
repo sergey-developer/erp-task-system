@@ -3,8 +3,8 @@ import { GetUsersGroupsResponse } from 'features/users/api/schemas'
 
 import { HttpMethodEnum } from 'shared/constants/http'
 
-import { getRequestMockFn, getSuccessMockFn } from '_tests_/mocks/request'
-import { ResponseResolverOptions } from '_tests_/mocks/response'
+import { getRequestMockFn, getSuccessMockFn } from '_tests_/mocks/api/request'
+import { ResponseResolverOptions } from '_tests_/mocks/api/response'
 
 const getUsersGroupsMockFn = () =>
   getRequestMockFn(HttpMethodEnum.Get, UsersApiPathsEnum.GetUsersGroups)

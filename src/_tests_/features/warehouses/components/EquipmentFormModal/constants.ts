@@ -1,7 +1,7 @@
 import { EquipmentFormModalProps } from 'features/equipments/components/EquipmentFormModal/types'
 
-import equipmentsFixtures from '_tests_/fixtures/equipments'
-import nomenclaturesFixtures from '_tests_/fixtures/nomenclatures'
+import equipmentsFixtures from '_tests_/fixtures/api/data/equipments'
+import nomenclaturesFixtures from '_tests_/fixtures/api/data/nomenclatures'
 import { fakeWord } from '_tests_/helpers'
 
 export const props: Readonly<EquipmentFormModalProps> = {
@@ -28,7 +28,7 @@ export const props: Readonly<EquipmentFormModalProps> = {
 
   categories: [],
   categoriesIsLoading: false,
-  category: equipmentsFixtures.equipmentCategoryListItem(),
+  category: equipmentsFixtures.equipmentCategory(),
   onChangeCategory: jest.fn(),
 
   currencies: [],

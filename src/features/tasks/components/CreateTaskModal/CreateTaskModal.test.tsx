@@ -2,7 +2,7 @@ import { within } from '@testing-library/react'
 
 import { props } from '_tests_/features/tasks/components/CreateTaskModal/constants'
 import { createTaskModalTestUtils } from '_tests_/features/tasks/components/CreateTaskModal/testUtils'
-import userFixtures from '_tests_/fixtures/users'
+import userFixtures from '_tests_/fixtures/api/data/users'
 import { render } from '_tests_/helpers'
 
 import CreateTaskModal from './index'

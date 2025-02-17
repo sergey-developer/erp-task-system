@@ -1,17 +1,11 @@
 import { props } from '_tests_/features/tasks/components/TaskDetails/MainDetails/constants'
 import { mainDetailsTestUtils } from '_tests_/features/tasks/components/TaskDetails/MainDetails/testUtils'
 import { taskStatusTestUtils } from '_tests_/features/tasks/components/TaskStatus/testUtils'
-import tasksFixtures from '_tests_/fixtures/tasks'
-import userFixtures from '_tests_/fixtures/users'
-import {
-  fakeAddress,
-  fakeDateString,
-  fakePhone,
-  fakeWord,
-  getStoreWithAuth,
-  render,
-} from '_tests_/helpers'
-import { getUserMeQueryMock } from '_tests_/mocks/store/users'
+import tasksFixtures from '_tests_/fixtures/api/data/tasks'
+import userFixtures from '_tests_/fixtures/api/data/users'
+import { getStoreWithAuth } from '_tests_/fixtures/store/auth'
+import { getUserMeQueryMock } from '_tests_/fixtures/store/users'
+import { fakeAddress, fakeDateString, fakePhone, fakeWord, render } from '_tests_/helpers'
 
 import MainDetails, { MainDetailsProps } from './index'
 import { parseResponseTime } from './utils'

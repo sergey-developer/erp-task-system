@@ -16,7 +16,7 @@ import {
   props,
 } from '_tests_/features/warehouses/components/InventorizationTable/constants'
 import { inventorizationTableTestUtils } from '_tests_/features/warehouses/components/InventorizationTable/testUtils'
-import inventorizationsFixtures from '_tests_/fixtures/inventorizations'
+import inventorizationsFixtures from '_tests_/fixtures/api/data/inventorizations'
 import { render, tableTestUtils } from '_tests_/helpers'
 
 import InventorizationTable from './index'

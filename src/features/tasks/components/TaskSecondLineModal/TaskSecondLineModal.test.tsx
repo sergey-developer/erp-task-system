@@ -6,10 +6,10 @@ import { WorkGroupTypeEnum } from 'shared/workGroups/api/constants'
 
 import { props } from '_tests_/features/tasks/components/TaskSecondLineModal/constants'
 import { taskSecondLineModalTestUtils } from '_tests_/features/tasks/components/TaskSecondLineModal/testUtils'
-import catalogsFixtures from '_tests_/fixtures/catalogs'
-import workGroupsFixtures from '_tests_/fixtures/workGroups'
-import { fakeWord, render, selectTestUtils, setupApiTests } from '_tests_/helpers'
+import catalogsFixtures from '_tests_/fixtures/api/data/catalogs'
+import workGroupsFixtures from '_tests_/fixtures/api/data/workGroups'
 import { mockGetWorkGroupsSuccess, mockGetWorkTypesSuccess } from '_tests_/mocks/api'
+import { fakeWord, render, selectTestUtils, setupApiTests } from '_tests_/helpers'
 
 import TaskSecondLineModal from './index'
 

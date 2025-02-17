@@ -7,7 +7,7 @@ import theme from 'styles/theme'
 
 import { props, taskListItem } from '_tests_/features/tasks/components/TasksFromMap/constants'
 import { tasksFromMapTestUtils } from '_tests_/features/tasks/components/TasksFromMap/testUtils'
-import tasksFixtures from '_tests_/fixtures/tasks'
+import tasksFixtures from '_tests_/fixtures/api/data/tasks'
 import { render } from '_tests_/helpers'
 
 import TasksFromMap, { taskTypeText } from './index'

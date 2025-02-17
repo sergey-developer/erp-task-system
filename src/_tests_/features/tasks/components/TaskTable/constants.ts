@@ -2,7 +2,7 @@ import { TablePaginationConfig } from 'antd'
 import { TaskTableProps } from 'features/tasks/components/TaskTable/types'
 import { DEFAULT_PAGE_SIZE } from 'features/tasks/pages/TasksPage/constants'
 
-import tasksFixtures from '_tests_/fixtures/tasks/index'
+import tasksFixtures from '_tests_/fixtures/api/data/tasks/index'
 
 export const tasksTableItem = tasksFixtures.tasksTableItem()
 

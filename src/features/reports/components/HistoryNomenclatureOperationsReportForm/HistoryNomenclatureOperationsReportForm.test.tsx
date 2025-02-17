@@ -9,7 +9,7 @@ import { validationMessages } from 'shared/constants/validation'
 
 import { buttonTestUtils, render, selectTestUtils } from '_tests_/helpers'
 
-import equipmentsFixtures from '../../../../_tests_/fixtures/equipments'
+import equipmentsFixtures from '../../../../_tests_/fixtures/api/data/equipments'
 import HistoryNomenclatureOperationsReportForm from './index'
 import { HistoryNomenclatureOperationsReportFormProps } from './types'
 

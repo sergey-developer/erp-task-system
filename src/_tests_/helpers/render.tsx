@@ -8,8 +8,7 @@ import userEvent from '@testing-library/user-event'
 import isEqual from 'lodash/isEqual'
 import React, { ReactElement } from 'react'
 import { BrowserRouter, createMemoryRouter, RouterProvider } from 'react-router-dom'
-
-import { AppStore, RootState, setupStore } from 'state/store'
+import { AppStore, RootState, setupStore } from 'store/store'
 
 import { FCWithChildren } from 'shared/types/utils'
 

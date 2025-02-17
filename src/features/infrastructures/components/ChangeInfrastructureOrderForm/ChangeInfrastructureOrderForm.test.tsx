@@ -6,13 +6,13 @@ import { props } from '_tests_/features/infrastructures/components/ChangeInfrast
 import { changeInfrastructureOrderFormTestUtils } from '_tests_/features/infrastructures/components/ChangeInfrastructureOrderForm/testUtils'
 import { changeInfrastructureOrderFormTableTestUtils } from '_tests_/features/infrastructures/components/ChangeInfrastructureOrderFormTable/testUtils'
 import { confirmDeleteInfrastructureWorkTypeModalTestUtils } from '_tests_/features/infrastructures/components/ConfirmDeleteInfrastructureWorkTypeModal/testUtils'
-import catalogsFixtures from '_tests_/fixtures/catalogs'
-import infrastructuresFixtures from '_tests_/fixtures/infrastructures'
-import { fakeInteger, render } from '_tests_/helpers'
+import catalogsFixtures from '_tests_/fixtures/api/data/catalogs'
+import infrastructuresFixtures from '_tests_/fixtures/api/data/infrastructures'
 import {
   mockCreateInfrastructureOrderFormWorkSuccess,
   mockGetInfrastructureOrderFormWorkTypeCostSuccess,
 } from '_tests_/mocks/api/infrastructures'
+import { fakeInteger, render } from '_tests_/helpers'
 
 describe('Форма добавления работ к бланк-заказу', () => {
   describe('Поле тариф', () => {

@@ -4,24 +4,24 @@ import { getEquipmentsErrorMessage } from 'features/equipments/api/constants'
 import { ariaSortAttrAscValue, ariaSortAttrName } from '_tests_/constants/components'
 import { equipmentDetailsTestUtils } from '_tests_/features/warehouses/components/EquipmentDetails/testUtils'
 import { equipmentTableTestUtils } from '_tests_/features/warehouses/components/EquipmentTable/testUtils'
-import commonFixtures from '_tests_/fixtures/common'
-import equipmentsFixtures from '_tests_/fixtures/equipments'
-import userFixtures from '_tests_/fixtures/users'
-import {
-  fakeWord,
-  getStoreWithAuth,
-  notificationTestUtils,
-  render,
-  setupApiTests,
-  tableTestUtils,
-} from '_tests_/helpers'
+import commonFixtures from '_tests_/fixtures/api/common'
+import equipmentsFixtures from '_tests_/fixtures/api/data/equipments'
+import userFixtures from '_tests_/fixtures/api/data/users'
 import {
   mockGetEquipmentsForbiddenError,
   mockGetEquipmentsServerError,
   mockGetEquipmentsSuccess,
   mockGetEquipmentSuccess,
 } from '_tests_/mocks/api'
-import { getUserMeQueryMock } from '_tests_/mocks/store/users'
+import { getStoreWithAuth } from '_tests_/fixtures/store/auth'
+import { getUserMeQueryMock } from '_tests_/fixtures/store/users'
+import {
+  fakeWord,
+  notificationTestUtils,
+  render,
+  setupApiTests,
+  tableTestUtils,
+} from '_tests_/helpers'
 
 import EquipmentsPage from './index'
 

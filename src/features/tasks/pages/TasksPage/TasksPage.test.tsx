@@ -45,20 +45,12 @@ import { tasksFilterTestUtils } from '_tests_/features/tasks/components/TasksFil
 import { tasksFiltersStorageTestUtils } from '_tests_/features/tasks/components/TasksFiltersStorage/testUtils'
 import { updateTasksButtonTestUtils } from '_tests_/features/tasks/components/UpdateTasksButton/testUtils'
 import { tasksPageTestUtils } from '_tests_/features/tasks/pages/TasksPage/testUtils'
-import catalogsFixtures from '_tests_/fixtures/catalogs'
-import commonFixtures from '_tests_/fixtures/common/index'
-import supportGroupsFixtures from '_tests_/fixtures/supportGroups'
-import tasksFixtures from '_tests_/fixtures/tasks'
-import userFixtures from '_tests_/fixtures/users'
-import workGroupsFixtures from '_tests_/fixtures/workGroups'
-import {
-  fakeId,
-  fakeWord,
-  getStoreWithAuth,
-  render,
-  selectTestUtils,
-  setupApiTests,
-} from '_tests_/helpers'
+import commonFixtures from '_tests_/fixtures/api/common/index'
+import catalogsFixtures from '_tests_/fixtures/api/data/catalogs'
+import supportGroupsFixtures from '_tests_/fixtures/api/data/supportGroups'
+import tasksFixtures from '_tests_/fixtures/api/data/tasks'
+import userFixtures from '_tests_/fixtures/api/data/users'
+import workGroupsFixtures from '_tests_/fixtures/api/data/workGroups'
 import {
   mockDeleteTaskWorkGroupSuccess,
   mockGetCustomersSuccess,
@@ -75,7 +67,9 @@ import {
   mockUpdateTaskAssigneeSuccess,
   mockUpdateTaskWorkGroupSuccess,
 } from '_tests_/mocks/api'
-import { getUserMeQueryMock } from '_tests_/mocks/store/users'
+import { getStoreWithAuth } from '_tests_/fixtures/store/auth'
+import { getUserMeQueryMock } from '_tests_/fixtures/store/users'
+import { fakeId, fakeWord, render, selectTestUtils, setupApiTests } from '_tests_/helpers'
 
 import { DEFAULT_PAGE_SIZE, tableItemBoundaryStyles } from './constants'
 import TasksPage from './index'

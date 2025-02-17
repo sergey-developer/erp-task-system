@@ -1,4 +1,4 @@
-import { RootState } from 'state/store'
+import { RootState } from 'store/store'
 
 export const isLoggedInSelector = (state: RootState): RootState['auth']['isLoggedIn'] =>
   state.auth.isLoggedIn

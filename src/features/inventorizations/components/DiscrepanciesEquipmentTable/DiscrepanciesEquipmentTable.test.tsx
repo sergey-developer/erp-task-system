@@ -11,7 +11,7 @@ import {
   props,
 } from '_tests_/features/warehouses/components/DiscrepanciesEquipmentTable/constants'
 import { discrepanciesEquipmentTableTestUtils } from '_tests_/features/warehouses/components/DiscrepanciesEquipmentTable/testUtils'
-import inventorizationsFixtures from '_tests_/fixtures/inventorizations'
+import inventorizationsFixtures from '_tests_/fixtures/api/data/inventorizations'
 import { render, tableTestUtils } from '_tests_/helpers'
 
 import DiscrepanciesEquipmentTable from './index'

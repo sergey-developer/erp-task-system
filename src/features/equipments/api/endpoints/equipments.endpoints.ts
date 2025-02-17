@@ -168,6 +168,7 @@ const equipmentsEndpoints = baseApi
             url: EquipmentsApiPathsEnum.ImportEquipmentsByFile,
             method: HttpMethodEnum.Post,
             data: formData,
+            headers: { 'Content-Type': 'multipart/form-data' },
           }
         },
         transformResponse: (response: ImportEquipmentsByFileResponse) =>

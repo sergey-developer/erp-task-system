@@ -6,7 +6,7 @@ import { validationMessages } from 'shared/constants/validation'
 
 import { props } from '_tests_/features/warehouses/components/CreateInventorizationRequestModal/constants'
 import { createInventorizationRequestModalTestUtils as testUtils } from '_tests_/features/warehouses/components/CreateInventorizationRequestModal/testUtils'
-import equipmentsFixtures from '_tests_/fixtures/equipments'
+import equipmentsFixtures from '_tests_/fixtures/api/data/equipments'
 import { fakeWord, iconTestUtils, render, selectTestUtils } from '_tests_/helpers'
 
 import CreateInventorizationRequestModal, { nomenclaturesPopoverContent } from './index'

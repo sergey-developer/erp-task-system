@@ -2,8 +2,13 @@ import { getEquipmentNomenclaturesErrorMessage } from 'features/equipments/api/c
 import { WarehousesRoutesEnum } from 'features/warehouses/routes/routes'
 
 import { equipmentNomenclatureTableTestUtils } from '_tests_/features/warehouses/components/EquipmentNomenclatureTable/testUtils'
-import commonFixtures from '_tests_/fixtures/common'
-import equipmentsFixtures from '_tests_/fixtures/equipments'
+import commonFixtures from '_tests_/fixtures/api/common'
+import equipmentsFixtures from '_tests_/fixtures/api/data/equipments'
+import {
+  mockGetEquipmentNomenclaturesForbiddenError,
+  mockGetEquipmentNomenclaturesServerError,
+  mockGetEquipmentNomenclaturesSuccess,
+} from '_tests_/mocks/api'
 import {
   fakeWord,
   notificationTestUtils,
@@ -11,11 +16,6 @@ import {
   setupApiTests,
   tableTestUtils,
 } from '_tests_/helpers'
-import {
-  mockGetEquipmentNomenclaturesForbiddenError,
-  mockGetEquipmentNomenclaturesServerError,
-  mockGetEquipmentNomenclaturesSuccess,
-} from '_tests_/mocks/api'
 
 import EquipmentNomenclaturesPage from './index'
 

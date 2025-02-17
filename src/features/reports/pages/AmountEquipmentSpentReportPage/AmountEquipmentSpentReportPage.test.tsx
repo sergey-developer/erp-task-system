@@ -13,14 +13,16 @@ import * as downloadFileUtils from 'shared/utils/file/downloadFile'
 import { equipmentDetailsTestUtils } from '_tests_/features/warehouses/components/EquipmentDetails/testUtils'
 import { relocationTaskDetailsTestUtils } from '_tests_/features/warehouses/components/RelocationTaskDetails/testUtils'
 import { amountEquipmentSpentReportPageTestUtils } from '_tests_/features/warehouses/pages/AmountEquipmentSpentReportPage/testUtils'
-import catalogsFixtures from '_tests_/fixtures/catalogs'
-import commonFixtures from '_tests_/fixtures/common'
-import { fakeUseLocationResult } from '_tests_/fixtures/common/hooks/useLocation'
-import equipmentsFixtures from '_tests_/fixtures/equipments'
-import reportsFixtures from '_tests_/fixtures/reports'
-import tasksFixtures from '_tests_/fixtures/tasks'
-import userFixtures from '_tests_/fixtures/users'
-import { fakeId, fakeWord, getStoreWithAuth, render, setupApiTests } from '_tests_/helpers'
+import commonFixtures from '_tests_/fixtures/api/common'
+import catalogsFixtures from '_tests_/fixtures/api/data/catalogs'
+import equipmentsFixtures from '_tests_/fixtures/api/data/equipments'
+import reportsFixtures from '_tests_/fixtures/api/data/reports'
+import tasksFixtures from '_tests_/fixtures/api/data/tasks'
+import userFixtures from '_tests_/fixtures/api/data/users'
+import { fakeUseLocationResult } from '_tests_/fixtures/hooks/useLocation'
+import { getStoreWithAuth } from '_tests_/fixtures/store/auth'
+import { getUserMeQueryMock } from '_tests_/fixtures/store/users'
+import { fakeId, fakeWord, render, setupApiTests } from '_tests_/helpers'
 import {
   mockGetAmountEquipmentSpentReportSuccess,
   mockGetAmountEquipmentSpentReportXlsxSuccess,
@@ -32,7 +34,6 @@ import {
   mockGetRelocationEquipmentsSuccess,
   mockGetRelocationTaskSuccess,
 } from '_tests_/mocks/api'
-import { getUserMeQueryMock } from '_tests_/mocks/store/users'
 
 import AmountEquipmentSpentReportPage from './index'
 
@@ -174,7 +175,7 @@ describe('Страница отчета количества потраченн�
       const locationCatalogItem = catalogsFixtures.locationCatalogItem()
       mockGetLocationsCatalogSuccess({ body: [locationCatalogItem] })
 
-      const equipmentCategoryListItem = equipmentsFixtures.equipmentCategoryListItem()
+      const equipmentCategoryListItem = equipmentsFixtures.equipmentCategory()
       mockGetEquipmentCategoriesSuccess({ body: [equipmentCategoryListItem] })
 
       const { user } = render(<AmountEquipmentSpentReportPage />)

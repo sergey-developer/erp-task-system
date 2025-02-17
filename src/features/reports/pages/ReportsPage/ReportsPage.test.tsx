@@ -8,14 +8,15 @@ import { ReportsRoutesEnum } from 'features/reports/routes/routes'
 import { UserPermissionsEnum } from 'features/users/api/constants'
 import React from 'react'
 
-import userFixtures from '_tests_/fixtures/users'
-import { getStoreWithAuth, linkTestUtils, render, renderWithRouter } from '_tests_/helpers'
+import userFixtures from '_tests_/fixtures/api/data/users'
 import {
   mockGetCustomersSuccess,
   mockGetFiscalAccumulatorTasksSuccess,
   mockGetMacroregionsMtsrReportSuccess,
 } from '_tests_/mocks/api'
-import { getUserMeQueryMock } from '_tests_/mocks/store/users'
+import { getStoreWithAuth } from '_tests_/fixtures/store/auth'
+import { getUserMeQueryMock } from '_tests_/fixtures/store/users'
+import { linkTestUtils, render, renderWithRouter } from '_tests_/helpers'
 
 import ReportsPage from './index'
 

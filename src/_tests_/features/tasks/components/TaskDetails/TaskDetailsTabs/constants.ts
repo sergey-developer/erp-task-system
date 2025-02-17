@@ -6,8 +6,8 @@ import {
 } from 'features/tasks/api/constants'
 import { TaskDetailTabsProps } from 'features/tasks/components/TaskDetails/TaskDetailsTabs'
 
-import tasksFixtures from '_tests_/fixtures/tasks/index'
-import userFixtures from '_tests_/fixtures/users/index'
+import tasksFixtures from '_tests_/fixtures/api/data/tasks/index'
+import userFixtures from '_tests_/fixtures/api/data/users/index'
 import { fakeDateString, fakeId, fakeIdStr, fakeWord } from '_tests_/helpers'
 
 export const props: Readonly<TaskDetailTabsProps> = {

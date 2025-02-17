@@ -1,7 +1,7 @@
 import { TaskTypeEnum } from 'features/tasks/api/constants'
 import { ExecuteTaskModalProps } from 'features/tasks/components/ExecuteTaskModal/types'
 
-import tasksFixtures from '_tests_/fixtures/tasks/index'
+import tasksFixtures from '_tests_/fixtures/api/data/tasks/index'
 import { fakeIdStr } from '_tests_/helpers'
 
 export const props: Readonly<ExecuteTaskModalProps> = {

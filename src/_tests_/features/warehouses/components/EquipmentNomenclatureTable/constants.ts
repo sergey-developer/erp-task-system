@@ -1,6 +1,6 @@
 import { EquipmentNomenclatureTableProps } from 'features/nomenclatures/components/EquipmentNomenclatureTable/types'
 
-import equipmentsFixtures from '_tests_/fixtures/equipments'
+import equipmentsFixtures from '_tests_/fixtures/api/data/equipments'
 
 export const equipmentNomenclatureListItem = equipmentsFixtures.equipmentNomenclatureListItem()
 

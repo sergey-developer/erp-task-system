@@ -223,6 +223,7 @@ const inventorizationsEndpoints = baseApi
             url: InventorizationsApiPathsEnum.CheckInventorizationEquipmentsTemplate,
             method: HttpMethodEnum.Post,
             data: formData,
+            headers: { 'Content-Type': 'multipart/form-data' },
           }
         },
       }),

@@ -5,7 +5,7 @@ import { getFullUserName } from 'features/users/helpers'
 import { MaybeNull, NumberOrString } from 'shared/types/utils'
 import { formatDate } from 'shared/utils/date'
 
-import reportsFixtures from '_tests_/fixtures/reports'
+import reportsFixtures from '_tests_/fixtures/api/data/reports'
 import { iconTestUtils, render, tableTestUtils } from '_tests_/helpers'
 
 import FiscalAccumulatorTasksReportTable from './index'

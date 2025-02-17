@@ -14,16 +14,9 @@ import { createEquipmentsByFileModalTestUtils } from '_tests_/features/warehouse
 import { relocationEquipmentEditableTableTestUtils } from '_tests_/features/warehouses/components/RelocationEquipmentEditableTable/testUtils'
 import { relocationTaskFormTestUtils } from '_tests_/features/warehouses/components/RelocationTaskForm/testUtils'
 import { createRelocationTaskPageTestUtils } from '_tests_/features/warehouses/pages/CreateRelocationTaskPage/testUtils'
-import catalogsFixtures from '_tests_/fixtures/catalogs'
-import equipmentsFixtures from '_tests_/fixtures/equipments'
-import userFixtures from '_tests_/fixtures/users'
-import {
-  fakeWord,
-  getStoreWithAuth,
-  notificationTestUtils,
-  render,
-  setupApiTests,
-} from '_tests_/helpers'
+import catalogsFixtures from '_tests_/fixtures/api/data/catalogs'
+import equipmentsFixtures from '_tests_/fixtures/api/data/equipments'
+import userFixtures from '_tests_/fixtures/api/data/users'
 import {
   mockGetCurrenciesSuccess,
   mockGetEquipmentsCatalogSuccess,
@@ -36,7 +29,9 @@ import {
   mockImportEquipmentsByFileServerError,
   mockImportEquipmentsByFileSuccess,
 } from '_tests_/mocks/api'
-import { getUserMeQueryMock } from '_tests_/mocks/store/users'
+import { getStoreWithAuth } from '_tests_/fixtures/store/auth'
+import { getUserMeQueryMock } from '_tests_/fixtures/store/users'
+import { fakeWord, notificationTestUtils, render, setupApiTests } from '_tests_/helpers'
 
 import CreateRelocationTaskPage from './index'
 

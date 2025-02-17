@@ -12,12 +12,13 @@ import {
 import { workGroupBlockTestUtils } from '_tests_/features/tasks/components/TaskDetails/WorkGroupBlock/testUtils'
 import { taskFirstLineModalTestUtils } from '_tests_/features/tasks/components/TaskFirstLineModal/testUtils'
 import { taskSecondLineModalTestUtils } from '_tests_/features/tasks/components/TaskSecondLineModal/testUtils'
-import tasksFixtures from '_tests_/fixtures/tasks'
-import userFixtures from '_tests_/fixtures/users'
-import workGroupsFixtures from '_tests_/fixtures/workGroups'
-import { fakeWord, getStoreWithAuth, render, setupApiTests } from '_tests_/helpers'
+import tasksFixtures from '_tests_/fixtures/api/data/tasks'
+import userFixtures from '_tests_/fixtures/api/data/users'
+import workGroupsFixtures from '_tests_/fixtures/api/data/workGroups'
 import { mockGetWorkGroupsSuccess } from '_tests_/mocks/api'
-import { getUserMeQueryMock } from '_tests_/mocks/store/users'
+import { getStoreWithAuth } from '_tests_/fixtures/store/auth'
+import { getUserMeQueryMock } from '_tests_/fixtures/store/users'
+import { fakeWord, render, setupApiTests } from '_tests_/helpers'
 
 import WorkGroupBlock from './index'
 

@@ -1,12 +1,11 @@
 import { App } from 'antd'
 import React from 'react'
 import { Provider as StoreProvider } from 'react-redux'
+import { AppStore, store as appStore } from 'store/store'
 import { ThemeProvider as StyledThemeProvider } from 'styled-components'
 
 import AntdConfigProvider from 'lib/antd/ConfigProvider'
 import setupMoment from 'lib/moment/setup'
-
-import { AppStore, store as appStore } from 'state/store'
 
 import { FCWithChildren } from 'shared/types/utils'
 

@@ -19,13 +19,15 @@ import { executeInventorizationReviseTabTestUtils as testUtils } from '_tests_/f
 import { createInventorizationEquipmentModalTestUtils } from '_tests_/features/warehouses/components/CreateInventorizationEquipmentModal/testUtils'
 import { equipmentFormModalTestUtils } from '_tests_/features/warehouses/components/EquipmentFormModal/testUtils'
 import { reviseEquipmentTableTestUtils } from '_tests_/features/warehouses/components/ReviseInventorizationEquipmentTable/testUtils'
-import catalogsFixtures from '_tests_/fixtures/catalogs'
-import commonFixtures from '_tests_/fixtures/common'
-import equipmentsFixtures from '_tests_/fixtures/equipments'
-import inventorizationsFixtures from '_tests_/fixtures/inventorizations'
-import nomenclaturesFixtures from '_tests_/fixtures/nomenclatures'
-import userFixtures from '_tests_/fixtures/users'
-import { fakeInteger, fakeWord, getStoreWithAuth, render, setupApiTests } from '_tests_/helpers'
+import commonFixtures from '_tests_/fixtures/api/common'
+import catalogsFixtures from '_tests_/fixtures/api/data/catalogs'
+import equipmentsFixtures from '_tests_/fixtures/api/data/equipments'
+import inventorizationsFixtures from '_tests_/fixtures/api/data/inventorizations'
+import nomenclaturesFixtures from '_tests_/fixtures/api/data/nomenclatures'
+import userFixtures from '_tests_/fixtures/api/data/users'
+import { getStoreWithAuth } from '_tests_/fixtures/store/auth'
+import { getUserMeQueryMock } from '_tests_/fixtures/store/users'
+import { fakeInteger, fakeWord, render, setupApiTests } from '_tests_/helpers'
 import {
   mockCheckInventorizationEquipmentsBadRequestError,
   mockCheckInventorizationEquipmentsSuccess,
@@ -46,7 +48,6 @@ import {
   mockGetNomenclatureSuccess,
   mockGetWorkTypesSuccess,
 } from '_tests_/mocks/api'
-import { getUserMeQueryMock } from '_tests_/mocks/store/users'
 
 import ExecuteInventorizationReviseTab from './index'
 
@@ -165,7 +166,7 @@ describe('Вкладка списка оборудования с расхожд
 
       mockGetLocationsCatalogSuccess({ body: [] })
 
-      const equipmentCategoryListItem = equipmentsFixtures.equipmentCategoryListItem({
+      const equipmentCategoryListItem = equipmentsFixtures.equipmentCategory({
         code: EquipmentCategoryEnum.Consumable,
       })
       mockGetEquipmentCategoriesSuccess({ body: [equipmentCategoryListItem] })
@@ -629,7 +630,7 @@ describe('Вкладка списка оборудования с расхожд
         permissions: [UserPermissionsEnum.InventorizationUpdate],
       })
 
-      const equipmentCategoryListItem = equipmentsFixtures.equipmentCategoryListItem({
+      const equipmentCategoryListItem = equipmentsFixtures.equipmentCategory({
         code: EquipmentCategoryEnum.Consumable,
       })
 

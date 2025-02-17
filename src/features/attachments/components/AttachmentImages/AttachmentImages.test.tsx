@@ -1,6 +1,6 @@
 import { screen, within } from '@testing-library/react'
 
-import attachmentsFixtures from '_tests_/fixtures/attachments'
+import attachmentsFixtures from '_tests_/fixtures/api/data/attachments'
 import { render } from '_tests_/helpers'
 
 import AttachmentImages from './index'

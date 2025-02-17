@@ -12,8 +12,8 @@ import {
   getRequestMockFn,
   getServerErrorMockFn,
   getSuccessMockFn,
-} from '_tests_/mocks/request'
-import { ResponseResolverOptions } from '_tests_/mocks/response'
+} from '_tests_/mocks/api/request'
+import { ResponseResolverOptions } from '_tests_/mocks/api/response'
 
 const cancelRelocationTaskMockFn = (id: IdType) =>
   getRequestMockFn(HttpMethodEnum.Post, makeCancelRelocationTaskApiPath(id))

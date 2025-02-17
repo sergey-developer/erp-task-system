@@ -6,23 +6,18 @@ import { commentsTestUtils } from '_tests_/features/tasks/components/TaskDetails
 import { createCommentFormTestUtils } from '_tests_/features/tasks/components/TaskDetails/TaskDetailsTabs/CommentsTab/CreateCommentForm/testUtils'
 import { props } from '_tests_/features/tasks/components/TaskDetails/TaskDetailsTabs/CommentsTab/constants'
 import { commentsTabTestUtils } from '_tests_/features/tasks/components/TaskDetails/TaskDetailsTabs/CommentsTab/testUtils'
-import tasksFixtures from '_tests_/fixtures/tasks'
-import {
-  fakeWord,
-  getStoreWithAuth,
-  notificationTestUtils,
-  render,
-  setupApiTests,
-} from '_tests_/helpers'
+import tasksFixtures from '_tests_/fixtures/api/data/tasks'
+import { getStoreWithAuth } from '_tests_/fixtures/store/auth'
+import { getUserMeQueryMock } from '_tests_/fixtures/store/users'
+import { fakeWord, notificationTestUtils, render, setupApiTests } from '_tests_/helpers'
 import {
   mockCreateTaskCommentBadRequestError,
   mockCreateTaskCommentForbiddenError,
   mockCreateTaskCommentNotFoundError,
   mockCreateTaskCommentServerError,
   mockCreateTaskCommentSuccess,
-  mockGetTaskCommentListSuccess,
+  mockGetTaskCommentsSuccess,
 } from '_tests_/mocks/api'
-import { getUserMeQueryMock } from '_tests_/mocks/store/users'
 
 import { CreateCommentFormFields } from './CreateCommentForm/types'
 import CommentsTab, { DEFAULT_DISPLAYABLE_COUNT } from './index'
@@ -32,7 +27,7 @@ notificationTestUtils.setupNotifications()
 
 describe('Вкладка списка комментариев заявки', () => {
   test('Заголовок отображается', () => {
-    mockGetTaskCommentListSuccess(props.taskId)
+    mockGetTaskCommentsSuccess(props.taskId)
     render(<CommentsTab {...props} />, {
       store: getStoreWithAuth(undefined, undefined, undefined, {
         queries: { ...getUserMeQueryMock({ permissions: [] }) },
@@ -45,7 +40,7 @@ describe('Вкладка списка комментариев заявки', ()
     describe('Отображается если условия соблюдены', () => {
       test('Кнопка раскрытия', async () => {
         const taskCommentList = tasksFixtures.taskComments(DEFAULT_DISPLAYABLE_COUNT + 1)
-        mockGetTaskCommentListSuccess(props.taskId, {
+        mockGetTaskCommentsSuccess(props.taskId, {
           body: taskCommentList,
         })
 
@@ -65,7 +60,7 @@ describe('Вкладка списка комментариев заявки', ()
 
       test('Кнопка скрытия', async () => {
         const taskCommentList = tasksFixtures.taskComments(DEFAULT_DISPLAYABLE_COUNT + 1)
-        mockGetTaskCommentListSuccess(props.taskId, {
+        mockGetTaskCommentsSuccess(props.taskId, {
           body: taskCommentList,
         })
 
@@ -86,7 +81,7 @@ describe('Вкладка списка комментариев заявки', ()
 
     describe('Не отображается', () => {
       test('Если все условия соблюдены, но комментариев не более отображаемого кол-ва по умолчанию', async () => {
-        mockGetTaskCommentListSuccess(props.taskId, {
+        mockGetTaskCommentsSuccess(props.taskId, {
           body: tasksFixtures.taskComments(DEFAULT_DISPLAYABLE_COUNT),
         })
 
@@ -103,7 +98,7 @@ describe('Вкладка списка комментариев заявки', ()
       })
 
       test('Если нет комментариев', async () => {
-        mockGetTaskCommentListSuccess(props.taskId, { body: tasksFixtures.taskComments(0) })
+        mockGetTaskCommentsSuccess(props.taskId, { body: tasksFixtures.taskComments(0) })
 
         render(<CommentsTab {...props} />, {
           store: getStoreWithAuth(undefined, undefined, undefined, {
@@ -120,7 +115,7 @@ describe('Вкладка списка комментариев заявки', ()
 
     test('Раскрывает все комментарии', async () => {
       const allCommentCount = DEFAULT_DISPLAYABLE_COUNT + 1
-      mockGetTaskCommentListSuccess(props.taskId, {
+      mockGetTaskCommentsSuccess(props.taskId, {
         body: tasksFixtures.taskComments(allCommentCount),
       })
 
@@ -139,7 +134,7 @@ describe('Вкладка списка комментариев заявки', ()
 
     test('Скрывает все комментарии', async () => {
       const allCommentCount = DEFAULT_DISPLAYABLE_COUNT + 1
-      mockGetTaskCommentListSuccess(props.taskId, {
+      mockGetTaskCommentsSuccess(props.taskId, {
         body: tasksFixtures.taskComments(allCommentCount),
       })
 
@@ -162,7 +157,7 @@ describe('Вкладка списка комментариев заявки', ()
 
   describe('Форма добавления комментария', () => {
     test('Отображается если есть права', () => {
-      mockGetTaskCommentListSuccess(props.taskId)
+      mockGetTaskCommentsSuccess(props.taskId)
 
       render(<CommentsTab {...props} />, {
         store: getStoreWithAuth(undefined, undefined, undefined, {
@@ -176,7 +171,7 @@ describe('Вкладка списка комментариев заявки', ()
     })
 
     test('Не отображается если нет прав', () => {
-      mockGetTaskCommentListSuccess(props.taskId)
+      mockGetTaskCommentsSuccess(props.taskId)
 
       render(<CommentsTab {...props} />, {
         store: getStoreWithAuth(undefined, undefined, undefined, {
@@ -194,7 +189,7 @@ describe('Вкладка списка комментариев заявки', ()
         mockCreateTaskCommentSuccess(props.taskId, {
           body: newComment,
         })
-        mockGetTaskCommentListSuccess(props.taskId, {
+        mockGetTaskCommentsSuccess(props.taskId, {
           body: tasksFixtures.taskComments(),
         })
 
@@ -225,7 +220,7 @@ describe('Вкладка списка комментариев заявки', ()
         mockCreateTaskCommentSuccess(props.taskId, {
           body: newComment,
         })
-        mockGetTaskCommentListSuccess(props.taskId, { body: [] })
+        mockGetTaskCommentsSuccess(props.taskId, { body: [] })
 
         const { user } = render(<CommentsTab {...props} />, {
           store: getStoreWithAuth(undefined, undefined, undefined, {
@@ -252,7 +247,7 @@ describe('Вкладка списка комментариев заявки', ()
 
     describe('При не успешном запросе', () => {
       test('Обрабатывается ошибка 400', async () => {
-        mockGetTaskCommentListSuccess(props.taskId, { body: [] })
+        mockGetTaskCommentsSuccess(props.taskId, { body: [] })
 
         const badRequestResponse = {
           comment: [fakeWord()],
@@ -296,7 +291,7 @@ describe('Вкладка списка комментариев заявки', ()
       })
 
       test('Обрабатывается ошибка 403', async () => {
-        mockGetTaskCommentListSuccess(props.taskId, { body: [] })
+        mockGetTaskCommentsSuccess(props.taskId, { body: [] })
 
         const detailError = fakeWord()
         mockCreateTaskCommentForbiddenError(props.taskId, { body: { detail: [detailError] } })
@@ -321,7 +316,7 @@ describe('Вкладка списка комментариев заявки', ()
       })
 
       test('Обрабатывается ошибка 404', async () => {
-        mockGetTaskCommentListSuccess(props.taskId, { body: [] })
+        mockGetTaskCommentsSuccess(props.taskId, { body: [] })
 
         const detailError = fakeWord()
         mockCreateTaskCommentNotFoundError(props.taskId, { body: { detail: [detailError] } })
@@ -346,7 +341,7 @@ describe('Вкладка списка комментариев заявки', ()
       })
 
       test('Обрабатывается ошибка 500', async () => {
-        mockGetTaskCommentListSuccess(props.taskId, { body: [] })
+        mockGetTaskCommentsSuccess(props.taskId, { body: [] })
         mockCreateTaskCommentServerError(props.taskId)
 
         const { user } = render(<CommentsTab {...props} />, {
@@ -372,7 +367,7 @@ describe('Вкладка списка комментариев заявки', ()
 
   test('Комментарии отображаются если они есть', async () => {
     const taskCommentList = tasksFixtures.taskComments(1)
-    mockGetTaskCommentListSuccess(props.taskId, {
+    mockGetTaskCommentsSuccess(props.taskId, {
       body: taskCommentList,
     })
 
@@ -390,7 +385,7 @@ describe('Вкладка списка комментариев заявки', ()
 
   test('Комментарии не отображаются если их нет', async () => {
     const taskCommentList = tasksFixtures.taskComments(0)
-    mockGetTaskCommentListSuccess(props.taskId, {
+    mockGetTaskCommentsSuccess(props.taskId, {
       body: taskCommentList,
     })
 

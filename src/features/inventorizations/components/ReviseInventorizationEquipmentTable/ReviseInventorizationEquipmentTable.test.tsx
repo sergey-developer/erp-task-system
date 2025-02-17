@@ -11,9 +11,9 @@ import {
   props,
 } from '_tests_/features/warehouses/components/ReviseInventorizationEquipmentTable/constants'
 import { reviseEquipmentTableTestUtils as testUtils } from '_tests_/features/warehouses/components/ReviseInventorizationEquipmentTable/testUtils'
-import catalogsFixtures from '_tests_/fixtures/catalogs'
-import equipmentsFixtures from '_tests_/fixtures/equipments'
-import inventorizationsFixtures from '_tests_/fixtures/inventorizations'
+import catalogsFixtures from '_tests_/fixtures/api/data/catalogs'
+import equipmentsFixtures from '_tests_/fixtures/api/data/equipments'
+import inventorizationsFixtures from '_tests_/fixtures/api/data/inventorizations'
 import {
   fakeId,
   fakeIdStr,

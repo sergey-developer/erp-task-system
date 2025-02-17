@@ -2,7 +2,7 @@ import { screen, within } from '@testing-library/react'
 
 import { prettyBytes } from 'shared/utils/file'
 
-import tasksFixtures from '_tests_/fixtures/tasks'
+import tasksFixtures from '_tests_/fixtures/api/data/tasks'
 import {
   fakeDateString,
   fakeId,

@@ -3,9 +3,9 @@ import { WarehousesRoutesEnum } from 'features/warehouses/routes/routes'
 import { warehouseListFilterTestUtils } from '_tests_/features/warehouses/components/WarehouseListFilter/testUtils'
 import { warehouseTableTestUtils } from '_tests_/features/warehouses/components/WarehouseTable/testUtils'
 import { warehouseListPageTestUtils } from '_tests_/features/warehouses/pages/WarehouseListPage/testUtils'
-import warehousesFixtures from '_tests_/fixtures/warehouses'
-import { renderWithRouter, setupApiTests } from '_tests_/helpers'
+import warehousesFixtures from '_tests_/fixtures/api/data/warehouses'
 import { mockGetLegalEntitiesSuccess, mockGetWarehousesSuccess } from '_tests_/mocks/api'
+import { renderWithRouter, setupApiTests } from '_tests_/helpers'
 
 import WarehousesPage from './index'
 

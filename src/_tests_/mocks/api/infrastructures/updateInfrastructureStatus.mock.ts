@@ -3,8 +3,8 @@ import { UpdateInfrastructureStatusResponse } from 'features/infrastructures/api
 
 import { HttpMethodEnum } from 'shared/constants/http'
 
-import { getRequestMockFn, getSuccessMockFn } from '_tests_/mocks/request'
-import { ResponseResolverOptions } from '_tests_/mocks/response'
+import { getRequestMockFn, getSuccessMockFn } from '_tests_/mocks/api/request'
+import { ResponseResolverOptions } from '_tests_/mocks/api/response'
 
 const updateInfrastructureStatusMockFn = () =>
   getRequestMockFn(HttpMethodEnum.Post, InfrastructuresApiPathsEnum.UpdateInfrastructureStatus)

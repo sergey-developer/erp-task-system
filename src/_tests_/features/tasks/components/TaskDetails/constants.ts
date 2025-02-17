@@ -4,8 +4,8 @@ import { UserPermissionsEnum } from 'features/users/api/constants/index'
 
 import { WorkTypeActionsEnum } from 'shared/catalogs/workTypes/api/constants'
 
-import catalogsFixtures from '_tests_/fixtures/catalogs'
-import infrastructuresFixtures from '_tests_/fixtures/infrastructures/index'
+import catalogsFixtures from '_tests_/fixtures/api/data/catalogs'
+import infrastructuresFixtures from '_tests_/fixtures/api/data/infrastructures/index'
 import { fakeId } from '_tests_/helpers'
 
 export const props: TaskDetailsProps = {

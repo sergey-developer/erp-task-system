@@ -5,21 +5,16 @@ import {
   TaskJournalSourceEnum,
 } from 'features/tasks/api/constants'
 
-import { commonApiMessages } from 'shared/constants/common'
+import { commonApiErrorMessage } from 'shared/constants/common'
 import { MimetypeEnum } from 'shared/constants/mimetype'
 import * as downloadLink from 'shared/utils/file/downloadFile'
 
 import { journalEntryTestUtils } from '_tests_/features/tasks/components/TaskDetails/TaskDetailsTabs/JournalTab/JournalEntry/testUtils'
 import { props } from '_tests_/features/tasks/components/TaskDetails/TaskDetailsTabs/JournalTab/constants'
 import { journalTabTestUtils } from '_tests_/features/tasks/components/TaskDetails/TaskDetailsTabs/JournalTab/testUtils'
-import tasksFixtures from '_tests_/fixtures/tasks'
-import {
-  fakeWord,
-  getStoreWithAuth,
-  notificationTestUtils,
-  render,
-  setupApiTests,
-} from '_tests_/helpers'
+import tasksFixtures from '_tests_/fixtures/api/data/tasks'
+import { getStoreWithAuth } from '_tests_/fixtures/store/auth'
+import { fakeWord, notificationTestUtils, render, setupApiTests } from '_tests_/helpers'
 import {
   mockGetJournalCsvServerError,
   mockGetJournalCsvSuccess,
@@ -175,7 +170,7 @@ describe('Вкладка журнала задачи', () => {
           getJournalCsvFilename(props.taskId),
         )
 
-        const notification = screen.queryByText(commonApiMessages.unknownError)
+        const notification = screen.queryByText(commonApiErrorMessage)
         expect(notification).not.toBeInTheDocument()
       })
     })

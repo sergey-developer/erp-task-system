@@ -3,8 +3,8 @@ import { GetFiscalAccumulatorTasksReportResponse } from 'features/reports/api/sc
 
 import { HttpMethodEnum } from 'shared/constants/http'
 
-import { getRequestMockFn, getServerErrorMockFn, getSuccessMockFn } from '_tests_/mocks/request'
-import { ResponseResolverOptions } from '_tests_/mocks/response'
+import { getRequestMockFn, getServerErrorMockFn, getSuccessMockFn } from '_tests_/mocks/api/request'
+import { ResponseResolverOptions } from '_tests_/mocks/api/response'
 
 const getFiscalAccumulatorTasksMockFn = () =>
   getRequestMockFn(HttpMethodEnum.Get, ReportsApiPathsEnum.GetFiscalAccumulatorTasksReport)

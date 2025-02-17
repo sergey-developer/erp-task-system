@@ -43,22 +43,11 @@ import {
 import { taskDetailsTestUtils } from '_tests_/features/tasks/components/TaskDetails/testUtils'
 import { taskReclassificationRequestTestUtils } from '_tests_/features/tasks/components/TaskReclassificationRequest/testUtils'
 import { taskSuspendRequestTestUtils } from '_tests_/features/tasks/components/TaskSuspendRequest/testUtils'
-import catalogsFixtures from '_tests_/fixtures/catalogs'
-import { fakeUseLocationResult } from '_tests_/fixtures/common/hooks/useLocation'
-import infrastructuresFixtures from '_tests_/fixtures/infrastructures'
-import systemFixtures from '_tests_/fixtures/system'
-import tasksFixtures from '_tests_/fixtures/tasks'
-import userFixtures from '_tests_/fixtures/users'
-import {
-  fakeId,
-  fakeWord,
-  getStoreWithAuth,
-  menuTestUtils,
-  notificationTestUtils,
-  render,
-  renderWithRouter,
-  setupApiTests,
-} from '_tests_/helpers'
+import catalogsFixtures from '_tests_/fixtures/api/data/catalogs'
+import infrastructuresFixtures from '_tests_/fixtures/api/data/infrastructures'
+import systemFixtures from '_tests_/fixtures/api/data/system'
+import tasksFixtures from '_tests_/fixtures/api/data/tasks'
+import userFixtures from '_tests_/fixtures/api/data/users'
 import {
   mockCancelReclassificationRequestSuccess,
   mockCreateTaskAttachmentSuccess,
@@ -82,8 +71,19 @@ import {
   mockTakeTaskSuccess,
   mockUpdateInfrastructureSuccess,
 } from '_tests_/mocks/api'
-import { getSystemSettingsQueryMock } from '_tests_/mocks/store/system'
-import { getUserMeQueryMock } from '_tests_/mocks/store/users'
+import { fakeUseLocationResult } from '_tests_/fixtures/hooks/useLocation'
+import { getStoreWithAuth } from '_tests_/fixtures/store/auth'
+import { getSystemSettingsQueryMock } from '_tests_/fixtures/store/system'
+import { getUserMeQueryMock } from '_tests_/fixtures/store/users'
+import {
+  fakeId,
+  fakeWord,
+  menuTestUtils,
+  notificationTestUtils,
+  render,
+  renderWithRouter,
+  setupApiTests,
+} from '_tests_/helpers'
 
 import TaskDetails from './index'
 

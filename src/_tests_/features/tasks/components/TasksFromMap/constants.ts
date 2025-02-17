@@ -1,6 +1,6 @@
 import { TasksFromMapProps } from 'features/tasks/components/TasksFromMap/types'
 
-import tasksFixtures from '_tests_/fixtures/tasks/index'
+import tasksFixtures from '_tests_/fixtures/api/data/tasks/index'
 
 export const taskListItem = tasksFixtures.task()
 

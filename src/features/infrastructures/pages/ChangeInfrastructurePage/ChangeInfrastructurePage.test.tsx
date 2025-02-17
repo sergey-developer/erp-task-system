@@ -22,19 +22,14 @@ import {
 import { taskDetailsTestUtils } from '_tests_/features/tasks/components/TaskDetails/testUtils'
 import { taskTableTestUtils } from '_tests_/features/tasks/components/TaskTable/testUtils'
 import { tasksPageTestUtils } from '_tests_/features/tasks/pages/TasksPage/testUtils'
-import commonFixtures from '_tests_/fixtures/common'
-import { fakeUseLocationResult } from '_tests_/fixtures/common/hooks/useLocation'
-import infrastructuresFixtures from '_tests_/fixtures/infrastructures'
-import tasksFixtures from '_tests_/fixtures/tasks'
-import userFixtures from '_tests_/fixtures/users'
-import {
-  fakeDateString,
-  fakeId,
-  getStoreWithAuth,
-  render,
-  renderWithRouter,
-  setupApiTests,
-} from '_tests_/helpers'
+import commonFixtures from '_tests_/fixtures/api/common'
+import infrastructuresFixtures from '_tests_/fixtures/api/data/infrastructures'
+import tasksFixtures from '_tests_/fixtures/api/data/tasks'
+import userFixtures from '_tests_/fixtures/api/data/users'
+import { fakeUseLocationResult } from '_tests_/fixtures/hooks/useLocation'
+import { getStoreWithAuth } from '_tests_/fixtures/store/auth'
+import { getUserMeQueryMock } from '_tests_/fixtures/store/users'
+import { fakeDateString, fakeId, render, renderWithRouter, setupApiTests } from '_tests_/helpers'
 import {
   mockGetInfrastructureOrdersFormsSuccess,
   mockGetInfrastructureStatusHistorySuccess,
@@ -46,7 +41,6 @@ import {
   mockUpdateInfrastructureStatusSuccess,
   mockUpdateInfrastructureSuccess,
 } from '_tests_/mocks/api'
-import { getUserMeQueryMock } from '_tests_/mocks/store/users'
 
 import ChangeInfrastructurePage from './index'
 import { getChangeInfrastructurePageLocationState } from './utils'

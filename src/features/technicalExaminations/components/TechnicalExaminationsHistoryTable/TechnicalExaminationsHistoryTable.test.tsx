@@ -6,7 +6,7 @@ import { IdType } from 'shared/types/common'
 import { MaybeNull, NumberOrString } from 'shared/types/utils'
 import { formatDate } from 'shared/utils/date'
 
-import technicalExaminationsFixtures from '_tests_/fixtures/technicalExaminations'
+import technicalExaminationsFixtures from '_tests_/fixtures/api/data/technicalExaminations'
 import { render, tableTestUtils } from '_tests_/helpers'
 
 import TechnicalExaminationsHistoryTable from './index'

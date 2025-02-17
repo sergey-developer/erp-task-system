@@ -1,6 +1,6 @@
 import { TaskAssigneeProps } from 'features/tasks/components/TaskAssignee/index'
 
-import userFixtures from '_tests_/fixtures/users/index'
+import userFixtures from '_tests_/fixtures/api/data/users/index'
 
 const user = userFixtures.userDetail()
 

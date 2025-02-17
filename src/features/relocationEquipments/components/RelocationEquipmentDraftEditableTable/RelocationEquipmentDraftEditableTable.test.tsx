@@ -4,7 +4,7 @@ import { makeString } from 'shared/utils/string'
 
 import { props } from '_tests_/features/warehouses/components/RelocationEquipmentDraftEditableTable/constants'
 import { relocationEquipmentDraftEditableTableTestUtils } from '_tests_/features/warehouses/components/RelocationEquipmentDraftEditableTable/testUtils'
-import inventorizationsFixtures from '_tests_/fixtures/inventorizations'
+import inventorizationsFixtures from '_tests_/fixtures/api/data/inventorizations'
 import { render, tableTestUtils } from '_tests_/helpers'
 
 import RelocationEquipmentEditableTable from './index'

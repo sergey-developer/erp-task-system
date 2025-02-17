@@ -1,6 +1,6 @@
 import { EquipmentTableProps } from 'features/equipments/components/EquipmentTable/types'
 
-import equipmentsFixtures from '_tests_/fixtures/equipments'
+import equipmentsFixtures from '_tests_/fixtures/api/data/equipments'
 
 export const equipmentListItem = equipmentsFixtures.equipment()
 

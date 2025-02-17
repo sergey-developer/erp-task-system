@@ -3,7 +3,7 @@ import { UserEvent } from '@testing-library/user-event/setup/setup'
 import { EquipmentConditionEnum } from 'features/equipments/api/constants'
 import { equipmentConditionDict } from 'features/equipments/constants'
 
-import catalogsFixtures from '_tests_/fixtures/catalogs'
+import catalogsFixtures from '_tests_/fixtures/api/data/catalogs'
 import { buttonTestUtils, render, selectTestUtils } from '_tests_/helpers'
 
 import HistoryNomenclatureOperationsReportFilter from './index'

@@ -19,16 +19,12 @@ import * as downloadFileUtils from 'shared/utils/file/downloadFile'
 
 import { inventorizationDetailsTestUtils } from '_tests_/features/warehouses/components/InventorizationDetails/testUtils'
 import { executeInventorizationPageTestUtils } from '_tests_/features/warehouses/pages/ExecuteInventorizationPage/testUtils'
-import { fakeUseLocationResult } from '_tests_/fixtures/common/hooks/useLocation'
-import inventorizationsFixtures from '_tests_/fixtures/inventorizations'
-import userFixtures from '_tests_/fixtures/users'
-import {
-  fakeWord,
-  getStoreWithAuth,
-  render,
-  renderWithRouter,
-  setupApiTests,
-} from '_tests_/helpers'
+import inventorizationsFixtures from '_tests_/fixtures/api/data/inventorizations'
+import userFixtures from '_tests_/fixtures/api/data/users'
+import { fakeUseLocationResult } from '_tests_/fixtures/hooks/useLocation'
+import { getStoreWithAuth } from '_tests_/fixtures/store/auth'
+import { getUserMeQueryMock } from '_tests_/fixtures/store/users'
+import { fakeWord, render, renderWithRouter, setupApiTests } from '_tests_/helpers'
 import {
   mockCompleteInventorizationSuccess,
   mockGetCurrenciesSuccess,
@@ -38,7 +34,6 @@ import {
   mockGetInventorizationSuccess,
   mockGetLocationsCatalogSuccess,
 } from '_tests_/mocks/api'
-import { getUserMeQueryMock } from '_tests_/mocks/store/users'
 
 import { ExecuteInventorizationPageTabsEnum } from './constants'
 import ExecuteInventorizationPage from './index'

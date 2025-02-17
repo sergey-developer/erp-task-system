@@ -5,9 +5,8 @@ import { updateUserTimeZoneMessages } from 'features/users/api/constants'
 import { testUtils as privateHeaderTestUtils } from 'components/Headers/PrivateHeader/PrivateHeader.test'
 
 import { taskTableTestUtils } from '_tests_/features/tasks/components/TaskTable/testUtils'
-import catalogsFixtures from '_tests_/fixtures/catalogs'
-import userFixtures from '_tests_/fixtures/users'
-import { notificationTestUtils, render, setupApiTests } from '_tests_/helpers'
+import catalogsFixtures from '_tests_/fixtures/api/data/catalogs'
+import userFixtures from '_tests_/fixtures/api/data/users'
 import {
   mockGetSystemInfoSuccess,
   mockGetTimeZonesSuccess,
@@ -16,6 +15,7 @@ import {
   mockUpdateUserServerError,
   mockUpdateUserSuccess,
 } from '_tests_/mocks/api'
+import { notificationTestUtils, render, setupApiTests } from '_tests_/helpers'
 
 import App from './App'
 

@@ -12,8 +12,8 @@ import {
 } from '_tests_/features/tasks/components/RelocationTasks/constants'
 import { relocationTasksTestUtils } from '_tests_/features/tasks/components/RelocationTasks/testUtils'
 import { taskAssigneeTestUtils } from '_tests_/features/tasks/components/TaskAssignee/testUtils'
-import relocationTasksFixtures from '_tests_/fixtures/relocationTasks'
-import userFixtures from '_tests_/fixtures/users'
+import relocationTasksFixtures from '_tests_/fixtures/api/data/relocationTasks'
+import userFixtures from '_tests_/fixtures/api/data/users'
 import { render, setupApiTests } from '_tests_/helpers'
 
 import RelocationTasks from './index'

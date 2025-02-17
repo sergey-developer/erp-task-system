@@ -3,8 +3,8 @@ import { makeCancelReclassificationRequestApiPath } from 'shared/reclassificatio
 import { CancelReclassificationRequestResponse } from 'shared/reclassificationRequests/api/schemas'
 import { IdType } from 'shared/types/common'
 
-import { getRequestMockFn, getSuccessMockFn } from '_tests_/mocks/request'
-import { ResponseResolverOptions } from '_tests_/mocks/response'
+import { getRequestMockFn, getSuccessMockFn } from '_tests_/mocks/api/request'
+import { ResponseResolverOptions } from '_tests_/mocks/api/response'
 
 const cancelReclassificationRequestMockFn = (reclassificationRequestId: IdType) =>
   getRequestMockFn(

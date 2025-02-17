@@ -3,14 +3,15 @@ import { UserPermissionsEnum } from 'features/users/api/constants'
 
 import { props } from '_tests_/features/tasks/components/TaskDetails/TaskDetailsTabs/constants'
 import { tabsTestUtils } from '_tests_/features/tasks/components/TaskDetails/TaskDetailsTabs/testUtils'
+import { getStoreWithAuth } from '_tests_/fixtures/store/auth'
+import { getUserMeQueryMock } from '_tests_/fixtures/store/users'
+import { render, setupApiTests } from '_tests_/helpers'
 import {
   mockGetJournalSuccess,
   mockGetRelocationTasksSuccess,
-  mockGetSubTaskListSuccess,
-  mockGetTaskCommentListSuccess,
+  mockGetSubTasksSuccess,
+  mockGetTaskCommentsSuccess,
 } from '_tests_/mocks/api'
-import { getUserMeQueryMock } from '_tests_/mocks/store/users'
-import { getStoreWithAuth, render, setupApiTests } from '_tests_/helpers'
 
 import TaskDetailTabs from './index'
 
@@ -43,9 +44,9 @@ describe('Вкладки карточки заявки', () => {
   })
 
   test('Можно открыть любую доступную вкладку', async () => {
-    mockGetTaskCommentListSuccess(props.task.id)
+    mockGetTaskCommentsSuccess(props.task.id)
     mockGetJournalSuccess(props.task.id)
-    mockGetSubTaskListSuccess(props.task.id)
+    mockGetSubTasksSuccess(props.task.id)
     mockGetRelocationTasksSuccess()
 
     const { user } = render(<TaskDetailTabs {...props} />, {

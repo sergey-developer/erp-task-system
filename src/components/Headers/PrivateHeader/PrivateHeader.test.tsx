@@ -12,19 +12,9 @@ import { MaybeNull } from 'shared/types/utils'
 import App from 'app/App'
 
 import { tasksPageTestUtils } from '_tests_/features/tasks/pages/TasksPage/testUtils'
-import authFixtures from '_tests_/fixtures/auth'
-import catalogsFixtures from '_tests_/fixtures/catalogs'
-import userFixtures from '_tests_/fixtures/users'
-import {
-  fakeEmail,
-  fakeId,
-  fakeWord,
-  getStoreWithAuth,
-  notificationTestUtils,
-  render,
-  selectTestUtils,
-  setupApiTests,
-} from '_tests_/helpers'
+import authFixtures from '_tests_/fixtures/api/data/auth'
+import catalogsFixtures from '_tests_/fixtures/api/data/catalogs'
+import userFixtures from '_tests_/fixtures/api/data/users'
 import {
   mockGetSystemInfoSuccess,
   mockGetSystemSettingsSuccess,
@@ -42,7 +32,17 @@ import {
   mockUpdateUserStatusSuccess,
   mockUpdateUserStatusUnauthorizedError,
 } from '_tests_/mocks/api'
-import { getUserMeQueryMock } from '_tests_/mocks/store/users'
+import { getStoreWithAuth } from '_tests_/fixtures/store/auth'
+import { getUserMeQueryMock } from '_tests_/fixtures/store/users'
+import {
+  fakeEmail,
+  fakeId,
+  fakeWord,
+  notificationTestUtils,
+  render,
+  selectTestUtils,
+  setupApiTests,
+} from '_tests_/helpers'
 
 const getContainer = () => screen.getByTestId('private-header')
 

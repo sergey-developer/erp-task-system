@@ -2,8 +2,8 @@ import { CatalogApiPathsEnum } from 'shared/catalogs/api/constants/endpoints'
 import { GetSubTaskTemplatesCatalogResponse } from 'shared/catalogs/subTaskTemplates/api/schemas'
 import { HttpMethodEnum } from 'shared/constants/http'
 
-import { getRequestMockFn, getServerErrorMockFn, getSuccessMockFn } from '_tests_/mocks/request'
-import { ResponseResolverOptions } from '_tests_/mocks/response'
+import { getRequestMockFn, getServerErrorMockFn, getSuccessMockFn } from '_tests_/mocks/api/request'
+import { ResponseResolverOptions } from '_tests_/mocks/api/response'
 
 const getSubTaskTemplatesMockFn = () =>
   getRequestMockFn(HttpMethodEnum.Get, CatalogApiPathsEnum.GetSubTaskTemplates)

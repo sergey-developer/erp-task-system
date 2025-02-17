@@ -5,7 +5,7 @@ import { getRelocationTaskReportTableColValue } from 'features/reports/helpers'
 import { IdType } from 'shared/types/common'
 import { MaybeNull, NumberOrString } from 'shared/types/utils'
 
-import reportsFixtures from '_tests_/fixtures/reports'
+import reportsFixtures from '_tests_/fixtures/api/data/reports'
 import { render, tableTestUtils } from '_tests_/helpers'
 
 import EmployeesActionsReportTable from './index'

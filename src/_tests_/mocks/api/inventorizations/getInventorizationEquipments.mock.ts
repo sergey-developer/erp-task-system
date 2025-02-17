@@ -4,8 +4,8 @@ import { RequestWithInventorization } from 'features/inventorizations/api/types'
 
 import { HttpMethodEnum } from 'shared/constants/http'
 
-import { getRequestMockFn, getSuccessMockFn } from '_tests_/mocks/request'
-import { ResponseResolverOptions } from '_tests_/mocks/response'
+import { getRequestMockFn, getSuccessMockFn } from '_tests_/mocks/api/request'
+import { ResponseResolverOptions } from '_tests_/mocks/api/response'
 
 const getInventorizationEquipmentsMockFn = ({
   inventorizationId,

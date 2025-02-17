@@ -1,4 +1,4 @@
-import { server } from '_tests_/mocks/server'
+import { server } from '_tests_/mocks/api/server'
 
 export const setupApiTests = () => {
   beforeAll(() => {

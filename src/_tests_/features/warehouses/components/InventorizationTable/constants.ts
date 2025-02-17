@@ -1,6 +1,6 @@
 import { InventorizationTableProps } from 'features/inventorizations/components/InventorizationTable/types'
 
-import inventorizationsFixtures from '_tests_/fixtures/inventorizations'
+import inventorizationsFixtures from '_tests_/fixtures/api/data/inventorizations'
 
 export const inventorizationListItem = inventorizationsFixtures.inventorization()
 

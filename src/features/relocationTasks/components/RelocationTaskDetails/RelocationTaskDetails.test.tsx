@@ -49,19 +49,10 @@ import { relocationTaskDetailsTestUtils } from '_tests_/features/warehouses/comp
 import { returnRelocationTaskToReworkModalTestUtils } from '_tests_/features/warehouses/components/ReturnRelocationTaskToReworkModal/testUtils'
 import { createDocumentsPackagePageTestUtils } from '_tests_/features/warehouses/pages/CreateDocumentsPackagePage/testUtils'
 import { editRelocationTaskDraftPageTestUtils } from '_tests_/features/warehouses/pages/EditRelocationTaskDraftPage/testUtils'
-import inventorizationsFixtures from '_tests_/fixtures/inventorizations'
-import relocationEquipmentsFixtures from '_tests_/fixtures/relocationEquipments'
-import relocationTasksFixtures from '_tests_/fixtures/relocationTasks'
-import userFixtures from '_tests_/fixtures/users'
-import {
-  fakeWord,
-  getStoreWithAuth,
-  menuTestUtils,
-  notificationTestUtils,
-  render,
-  renderWithRouter,
-  setupApiTests,
-} from '_tests_/helpers'
+import inventorizationsFixtures from '_tests_/fixtures/api/data/inventorizations'
+import relocationEquipmentsFixtures from '_tests_/fixtures/api/data/relocationEquipments'
+import relocationTasksFixtures from '_tests_/fixtures/api/data/relocationTasks'
+import userFixtures from '_tests_/fixtures/api/data/users'
 import {
   mockCancelRelocationTaskBadRequestError,
   mockCancelRelocationTaskForbiddenError,
@@ -111,7 +102,16 @@ import {
   mockReturnRelocationTaskToReworkServerError,
   mockReturnRelocationTaskToReworkSuccess,
 } from '_tests_/mocks/api'
-import { getUserMeQueryMock } from '_tests_/mocks/store/users'
+import { getStoreWithAuth } from '_tests_/fixtures/store/auth'
+import { getUserMeQueryMock } from '_tests_/fixtures/store/users'
+import {
+  fakeWord,
+  menuTestUtils,
+  notificationTestUtils,
+  render,
+  renderWithRouter,
+  setupApiTests,
+} from '_tests_/helpers'
 
 import RelocationTaskDetails from './index'
 

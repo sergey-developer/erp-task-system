@@ -6,10 +6,10 @@ import moment from 'moment-timezone'
 
 import { props } from '_tests_/features/tasks/components/TasksFilter/constants'
 import { tasksFilterTestUtils } from '_tests_/features/tasks/components/TasksFilter/testUtils'
-import catalogsFixtures from '_tests_/fixtures/catalogs'
-import supportGroupsFixtures from '_tests_/fixtures/supportGroups'
-import userFixtures from '_tests_/fixtures/users'
-import workGroupsFixtures from '_tests_/fixtures/workGroups'
+import catalogsFixtures from '_tests_/fixtures/api/data/catalogs'
+import supportGroupsFixtures from '_tests_/fixtures/api/data/supportGroups'
+import userFixtures from '_tests_/fixtures/api/data/users'
+import workGroupsFixtures from '_tests_/fixtures/api/data/workGroups'
 import {
   checkboxTestUtils,
   fakeName,

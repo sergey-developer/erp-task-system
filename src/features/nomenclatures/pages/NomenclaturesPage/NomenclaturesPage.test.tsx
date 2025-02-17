@@ -6,17 +6,8 @@ import { nomenclatureFormModalTestUtils } from '_tests_/features/warehouses/comp
 import { nomenclatureGroupFormModalTestUtils } from '_tests_/features/warehouses/components/NomenclatureGroupFormModal/testUtils'
 import { nomenclatureTableTestUtils } from '_tests_/features/warehouses/components/NomenclatureTable/testUtils'
 import { nomenclatureListPageTestUtils } from '_tests_/features/warehouses/pages/NomenclatureListPage/testUtils'
-import nomenclaturesFixtures from '_tests_/fixtures/nomenclatures'
-import userFixtures from '_tests_/fixtures/users'
-import {
-  buttonTestUtils,
-  fakeWord,
-  getStoreWithAuth,
-  menuTestUtils,
-  notificationTestUtils,
-  render,
-  setupApiTests,
-} from '_tests_/helpers'
+import nomenclaturesFixtures from '_tests_/fixtures/api/data/nomenclatures'
+import userFixtures from '_tests_/fixtures/api/data/users'
 import {
   mockCreateNomenclatureGroupBadRequestError,
   mockCreateNomenclatureGroupForbiddenError,
@@ -25,7 +16,16 @@ import {
   mockGetNomenclatureGroupsSuccess,
   mockGetNomenclaturesSuccess,
 } from '_tests_/mocks/api'
-import { getUserMeQueryMock } from '_tests_/mocks/store/users'
+import { getStoreWithAuth } from '_tests_/fixtures/store/auth'
+import { getUserMeQueryMock } from '_tests_/fixtures/store/users'
+import {
+  buttonTestUtils,
+  fakeWord,
+  menuTestUtils,
+  notificationTestUtils,
+  render,
+  setupApiTests,
+} from '_tests_/helpers'
 
 import NomenclaturesPage from './index'
 

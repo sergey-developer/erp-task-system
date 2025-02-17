@@ -6,7 +6,7 @@ import {
   tableRow,
 } from '_tests_/features/inventorizations/components/CheckInventorizationEquipmentsTable/constants'
 import { checkInventorizationEquipmentsTableTestUtils as testUtils } from '_tests_/features/inventorizations/components/CheckInventorizationEquipmentsTable/testUtils'
-import inventorizationsFixtures from '_tests_/fixtures/inventorizations'
+import inventorizationsFixtures from '_tests_/fixtures/api/data/inventorizations'
 import { render } from '_tests_/helpers'
 
 import CheckInventorizationEquipmentsTable from './index'

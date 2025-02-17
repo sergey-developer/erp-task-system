@@ -1,6 +1,6 @@
 import { ChangeInfrastructureOrderFormProps } from 'features/infrastructures/components/ChangeInfrastructureOrderForm'
 
-import infrastructuresFixtures from '_tests_/fixtures/infrastructures'
+import infrastructuresFixtures from '_tests_/fixtures/api/data/infrastructures'
 
 export const infrastructureOrderFormListItem = infrastructuresFixtures.infrastructureOrderForm()
 

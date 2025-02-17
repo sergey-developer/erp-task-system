@@ -17,12 +17,13 @@ import { relocationTaskTableTestUtils } from '_tests_/features/warehouses/compon
 import { relocationTasksFilterTestUtils } from '_tests_/features/warehouses/components/RelocationTasksFilter/testUtils'
 import { createRelocationTaskPageTestUtils } from '_tests_/features/warehouses/pages/CreateRelocationTaskPage/testUtils'
 import { relocationTasksPageTestUtils } from '_tests_/features/warehouses/pages/RelocationTasksPage/testUtils'
-import commonFixtures from '_tests_/fixtures/common'
-import relocationTasksFixtures from '_tests_/fixtures/relocationTasks'
-import userFixtures from '_tests_/fixtures/users'
+import commonFixtures from '_tests_/fixtures/api/common'
+import relocationTasksFixtures from '_tests_/fixtures/api/data/relocationTasks'
+import userFixtures from '_tests_/fixtures/api/data/users'
+import { getStoreWithAuth } from '_tests_/fixtures/store/auth'
+import { getUserMeQueryMock } from '_tests_/fixtures/store/users'
 import {
   fakeWord,
-  getStoreWithAuth,
   notificationTestUtils,
   render,
   renderWithRouter,
@@ -40,7 +41,6 @@ import {
   mockGetRelocationTaskSuccess,
   mockGetUsersSuccess,
 } from '_tests_/mocks/api'
-import { getUserMeQueryMock } from '_tests_/mocks/store/users'
 
 import CreateRelocationTaskPage from '../CreateRelocationTaskPage'
 import RelocationTasksPage from './index'

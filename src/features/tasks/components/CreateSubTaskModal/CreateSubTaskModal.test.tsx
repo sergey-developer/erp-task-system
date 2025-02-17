@@ -7,15 +7,8 @@ import { getSupportGroupsErrorMessage } from 'shared/supportGroups/api/constants
 
 import { onCancel, props } from '_tests_/features/tasks/components/CreateSubTaskModal/constants'
 import { createSubTaskModalTestUtils } from '_tests_/features/tasks/components/CreateSubTaskModal/testUtils'
-import catalogsFixtures from '_tests_/fixtures/catalogs'
-import supportGroupsFixtures from '_tests_/fixtures/supportGroups'
-import {
-  fakeWord,
-  getStoreWithAuth,
-  notificationTestUtils,
-  render,
-  setupApiTests,
-} from '_tests_/helpers'
+import catalogsFixtures from '_tests_/fixtures/api/data/catalogs'
+import supportGroupsFixtures from '_tests_/fixtures/api/data/supportGroups'
 import {
   mockCreateSubTaskBadRequestError,
   mockCreateSubTaskServerError,
@@ -25,6 +18,8 @@ import {
   mockGetSupportGroupsServerError,
   mockGetSupportGroupsSuccess,
 } from '_tests_/mocks/api'
+import { getStoreWithAuth } from '_tests_/fixtures/store/auth'
+import { fakeWord, notificationTestUtils, render, setupApiTests } from '_tests_/helpers'
 
 import CreateSubTaskModal from './index'
 import { CreateSubTaskFormErrors } from './types'

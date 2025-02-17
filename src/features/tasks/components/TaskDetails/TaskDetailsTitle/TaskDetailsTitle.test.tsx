@@ -17,10 +17,11 @@ import {
   showRequestReclassificationItemProps,
 } from '_tests_/features/tasks/components/TaskDetails/TaskDetailsTitle/constants'
 import { taskDetailsTitleTestUtils } from '_tests_/features/tasks/components/TaskDetails/TaskDetailsTitle/testUtils'
-import tasksFixtures from '_tests_/fixtures/tasks'
-import userFixtures from '_tests_/fixtures/users'
-import { getStoreWithAuth, menuTestUtils, render } from '_tests_/helpers'
-import { getUserMeQueryMock } from '_tests_/mocks/store/users'
+import tasksFixtures from '_tests_/fixtures/api/data/tasks'
+import userFixtures from '_tests_/fixtures/api/data/users'
+import { getStoreWithAuth } from '_tests_/fixtures/store/auth'
+import { getUserMeQueryMock } from '_tests_/fixtures/store/users'
+import { menuTestUtils, render } from '_tests_/helpers'
 
 import TaskDetailsTitle from './index'
 

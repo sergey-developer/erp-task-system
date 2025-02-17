@@ -214,6 +214,7 @@ const tasksEndpoints = baseApi
             url: TasksApiPathsEnum.CreateTask,
             method: HttpMethodEnum.Post,
             data: formData,
+            headers: { 'Content-Type': 'multipart/form-data' },
           }
         },
       }),
@@ -261,6 +262,7 @@ const tasksEndpoints = baseApi
             url: makeResolveTaskApiPath(taskId),
             method: HttpMethodEnum.Post,
             data: formData,
+            headers: { 'Content-Type': 'multipart/form-data' },
           }
         },
       }),
@@ -298,6 +300,7 @@ const tasksEndpoints = baseApi
             url: makeCreateTaskCommentApiPath(taskId),
             method: HttpMethodEnum.Post,
             data: formData,
+            headers: { 'Content-Type': 'multipart/form-data' },
           }
         },
         onQueryStarted: async ({ taskId }, { dispatch, queryFulfilled }) => {
@@ -610,6 +613,7 @@ const tasksEndpoints = baseApi
             url: makeCreateTaskAttachmentApiPath(taskId),
             method: HttpMethodEnum.Post,
             data: formData,
+            headers: { 'Content-Type': 'multipart/form-data' },
           }
         },
       }),

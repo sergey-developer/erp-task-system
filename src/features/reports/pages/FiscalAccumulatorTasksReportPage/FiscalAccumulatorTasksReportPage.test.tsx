@@ -10,13 +10,13 @@ import {
 import { taskDetailsTestUtils } from '_tests_/features/tasks/components/TaskDetails/testUtils'
 import { tasksFiltersStorageTestUtils } from '_tests_/features/tasks/components/TasksFiltersStorage/testUtils'
 import { updateTasksButtonTestUtils } from '_tests_/features/tasks/components/UpdateTasksButton/testUtils'
-import reportsFixtures from '_tests_/fixtures/reports'
-import { fakeId, notificationTestUtils, render, setupApiTests } from '_tests_/helpers'
+import reportsFixtures from '_tests_/fixtures/api/data/reports'
 import {
   mockGetFiscalAccumulatorTasksServerError,
   mockGetFiscalAccumulatorTasksSuccess,
   mockGetTaskSuccess,
 } from '_tests_/mocks/api'
+import { fakeId, notificationTestUtils, render, setupApiTests } from '_tests_/helpers'
 
 import FiscalAccumulatorTasksReportPage from './index'
 

@@ -10,22 +10,22 @@ import { AuthRoutesEnum } from 'features/auth/routes/routes'
 import { authLocalStorageService } from 'features/auth/services/authLocalStorage.service'
 import TasksPage from 'features/tasks/pages/TasksPage'
 import React from 'react'
+import { setupStore } from 'store/store'
 
 import { CommonRoutesEnum } from 'configs/routes'
 
-import { setupStore } from 'state/store'
-
-import { commonApiMessages } from 'shared/constants/common'
+import { commonApiErrorMessage } from 'shared/constants/common'
 import { validationMessages } from 'shared/constants/validation'
 
 import { tasksPageTestUtils } from '_tests_/features/tasks/pages/TasksPage/testUtils'
-import authFixtures from '_tests_/fixtures/auth'
-import userFixtures from '_tests_/fixtures/users'
+import authFixtures from '_tests_/fixtures/api/data/auth'
+import userFixtures from '_tests_/fixtures/api/data/users'
+import { getStoreWithAuth } from '_tests_/fixtures/store/auth'
+import { getUserMeQueryMock } from '_tests_/fixtures/store/users'
 import {
   buttonTestUtils,
   fakeEmail,
   fakeWord,
-  getStoreWithAuth,
   render,
   renderInRoute,
   renderWithRouter,
@@ -40,7 +40,6 @@ import {
   mockLoginUnauthorizedError,
   mockRefreshTokenSuccess,
 } from '_tests_/mocks/api'
-import { getUserMeQueryMock } from '_tests_/mocks/store/users'
 
 const getContainer = () => screen.getByTestId('login-card')
 const queryContainer = () => screen.queryByTestId('login-card')
@@ -348,7 +347,7 @@ describe('Страница авторизации', () => {
       await testUtils.expectLoadingStarted()
       await testUtils.expectLoadingFinished()
 
-      expect(testUtils.getChildByText(commonApiMessages.unknownError)).toBeInTheDocument()
+      expect(testUtils.getChildByText(commonApiErrorMessage)).toBeInTheDocument()
     })
   })
 })

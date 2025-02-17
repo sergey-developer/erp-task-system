@@ -9,18 +9,14 @@ import * as downloadFileUtils from 'shared/utils/file/downloadFile'
 
 import { relocationEquipmentSimplifiedEditableTableTestUtils } from '_tests_/features/warehouses/components/RelocationEquipmentSimplifiedEditableTable/testUtils'
 import { createRelocationTaskSimplifiedPageTestUtils } from '_tests_/features/warehouses/pages/CreateRelocationTaskSimplifiedPage/testUtils'
-import { fakeUseLocationResult } from '_tests_/fixtures/common/hooks/useLocation'
-import equipmentsFixtures from '_tests_/fixtures/equipments'
-import tasksFixtures from '_tests_/fixtures/tasks'
-import userFixtures from '_tests_/fixtures/users'
-import warehousesFixtures from '_tests_/fixtures/warehouses'
-import {
-  fakeWord,
-  getStoreWithAuth,
-  notificationTestUtils,
-  render,
-  setupApiTests,
-} from '_tests_/helpers'
+import equipmentsFixtures from '_tests_/fixtures/api/data/equipments'
+import tasksFixtures from '_tests_/fixtures/api/data/tasks'
+import userFixtures from '_tests_/fixtures/api/data/users'
+import warehousesFixtures from '_tests_/fixtures/api/data/warehouses'
+import { fakeUseLocationResult } from '_tests_/fixtures/hooks/useLocation'
+import { getStoreWithAuth } from '_tests_/fixtures/store/auth'
+import { getUserMeQueryMock } from '_tests_/fixtures/store/users'
+import { fakeWord, notificationTestUtils, render, setupApiTests } from '_tests_/helpers'
 import {
   mockGetCurrenciesSuccess,
   mockGetEquipmentsCatalogSuccess,
@@ -30,7 +26,6 @@ import {
   mockGetUsersSuccess,
   mockGetWarehouseMSISuccess,
 } from '_tests_/mocks/api'
-import { getUserMeQueryMock } from '_tests_/mocks/store/users'
 
 import CreateRelocationTaskSimplifiedPage from './index'
 

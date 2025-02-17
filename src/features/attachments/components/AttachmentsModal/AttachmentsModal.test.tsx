@@ -1,7 +1,7 @@
 import { screen, within } from '@testing-library/react'
 import { testUtils as attachmentImagesTestUtils } from 'features/attachments/components/AttachmentImages/AttachmentImages.test'
 
-import attachmentsFixtures from '_tests_/fixtures/attachments'
+import attachmentsFixtures from '_tests_/fixtures/api/data/attachments'
 import { fakeWord, render, spinnerTestUtils } from '_tests_/helpers'
 
 import AttachmentsModal, { AttachmentsModalProps } from './index'

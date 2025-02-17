@@ -16,3 +16,7 @@ export * from './relocationTasks'
 export * from './relocationEquipments'
 export * from './nomenclatures'
 export * from './inventorizations'
+
+export * from './request'
+export * from './response'
+export * from './server'

@@ -1,7 +1,7 @@
 import { EquipmentFilterProps } from 'features/equipments/components/EquipmentFilter/types'
 
-import catalogsFixtures from '_tests_/fixtures/catalogs/index'
-import equipmentsFixtures from '_tests_/fixtures/equipments'
+import catalogsFixtures from '_tests_/fixtures/api/data/catalogs/index'
+import equipmentsFixtures from '_tests_/fixtures/api/data/equipments'
 
 export const props: Readonly<EquipmentFilterProps> = {
   visible: true,

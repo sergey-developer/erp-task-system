@@ -10,9 +10,9 @@ import {
   props,
 } from '_tests_/features/warehouses/components/EquipmentFormModal/constants'
 import { equipmentFormModalTestUtils } from '_tests_/features/warehouses/components/EquipmentFormModal/testUtils'
-import catalogsFixtures from '_tests_/fixtures/catalogs'
-import equipmentsFixtures from '_tests_/fixtures/equipments'
-import nomenclaturesFixtures from '_tests_/fixtures/nomenclatures'
+import catalogsFixtures from '_tests_/fixtures/api/data/catalogs'
+import equipmentsFixtures from '_tests_/fixtures/api/data/equipments'
+import nomenclaturesFixtures from '_tests_/fixtures/api/data/nomenclatures'
 import { fakeInteger, fakeWord, render } from '_tests_/helpers'
 
 import EquipmentFormModal from './index'
@@ -33,7 +33,7 @@ describe('Модалка оборудования', () => {
     })
 
     test('Можно установить значение', async () => {
-      const category = equipmentsFixtures.equipmentCategoryListItem()
+      const category = equipmentsFixtures.equipmentCategory()
       const { user } = render(<EquipmentFormModal {...props} categories={[category]} />)
 
       await equipmentFormModalTestUtils.openCategorySelect(user)
@@ -113,7 +113,7 @@ describe('Модалка оборудования', () => {
     })
 
     test('Не активно если категория расходный материал', () => {
-      const category = equipmentsFixtures.equipmentCategoryListItem({
+      const category = equipmentsFixtures.equipmentCategory({
         code: EquipmentCategoryEnum.Consumable,
       })
 
@@ -147,7 +147,7 @@ describe('Модалка оборудования', () => {
     })
 
     test('Не отображается если категория расходный материал', () => {
-      const category = equipmentsFixtures.equipmentCategoryListItem({
+      const category = equipmentsFixtures.equipmentCategory({
         code: EquipmentCategoryEnum.Consumable,
       })
 
@@ -262,7 +262,7 @@ describe('Модалка оборудования', () => {
   describe('Количество', () => {
     describe('Режим создания', () => {
       test('Отображается если категория расходный материал', () => {
-        const category = equipmentsFixtures.equipmentCategoryListItem({
+        const category = equipmentsFixtures.equipmentCategory({
           code: EquipmentCategoryEnum.Consumable,
         })
 
@@ -285,7 +285,7 @@ describe('Модалка оборудования', () => {
       })
 
       test('Можно установить значение', async () => {
-        const category = equipmentsFixtures.equipmentCategoryListItem({
+        const category = equipmentsFixtures.equipmentCategory({
           code: EquipmentCategoryEnum.Consumable,
         })
 
@@ -298,7 +298,7 @@ describe('Модалка оборудования', () => {
       })
 
       test('Показывается ошибка если поле не заполнено', async () => {
-        const category = equipmentsFixtures.equipmentCategoryListItem({
+        const category = equipmentsFixtures.equipmentCategory({
           code: EquipmentCategoryEnum.Consumable,
         })
 
@@ -317,7 +317,7 @@ describe('Модалка оборудования', () => {
 
     describe('Режим редактирования', () => {
       test('Отображается если категория расходный материал', () => {
-        const category = equipmentsFixtures.equipmentCategoryListItem({
+        const category = equipmentsFixtures.equipmentCategory({
           code: EquipmentCategoryEnum.Consumable,
         })
 
@@ -342,7 +342,7 @@ describe('Модалка оборудования', () => {
 
   describe('Ед.измерения', () => {
     test('Отображается если категория расходный материал', () => {
-      const category = equipmentsFixtures.equipmentCategoryListItem({
+      const category = equipmentsFixtures.equipmentCategory({
         code: EquipmentCategoryEnum.Consumable,
       })
 
@@ -421,7 +421,7 @@ describe('Модалка оборудования', () => {
     })
 
     test('Не отображается если категория расходный материал', () => {
-      const category = equipmentsFixtures.equipmentCategoryListItem({
+      const category = equipmentsFixtures.equipmentCategory({
         code: EquipmentCategoryEnum.Consumable,
       })
 
@@ -464,7 +464,7 @@ describe('Модалка оборудования', () => {
     })
 
     test('Не отображается если категория расходный материал', () => {
-      const category = equipmentsFixtures.equipmentCategoryListItem({
+      const category = equipmentsFixtures.equipmentCategory({
         code: EquipmentCategoryEnum.Consumable,
       })
 
@@ -509,7 +509,7 @@ describe('Модалка оборудования', () => {
     })
 
     test('Не отображается если категория расходный материал', () => {
-      const category = equipmentsFixtures.equipmentCategoryListItem({
+      const category = equipmentsFixtures.equipmentCategory({
         code: EquipmentCategoryEnum.Consumable,
       })
 
@@ -555,7 +555,7 @@ describe('Модалка оборудования', () => {
     })
 
     test('Не отображается если категория расходный материал', () => {
-      const category = equipmentsFixtures.equipmentCategoryListItem({
+      const category = equipmentsFixtures.equipmentCategory({
         code: EquipmentCategoryEnum.Consumable,
       })
       render(<EquipmentFormModal {...props} category={category} />)
@@ -587,7 +587,7 @@ describe('Модалка оборудования', () => {
     })
 
     test('Не отображается если категория расходный материал', () => {
-      const category = equipmentsFixtures.equipmentCategoryListItem({
+      const category = equipmentsFixtures.equipmentCategory({
         code: EquipmentCategoryEnum.Consumable,
       })
 
@@ -632,7 +632,7 @@ describe('Модалка оборудования', () => {
     })
 
     test('Не отображается если категория расходный материал', () => {
-      const category = equipmentsFixtures.equipmentCategoryListItem({
+      const category = equipmentsFixtures.equipmentCategory({
         code: EquipmentCategoryEnum.Consumable,
       })
       render(<EquipmentFormModal {...props} category={category} />)

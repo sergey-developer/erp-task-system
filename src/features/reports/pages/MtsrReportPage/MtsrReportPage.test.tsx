@@ -3,9 +3,8 @@ import { UserEvent } from '@testing-library/user-event/setup/setup'
 import { testUtils as mtsrReportFormTestUtils } from 'features/reports/components/MtsrReportForm/MtsrReportForm.test'
 import { testUtils as mtsrReportTableTestUtils } from 'features/reports/components/MtsrReportTable/MtsrReportTable.test'
 
-import catalogsFixtures from '_tests_/fixtures/catalogs'
-import reportsFixtures from '_tests_/fixtures/reports'
-import { radioButtonTestUtils, render, setupApiTests } from '_tests_/helpers'
+import catalogsFixtures from '_tests_/fixtures/api/data/catalogs'
+import reportsFixtures from '_tests_/fixtures/api/data/reports'
 import {
   mockGetCustomersSuccess,
   mockGetMacroregionsMtsrReportSuccess,
@@ -13,6 +12,7 @@ import {
   mockGetUsersMtsrReportSuccess,
   mockGetWorkGroupsMtsrReportSuccess,
 } from '_tests_/mocks/api'
+import { radioButtonTestUtils, render, setupApiTests } from '_tests_/helpers'
 
 import { mtsrReportLevelDict, MtsrReportLevelEnum } from './constants'
 import MtsrReportPage from './index'

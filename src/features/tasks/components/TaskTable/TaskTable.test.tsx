@@ -19,7 +19,7 @@ import {
   tasksTableItem,
 } from '_tests_/features/tasks/components/TaskTable/constants'
 import { taskTableTestUtils } from '_tests_/features/tasks/components/TaskTable/testUtils'
-import tasksFixtures from '_tests_/fixtures/tasks'
+import tasksFixtures from '_tests_/fixtures/api/data/tasks'
 import { render, tableTestUtils } from '_tests_/helpers'
 
 import TaskTable from './index'

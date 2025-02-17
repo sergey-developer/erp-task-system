@@ -5,8 +5,8 @@ import { makeString } from 'shared/utils/string'
 
 import { props } from '_tests_/features/warehouses/components/CreateInventorizationEquipmentModal/constants'
 import { createInventorizationEquipmentModalTestUtils } from '_tests_/features/warehouses/components/CreateInventorizationEquipmentModal/testUtils'
-import equipmentsFixtures from '_tests_/fixtures/equipments'
-import warehousesFixtures from '_tests_/fixtures/warehouses'
+import equipmentsFixtures from '_tests_/fixtures/api/data/equipments'
+import warehousesFixtures from '_tests_/fixtures/api/data/warehouses'
 import { render } from '_tests_/helpers'
 
 import CreateInventorizationEquipmentModal from './index'

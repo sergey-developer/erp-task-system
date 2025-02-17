@@ -8,13 +8,13 @@ import pick from 'lodash/pick'
 
 import { CommonRoutesEnum } from 'configs/routes'
 
-import userFixtures from '_tests_/fixtures/users'
-import { linkTestUtils, render, renderWithRouter, setupApiTests } from '_tests_/helpers'
+import userFixtures from '_tests_/fixtures/api/data/users'
 import {
   mockGetTimeZonesSuccess,
   mockGetUserMeCodeSuccess,
   mockGetUserMeSuccess,
 } from '_tests_/mocks/api'
+import { linkTestUtils, render, renderWithRouter, setupApiTests } from '_tests_/helpers'
 
 import DetailedUserAvatar, { DetailedUserAvatarProps } from './index'
 

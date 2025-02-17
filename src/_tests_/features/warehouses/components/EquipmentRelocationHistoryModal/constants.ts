@@ -1,6 +1,6 @@
 import { EquipmentRelocationHistoryModalProps } from 'features/equipments/components/EquipmentRelocationHistoryModal/types'
 
-import equipmentsFixtures from '_tests_/fixtures/equipments'
+import equipmentsFixtures from '_tests_/fixtures/api/data/equipments'
 
 export const equipmentRelocationHistoryItem = equipmentsFixtures.equipmentRelocationHistoryItem()
 

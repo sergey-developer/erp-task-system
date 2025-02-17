@@ -7,7 +7,7 @@ import { DATE_PICKER_FORMAT } from 'lib/antd/constants/dateTimePicker'
 import { UPDATE_TEXT } from 'shared/constants/common'
 import { validationMessages } from 'shared/constants/validation'
 
-import userFixtures from '_tests_/fixtures/users'
+import userFixtures from '_tests_/fixtures/api/data/users'
 import { buttonTestUtils, render, selectTestUtils } from '_tests_/helpers'
 
 import EmployeesActionsReportForm from './index'

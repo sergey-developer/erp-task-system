@@ -15,7 +15,7 @@ import {
   ariaSortAttrName,
   columnWithSortingClass,
 } from '_tests_/constants/components'
-import relocationTasksFixtures from '_tests_/fixtures/relocationTasks'
+import relocationTasksFixtures from '_tests_/fixtures/api/data/relocationTasks'
 import { render, tableTestUtils } from '_tests_/helpers'
 
 import ExecuteInventorizationRelocationTaskTable from './index'

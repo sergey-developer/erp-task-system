@@ -1,7 +1,7 @@
 import { TaskJournalSourceEnum, TaskJournalTypeEnum } from 'features/tasks/api/constants'
 import { JournalEntryProps } from 'features/tasks/components/TaskDetails/TaskDetailsTabs/JournalTab/JournalEntry'
 
-import tasksFixtures from '_tests_/fixtures/tasks/index'
+import tasksFixtures from '_tests_/fixtures/api/data/tasks/index'
 import { fakeDateString, fakeId, fakeWord } from '_tests_/helpers'
 
 export const props: Readonly<JournalEntryProps> = {

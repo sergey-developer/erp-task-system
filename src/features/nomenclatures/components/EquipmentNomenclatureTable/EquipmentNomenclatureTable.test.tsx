@@ -8,9 +8,9 @@ import {
 } from '_tests_/features/warehouses/components/EquipmentNomenclatureTable/constants'
 import { equipmentNomenclatureTableTestUtils } from '_tests_/features/warehouses/components/EquipmentNomenclatureTable/testUtils'
 import { equipmentListPageTestUtils } from '_tests_/features/warehouses/pages/EquipmentListPage/testUtils'
-import equipmentsFixtures from '_tests_/fixtures/equipments'
-import { renderWithRouter, setupApiTests, tableTestUtils } from '_tests_/helpers'
+import equipmentsFixtures from '_tests_/fixtures/api/data/equipments'
 import { mockGetEquipmentsSuccess } from '_tests_/mocks/api'
+import { renderWithRouter, setupApiTests, tableTestUtils } from '_tests_/helpers'
 
 import EquipmentNomenclatureTable from './index'
 

@@ -3,7 +3,12 @@ import { makeWarehousePageLink } from 'features/warehouses/helpers'
 import { WarehousesRoutesEnum } from 'features/warehouses/routes/routes'
 
 import { warehousePageTestUtils } from '_tests_/features/warehouses/pages/WarehousePage/testUtils'
-import warehousesFixtures from '_tests_/fixtures/warehouses'
+import warehousesFixtures from '_tests_/fixtures/api/data/warehouses'
+import {
+  mockGetWarehouseNotFoundError,
+  mockGetWarehouseServerError,
+  mockGetWarehouseSuccess,
+} from '_tests_/mocks/api'
 import {
   fakeId,
   fakeWord,
@@ -11,11 +16,6 @@ import {
   renderWithRouter,
   setupApiTests,
 } from '_tests_/helpers'
-import {
-  mockGetWarehouseNotFoundError,
-  mockGetWarehouseServerError,
-  mockGetWarehouseSuccess,
-} from '_tests_/mocks/api'
 
 import WarehousePage from './index'
 
